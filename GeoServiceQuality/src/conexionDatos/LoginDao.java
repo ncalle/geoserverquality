@@ -14,7 +14,7 @@ public class LoginDao {
 		ResultSet rs = null;
 
 		String url = "jdbc:mysql://localhost:3306/";
-		String dbName = "form";
+		String dbName = "GeoServiceQuality";
 		String driver = "com.mysql.jdbc.Driver";
 		String userName = "root";
 		String password = "root";
@@ -24,7 +24,7 @@ public class LoginDao {
 					.getConnection(url + dbName, userName, password);
 
 			pst = conn
-					.prepareStatement("select * from user where name=? and password=?");
+					.prepareStatement("select * from Usuario where Email=? and UsuarioPassword=?");
 			pst.setString(1, name);
 			pst.setString(2, pass);
 

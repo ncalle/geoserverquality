@@ -13,7 +13,7 @@ public class RegistroDao {
 		PreparedStatement pst = null;
 
 		String url = "jdbc:mysql://localhost:3306/";
-		String dbName = "form";
+		String dbName = "GeoServiceQuality";
 		String driver = "com.mysql.jdbc.Driver";
 		String userName = "root";
 		String password = "root";
@@ -23,7 +23,7 @@ public class RegistroDao {
 					.getConnection(url + dbName, userName, password);
 
 			pst = conn
-					.prepareStatement("INSERT INTO `form`.`user` (`name`, `password`) VALUES (?, ?);");
+					.prepareStatement("INSERT INTO `GeoServiceQuality`.`Usuario` (`Email`, `UsuarioPassword`, 'Tipo') VALUES (?, ?, 'TC');");
 			pst.setString(1, name);
 			pst.setString(2, pass);
 			
