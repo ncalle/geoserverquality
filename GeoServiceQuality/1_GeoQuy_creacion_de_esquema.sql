@@ -3,6 +3,8 @@ CREATE DATABASE GeoServiceQuality;
 
 USE GeoServiceQuality;
 
+-- TODO: VER PORQUE LAS CHECK CONSTRAINT TIPO = '' OR '' NO FUNCIONAN
+
 -- Contiene los distintos grupos de usuarios
 CREATE TABLE Grupo
 (
