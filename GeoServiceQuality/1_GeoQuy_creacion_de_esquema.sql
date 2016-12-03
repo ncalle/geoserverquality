@@ -3,20 +3,53 @@ CREATE DATABASE GeoServiceQuality;
 
 USE GeoServiceQuality;
 
+-- Contiene los distintos grupos de usuarios
+CREATE TABLE Grupo
+(
+	GrupoID TINYINT AUTO_INCREMENT NOT NULL,
+    Nombre VARCHAR(40) NOT NULL,
+    Descripcion VARCHAR(100) NULL,
+    
+    PRIMARY KEY (GrupoID),
+    UNIQUE KEY (Nombre)
+);
+
+-- Contiene una lista de los permisos de uso dentro de la aplicacion
+CREATE TABLE Permiso
+(
+	PermisoID SMALLINT AUTO_INCREMENT NOT NULL,
+    Nombre VARCHAR(40) NOT NULL,
+    Descripcion VARCHAR(100) NULL,
+    
+    PRIMARY KEY (PermisoID),
+    UNIQUE KEY (Nombre)
+);
+
+-- Contiene los permisos habilitados para los grupos de usuarios
+CREATE TABLE PermisoGrupo
+(
+	PermisoID SMALLINT NOT NULL,
+    GrupoID TINYINT NOT NULL,
+    
+    PRIMARY KEY (PermisoID, GrupoID),
+    FOREIGN KEY (PermisoID) REFERENCES Permiso(PermisoID),
+    FOREIGN KEY (GrupoID) REFERENCES Grupo(GrupoID)
+);
+
 -- Usuarios que haran uso de la aplicacion
 CREATE TABLE Usuario
 (
 	UsuarioID INT AUTO_INCREMENT NOT NULL,
     Email VARCHAR(40) NOT NULL,    
     UsuarioPassword VARCHAR(40) NOT NULL,
-    Tipo CHAR(2) NOT NULL, -- 'TC' = Tecnico, 'ID' = IDE, 'IN' = Institucional, 'GR' = General
+    GrupoID TINYINT NOT NULL,
     Nombre VARCHAR(40) NULL,
     Apellido VARCHAR(40) NULL,
-    Telefono INT NULL,
+    Telefono BIGINT NULL,
 
     PRIMARY KEY (UsuarioID),
     UNIQUE KEY (Email),
-    CONSTRAINT CK_valores_Tipo CHECK (Tipo = 'TC' OR 'ID' OR 'IN' OR 'GR')
+    FOREIGN KEY (GrupoID) REFERENCES Grupo(GrupoID)
 );
 
 -- Contiene los Ides creadas
@@ -61,7 +94,7 @@ CREATE TABLE ServicioGeografico
 (
 	ServicioGeograficoID INT AUTO_INCREMENT NOT NULL,
     NodoID INT NOT NULL,
-    Url VARCHAR(400) NOT NULL,
+    Url VARCHAR(1024) NOT NULL,
     Tipo CHAR(3) NOT NULL, -- WMS, WFS, CSW
     -- Metadato XML
     
@@ -71,13 +104,14 @@ CREATE TABLE ServicioGeografico
     CONSTRAINT CK_valores_Tipo CHECK (Tipo = 'WMS' OR 'WFS' OR 'CSW')
 );
 
--- Contiene los objetos medibles (Ides o Insituciones) que tienen disponible determinado usuario
+-- Contiene todos los objetos medibles (Ides o Insituciones) que el usuario puede o no evaluar
 CREATE TABLE UsuarioObjeto
 (
 	UsuarioObjetoID INT AUTO_INCREMENT NOT NULL,
     UsuarioID INT NOT NULL,
     ObjetoID INT NOT NULL, -- IdeID o InstitucionID
     Tipo CHAR(3) NOT NULL, -- 'Ide' = Ide, 'Ins' = Insitucional
+    PuedeEvaluarFlag BIT NOT NULL,
 
     PRIMARY KEY (UsuarioObjetoID),
     UNIQUE (UsuarioID, ObjetoID, Tipo),
@@ -94,7 +128,7 @@ CREATE TABLE UsuarioObjeto
 -- Contiene los distintos Perfiles que se vayan creando
 CREATE TABLE Perfil
 (
-	PerfilID INT AUTO_INCREMENT NOT NULL,
+	PerfilID TINYINT AUTO_INCREMENT NOT NULL,
     Nombre VARCHAR(40) NOT NULL,
     EsPerfilPonderadoFlag BIT NOT NULL,
 
@@ -127,7 +161,7 @@ CREATE TABLE Factor
 -- Contiene las unidades utilizadas para medir cada una de las metricas de calidad
 CREATE TABLE Unidad
 (
-	UnidadID INT AUTO_INCREMENT NOT NULL,
+	UnidadID TINYINT AUTO_INCREMENT NOT NULL,
     Nombre VARCHAR(40) NOT NULL,
     Descripcion VARCHAR(100) NULL,
 
@@ -141,7 +175,7 @@ CREATE TABLE Metrica
 	MetricaID INT AUTO_INCREMENT NOT NULL,
     FactorID INT NOT NULL,
     Nombre VARCHAR(100) NOT NULL,
-    UnidadID INT NOT NULL,
+    UnidadID TINYINT NOT NULL,
 
     PRIMARY KEY (MetricaID),
 	UNIQUE KEY (Nombre),
@@ -154,7 +188,7 @@ CREATE TABLE Rango
 (
 	RangoID INT AUTO_INCREMENT NOT NULL,
     MetricaID INT NOT NULL,
-    PerfilID INT NOT NULL,
+    PerfilID TINYINT NOT NULL,
 	BoleanoFlag BIT NULL,
     ValorAcepatcionBoleano BIT NULL,
     PorcentajeFlag BIT NULL,
@@ -199,7 +233,7 @@ CREATE TABLE Rango
 CREATE TABLE Ponderacion
 (
 	PonderacionID INT AUTO_INCREMENT NOT NULL,
-    PerfilID INT NOT NULL,
+    PerfilID TINYINT NOT NULL,
     ElementoID INT NOT NULL, -- DimensionID, FactorID, MetricaID, RangoID
     Tipo CHAR(1) NOT NULL, -- 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
     Valor INT NOT NULL,
@@ -223,7 +257,7 @@ CREATE TABLE Evaluacion
 (
 	EvaluacionID INT AUTO_INCREMENT NOT NULL,
 	UsuarioID INT NOT NULL,
-    PerfilID INT NOT NULL,
+    PerfilID TINYINT NOT NULL,
     FechaDeComienzo DATETIME NOT NULL,
     FechaDeFin DATETIME NULL,
     EvaluaionCompletaFlag BIT NOT NULL,
@@ -243,7 +277,7 @@ CREATE TABLE Evaluacion
 -- Contiene el resultado parcial de las evaluaciones que aun no han finalizado
 CREATE TABLE EvaluacionParcial
 (
-	EvaluacionParcialID INT AUTO_INCREMENT NOT NULL,
+	EvaluacionParcialID BIGINT AUTO_INCREMENT NOT NULL,
     EvaluacionID INT NOT NULL,
     FechaDeEjecucion DATETIME NOT NULL,
     ResultadoParcialExitosoFlag BIT NULL,
@@ -252,7 +286,6 @@ CREATE TABLE EvaluacionParcial
     UNIQUE KEY (EvaluacionID, FechaDeEjecucion),
     FOREIGN KEY (EvaluacionID) REFERENCES Evaluacion(EvaluacionID)
 );
-
 
 /*
 -- Guarda las Metricas seleccionadas en cada uno de los Perfiles creados
