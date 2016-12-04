@@ -1,10 +1,10 @@
 USE GeoServiceQuality;
 
-DROP PROCEDURE IF EXISTS spDatosDeUsuarioGet;
+DROP PROCEDURE IF EXISTS spUsuarioGet;
 
 DELIMITER //
 
-CREATE PROCEDURE spDatosDeUsuarioGet
+CREATE PROCEDURE spUsuarioGet
 (
 	pEmail VARCHAR(40)
     , pUsuarioPassword VARCHAR(40)
@@ -12,9 +12,9 @@ CREATE PROCEDURE spDatosDeUsuarioGet
 )
 
 /************************************************************************************************************
-** Name: dbo.spDatosDeUsuarioGet
+** Name: dbo.spUsuarioGet
 **
-** Desc: Devuelve datos de interes del usuario (datos personales y conjunto de permisos) de acuerdo con su información de login
+** Desc: Devuelve los datos personales del usuario pasado por parametro segun mail y password
 **
 ** 02/12/2016 Created
 **
@@ -34,15 +34,8 @@ BEGIN
 	SELECT u.Nombre AS UsuarioNombre
 		, u.Apellido AS UsuarioApellido
         , u.Telefono AS UsuarioTelefono
-        , g.Nombre AS GrupoNombre
-        , p.Nombre AS PermisoNombre
     FROM GeoServiceQuality.Usuario u
-    INNER JOIN GeoServiceQuality.Grupo g ON g.GrupoID = u.GrupoID
-    INNER JOIN GeoServiceQuality.PermisoGrupo pg ON pg.GrupoID = g.GrupoID
-    INNER JOIN GeoServiceQuality.Permiso p ON p.PermisoID = pg.PermisoID
     WHERE u.Email = pEmail
-		AND u.UsuarioPassword = pUsuarioPassword
-	ORDER BY p.PermisoID; 
+		AND u.UsuarioPassword = pUsuarioPassword;
 			
 END //
-   	

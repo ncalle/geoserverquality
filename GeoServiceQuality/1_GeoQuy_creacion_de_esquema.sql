@@ -262,7 +262,7 @@ CREATE TABLE Evaluacion
     PerfilID TINYINT NOT NULL,
     FechaDeComienzo DATETIME NOT NULL,
     FechaDeFin DATETIME NULL,
-    EvaluaionCompletaFlag BIT NOT NULL,
+    EvaluacionCompletaFlag BIT NOT NULL,
     ResultadoExitosoFlag BIT NULL,
 
     PRIMARY KEY (EvaluacionID),

@@ -10,7 +10,7 @@ CREATE PROCEDURE spUsuarioInsert
     , pUsuarioPassword VARCHAR(40)
     , pGrupoID INT
     , pNombre VARCHAR(40)
-    , pApelido VARCHAR(40)
+    , pApellido VARCHAR(40)
     , pTelefono BIGINT
     , OUT pError INT -- 0 si ok, 1 si hay error por parametros
 )
@@ -25,6 +25,8 @@ CREATE PROCEDURE spUsuarioInsert
 *************************************************************************************************************/
 BEGIN
 
+	DECLARE Mensaje VARCHAR(50);
+
 	SET pError = 0;
     
 	-- parametros requeridos
@@ -33,11 +35,18 @@ BEGIN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error - Los parametro email, password y grupo del usuario son requerido.';
         SET pError = 1;
 	END IF;
+    
+	IF EXISTS (SELECT 1 FROM GeoServiceQuality.Usuario WHERE Email = pEmail)
+	THEN
+		SET Mensaje = CONCAT('Error - El email ya fue registrado. Usario ya existente.');
+		
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = Mensaje;
+        SET pError = 1;
+	END IF;
 
-	INSERT INTO GeoServiceQuality.usuario
+	INSERT INTO GeoServiceQuality.Usuario
     (Email, UsuarioPassword, GrupoID, Nombre, Apellido, Telefono)
     VALUES
     (pEmail, pUsuarioPassword, pGrupoID, pNombre, pApellido, pTelefono);
     
 END //
-   	
