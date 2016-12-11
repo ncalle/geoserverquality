@@ -43,7 +43,7 @@ FROM GeoServiceQuality.Ide ide;
 
 INSERT INTO GeoServiceQuality.UsuarioObjeto (UsuarioID, ObjetoID, Tipo, PuedeEvaluarFlag)
 SELECT 1, institucion.InstitucionID, 'Ins', 1
-FROM GeoServiceQuality.Institucion institucion
+FROM GeoServiceQuality.Institucion institucion;
 
 -- UsuarioObjeto
 -- Ide

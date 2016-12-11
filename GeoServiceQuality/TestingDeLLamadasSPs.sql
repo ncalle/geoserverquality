@@ -25,3 +25,20 @@ SELECT @pError;
 CALL spUsuarioEvaluacionesGet (1, NULL, NULL, NULL, NULL, NULL, @pError);
 SELECT @pError;
 -- ------------------------------------------------------------------
+CALL spServicioGeograficoGet (@pError);
+SELECT @pError;
+-- ------------------------------------------------------------------
+CALL spServicioGeograficoInsert (5, 'http://serviciogeografico/Nodo5/Servicio5.1', 'WMS', @pError);
+SELECT @pError;
+-- ------------------------------------------------------------------
+CALL spUsuarioObjetoEvaluableGet (1, @pError);
+SELECT @pError;
+-- ------------------------------------------------------------------
+CALL spPerfilGet (@pError);
+SELECT @pError;
+-- ------------------------------------------------------------------
+CALL spPerfilInsert ('TestPerfil2' , '1,2,3,4,5,6,7,8,9,10,11,12,43,56,14,231', @pError);
+SELECT @pError;
+-- ------------------------------------------------------------------
+CALL spEvaluacionInsert (1, 1, 1, @pError);
+SELECT @pError;

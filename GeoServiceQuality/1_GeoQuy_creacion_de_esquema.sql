@@ -192,7 +192,7 @@ CREATE TABLE Rango
     MetricaID INT NOT NULL,
     PerfilID TINYINT NOT NULL,
 	BoleanoFlag BIT NULL,
-    ValorAcepatcionBoleano BIT NULL,
+    ValorAceptacionBoleano BIT NULL,
     PorcentajeFlag BIT NULL,
     ValorAceptacionPorcentaje INT NULL,
     EnteroFlag BIT NULL,
