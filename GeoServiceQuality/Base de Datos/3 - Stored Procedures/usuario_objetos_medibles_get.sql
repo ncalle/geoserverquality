@@ -58,7 +58,7 @@ BEGIN
    INNER JOIN UsuarioObjeto uo ON 
       CASE
          WHEN uo.Tipo = 'Ide' THEN uo.ObjetoID = ide.IdeID
-         WHEN uo.Tipo = 'Ins' THEN uo.ObjetoID = ins.InstitucionID
+         WHEN uo.Tipo = 'Institucion' THEN uo.ObjetoID = ins.InstitucionID
          WHEN uo.Tipo = 'Nodo' THEN uo.ObjetoID = n.NodoID
          --WHEN uo.Tipo = 'Capa' THEN uo.ObjetoID = c.CapaID
          WHEN uo.Tipo = 'Servicio' THEN uo.ObjetoID = sg.ServicioGeograficoID

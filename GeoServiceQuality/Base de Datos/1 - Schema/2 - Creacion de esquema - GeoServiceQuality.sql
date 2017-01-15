@@ -117,13 +117,13 @@ CREATE TABLE UsuarioObjeto
     UsuarioObjetoID SERIAL NOT NULL,
     UsuarioID INT NOT NULL,
     ObjetoID INT NOT NULL, -- IdeID o InstitucionID
-    Tipo CHAR(8) NOT NULL, -- 'Ide', 'Ins', 'Nodo', 'Capa', 'Servicio'
+    Tipo VARCHAR(11) NOT NULL, -- 'Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio'
     PuedeEvaluarFlag BOOLEAN NOT NULL,
 
     PRIMARY KEY (UsuarioObjetoID),
     UNIQUE (UsuarioID, ObjetoID, Tipo),
     FOREIGN KEY (UsuarioID) REFERENCES Usuario(UsuarioID),
-    CONSTRAINT CK_valores_Tipo CHECK (Tipo IN ('Ide', 'Ins', 'Nodo', 'Capa', 'Servicio'))
+    CONSTRAINT CK_valores_Tipo CHECK (Tipo IN ('Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio'))
 );
 
 -- Contiene los distintos Perfiles que se vayan creando
@@ -132,10 +132,12 @@ CREATE TABLE Perfil
 (
     PerfilID SERIAL NOT NULL,
     Nombre VARCHAR(40) NOT NULL,
+    Granuralidad VARCHAR(11) NOT NULL, -- 'Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio',
     EsPerfilPonderadoFlag BOOLEAN NOT NULL,
 
     PRIMARY KEY (PerfilID),
-    UNIQUE (Nombre)
+    UNIQUE (Nombre),
+    CONSTRAINT CK_valores_Granularidad CHECK (Granuralidad IN ('Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio'))
 );
 
 -- Contiene las Dimensiones del modelo de calidad

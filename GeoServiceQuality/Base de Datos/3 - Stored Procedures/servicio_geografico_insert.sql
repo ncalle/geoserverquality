@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION servicio_geografico_insert
    pUsuarioID INT
    , pNodoID INT
    , pUrl VARCHAR(1024)
-   , pTipo CHAR(3)
+   , pTipo VARCHAR(11)
 )
 RETURNS VOID AS $$
 /************************************************************************************************************

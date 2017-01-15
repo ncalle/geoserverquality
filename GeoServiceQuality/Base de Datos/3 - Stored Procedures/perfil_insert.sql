@@ -1,6 +1,7 @@
 ﻿CREATE OR REPLACE FUNCTION perfil_insert
 (
    pNombre VARCHAR(40)
+   , pGranuralidad VARCHAR(11)
    , pMetricaBoleanaKeys VARCHAR(100) -- Lista de enteros separada por coma, que representa los IDs de las metricas de unidad boleana
 )
 RETURNS VOID AS $$
@@ -17,9 +18,9 @@ DECLARE UltimoPerfilID INT;
 BEGIN
     
    -- parametros requeridos
-   IF (pNombre IS NULL)
+   IF (pNombre IS NULL OR pGranuralidad IS NULL)
    THEN
-      RAISE EXCEPTION 'Error - El parametro nombre de perfil es requerido.';
+      RAISE EXCEPTION 'Error - Los parametros nombre de perfil y granuralidad son requeridos.';
    END IF;
     
    -- validacion
@@ -91,9 +92,9 @@ BEGIN
       
    -- Ingreso de Perfil
    INSERT INTO Perfil
-   (Nombre, EsperfilPonderadoFlag)
+   (Nombre, Granuralidad, EsperfilPonderadoFlag)
    VALUES
-   (pNombre, FALSE)
+   (pNombre, pGranuralidad, FALSE)
       RETURNING PerfilID INTO UltimoPerfilID;
     
     -- Insert de Rangos asociados a las Metricas y Perfil

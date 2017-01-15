@@ -30,9 +30,10 @@ SELECT * FROM servicio_geografico_insert (1, 5, 'http://serviciogeografico/Nodo1
    SELECT * FROM objetos_medibles_get (); --ok
    SELECT * FROM usuario_objetos_medibles_get (1); --ok
 --------------------------------------------------------------------
-SELECT * FROM perfil_insert ('TestPerfil2', '1,2,3,4,5,6,7,8,9,10,11,12,43,56,14,231'); --ok
-SELECT * FROM perfil_insert ('TestPerfil2', NULL); --err
-SELECT * FROM perfil_insert (NULL, '1,2,3,4,5,6,7,8,9,10,11,12,43,56,14,231'); --err
+SELECT * FROM perfil_insert ('TestPerfil2', 'Servicio', '1,2,3,4,5,6,7,8,9,10,11,12,43,56,14,231'); --ok
+SELECT * FROM perfil_insert ('TestPerfil2', NULL, '1,2,3,4,5,6,7,8,9,10,11,12,43,56,14,231'); --err
+SELECT * FROM perfil_insert (NULL, 'Servicio', '1,2,3,4,5,6,7,8,9,10,11,12,43,56,14,231'); --err
+SELECT * FROM perfil_insert ('TestPerfil2', 'Servicio', NULL); --err
 --------------------------------------------------------------------
 SELECT * FROM perfil_get (); --ok
 --------------------------------------------------------------------

@@ -42,7 +42,7 @@ SELECT 1, ide.IdeID, 'Ide', TRUE
 FROM Ide ide;
 
 INSERT INTO UsuarioObjeto (UsuarioID, ObjetoID, Tipo, PuedeEvaluarFlag)
-SELECT 1, ins.InstitucionID, 'Ins', TRUE
+SELECT 1, ins.InstitucionID, 'Institucion', TRUE
 FROM Institucion ins;
 
 INSERT INTO UsuarioObjeto (UsuarioID, ObjetoID, Tipo, PuedeEvaluarFlag)
