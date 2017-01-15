@@ -4,7 +4,7 @@ RETURNS TABLE
    (
       PerfilID INT
       , PerfilNombre VARCHAR(40)
-	  , PerfilGranuralidad VARCHAR(11)
+      , PerfilGranuralidad VARCHAR(11)
       , EsPerfilPonderadoFlag BOOLEAN
       , MetricaID INT
       , MetricaNombre VARCHAR(100)
@@ -33,7 +33,7 @@ BEGIN
    RETURN QUERY
    SELECT p.PerfilID
       , p.Nombre
-	  , p.Granuralidad
+      , p.Granuralidad
       , p.EsPerfilPonderadoFlag
       , m.MetricaID
       , m.Nombre

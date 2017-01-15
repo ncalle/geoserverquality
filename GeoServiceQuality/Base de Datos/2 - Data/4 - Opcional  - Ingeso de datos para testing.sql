@@ -19,6 +19,10 @@ INSERT INTO Nodo (InstitucionID, Nombre, Descripcion) VALUES
 (5, 'Nodo1.2.3', 'desc Nodo1.2.3'),
 (6, 'Nodo1.3.3', 'desc Nodo1.3.3');
 
+INSERT INTO Capa (NodoID, Nombre, Url) VALUES
+(1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),
+(2, 'Capa edificios', 'http://CapaEdificios1.1.1.2');
+
 INSERT INTO ServicioGeografico (NodoID, Url, Tipo) VALUES
 (1, 'http://Servicio1.1.1.1', 'WMS'),
 (2, 'http://Servicio1.1.1.2', 'WFS'),

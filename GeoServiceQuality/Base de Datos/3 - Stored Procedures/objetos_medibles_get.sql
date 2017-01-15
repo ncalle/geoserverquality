@@ -1,4 +1,4 @@
-﻿--DROP FUNCTION objetos_medibles_get(integer)
+﻿--DROP FUNCTION objetos_medibles_get()
 CREATE OR REPLACE FUNCTION objetos_medibles_get ()
 RETURNS TABLE 
    (
@@ -11,7 +11,9 @@ RETURNS TABLE
       , NodoID INT
       , NodoNombre VARCHAR(40)
       , NodoDescripcion VARCHAR(100)
-      --, CapaID INT
+      , CapaID INT
+      , CapaNombre VARCHAR(40)
+      , CapaURL VARCHAR(1024)
       , ServicioGeograficoID INT
       , ServicioGeograficoURL VARCHAR(1024)
       , ServicioGeograficoTipo CHAR(3)
@@ -37,14 +39,50 @@ BEGIN
       , n.NodoID
       , n.Nombre AS NodoNombre
       , n.Descripcion AS NodoDescripcion
-      --, CapaID
+      , c.CapaID
+      , c.Nombre AS CapaNombre
+      , c.URL AS CapaURL
+      , NULL AS ServicioGeograficoID
+      , NULL AS ServicioGeograficoURL
+      , NULL AS ServicioGeograficoTipo
+   FROM Ide ide
+   INNER JOIN Institucion ins ON ins.IdeID = ide.IdeID
+   INNER JOIN Nodo n ON n.InstitucionID = ins.InstitucionID
+   INNER JOIN Capa c ON c.NodoID = n.NodoID
+   
+   GROUP BY ide.IdeID
+      , ide.Nombre
+      , ide.Descripcion
+      , ins.InstitucionID
+      , ins.Nombre
+      , ins.Descripcion
+      , n.NodoID
+      , n.Nombre
+      , n.Descripcion
+      , c.CapaID
+      , c.Nombre
+      , c.URL
+
+   UNION
+         
+   SELECT ide.IdeID
+      , ide.Nombre AS IdeNombre
+      , ide.Descripcion AS IdeDescripcion
+      , ins.InstitucionID
+      , ins.Nombre AS InstitucionNombre
+      , ins.Descripcion AS InstitucionDescripcion
+      , n.NodoID
+      , n.Nombre AS NodoNombre
+      , n.Descripcion AS NodoDescripcion
+      , NULL AS CapaID
+      , NULL AS CapaNombre
+      , NULL AS CapaURL
       , sg.ServicioGeograficoID
       , sg.URL AS ServicioGeograficoURL
       , sg.Tipo AS ServicioGeograficoTipo
    FROM Ide ide
    INNER JOIN Institucion ins ON ins.IdeID = ide.IdeID
    INNER JOIN Nodo n ON n.InstitucionID = ins.InstitucionID
-   --INNER JOIN Capa c
    INNER JOIN ServicioGeografico sg ON sg.NodoID = n.NodoID
    GROUP BY ide.IdeID
       , ide.Nombre
@@ -55,14 +93,14 @@ BEGIN
       , n.NodoID
       , n.Nombre
       , n.Descripcion
-      --, CapaID
       , sg.ServicioGeograficoID
       , sg.URL
       , sg.Tipo
+
    ORDER BY IdeID
       , InstitucionID
       , NodoID
-      --, CapaID INT
+      , CapaID
       , ServicioGeograficoID;
         
 END;

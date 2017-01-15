@@ -75,6 +75,20 @@ CREATE TABLE Nodo
     FOREIGN KEY (InstitucionID) REFERENCES Institucion(InstitucionID)
 );
 
+-- Contiene Capas que han sido cargadas por el sistema
+DROP TABLE IF EXISTS Capa CASCADE;
+CREATE TABLE Capa
+(
+    CapaID SERIAL NOT NULL,
+    NodoID INT NOT NULL,
+    Nombre VARCHAR(40) NOT NULL,
+    Url VARCHAR(1024) NOT NULL,
+    
+    PRIMARY KEY (CapaID),
+    UNIQUE (Url),
+    FOREIGN KEY (NodoID) REFERENCES Nodo(NodoID)
+);
+
 -- Contiene los Servicios Geograficos creados
 DROP TABLE IF EXISTS ServicioGeografico CASCADE;
 CREATE TABLE ServicioGeografico
