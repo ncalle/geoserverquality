@@ -7,9 +7,12 @@ RETURNS TABLE
       , PerfilGranuralidad VARCHAR(11)
       , EsPerfilPonderadoFlag BOOLEAN
       , MetricaID INT
+      , MetricaFactorID INT	  
       , MetricaNombre VARCHAR(100)
-      , FactorID INT
-      , UnidadID INT
+      , MetricaAgregacionFlag BOOLEAN
+      , MetricaUnidadID INT
+      , MetricaGranuralidad VARCHAR(11)
+      , MetricaDescripcion VARCHAR(100)
       , RangoID INT
       , BoleanoFlag BOOLEAN
       , EnteroFlag BOOLEAN
@@ -36,9 +39,12 @@ BEGIN
       , p.Granuralidad
       , p.EsPerfilPonderadoFlag
       , m.MetricaID
+      , m.FactorID	  
       , m.Nombre
-      , m.FactorID
+      , m.AgregacionFlag
       , m.UnidadID
+      , m.Granuralidad
+      , m.Descripcion
       , r.RangoID
       , r.BoleanoFlag
       , r.EnteroFlag

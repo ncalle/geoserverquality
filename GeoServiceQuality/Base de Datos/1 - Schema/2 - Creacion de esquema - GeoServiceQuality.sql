@@ -146,12 +146,24 @@ CREATE TABLE Perfil
 (
     PerfilID SERIAL NOT NULL,
     Nombre VARCHAR(40) NOT NULL,
-    Granuralidad VARCHAR(11) NOT NULL, -- 'Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio',
+    Granuralidad VARCHAR(11) NOT NULL, -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio',
     EsPerfilPonderadoFlag BOOLEAN NOT NULL,
 
     PRIMARY KEY (PerfilID),
     UNIQUE (Nombre),
-    CONSTRAINT CK_valores_Granularidad CHECK (Granuralidad IN ('Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio'))
+    CONSTRAINT CK_valores_Granularidad CHECK (Granuralidad IN ('Ide', 'Institución', 'Nodo', 'Capa', 'Servicio'))
+);
+
+
+-- Contiene los distintos modelo de calidad existentes en el sistema
+DROP TABLE IF EXISTS Modelo CASCADE;
+CREATE TABLE Modelo
+(
+    ModeloID SERIAL NOT NULL,
+    Nombre VARCHAR(40) NOT NULL,
+
+    PRIMARY KEY (ModeloID),
+    UNIQUE (Nombre)
 );
 
 -- Contiene las Dimensiones del modelo de calidad
@@ -159,10 +171,12 @@ DROP TABLE IF EXISTS Dimension CASCADE;
 CREATE TABLE Dimension
 (
     DimensionID SERIAL NOT NULL,
+    ModeloID INT NOT NULL,
     Nombre VARCHAR(40) NOT NULL,
 
     PRIMARY KEY (DimensionID),
-    UNIQUE (Nombre)
+    UNIQUE (Nombre),
+    FOREIGN KEY (ModeloID) REFERENCES Modelo(ModeloID)
 );
 
 -- Contiene los Factores del modelo de calidad
@@ -197,12 +211,16 @@ CREATE TABLE Metrica
     MetricaID SERIAL NOT NULL,
     FactorID INT NOT NULL,
     Nombre VARCHAR(100) NOT NULL,
+    AgregacionFlag BOOLEAN NOT NULL,
     UnidadID INT NOT NULL,
+    Granuralidad VARCHAR(11) NOT NULL, -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio', 'Método'
+    Descripcion VARCHAR(100) NULL,
 
     PRIMARY KEY (MetricaID),
     UNIQUE (Nombre),
     FOREIGN KEY (FactorID) REFERENCES Factor(FactorID),
-    FOREIGN KEY (UnidadID) REFERENCES Unidad(UnidadID)
+    FOREIGN KEY (UnidadID) REFERENCES Unidad(UnidadID),
+    CONSTRAINT CK_valores_Granularidad CHECK (Granuralidad IN ('Ide', 'Institución', 'Nodo', 'Capa', 'Servicio', 'Método'))
 );
 
 -- Contiene los rangos asignados a las Metricas del modelo de calidad, para cierto perfil

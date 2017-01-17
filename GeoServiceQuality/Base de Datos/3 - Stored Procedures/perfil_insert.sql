@@ -2,7 +2,8 @@
 (
    pNombre VARCHAR(40)
    , pGranuralidad VARCHAR(11)
-   , pMetricaBoleanaKeys VARCHAR(100) -- Lista de enteros separada por coma, que representa los IDs de las metricas de unidad boleana
+   , pMetricaKeys VARCHAR(100) -- Lista de enteros separada por coma, que representa los IDs de las metricas
+   --por defecto para el prototipo se toman rangos boleanos, por lo que no es necesario pasar el valor de los rangos por parametro ya que son todos 1
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
@@ -24,7 +25,7 @@ BEGIN
    END IF;
     
    -- validacion
-   IF (pMetricaBoleanaKeys IS NULL)
+   IF (pMetricaKeys IS NULL)
    THEN
       RAISE EXCEPTION 'Error - La lista de Metricas no puede ser vacia.';
    END IF;
@@ -60,35 +61,16 @@ BEGIN
       SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error - Lista de IDs y Rangos relacionados no tiene la misma cantidad de elementos.';
         SET pError = 1;
    END IF;
-
-    SET StringSeparadoPorComas = pMetricaBoleanaKeys;
-    
-    -- Carga de Keys en tabla temporal
-   WHILE (length(StringSeparadoPorComas) > 0)
-   DO
-      SET IntIndex = locate(',', StringSeparadoPorComas);
-        
-        IF (IntIndex = 0)
-        THEN
-         SET IntIndex = length(StringSeparadoPorComas) + 1;
-        END IF;
-        
-      INSERT INTO TTMetricaBoleana
-      SELECT RTRIM(LTRIM(SUBSTRING(StringSeparadoPorComas, 1, IntIndex - 1)));
-        
-      SET StringSeparadoPorComas = RTRIM(LTRIM(SUBSTRING(StringSeparadoPorComas, IntIndex + 1, length(StringSeparadoPorComas))));
-        
-   END WHILE;
 */
 
-   CREATE TEMP TABLE MetricasBoleanas
+   CREATE TEMP TABLE MetricasKeys
    (
       MetricaID INT
    );
 
-   INSERT INTO MetricasBoleanas
+   INSERT INTO MetricasKeys
    (MetricaID)
-   SELECT CAST(regexp_split_to_table('1,2,3,4,5,6,7,8,9,10,11,12,43,56,14,231', E',') AS INT);
+   SELECT CAST(regexp_split_to_table(pMetricaKeys, E',') AS INT);
       
    -- Ingreso de Perfil
    INSERT INTO Perfil
@@ -103,7 +85,7 @@ BEGIN
    (MetricaID, PerfilID, BoleanoFlag, ValorAceptacionBoleano, PorcentajeFlag, ValorAceptacionPorcentaje, EnteroFlag, ValorAceptacionEntero, EnumeradoFlag, ValorAceptacionEnumerado)
    SELECT m.MetricaID, UltimoPerfilID, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL
    FROM Metrica m
-   WHERE m.MetricaID IN (SELECT mb.MetricaID FROM MetricasBoleanas mb)
+   WHERE m.MetricaID IN (SELECT mb.MetricaID FROM MetricasKeys mb)
       AND m.UnidadID = 1; --Boleano
 END;
 $$ LANGUAGE plpgsql;
