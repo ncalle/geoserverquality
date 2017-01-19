@@ -13,10 +13,10 @@ public class LoginDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 
-		String url = "jdbc:mysql://localhost:3306/";
-		String dbName = "GeoServiceQuality";
-		String driver = "com.mysql.jdbc.Driver";
-		String userName = "root";
+		String url = "jdbc:postgresql://localhost:5432/";
+		String dbName = "geoservicequality";
+		String driver = "org.postgresql.Driver";
+		String userName = "postgres";
 		String password = "root";
 		try {
 			Class.forName(driver).newInstance();
