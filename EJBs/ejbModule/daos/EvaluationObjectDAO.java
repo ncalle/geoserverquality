@@ -11,5 +11,7 @@ import javax.ejb.Stateless;
 public interface EvaluationObjectDAO {
 
 	public void createEvaluationObject() throws Exception;
+	
+	public void listAllEvaluationObjects() throws Exception;
 
 }

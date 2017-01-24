@@ -26,22 +26,28 @@
     <nav class="navbar navbar-static-top navbar-dark bg-inverse navbar-inverse">
       <a class="navbar-brand" href="#">Proyecto</a>
       <ul class="nav navbar-nav">
-        <li class="nav-item">
+          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/ideAdd.jsp">IDEs</a>
+        <li class="nav-item active">
+          <a class="nav-link" href="${pageContext.request.contextPath}/ideAdd.jsp">Objetos de evaluación<span class="sr-only">(current)</span></a>
         </li>
-         <li class="nav-item active">
+     	<li class="nav-item active">
           <a class="nav-link" href="${pageContext.request.contextPath}/profileAdd.jsp">Perfiles <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Evaluaciones</a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Reportes</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Usuarios</a>
         </li>
-      </ul>
+         <li class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Acerca</a>
+        </li>
+     
       
        <ul class="nav navbar-nav navbar-right">
 	      <li><a href="${pageContext.request.contextPath}/logoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>

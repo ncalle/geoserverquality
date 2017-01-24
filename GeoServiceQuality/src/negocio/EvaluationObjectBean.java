@@ -1,5 +1,6 @@
 package negocio;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 
 import daos.EvaluationObjectDAO;
@@ -9,5 +10,11 @@ public class EvaluationObjectBean {
 	
 	@EJB
     private EvaluationObjectDAO eoDao = new EvaluationObjectDAOImpl();
+	
+	@PostConstruct
+	private void init()
+	{
+		
+	}
 
 }

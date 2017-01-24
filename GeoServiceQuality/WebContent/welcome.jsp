@@ -30,7 +30,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/ideAdd.jsp">IDEs</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/ideAdd.jsp">Objetos de evaluación</a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/profileAdd.jsp">Perfiles</a>
@@ -38,8 +38,14 @@
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Evaluaciones</a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Reportes</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Usuarios</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Acerca</a>
         </li>
       </ul>
       
