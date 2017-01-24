@@ -30,7 +30,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Home</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="${pageContext.request.contextPath}/ideAdd.jsp">Objetos de evaluación<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/ideAdd.jsp">Objetos de evaluación</a>
         </li>
      	<li class="nav-item active">
           <a class="nav-link" href="${pageContext.request.contextPath}/profileAdd.jsp">Perfiles <span class="sr-only">(current)</span></a>
