@@ -30,7 +30,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Home</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="${pageContext.request.contextPath}/ideAdd.jsp">Objetos de evaluación<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/evaluationObjects.jsp">Objetos de evaluación<span class="sr-only">(current)</span></a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/profileAdd.jsp">Perfiles</a>
@@ -113,28 +113,19 @@
 			<div class="panel panel-default">
 			  <div class="panel-body">
 			  
+			  	<button class="btn btn-default">
 			  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+			  	</button>
+			  	
+			  	<button class="btn btn-default">
 			  		<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+			  	</button>
+			  	
+			  	<button class="btn btn-default">
 			  		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-			  
+			    </button>
 			  </div>
 			</div>
-	      	
-	      	<!-- 
-	      	 <label for="inputName" class="sr-only">Nombre</label>
-	        <input type="text" id="inputName" class="form-control" placeholder="Nombre" name="name" required autofocus>
-	        <br>
-	        
-	        <label for="inputDescription" class="sr-only">Descripción</label>
-	        <input type="text" id="inputDescription" class="form-control" placeholder="Descripción" name="description" required>
-	        <br>
-	        
-	        <label for="inputUrl" class="sr-only">Url del servicio</label>
-	        <input type="text" id="inputUrl" class="form-control" placeholder="Url del servicio" name="url" required>
-	        <br>
-	        
-	        <button class="btn btn-lg btn-primary btn-block" type="submit" value="Accept">Aceptar</button>-->
-      	
       	
       	 </form>
 
