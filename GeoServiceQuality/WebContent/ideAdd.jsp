@@ -17,7 +17,7 @@
 	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script> -->
 	
 	<!-- Custom styles for this template -->
-	<link href="./css/inside_page.css" rel="stylesheet">
+	<link href="./css/evaluation_objects.css" rel="stylesheet">
 </head>
 
 
@@ -61,7 +61,67 @@
 	
 	      	<hr>
 	      	
-	      	<label for="inputName" class="sr-only">Nombre</label>
+	      	<div class="panel panel-default">
+			  <div class="panel-body">
+			    
+			    <!-- tabla -->
+		      	<div class="table-responsive">
+				  <table class="table table-striped">
+				    <thead>
+				      <tr>
+				        <th>ID</th>
+				        <th>Objeto</th>
+				        <th>Nombre</th>
+				        <th>Descripción</th>
+				        <th>Url</th>
+				        <th>Tipo</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr>
+				        <td>1</td>
+				        <td>Servicio</td>
+				        <td>nombre </td>
+				        <td>servicio de google</td>
+				        <td>https://www.google.com/</td>
+				        <td>WCS</td>
+				      </tr>
+				      <tr>
+				        <td>2</td>
+				        <td>Servicio</td>
+				        <td>nombre</td>
+				        <td>servicio de mapas</td>
+				        <td>https://www.google.com/maps</td>
+				        <td>WCS</td>
+				      </tr>
+				      <tr>
+				        <td>3</td>
+				        <td>Servicio</td>
+				        <td>nombre</td>
+				        <td>servicio de mapas</td>
+				        <td>https://www.google.com/maps</td>
+				        <td>WCS</td>
+				      </tr>
+				
+				    </tbody>
+				  </table>
+				</div>
+			
+			 </div>
+			</div>
+			
+			<div class="panel panel-default">
+			  <div class="panel-body">
+			  
+			  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+			  		<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+			  		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+			  
+			  </div>
+			</div>
+	      	
+	      	<!-- 
+	      	 <label for="inputName" class="sr-only">Nombre</label>
 	        <input type="text" id="inputName" class="form-control" placeholder="Nombre" name="name" required autofocus>
 	        <br>
 	        
@@ -73,7 +133,7 @@
 	        <input type="text" id="inputUrl" class="form-control" placeholder="Url del servicio" name="url" required>
 	        <br>
 	        
-	        <button class="btn btn-lg btn-primary btn-block" type="submit" value="Accept">Aceptar</button>
+	        <button class="btn btn-lg btn-primary btn-block" type="submit" value="Accept">Aceptar</button>-->
       	
       	
       	 </form>
