@@ -17,7 +17,7 @@
 	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script> -->
 	
 	<!-- Custom styles for this template -->
-	<link href="./css/inside_page.css" rel="stylesheet">
+	<link href="./css/evaluation_objects_add.css" rel="stylesheet">
 </head>
 
 
@@ -64,22 +64,31 @@
 	      	<div class="panel panel-default">
 			  <div class="panel-body">
 	      	
-	      	<label for="inputName" class="sr-only">Nombre</label>
-	        <input type="text" id="inputName" class="form-control" placeholder="Nombre" name="name" required autofocus>
-	        <br>
-	        
-	        <label for="inputDescription" class="sr-only">Descripción</label>
-	        <input type="text" id="inputDescription" class="form-control" placeholder="Descripción" name="description" required>
-	        <br>
-	        
-	        <label for="inputUrl" class="sr-only">Url del servicio</label>
-	        <input type="text" id="inputUrl" class="form-control" placeholder="Url del servicio" name="url" required>
-	        <br>
-	        
-	        <button class="btn btn-lg btn-primary btn-block" type="submit" value="Accept">Aceptar</button>
+		      	<label for="inputName" class="sr-only">Nombre</label>
+		        <input type="text" id="inputName" class="form-control" placeholder="Nombre" name="name" required autofocus>
+		        <br>
+		        
+		        <label for="inputDescription" class="sr-only">Descripción</label>
+		        <input type="text" id="inputDescription" class="form-control" placeholder="Descripción" name="description" required>
+		        <br>
+		        
+		        <label for="inputUrl" class="sr-only">Url del servicio</label>
+		        <input type="text" id="inputUrl" class="form-control" placeholder="Url del servicio" name="url" required>
+		        <br>
+		        
+		        <button class="btn btn-lg btn-primary btn-block" type="submit" value="Accept">Aceptar</button>
       	
-      	 </div>
-		 </div>
+      	 	   </div>
+		 	</div>
+		 	
+		 	<div class="panel panel-default">
+			  <div class="panel-body">
+			  
+		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/evaluationObjects.jsp">Volver
+		  		<span class="glyphicon glyphicon-arrow-left" aria-hidden="true" ></span></a>
+			
+			  </div>
+			</div>
       	
       	 </form>
 

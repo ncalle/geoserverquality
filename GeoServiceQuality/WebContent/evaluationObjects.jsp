@@ -113,17 +113,16 @@
 			<div class="panel panel-default">
 			  <div class="panel-body">
 			  
-			  	<button class="btn btn-default">
-			  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-			  	</button>
-			  	
-			  	<button class="btn btn-default">
-			  		<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-			  	</button>
-			  	
-			  	<button class="btn btn-default">
-			  		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-			    </button>
+		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/evaluationObjectsAdd.jsp">Agregar
+		  		<span class="glyphicon glyphicon-plus" aria-hidden="true" ></span></a>
+		  		
+		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/welcome.jsp">Editar
+		  		<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+		  	
+		  	
+		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/welcome.jsp">Eliminar
+		  		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+			
 			  </div>
 			</div>
       	
