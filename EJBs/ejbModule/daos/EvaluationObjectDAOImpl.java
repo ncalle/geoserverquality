@@ -1,5 +1,8 @@
 package daos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -21,8 +24,10 @@ public class EvaluationObjectDAOImpl implements EvaluationObjectDAO{
 	}
 
 	@Override
-	public void listAllEvaluationObjects() throws Exception {
-		// TODO Auto-generated method stub
+	public List<TestObject> listAllEvaluationObjects() throws Exception {
+		List<TestObject> list = new ArrayList<>();
+		list.add(new TestObject(0, "Google", "Buscador", "www.google.com"));
+		return list;
 		
 	}
 

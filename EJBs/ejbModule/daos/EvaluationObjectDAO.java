@@ -1,5 +1,7 @@
 package daos;
 
+import java.util.List;
+
 import javax.ejb.Local;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -12,6 +14,6 @@ public interface EvaluationObjectDAO {
 
 	public void createEvaluationObject() throws Exception;
 	
-	public void listAllEvaluationObjects() throws Exception;
+	public List<TestObject> listAllEvaluationObjects() throws Exception;
 
 }
