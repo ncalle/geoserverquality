@@ -17,7 +17,9 @@
 	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script> -->
 	
 	<!-- Custom styles for this template -->
-	<link href="./css/inside_page.css" rel="stylesheet">
+	<link href="./css/evaluation_objects.css" rel="stylesheet">
+	
+	
 </head>
 
 
@@ -30,7 +32,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Home</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="${pageContext.request.contextPath}/ideAdd.jsp">IDEs <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/evaluationObjects.jsp">Objetos de evaluación<span class="sr-only">(current)</span></a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/profileAdd.jsp">Perfiles</a>
@@ -38,10 +40,15 @@
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Evaluaciones</a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Reportes</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Usuarios</a>
         </li>
-      </ul>
+         <li class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Acerca</a>
+        </li>
       
        <ul class="nav navbar-nav navbar-right">
 	      <li><a href="${pageContext.request.contextPath}/logoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
@@ -52,24 +59,75 @@
     <div class="container">
     
     	<form class="form-signin" action="" method="post">
-	    	<h2 class="form-signin-heading">Ingresar IDE</h2>
+	    	<h2 class="form-signin-heading">Objetos de evaluación</h2>
 	
 	      	<hr>
 	      	
-	      	<label for="inputName" class="sr-only">Nombre</label>
-	        <input type="text" id="inputName" class="form-control" placeholder="Nombre" name="name" required autofocus>
-	        <br>
-	        
-	        <label for="inputDescription" class="sr-only">Descripción</label>
-	        <input type="text" id="inputDescription" class="form-control" placeholder="Descripción" name="description" required>
-	        <br>
-	        
-	        <label for="inputUrl" class="sr-only">Url del servicio</label>
-	        <input type="text" id="inputUrl" class="form-control" placeholder="Url del servicio" name="url" required>
-	        <br>
-	        
-	        <button class="btn btn-lg btn-primary btn-block" type="submit" value="Accept">Aceptar</button>
-      	
+	      	<div class="panel panel-default">
+			  <div class="panel-body">
+			    
+			    <!-- tabla -->
+		      	<div class="table-responsive">
+				  <table class="table table-striped">
+				    <thead>
+				      <tr>
+				        <th>ID</th>
+				        <th>Objeto</th>
+				        <th>Nombre</th>
+				        <th>Descripción</th>
+				        <th>Url</th>
+				        <th>Tipo</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr>
+				        <td>1</td>
+				        <td>Servicio</td>
+				        <td>nombre </td>
+				        <td>servicio de google</td>
+				        <td>https://www.google.com/</td>
+				        <td>WCS</td>
+				      </tr>
+				      <tr>
+				        <td>2</td>
+				        <td>Servicio</td>
+				        <td>nombre</td>
+				        <td>servicio de mapas</td>
+				        <td>https://www.google.com/maps</td>
+				        <td>WCS</td>
+				      </tr>
+				      <tr>
+				        <td>3</td>
+				        <td>Servicio</td>
+				        <td>nombre</td>
+				        <td>servicio de mapas</td>
+				        <td>https://www.google.com/maps</td>
+				        <td>WCS</td>
+				      </tr>
+				
+				    </tbody>
+				  </table>
+				</div>
+				
+				
+			 </div>
+			</div>
+			
+			<div class="panel panel-default">
+			  <div class="panel-body">
+			  
+		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/evaluationObjectsAdd.jsp">Agregar
+		  		<span class="glyphicon glyphicon-plus" aria-hidden="true" ></span></a>
+		  		
+		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/welcome.jsp">Editar
+		  		<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+		  	
+		  	
+		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/welcome.jsp">Eliminar
+		  		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+			
+			  </div>
+			</div>
       	
       	 </form>
 
