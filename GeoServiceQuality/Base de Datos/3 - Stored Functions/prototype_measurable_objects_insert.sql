@@ -1,14 +1,14 @@
-﻿--DROP FUNCTION servicio_geografico_insert(integer,integer,character varying,character)
-CREATE OR REPLACE FUNCTION servicio_geografico_insert
+﻿--DROP FUNCTION prototype_measurable_objects_insert(integer,integer,character varying,character)
+CREATE OR REPLACE FUNCTION prototype_measurable_objects_insert
 (
-   pUsuarioID INT
-   , pNodoID INT
+   pUserID INT
+   , pNodeID INT
    , pUrl VARCHAR(1024)
-   , pTipo VARCHAR(11)
+   , pGeographicServicesType VARCHAR(3)
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
-** Name: servicio_geografico_insert
+** Name: prototype_measurable_objects_insert
 **
 ** Desc: Agrega un servicios geograficos disponibles al sistema y lo asocia al usuario que lo da de alta
 **
@@ -20,33 +20,33 @@ DECLARE SGID INT;
 BEGIN
 
    -- parametros requeridos
-   IF (pUsuarioID IS NULL OR pNodoID IS NULL OR pUrl IS NULL OR pTipo IS NULL)
+   IF (pUserID IS NULL OR pNodeID IS NULL OR pUrl IS NULL OR pGeographicServicesType IS NULL)
    THEN
       RAISE EXCEPTION 'Error - Los parametro ID de Usuario, ID de Nodo, URL y Tipo de servicio son requerido.';
    END IF;
     
    -- validacion Usuario
-   IF NOT EXISTS (SELECT 1 FROM Usuario u WHERE u.UsuarioID = pUsuarioID)
+   IF NOT EXISTS (SELECT 1 FROM SystemUser u WHERE u.UserID = pUserID)
    THEN
       RAISE EXCEPTION 'Error - El Usuario que intenta agregar el Servicio no es correcto.';
    END IF;
 
    -- validacion NodoID
-   IF NOT EXISTS (SELECT 1 FROM Nodo n WHERE n.NodoID = pNodoID)
+   IF NOT EXISTS (SELECT 1 FROM Node n WHERE n.NodeID = pNodeID)
    THEN
       RAISE EXCEPTION 'Error - El Nodo que se intenta agregar para el Servicio no existe.';
    END IF;
 
-   INSERT INTO ServicioGeografico
-   (NodoID, Url, Tipo)
+   INSERT INTO GeographicServices
+   (NodeID, Url, GeographicServicesType)
    VALUES
-   (pNodoID, pUrl, pTipo)
-      RETURNING ServicioGeograficoID INTO SGID;
+   (pNodeID, pUrl, pGeographicServicesType)
+      RETURNING GeographicServicesID INTO SGID;
 
-   INSERT INTO UsuarioObjeto
-   (UsuarioID, ObjetoID, Tipo, PuedeEvaluarFlag)
+   INSERT INTO UserMeasurableObject
+   (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
    VALUES
-   (pUsuarioID, SGID, 'Servicio', TRUE);
+   (pUserID, SGID, 'Servicio', TRUE);
          
 END;
 $$ LANGUAGE plpgsql;

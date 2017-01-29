@@ -1,9 +1,9 @@
-﻿INSERT INTO Ide (Nombre, Descripcion) VALUES
+﻿INSERT INTO Ide (Name, Description) VALUES
 ('Ide1','desc ide 1'),
 ('Ide2','desc ide 2'),
 ('Ide3','desc ide 3');
 
-INSERT INTO Institucion (IdeID, Nombre, Descripcion) VALUES
+INSERT INTO Institution (IdeID, Name, Description) VALUES
 (1, 'Ins1.1', 'desc Ins1.1'),
 (2, 'Ins1.2', 'desc Ins1.2'),
 (2, 'Ins2.2', 'desc Ins2.2'),
@@ -11,7 +11,7 @@ INSERT INTO Institucion (IdeID, Nombre, Descripcion) VALUES
 (3, 'Ins2.3', 'desc Ins2.3'),
 (3, 'Ins3.3', 'desc Ins3.3');
 
-INSERT INTO Nodo (InstitucionID, Nombre, Descripcion) VALUES
+INSERT INTO Node (InstitutionID, Name, Description) VALUES
 (1, 'Nodo1.1.1', 'desc Nodo1.1.1'),
 (2, 'Nodo1.1.2', 'desc Nodo1.1.2'),
 (3, 'Nodo1.2.2', 'desc Nodo1.2.2'),
@@ -19,11 +19,11 @@ INSERT INTO Nodo (InstitucionID, Nombre, Descripcion) VALUES
 (5, 'Nodo1.2.3', 'desc Nodo1.2.3'),
 (6, 'Nodo1.3.3', 'desc Nodo1.3.3');
 
-INSERT INTO Capa (NodoID, Nombre, Url) VALUES
+INSERT INTO Layer (NodeID, Name, Url) VALUES
 (1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),
 (2, 'Capa edificios', 'http://CapaEdificios1.1.1.2');
 
-INSERT INTO ServicioGeografico (NodoID, Url, Tipo) VALUES
+INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType) VALUES
 (1, 'http://Servicio1.1.1.1', 'WMS'),
 (2, 'http://Servicio1.1.1.2', 'WFS'),
 (3, 'http://Servicio1.1.2.2', 'CSW'),
@@ -31,7 +31,7 @@ INSERT INTO ServicioGeografico (NodoID, Url, Tipo) VALUES
 (5, 'http://Servicio1.1.2.3', 'WFS'),
 (6, 'http://Servicio1.1.3.3', 'CSW');
 
-INSERT INTO Usuario (Email, UsuarioPassword, GrupoID, Nombre, Apellido, Telefono, InstitucionID) VALUES 
+INSERT INTO SystemUser (Email, Password, UserGroupID, FirstName, LastName, PhoneNumber, InstitutionID) VALUES 
 ('tecnico1@mail.com', 'tecnico1', 1, 'Natalia', 'Calle', '098765432', NULL),
 ('tecnico2@mail.com', 'tecnico2', 1, 'Ramiro', 'Sanchez', '098961259', NULL),
 ('general1@mail.com', 'general1', 2, 'Micaela', 'Gomez', '099336253', NULL),
@@ -41,29 +41,18 @@ INSERT INTO Usuario (Email, UsuarioPassword, GrupoID, Nombre, Apellido, Telefono
 ('institucional1@mail.com', 'institucional1', 4, 'Luciana', 'Ilenfeld', '091332253', 1),
 ('institucional2@mail.com', 'institucional2', 4, 'Javier', 'Rodriguez', '099332253', 2);
 
-INSERT INTO UsuarioObjeto (UsuarioID, ObjetoID, Tipo, PuedeEvaluarFlag)
+INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
 SELECT 1, ide.IdeID, 'Ide', TRUE
 FROM Ide ide;
 
-INSERT INTO UsuarioObjeto (UsuarioID, ObjetoID, Tipo, PuedeEvaluarFlag)
-SELECT 1, ins.InstitucionID, 'Institucion', TRUE
-FROM Institucion ins;
+INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
+SELECT 1, ins.InstitutionID, 'Institución', TRUE
+FROM Institution ins;
 
-INSERT INTO UsuarioObjeto (UsuarioID, ObjetoID, Tipo, PuedeEvaluarFlag)
-SELECT 1, n.NodoID, 'Nodo', TRUE
-FROM Nodo n;
+INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
+SELECT 1, n.NodeID, 'Nodo', TRUE
+FROM Node n;
 
-INSERT INTO UsuarioObjeto (UsuarioID, ObjetoID, Tipo, PuedeEvaluarFlag)
-SELECT 1, sg.ServicioGeograficoID, 'Servicio', TRUE
-FROM ServicioGeografico sg;
-
--- UsuarioObjeto
--- Ide
--- Institucion
--- Nodo
--- ServicioGeografico
--- Perfil
--- Rango
--- Ponderacion
--- Evaluacion
--- EvaluacionParcial
+INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
+SELECT 1, sg.GeographicServicesID, 'Servicio', TRUE
+FROM GeographicServices sg;

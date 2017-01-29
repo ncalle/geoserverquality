@@ -3,15 +3,14 @@ package conexionDatos;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+//import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class LoginDao {
+public class RegistryDao {
 	public static boolean validate(String name, String pass) {		
 		boolean status = false;
 		Connection conn = null;
 		PreparedStatement pst = null;
-		ResultSet rs = null;
 
 		String url = "jdbc:postgresql://localhost:5432/";
 		String dbName = "geoservicequality";
@@ -24,12 +23,14 @@ public class LoginDao {
 					.getConnection(url + dbName, userName, password);
 
 			pst = conn
-					.prepareStatement("select * from Usuario where Email=? and UsuarioPassword=?");
+					.prepareStatement("INSERT INTO `GeoServiceQuality`.`Usuario` (`Email`, `UsuarioPassword`, 'Tipo') VALUES (?, ?, 'TC');");
 			pst.setString(1, name);
 			pst.setString(2, pass);
+			
+			//TODO: ingresar el resto de los campos del usuario
 
-			rs = pst.executeQuery();
-			status = rs.next();
+			status = (pst.executeUpdate() > 0);
+			System.out.println("Insert into:" + status);
 
 		} catch (Exception e) {
 			System.out.println("Exception:" + e);
@@ -44,13 +45,6 @@ public class LoginDao {
 			if (pst != null) {
 				try {
 					pst.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (rs != null) {
-				try {
-					rs.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}

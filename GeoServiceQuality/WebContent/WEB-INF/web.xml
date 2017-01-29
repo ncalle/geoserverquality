@@ -19,13 +19,13 @@
     
     
     <servlet>
-        <servlet-name>registro</servlet-name>
-        <servlet-class>negocio.RegistroServlet</servlet-class>
+        <servlet-name>registry</servlet-name>
+        <servlet-class>negocio.RegistryServlet</servlet-class>
     </servlet>
     
       <servlet-mapping>
-        <servlet-name>registro</servlet-name>
-        <url-pattern>/registroServlet</url-pattern>
+        <servlet-name>registry</servlet-name>
+        <url-pattern>/RegistryServlet</url-pattern>
     </servlet-mapping>
     
     <servlet>

@@ -10,17 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import conexionDatos.RegistroDao;
+import conexionDatos.RegistryDao;
 
 
-public class RegistroServlet extends HttpServlet{
+public class RegistryServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)  
 			throws ServletException, IOException { 
 		try{
-			System.out.println("RegistroServlet doPost...");
+			System.out.println("RegistryServlet doPost...");
 			response.setContentType("text/html");  
 			PrintWriter out = response.getWriter();  
 			
@@ -31,7 +31,7 @@ public class RegistroServlet extends HttpServlet{
 			if(session!=null)
 			session.setAttribute("name", n);
 
-			if(RegistroDao.validate(n, p)){  
+			if(RegistryDao.validate(n, p)){  
 				RequestDispatcher rd=request.getRequestDispatcher("welcome.jsp");  
 				rd.forward(request,response);  
 			} else{  
@@ -41,13 +41,13 @@ public class RegistroServlet extends HttpServlet{
 						+ "</span><span class=\"sr-only\">Error:</span>"
 						+ " Error al registrar al usuario</div>");
 				
-				RequestDispatcher rd=request.getRequestDispatcher("registro.jsp");  
+				RequestDispatcher rd=request.getRequestDispatcher("registry.jsp");  
 				rd.include(request,response);  
 			}  
 
 			out.close();  
 		} catch(Exception e) {
-			System.out.println("RegistroServlet Exception:" + e);
+			System.out.println("RegistryServlet Exception:" + e);
 			//e.printStackTrace();
 		}
 

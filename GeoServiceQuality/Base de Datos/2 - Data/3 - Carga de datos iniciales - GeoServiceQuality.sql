@@ -1,11 +1,11 @@
-﻿INSERT INTO Grupo (Nombre, Descripcion) VALUES
+﻿INSERT INTO UserGroup (Name, Description) VALUES
 ('Administrador Tecnico','Usuario administrador que tiene completo acceso a todas las funcionalidades.'),
 ('Administrador General','Usuario con el fin de realizar gestion y cuidado de la herramienta.'),
 ('Administrador IDE','Usuario que tiene como cometido realizar evaluaciones sobre IDEs.'),
 ('Administrador Institucional','Usuario que tiene como cometido realizar evaluaciones sobre Instituciones.');
 
--- Permiso
-INSERT INTO Permiso (Nombre, Descripcion) VALUES
+-- Permisos
+INSERT INTO UserPermission (Name, Description) VALUES
 ('Alta de Usuario','Alta de Usuario'),
 ('Baja de Usuario','Baja de Usuario'),
 ('Modificacion de Usuario','Modificacion de Usuario'),
@@ -17,26 +17,26 @@ INSERT INTO Permiso (Nombre, Descripcion) VALUES
 ('Modificacion de objeto medible','Modificacion de objetos medibles'),
 ('Evaluacion de objeto medible','Evaluacion de objetos medibles');
 
-INSERT INTO PermisoGrupo (PermisoID, GrupoID)
-SELECT p.PermisoID, 1 -- Tecnico
-FROM Permiso p
+INSERT INTO GroupPermission (UserPermissionID, UserGroupID)
+SELECT p.UserPermissionID, 1 -- Tecnico
+FROM UserPermission p
 UNION
-SELECT p.PermisoID, 2 -- General
-FROM Permiso p
-WHERE p.PermisoID IN (10) --Evaluacion
+SELECT p.UserPermissionID, 2 -- General
+FROM UserPermission p
+WHERE p.UserPermissionID IN (10) --Evaluacion
 UNION
-SELECT p.PermisoID, 3 -- IDE
-FROM Permiso p
-WHERE p.PermisoID IN (10) --Evaluacion
+SELECT p.UserPermissionID, 3 -- IDE
+FROM UserPermission p
+WHERE p.UserPermissionID IN (10) --Evaluacion
 UNION
-SELECT p.PermisoID, 4 -- Institucion
-FROM Permiso p
-WHERE p.PermisoID IN (11); --Evaluacion
+SELECT p.UserPermissionID, 4 -- Institucion
+FROM UserPermission p
+WHERE p.UserPermissionID IN (11); --Evaluacion
 
-INSERT INTO Modelo (Nombre) VALUES
+INSERT INTO QualityModel (Name) VALUES
 ('ModeloIDEuy');
 
-INSERT INTO Dimension (ModeloID, Nombre) VALUES
+INSERT INTO Dimension (QualityModelID, Name) VALUES
 (1, 'Seguridad'),
 (1, 'Confiabilidad'),
 (1, 'Rendimiento'),
@@ -45,7 +45,7 @@ INSERT INTO Dimension (ModeloID, Nombre) VALUES
 (1, 'Metadatos'),
 (1, 'Usabilidad');
 
-INSERT INTO Factor (DimensionID, Nombre) VALUES
+INSERT INTO Factor (DimensionID, Name) VALUES
 (1, 'Ingegridad'),
 (1, 'Proteccion'),
 (2, 'Disponibilidad'),
@@ -61,14 +61,14 @@ INSERT INTO Factor (DimensionID, Nombre) VALUES
 (6, 'Metadatos Servicio'),
 (7, 'Facilidad de aprendizaje');
 
-INSERT INTO Unidad (Nombre, Descripcion) VALUES 
+INSERT INTO Unit (Name, Description) VALUES 
 ('Boleano',''),
 ('Porcentaje',''),
 ('Milisegundos',''),
 ('Basico-Intermedio-Completo',''),
 ('Entero','');
 
-INSERT INTO Metrica (FactorID, Nombre, AgregacionFlag, UnidadID, Granuralidad) VALUES
+INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality) VALUES
 (1, 'Integridad de datos', FALSE, 1, 'Nodo'),
 (2, 'Informacion en excepciones', FALSE, 1, 'Servicio'),
 (3, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio'),
@@ -95,16 +95,5 @@ INSERT INTO Metrica (FactorID, Nombre, AgregacionFlag, UnidadID, Granuralidad) V
 (13, 'Especifica Rango Util', FALSE, 1, 'Capa'),
 (14, 'Errores descriptivos', FALSE, 1, 'Servicio');
 
-INSERT INTO Usuario (Email, UsuarioPassword, GrupoID, Nombre, Apellido, Telefono, InstitucionID) VALUES 
+INSERT INTO SystemUser (Email, Password, UserGroupID, FirstName, LastName, PhoneNumber, InstitutionID) VALUES 
 ('adminTecnico@mail.com', 'admint', 1, 'NombreAdmint', 'ApellidoAdmint', '098715432', NULL);
-
--- UsuarioObjeto
--- Ide
--- Institucion
--- Nodo
--- ServicioGeografico
--- Perfil
--- Rango
--- Ponderacion
--- Evaluacion
--- EvaluacionParcial

@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
-    <title>Registro </title> 
+    <title>Registro</title> 
 	
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
@@ -26,7 +26,7 @@
 <body>
 	<div class="container">
 
-      <form class="form-signin" action="registroServlet" method="post">
+      <form class="form-signin" action="RegistryServlet" method="post">
         <h2 class="form-signin-heading">Registro</h2>
         
         <label for="inputName" class="sr-only">Nombre</label>

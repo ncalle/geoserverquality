@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import conexionDatos.LoginDao;
+import dao.DAOFactory;
+import dao.UserDAO;
+import model.User;
 
 
 public class LoginServlet extends HttpServlet{
@@ -19,25 +21,45 @@ public class LoginServlet extends HttpServlet{
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)  
 			throws ServletException, IOException { 
+		
+        // Obtener DAOFactory.
+        DAOFactory javabase = DAOFactory.getInstance("geoservicequality.jdbc");
+        System.out.println("DAOFactory obtenido: " + javabase);
+
+        // Obtener UserDAO.
+        UserDAO userDAO = javabase.getUserDAO();
+        System.out.println("UserDAO obtenido: " + userDAO);		
+		
 		try{
 			System.out.println("LoginServlet doPost...");
 			response.setContentType("text/html");  
 			PrintWriter out = response.getWriter();  
 			
-			String n=request.getParameter("username");  
-			String p=request.getParameter("userpass"); 
+			String userName =request.getParameter("username");  
+			String userPassword =request.getParameter("userpass"); 
 			
-			HttpSession session = request.getSession(false);
-			if(session!=null)
-			session.setAttribute("name", n);
-
-			if(LoginDao.validate(n, p)){  
-				RequestDispatcher rd=request.getRequestDispatcher("welcome.jsp");  
+	        User foundUser = userDAO.find(userName, userPassword);
+	        System.out.println("Se ha encontrado el usuario: " + foundUser);
+			
+	        if(foundUser!=null){
+				HttpSession session = request.getSession(false);
+					
+				if(session!=null) {
+					session.setAttribute("name", foundUser.getFirstName());
+					
+				}
+	        	RequestDispatcher rd=request.getRequestDispatcher("welcome.jsp");
+	        	response.sendRedirect(request.getContextPath() + "/welcome.jsp");
+	        }
+	        
+	        
+			//if(LoginDao.validate(n, p)){  
+				//RequestDispatcher rd=request.getRequestDispatcher("welcome.jsp");  
 				//rd.forward(request,response);
+								
+				//response.sendRedirect(request.getContextPath() + "/welcome.jsp");
 				
-				response.sendRedirect(request.getContextPath() + "/welcome.jsp");
-				
-			} else{  
+			 else{  
 				out.println("<div class=\"alert alert-danger\" role=\"alert\">"
 						+ "<span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\">"
 						+ "</span><span class=\"sr-only\">Error:</span>"

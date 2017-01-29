@@ -1,37 +1,37 @@
 ﻿-- Contiene los distintos grupos de usuarios
-DROP TABLE IF EXISTS Grupo CASCADE;
-CREATE TABLE Grupo
+DROP TABLE IF EXISTS UserGroup CASCADE;
+CREATE TABLE UserGroup
 (
-    GrupoID SERIAL NOT NULL,
-    Nombre VARCHAR(40) NOT NULL,
-    Descripcion VARCHAR(100) NULL,
+    UserGroupID SERIAL NOT NULL,
+    Name VARCHAR(40) NOT NULL,
+    Description VARCHAR(100) NULL,
     
-    PRIMARY KEY (GrupoID),
-    UNIQUE (Nombre)
+    PRIMARY KEY (UserGroupID),
+    UNIQUE (Name)
 );
 
 -- Contiene una lista de los permisos de uso dentro de la aplicacion
-DROP TABLE IF EXISTS Permiso CASCADE;
-CREATE TABLE Permiso
+DROP TABLE IF EXISTS UserPermission CASCADE;
+CREATE TABLE UserPermission
 (
-    PermisoID SERIAL NOT NULL,
-    Nombre VARCHAR(40) NOT NULL,
-    Descripcion VARCHAR(100) NULL,
+    UserPermissionID SERIAL NOT NULL,
+    Name VARCHAR(40) NOT NULL,
+    Description VARCHAR(100) NULL,
     
-    PRIMARY KEY (PermisoID),
-    UNIQUE (Nombre)
+    PRIMARY KEY (UserPermissionID),
+    UNIQUE (Name)
 );
 
 -- Contiene los permisos habilitados para los grupos de usuarios
-DROP TABLE IF EXISTS PermisoGrupo CASCADE;
-CREATE TABLE PermisoGrupo
+DROP TABLE IF EXISTS GroupPermission CASCADE;
+CREATE TABLE GroupPermission
 (
-    PermisoID SMALLINT NOT NULL,
-    GrupoID INT NOT NULL,
+    UserPermissionID SMALLINT NOT NULL,
+    UserGroupID INT NOT NULL,
     
-    PRIMARY KEY (PermisoID, GrupoID),
-    FOREIGN KEY (PermisoID) REFERENCES Permiso(PermisoID),
-    FOREIGN KEY (GrupoID) REFERENCES Grupo(GrupoID)
+    PRIMARY KEY (UserPermissionID, UserGroupID),
+    FOREIGN KEY (UserPermissionID) REFERENCES UserPermission(UserPermissionID),
+    FOREIGN KEY (UserGroupID) REFERENCES UserGroup(UserGroupID)
 );
 
 -- Contiene los Ides creadas
@@ -39,131 +39,129 @@ DROP TABLE IF EXISTS Ide CASCADE;
 CREATE TABLE Ide
 (
     IdeID SERIAL NOT NULL,
-    Nombre VARCHAR(40) NOT NULL,
-    Descripcion VARCHAR(100) NULL,
+    Name VARCHAR(40) NOT NULL,
+    Description VARCHAR(100) NULL,
 
     PRIMARY KEY (IdeID),
-    UNIQUE (Nombre)
+    UNIQUE (Name)
 );
 
-
 -- Contiene las Instituciones creadas
-DROP TABLE IF EXISTS Institucion CASCADE;
-CREATE TABLE Institucion
+DROP TABLE IF EXISTS Institution CASCADE;
+CREATE TABLE Institution
 (
-    InstitucionID SERIAL NOT NULL,
+    InstitutionID SERIAL NOT NULL,
     IdeID INT NOT NULL,
-    Nombre VARCHAR(40) NOT NULL,
-    Descripcion VARCHAR(100) NULL,
+    Name VARCHAR(40) NOT NULL,
+    Description VARCHAR(100) NULL,
 
-    PRIMARY KEY (InstitucionID),
-    UNIQUE (Nombre),
+    PRIMARY KEY (InstitutionID),
+    UNIQUE (Name),
     FOREIGN KEY (IdeID) REFERENCES Ide(IdeID)
 );
 
 -- Contiene los Nodos creados
-DROP TABLE IF EXISTS Nodo CASCADE;
-CREATE TABLE Nodo
+DROP TABLE IF EXISTS Node CASCADE;
+CREATE TABLE Node
 (
-    NodoID SERIAL NOT NULL,
-    InstitucionID INT NOT NULL,
-    Nombre VARCHAR(40) NOT NULL,
-    Descripcion VARCHAR(100) NULL,
+    NodeID SERIAL NOT NULL,
+    InstitutionID INT NOT NULL,
+    Name VARCHAR(40) NOT NULL,
+    Description VARCHAR(100) NULL,
 
-    PRIMARY KEY (NodoID),
-    UNIQUE (Nombre),
-    FOREIGN KEY (InstitucionID) REFERENCES Institucion(InstitucionID)
+    PRIMARY KEY (NodeID),
+    UNIQUE (Name),
+    FOREIGN KEY (InstitutionID) REFERENCES Institution(InstitutionID)
 );
 
 -- Contiene Capas que han sido cargadas por el sistema
-DROP TABLE IF EXISTS Capa CASCADE;
-CREATE TABLE Capa
+DROP TABLE IF EXISTS Layer CASCADE;
+CREATE TABLE Layer
 (
-    CapaID SERIAL NOT NULL,
-    NodoID INT NOT NULL,
-    Nombre VARCHAR(40) NOT NULL,
+    LayerID SERIAL NOT NULL,
+    NodeID INT NOT NULL,
+    Name VARCHAR(40) NOT NULL,
     Url VARCHAR(1024) NOT NULL,
     
-    PRIMARY KEY (CapaID),
+    PRIMARY KEY (LayerID),
     UNIQUE (Url),
-    FOREIGN KEY (NodoID) REFERENCES Nodo(NodoID)
+    FOREIGN KEY (NodeID) REFERENCES Node(NodeID)
 );
 
 -- Contiene los Servicios Geograficos creados
-DROP TABLE IF EXISTS ServicioGeografico CASCADE;
-CREATE TABLE ServicioGeografico
+DROP TABLE IF EXISTS GeographicServices CASCADE;
+CREATE TABLE GeographicServices
 (
-    ServicioGeograficoID SERIAL NOT NULL,
-    NodoID INT NOT NULL,
+    GeographicServicesID SERIAL NOT NULL,
+    NodeID INT NOT NULL,
     Url VARCHAR(1024) NOT NULL,
-    Tipo CHAR(3) NOT NULL, -- WMS, WFS, CSW
+    GeographicServicesType CHAR(3) NOT NULL, -- WMS, WFS, CSW
     -- Metadato XML
     
-    PRIMARY KEY (ServicioGeograficoID),
+    PRIMARY KEY (GeographicServicesID),
     UNIQUE (Url),
-    FOREIGN KEY (NodoID) REFERENCES Nodo(NodoID),
-    CONSTRAINT CK_valores_Tipo CHECK (Tipo IN ('WMS','WFS','CSW'))
+    FOREIGN KEY (NodeID) REFERENCES Node(NodeID),
+    CONSTRAINT CK_GeographicServicesType_values CHECK (GeographicServicesType IN ('WMS','WFS','CSW'))
 );
 
 -- Usuarios que haran uso de la aplicacion
-DROP TABLE IF EXISTS Usuario CASCADE;
-CREATE TABLE Usuario
+DROP TABLE IF EXISTS SystemUser CASCADE;
+CREATE TABLE SystemUser
 (
-    UsuarioID SERIAL NOT NULL,
+    UserID SERIAL NOT NULL,
     Email VARCHAR(40) NOT NULL,
-    UsuarioPassword VARCHAR(40) NOT NULL,
-    GrupoID INT NOT NULL,
-    Nombre VARCHAR(40) NULL,
-    Apellido VARCHAR(40) NULL,
-    Telefono BIGINT NULL,
-    InstitucionID INT NULL, -- Institucion a la cual pertenece el usuario
+    Password VARCHAR(40) NOT NULL,
+    UserGroupID INT NOT NULL,
+    FirstName VARCHAR(40) NULL,
+    LastName VARCHAR(40) NULL,
+    PhoneNumber BIGINT NULL,
+    InstitutionID INT NULL, -- Institucion a la cual pertenece el usuario
 
-    PRIMARY KEY (UsuarioID),
+    PRIMARY KEY (UserID),
     UNIQUE (Email),
-    FOREIGN KEY (GrupoID) REFERENCES Grupo(GrupoID),
-    FOREIGN KEY (InstitucionID) REFERENCES Institucion(InstitucionID)
+    FOREIGN KEY (UserGroupID) REFERENCES UserGroup(UserGroupID),
+    FOREIGN KEY (InstitutionID) REFERENCES Institution(InstitutionID)
 );
 
--- Contiene todos los objetos medibles (Ides o Insituciones) que el usuario puede o no evaluar
-DROP TABLE IF EXISTS UsuarioObjeto CASCADE;
-CREATE TABLE UsuarioObjeto
+-- Contiene todos los objetos medibles ('Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio') que el usuario puede o no evaluar
+DROP TABLE IF EXISTS UserMeasurableObject CASCADE;
+CREATE TABLE UserMeasurableObject
 (
-    UsuarioObjetoID SERIAL NOT NULL,
-    UsuarioID INT NOT NULL,
-    ObjetoID INT NOT NULL, -- IdeID o InstitucionID
-    Tipo VARCHAR(11) NOT NULL, -- 'Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio'
-    PuedeEvaluarFlag BOOLEAN NOT NULL,
+    UserMeasurableObjectID SERIAL NOT NULL,
+    UserID INT NOT NULL,
+    MeasurableObjectID INT NOT NULL, -- IdeID, InstitutionID, NodeID, LayerID, GeographicServicesID
+    MeasurableObjectType VARCHAR(11) NOT NULL, -- 'Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio'
+    CanMeasureFlag BOOLEAN NOT NULL, -- indica si el usuario puede evaluar el objeto en cuestion
 
-    PRIMARY KEY (UsuarioObjetoID),
-    UNIQUE (UsuarioID, ObjetoID, Tipo),
-    FOREIGN KEY (UsuarioID) REFERENCES Usuario(UsuarioID),
-    CONSTRAINT CK_valores_Tipo CHECK (Tipo IN ('Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio'))
+    PRIMARY KEY (UserMeasurableObjectID),
+    UNIQUE (UserID, MeasurableObjectID, MeasurableObjectType),
+    FOREIGN KEY (UserID) REFERENCES SystemUser(UserID),
+    CONSTRAINT CK_MeasurableObjectType_values CHECK (MeasurableObjectType IN ('Ide', 'Institución', 'Nodo', 'Capa', 'Servicio')) -- en castellano, debido a que dicho dato se mostrará al usuario
 );
 
 -- Contiene los distintos Perfiles que se vayan creando
-DROP TABLE IF EXISTS Perfil CASCADE;
-CREATE TABLE Perfil
+DROP TABLE IF EXISTS Profile CASCADE;
+CREATE TABLE Profile
 (
-    PerfilID SERIAL NOT NULL,
-    Nombre VARCHAR(40) NOT NULL,
-    Granuralidad VARCHAR(11) NOT NULL, -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio',
-    EsPerfilPonderadoFlag BOOLEAN NOT NULL,
+    ProfileID SERIAL NOT NULL,
+    Name VARCHAR(40) NOT NULL,
+    Granurality VARCHAR(11) NOT NULL, -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio',
+    IsWeightedFlag BOOLEAN NOT NULL, -- indica si el perfil es ponderado o no
 
-    PRIMARY KEY (PerfilID),
-    UNIQUE (Nombre),
-    CONSTRAINT CK_valores_Granularidad CHECK (Granuralidad IN ('Ide', 'Institución', 'Nodo', 'Capa', 'Servicio'))
+    PRIMARY KEY (ProfileID),
+    UNIQUE (Name),
+    CONSTRAINT CK_vGranurality_values CHECK (Granurality IN ('Ide', 'Institución', 'Nodo', 'Capa', 'Servicio')) -- en castellano, debido a que dicho dato se mostrará al usuario
 );
 
-
 -- Contiene los distintos modelo de calidad existentes en el sistema
-DROP TABLE IF EXISTS Modelo CASCADE;
-CREATE TABLE Modelo
+DROP TABLE IF EXISTS QualityModel CASCADE;
+CREATE TABLE QualityModel
 (
-    ModeloID SERIAL NOT NULL,
-    Nombre VARCHAR(40) NOT NULL,
+    QualityModelID SERIAL NOT NULL,
+    Name VARCHAR(40) NOT NULL,
 
-    PRIMARY KEY (ModeloID),
-    UNIQUE (Nombre)
+    PRIMARY KEY (QualityModelID),
+    UNIQUE (Name)
 );
 
 -- Contiene las Dimensiones del modelo de calidad
@@ -171,12 +169,12 @@ DROP TABLE IF EXISTS Dimension CASCADE;
 CREATE TABLE Dimension
 (
     DimensionID SERIAL NOT NULL,
-    ModeloID INT NOT NULL,
-    Nombre VARCHAR(40) NOT NULL,
+    QualityModelID INT NOT NULL,
+    Name VARCHAR(40) NOT NULL,
 
     PRIMARY KEY (DimensionID),
-    UNIQUE (Nombre),
-    FOREIGN KEY (ModeloID) REFERENCES Modelo(ModeloID)
+    UNIQUE (Name),
+    FOREIGN KEY (QualityModelID) REFERENCES QualityModel(QualityModelID)
 );
 
 -- Contiene los Factores del modelo de calidad
@@ -185,140 +183,140 @@ CREATE TABLE Factor
 (
     FactorID SERIAL NOT NULL,
     DimensionID INT NOT NULL,
-    Nombre VARCHAR(40) NOT NULL,
+    Name VARCHAR(40) NOT NULL,
 
     PRIMARY KEY (FactorID),
-    UNIQUE (Nombre),    
+    UNIQUE (Name),    
     FOREIGN KEY (DimensionID) REFERENCES Dimension(DimensionID)
 );
 
 -- Contiene las unidades utilizadas para medir cada una de las metricas de calidad
-DROP TABLE IF EXISTS Unidad CASCADE;
-CREATE TABLE Unidad
+DROP TABLE IF EXISTS Unit CASCADE;
+CREATE TABLE Unit
 (
-    UnidadID SERIAL NOT NULL,
-    Nombre VARCHAR(40) NOT NULL,
-    Descripcion VARCHAR(100) NULL,
+    UnitID SERIAL NOT NULL,
+    Name VARCHAR(40) NOT NULL,
+    Description VARCHAR(100) NULL,
 
-    PRIMARY KEY (UnidadID),
-    UNIQUE (Nombre)
+    PRIMARY KEY (UnitID),
+    UNIQUE (Name)
 );
 
 -- Contiene las Metricas del modelo de calidad
-DROP TABLE IF EXISTS Metrica CASCADE;
-CREATE TABLE Metrica
+DROP TABLE IF EXISTS Metric CASCADE;
+CREATE TABLE Metric
 (
-    MetricaID SERIAL NOT NULL,
+    MetricID SERIAL NOT NULL,
     FactorID INT NOT NULL,
-    Nombre VARCHAR(100) NOT NULL,
-    AgregacionFlag BOOLEAN NOT NULL,
-    UnidadID INT NOT NULL,
-    Granuralidad VARCHAR(11) NOT NULL, -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio', 'Método'
-    Descripcion VARCHAR(100) NULL,
+    Name VARCHAR(100) NOT NULL,
+    AgrgegationFlag BOOLEAN NOT NULL,
+    UnitID INT NOT NULL,
+    Granurality VARCHAR(11) NOT NULL, -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio', 'Método'
+    Description VARCHAR(100) NULL,
 
-    PRIMARY KEY (MetricaID),
-    UNIQUE (Nombre),
+    PRIMARY KEY (MetricID),
+    UNIQUE (Name),
     FOREIGN KEY (FactorID) REFERENCES Factor(FactorID),
-    FOREIGN KEY (UnidadID) REFERENCES Unidad(UnidadID),
-    CONSTRAINT CK_valores_Granularidad CHECK (Granuralidad IN ('Ide', 'Institución', 'Nodo', 'Capa', 'Servicio', 'Método'))
+    FOREIGN KEY (UnitID) REFERENCES Unit(UnitID),
+    CONSTRAINT CK_Granularity_values CHECK (Granurality IN ('Ide', 'Institución', 'Nodo', 'Capa', 'Servicio', 'Método')) -- en castellano, debido a que dicho dato se mostrará al usuario
 );
 
 -- Contiene los rangos asignados a las Metricas del modelo de calidad, para cierto perfil
-DROP TABLE IF EXISTS Rango CASCADE;
-CREATE TABLE Rango
+DROP TABLE IF EXISTS MetricRange CASCADE;
+CREATE TABLE MetricRange
 (
-    RangoID SERIAL NOT NULL,
-    MetricaID INT NOT NULL,
-    PerfilID INT NOT NULL,
-    BoleanoFlag BOOLEAN NULL,
-    ValorAceptacionBoleano BOOLEAN NULL,
-    PorcentajeFlag BOOLEAN NULL,
-    ValorAceptacionPorcentaje INT NULL,
-    EnteroFlag BOOLEAN NULL,
-    ValorAceptacionEntero INT NULL,
-    EnumeradoFlag BOOLEAN NULL,
-    ValorAceptacionEnumerado CHAR(1) NULL, -- 'B' = Basico, 'I' = Intermedio, 'C' = Completo
+    MetricRangeID SERIAL NOT NULL,
+    MetricID INT NOT NULL,
+    ProfileID INT NOT NULL,
+    BooleanFlag BOOLEAN NULL,
+    BooleanAcceptanceValue BOOLEAN NULL,
+    PercentageFlag BOOLEAN NULL,
+    PercentageAcceptanceValue INT NULL,
+    IntegerFlag BOOLEAN NULL,
+    IntegerAcceptanceValue INT NULL,
+    EnumerateFlag BOOLEAN NULL,
+    EnumerateAcceptanceValue CHAR(1) NULL, -- 'B' = Basico, 'I' = Intermedio, 'C' = Completo
     
-    PRIMARY KEY (RangoID),
-    UNIQUE (MetricaID, PerfilID),
-    CONSTRAINT CK_valores_ValorAceptacionEnumerado CHECK (ValorAceptacionEnumerado IN ('B', 'I', 'C')),   
-    CONSTRAINT CK_Flags_Valor CHECK
+    PRIMARY KEY (MetricRangeID),
+    UNIQUE (MetricID, ProfileID),
+    CONSTRAINT CK_EnumerateAcceptanceValue_values CHECK (EnumerateAcceptanceValue IN ('B', 'I', 'C')),   
+    CONSTRAINT CK_Flags_values CHECK
         (
-            CASE WHEN BoleanoFlag = TRUE AND ValorAceptacionBoleano IS NOT NULL 
-                AND PorcentajeFlag = FALSE AND ValorAceptacionPorcentaje IS NULL
-                AND EnteroFlag = FALSE AND ValorAceptacionEntero IS NULL
-                AND EnumeradoFlag = FALSE AND ValorAceptacionEnumerado IS NULL
+            CASE WHEN BooleanFlag = TRUE AND BooleanAcceptanceValue IS NOT NULL 
+                AND PercentageFlag = FALSE AND PercentageAcceptanceValue IS NULL
+                AND IntegerFlag = FALSE AND IntegerAcceptanceValue IS NULL
+                AND EnumerateFlag = FALSE AND EnumerateAcceptanceValue IS NULL
                     THEN 1 ELSE 0 END
-            + CASE WHEN PorcentajeFlag = TRUE AND ValorAceptacionPorcentaje IS NOT NULL 
-                AND BoleanoFlag = FALSE AND ValorAceptacionBoleano IS NULL
-                AND EnteroFlag = FALSE AND ValorAceptacionEntero IS NULL
-                AND EnumeradoFlag = FALSE AND ValorAceptacionEnumerado IS NULL
+            + CASE WHEN PercentageFlag = TRUE AND PercentageAcceptanceValue IS NOT NULL 
+                AND BooleanFlag = FALSE AND BooleanAcceptanceValue IS NULL
+                AND IntegerFlag = FALSE AND IntegerAcceptanceValue IS NULL
+                AND EnumerateFlag = FALSE AND EnumerateAcceptanceValue IS NULL
                     THEN 1 ELSE 0 END
-            + CASE WHEN EnteroFlag = TRUE AND ValorAceptacionEntero IS NOT NULL 
-                AND BoleanoFlag = FALSE AND ValorAceptacionBoleano IS NULL
-                AND PorcentajeFlag = FALSE AND ValorAceptacionPorcentaje IS NULL
-                AND EnumeradoFlag = FALSE AND ValorAceptacionEnumerado IS NULL   
+            + CASE WHEN IntegerFlag = TRUE AND IntegerAcceptanceValue IS NOT NULL 
+                AND BooleanFlag = FALSE AND BooleanAcceptanceValue IS NULL
+                AND PercentageFlag = FALSE AND PercentageAcceptanceValue IS NULL
+                AND EnumerateFlag = FALSE AND EnumerateAcceptanceValue IS NULL   
                     THEN 1 ELSE 0 END
-            + CASE WHEN EnumeradoFlag = TRUE AND ValorAceptacionEnumerado IS NOT NULL 
-                AND BoleanoFlag = FALSE AND ValorAceptacionBoleano IS NULL
-                AND PorcentajeFlag = FALSE AND ValorAceptacionPorcentaje IS NULL
-                AND EnteroFlag = FALSE AND ValorAceptacionEntero IS NULL 
+            + CASE WHEN EnumerateFlag = TRUE AND EnumerateAcceptanceValue IS NOT NULL 
+                AND BooleanFlag = FALSE AND BooleanAcceptanceValue IS NULL
+                AND PercentageFlag = FALSE AND PercentageAcceptanceValue IS NULL
+                AND IntegerFlag = FALSE AND IntegerAcceptanceValue IS NULL 
 		    THEN 1 ELSE 0 END
             = 1
         ),
-    FOREIGN KEY (MetricaID) REFERENCES Metrica(MetricaID),
-    FOREIGN KEY (PerfilID) REFERENCES Perfil(PerfilID)
+    FOREIGN KEY (MetricID) REFERENCES Metric(MetricID),
+    FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID)
 );
 
 -- Guarda las ponderaciones asignadas al Perfil y a los elementos de la jerarquia del modelo de calidad
-DROP TABLE IF EXISTS Ponderacion CASCADE;
-CREATE TABLE Ponderacion
+DROP TABLE IF EXISTS Weighing CASCADE;
+CREATE TABLE Weighing
 (
-    PonderacionID SERIAL NOT NULL,
-    PerfilID INT NOT NULL,
-    ElementoID INT NOT NULL, -- DimensionID, FactorID, MetricaID, RangoID
-    Tipo CHAR(1) NOT NULL, -- 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
-    Valor INT NOT NULL,
+    WeighingID SERIAL NOT NULL,
+    ProfileID INT NOT NULL,
+    ElementID INT NOT NULL, -- DimensionID, FactorID, MetricaID, RangoID
+    ElementType CHAR(1) NOT NULL, -- 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
+    Value INT NOT NULL,
 
-    PRIMARY KEY (PonderacionID),
-    UNIQUE (PerfilID, ElementoID, Tipo),    
-    FOREIGN KEY (PerfilID) REFERENCES Perfil(PerfilID),
-    CONSTRAINT CK_valores_Tipo CHECK (Tipo IN ('D', 'F', 'M', 'R'))
+    PRIMARY KEY (WeighingID),
+    UNIQUE (ProfileID, ElementID, ElementType),    
+    FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID),
+    CONSTRAINT CK_ElementType_values CHECK (ElementType IN ('D', 'F', 'M', 'R'))
 );
 
 -- Contiene el resultado de las evaluaciones
-DROP TABLE IF EXISTS Evaluacion CASCADE;
-CREATE TABLE Evaluacion
+DROP TABLE IF EXISTS Evaluation CASCADE;
+CREATE TABLE Evaluation
 (
-    EvaluacionID SERIAL NOT NULL,
-    UsuarioID INT NOT NULL,
-    PerfilID INT NOT NULL,
-    FechaDeComienzo DATE NOT NULL,
-    FechaDeFin DATE NULL,
-    EvaluacionCompletaFlag BOOLEAN NOT NULL,
-    ResultadoExitosoFlag BOOLEAN NULL,
+    EvaluationID SERIAL NOT NULL,
+    UserID INT NOT NULL,
+    ProfileID INT NOT NULL,
+    StartDate DATE NOT NULL,
+    EndDate DATE NULL,
+    IsEvaluationCompletedFlag BOOLEAN NOT NULL,
+    SuccessFlag BOOLEAN NULL, -- indica si el resultado de la evaluacion fue exitosa
 
-    PRIMARY KEY (EvaluacionID),
-    FOREIGN KEY (PerfilID) REFERENCES Perfil(PerfilID),
-    FOREIGN KEY (UsuarioID) REFERENCES Usuario(UsuarioID),
-    CONSTRAINT CK_completa_resultado CHECK
+    PRIMARY KEY (EvaluationID),
+    FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID),
+    FOREIGN KEY (UserID) REFERENCES SystemUser(UserID),
+    CONSTRAINT CK_IsEvaluationCompletedFlag CHECK
         (
-	    CASE WHEN EvaluacionCompletaFlag = TRUE AND ResultadoExitosoFlag IS NOT NULL THEN 1 ELSE 0 END
-	    + CASE WHEN EvaluacionCompletaFlag = FALSE AND ResultadoExitosoFlag IS NULL THEN 1 ELSE 0 END
+	    CASE WHEN IsEvaluationCompletedFlag = TRUE AND SuccessFlag IS NOT NULL THEN 1 ELSE 0 END
+	    + CASE WHEN IsEvaluationCompletedFlag = FALSE AND SuccessFlag IS NULL THEN 1 ELSE 0 END
             = 1
         )
 );
 
 -- Contiene el resultado parcial de las evaluaciones que aun no han finalizado
-DROP TABLE IF EXISTS EvaluacionParcial CASCADE;
-CREATE TABLE EvaluacionParcial
+DROP TABLE IF EXISTS PartialEvaluation CASCADE;
+CREATE TABLE PartialEvaluation
 (
-    EvaluacionParcialID SERIAL NOT NULL,
-    EvaluacionID INT NOT NULL,
-    FechaDeEjecucion DATE NOT NULL,
-    ResultadoParcialExitosoFlag BOOLEAN NULL,
+    PartialEvaluationID SERIAL NOT NULL,
+    EvaluationID INT NOT NULL,
+    ExecutionDate DATE NOT NULL,
+    PartialSuccessFlag BOOLEAN NULL, -- indica si el resultado de la evaluacion parcial fue exitosa
 
-    PRIMARY KEY (EvaluacionParcialID),
-    UNIQUE (EvaluacionID, FechaDeEjecucion),
-    FOREIGN KEY (EvaluacionID) REFERENCES Evaluacion(EvaluacionID)
+    PRIMARY KEY (PartialEvaluationID),
+    UNIQUE (EvaluationID, ExecutionDate),
+    FOREIGN KEY (EvaluationID) REFERENCES Evaluation(EvaluationID)
 );

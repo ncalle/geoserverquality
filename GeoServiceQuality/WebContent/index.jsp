@@ -38,8 +38,8 @@
       </form>
       
       
-      <form class="form-signin" action="registro.jsp" smethod="post">
-          <button class="btn btn-lg btn-primary btn-block" type="submit" value="Registro">Registro</button>
+      <form class="form-signin" action="registry.jsp" smethod="post">
+          <button class="btn btn-lg btn-primary btn-block" type="submit" value="Registry">Registro</button>
       </form>
 
     </div> <!-- /container -->

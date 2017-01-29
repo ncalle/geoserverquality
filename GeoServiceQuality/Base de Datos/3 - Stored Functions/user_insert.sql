@@ -1,17 +1,17 @@
-﻿CREATE OR REPLACE FUNCTION usuario_insert
+﻿CREATE OR REPLACE FUNCTION user_insert
 (
    pEmail VARCHAR(40)
-   , pUsuarioPassword VARCHAR(40)
-   , pGrupoID INT
-   , pNombre VARCHAR(40)
-   , pApellido VARCHAR(40)
-   , pTelefono BIGINT
-   , pInstitucionID INT
+   , pPassword VARCHAR(40)
+   , pUserGroupID INT
+   , pFirstName VARCHAR(40)
+   , pLastName VARCHAR(40)
+   , pPhoneNumber BIGINT
+   , pInstitutionID INT
 )
 RETURNS VOID AS $$
 
 /************************************************************************************************************
-** Name: usuario_insert
+** Name: user_insert
 **
 ** Desc: Agrega un usuario a la tabla Usuarios
 **
@@ -21,20 +21,20 @@ RETURNS VOID AS $$
 BEGIN
     
    -- parametros requeridos
-   IF (pEmail IS NULL OR pUsuarioPassword IS NULL OR pGrupoID IS NULL)
+   IF (pEmail IS NULL OR pPassword IS NULL OR pUserGroupID IS NULL)
    THEN
       RAISE EXCEPTION 'Error - Los parametro email, password y grupo del usuario son requerido.';
    END IF;
     
-   IF EXISTS (SELECT 1 FROM Usuario u WHERE u.Email = pEmail)
+   IF EXISTS (SELECT 1 FROM SystemUser u WHERE u.Email = pEmail)
    THEN      
       RAISE EXCEPTION 'Error - El email ya fue registrado. Usario ya existente.';
    END IF;
 
-   INSERT INTO Usuario
-   (Email, UsuarioPassword, GrupoID, Nombre, Apellido, Telefono, InstitucionID)
+   INSERT INTO SystemUser
+   (Email, Password, UserGroupID, FirstName, LastName, PhoneNumber, InstitutionID)
    VALUES
-   (pEmail, pUsuarioPassword, pGrupoID, pNombre, pApellido, pTelefono, pInstitucionID);
+   (pEmail, pPassword, pUserGroupID, pFirstName, pLastName, pPhoneNumber, pInstitutionID);
     
 END;
 $$ LANGUAGE plpgsql;

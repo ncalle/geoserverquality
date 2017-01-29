@@ -1,43 +1,43 @@
-﻿CREATE OR REPLACE FUNCTION evaluacion_insert
+﻿CREATE OR REPLACE FUNCTION evaluation_insert
 (
-   pUsuarioID INT
-   , pPerfilID INT
-   , pResultadoExitosoFlag BOOLEAN
+   pUserID INT
+   , pProfileID INT
+   , pSuccessFlag BOOLEAN
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
-** Name: evaluacion_insert
+** Name: evaluation_insert
 **
 ** Desc: Ingreso de evaluacion
 **
-** 11/12/2016 Created
+** 11/12/2016 - Created
 **
 *************************************************************************************************************/
 BEGIN
     
    -- parametros requeridos
-   IF (pUsuarioID IS NULL OR pPerfilID IS NULL)
+   IF (pUserID IS NULL OR pProfileID IS NULL)
    THEN
       RAISE EXCEPTION 'Error - Los parametros ID de Usuario, ID de Perfil son requerido.';
    END IF;
     
    -- validacion
-   IF NOT EXISTS (SELECT 1 FROM Usuario u WHERE u.UsuarioID = pUsuarioID)
+   IF NOT EXISTS (SELECT 1 FROM SystemUser u WHERE u.UserID = pUserID)
    THEN
       RAISE EXCEPTION 'Error - El ID de Usuario no es correcto.';
    END IF;
     
    -- validacion
-   IF NOT EXISTS (SELECT 1 FROM Perfil p WHERE p.PerfilID = pPerfilID)
+   IF NOT EXISTS (SELECT 1 FROM Profile p WHERE p.ProfileID = pProfileID)
    THEN
       RAISE EXCEPTION 'Error - El ID de Perfil no es correcto.';
    END IF;    
 
    -- Ingreso de Evaluacion
-   INSERT INTO Evaluacion
-   (UsuarioID, PerfilID, FechaDeComienzo, FechaDeFin, EvaluacionCompletaFlag, ResultadoExitosoFlag)
+   INSERT INTO Evaluation
+   (UserID, ProfileID, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag)
    VALUES
-   (pUsuarioID, pPerfilID, CURRENT_DATE, CURRENT_DATE, TRUE, pResultadoExitosoFlag);
+   (pUserID, pProfileID, CURRENT_DATE, CURRENT_DATE, TRUE, pSuccessFlag);
 
 END;
 $$ LANGUAGE plpgsql;
