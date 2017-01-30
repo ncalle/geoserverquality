@@ -11,7 +11,7 @@ import daos.EvaluationObjectDAO;
 import daos.EvaluationObjectDAOImpl;
 import daos.TestObject;
 
-@ManagedBean(name="evObject")
+//@ManagedBean(name="evObject")
 @ViewScoped
 public class EvaluationObjectBean {
 	
