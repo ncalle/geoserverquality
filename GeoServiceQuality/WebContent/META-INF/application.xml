@@ -5,9 +5,13 @@
       version="7">
     <application-name>GeoserviceQuality</application-name>
     <display-name>GeoserviceQuality</display-name>
+    
+    <initialize-in-order>false</initialize-in-order>
+      
     <module>
         <ejb>EJBs.jar</ejb>
     </module>
+    
 	<module>
 		<web>
 			<web-uri>GeoserviceQuality.war</web-uri>
