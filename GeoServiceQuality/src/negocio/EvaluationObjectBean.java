@@ -4,14 +4,15 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 
 import daos.EvaluationObjectDAO;
 import daos.EvaluationObjectDAOImpl;
 import daos.TestObject;
 
 //@ManagedBean(name="evObject")
+@Named("evObject")
 @ViewScoped
 public class EvaluationObjectBean {
 	
