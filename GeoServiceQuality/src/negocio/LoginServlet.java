@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet{
 				HttpSession session = request.getSession(false);
 					
 				if(session!=null) {
-					session.setAttribute("name", foundUser.getFirstName());
+					session.setAttribute("name", foundUser.getFirstName() + ' ' + foundUser.getLastName());
 					
 				}
 	        	RequestDispatcher rd=request.getRequestDispatcher("welcome.jsp");
