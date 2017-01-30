@@ -10,7 +10,7 @@ import java.util.List;
 import model.MeasurableObject;
 
 /**
- * Representa la implementacion de la interfaz UserDAO
+ * Representa la implementacion de la interfaz UserDAO 
  */
 public class MeasurableObjectDAOJDBC implements MeasurableObjectDAO {
 

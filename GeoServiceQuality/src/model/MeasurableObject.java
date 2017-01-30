@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 /**
- * Modelo de Objetos medibles.
+ * Modelo de Objetos medibles. 
  * Puede ser usada a travez de todas las capas, capa de datos, controlador o vista
  */
 public class MeasurableObject implements Serializable {

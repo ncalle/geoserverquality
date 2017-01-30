@@ -5,7 +5,7 @@ import java.util.List;
 import model.MeasurableObject;
 
 /**
- * Contrato para el DAO de MeasurableObject
+ * Contrato para el DAO de MeasurableObject 
  */
 public interface MeasurableObjectDAO {
 
