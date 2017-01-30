@@ -5,6 +5,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <property name="java-output-path" value="/GeoServiceQuality/build/classes"/>
-        <property name="context-root" value="GeoserviceQuality/"/>
+        <property name="context-root" value="GeoServiceQuality/"/>
     </wb-module>
 </project-modules>

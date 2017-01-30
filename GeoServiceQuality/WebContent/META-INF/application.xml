@@ -15,7 +15,7 @@
 	<module>
 		<web>
 			<web-uri>GeoserviceQuality.war</web-uri>
-			<context-root>/demo</context-root>
+			<context-root>/GeoServiceQuality</context-root>
 		</web>
 	</module>
     <library-directory>lib</library-directory>
