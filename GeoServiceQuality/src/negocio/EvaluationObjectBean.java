@@ -7,9 +7,11 @@ import javax.ejb.EJB;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
 
+import Model.TestObject;
 import daos.EvaluationObjectDAO;
 import daos.EvaluationObjectDAOImpl;
-import daos.TestObject;
+import daos.MeasurableObjectDAO;
+import daos.MeasurableObjectDAOJDBC;
 
 //@ManagedBean(name="evObject")
 @Named("evObject")
@@ -20,6 +22,9 @@ public class EvaluationObjectBean {
 	
 	@EJB
     private EvaluationObjectDAO eoDao = new EvaluationObjectDAOImpl();
+	
+	//@EJB
+    //private MeasurableObjectDAO eoDao = new MeasurableObjectDAOJDBC(null);
 	
 	@PostConstruct
 	private void init()

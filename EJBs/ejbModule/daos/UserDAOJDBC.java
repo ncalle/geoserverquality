@@ -1,4 +1,4 @@
-package dao;
+package daos;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,11 +7,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.User;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
+import Model.User;
+
 
 /**
  * Representa la implementacion de la interfaz UserDAO
  */
+//@Stateless
+//@LocalBean
 public class UserDAOJDBC implements UserDAO {
 
     private static final String SQL_FIND_BY_ID =

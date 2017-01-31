@@ -1,4 +1,4 @@
-package dao;
+package daos;
 
 /**
  * Representa una excepcion en la configuración DAO, que no puede ser resuelta en tiempo de ejecucion,

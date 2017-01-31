@@ -1,4 +1,4 @@
-package dao;
+package daos;
 
 /**
  * Representa una excepcion generia DAO. 

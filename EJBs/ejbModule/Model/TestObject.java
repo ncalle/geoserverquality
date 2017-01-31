@@ -1,4 +1,4 @@
-package daos;
+package Model;
 
 import java.io.Serializable;
 

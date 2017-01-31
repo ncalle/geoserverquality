@@ -1,4 +1,4 @@
-package dao;
+package daos;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,11 +7,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.MeasurableObject;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
+import Model.MeasurableObject;
+
+
 
 /**
  * Representa la implementacion de la interfaz UserDAO 
  */
+@LocalBean
 public class MeasurableObjectDAOJDBC implements MeasurableObjectDAO {
 
     private static final String SQL_LIST_ORDER_BY_ID =

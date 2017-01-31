@@ -3,8 +3,8 @@ package daos;
 import java.util.List;
 
 import javax.ejb.Local;
-import javax.ejb.LocalBean;
-import javax.ejb.Stateless;
+
+import Model.TestObject;
 
 /**
  * Session Bean implementation class EvaluationObjectDAO

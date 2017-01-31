@@ -1,13 +1,17 @@
-package dao;
+package daos;
 
 import java.util.List;
 
-import model.User;
+import javax.ejb.Local;
+
+import Model.User;
+
 
 /**
  * Contrato para el DAO de Usuario.
  * La password no es devuelta por el DAO por motivos de seguridad
  */
+@Local
 public interface UserDAO {
 
     public User find(Integer usuarioid) throws DAOException;

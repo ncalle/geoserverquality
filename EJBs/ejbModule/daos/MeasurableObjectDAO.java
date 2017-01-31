@@ -1,12 +1,17 @@
-package dao;
+package daos;
 
 import java.util.List;
 
-import model.MeasurableObject;
+import javax.ejb.Local;
+
+import Model.MeasurableObject;
+
+
 
 /**
  * Contrato para el DAO de MeasurableObject 
  */
+@Local
 public interface MeasurableObjectDAO {
 
     public List<MeasurableObject> list() throws DAOException;

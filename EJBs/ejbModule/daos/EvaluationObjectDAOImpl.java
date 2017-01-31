@@ -6,6 +6,8 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import Model.TestObject;
+
 /**
  * Session Bean implementation class EvaluationObjectDAOImpl
  */
