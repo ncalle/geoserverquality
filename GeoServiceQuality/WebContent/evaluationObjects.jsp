@@ -49,6 +49,7 @@
          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Acerca</a>
         </li>
+         </ul>
       
        <ul class="nav navbar-nav navbar-right">
 	      <li><a href="${pageContext.request.contextPath}/logoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
@@ -116,7 +117,7 @@
 			<div class="panel panel-default">
 			  <div class="panel-body">
 			  
-		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/evaluationObjectsAdd.jsp">Agregar
+		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/evaluationObjectAdd.xhtml">Agregar
 		  		<span class="glyphicon glyphicon-plus" aria-hidden="true" ></span></a>
 		  		
 		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/welcome.jsp">Editar
