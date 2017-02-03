@@ -40,8 +40,8 @@ public abstract class DAOFactory {
 
     abstract Connection getConnection() throws SQLException;
 
-    public UserDAO getUserDAO() {
-        return new UserDAOJDBC(this);
+    public UserBeanRemote getUserBeanRemote() {
+        return new UserBean(this);
     }
 
 }
