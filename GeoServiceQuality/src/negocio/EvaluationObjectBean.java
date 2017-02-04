@@ -1,8 +1,5 @@
 package negocio;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -31,12 +28,6 @@ public class EvaluationObjectBean {
 	@PostConstruct
 	private void init()
 	{
-		try {
-			System.out.println("init evaluationObjectBean..");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 
