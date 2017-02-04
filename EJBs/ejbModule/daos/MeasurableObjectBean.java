@@ -12,29 +12,29 @@ import javax.ejb.Stateless;
 
 import Model.MeasurableObject;
 
-
-
 /**
- * Representa la implementacion de la interfaz UserDAO 
+ * Session Bean implementation class MeasurableObjectBean
  */
+@Stateless
 @LocalBean
-public class MeasurableObjectDAOJDBC implements MeasurableObjectDAO {
+public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
 
     private static final String SQL_LIST_ORDER_BY_ID =
-    	"SELECT MeasurableObjectID, MeasurableObjectTypeID, MeasurableObjectType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_measurable_objects_get (?)";
-    private static final String SQL_INSERT =
-        "SELECT * FROM prototype_measurable_objects_insert (?, ?, ?, ?)";
+    		"SELECT MeasurableObjectID, MeasurableObjectTypeID, MeasurableObjectType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_measurable_objects_get (?)";
+	private static final String SQL_INSERT =
+            "SELECT * FROM prototype_measurable_objects_insert (?, ?, ?, ?)";
     private static final String SQL_DELETE =
-    	"SELECT * prototype_measurable_objects_delete(?, ?, ?)";
+        	"SELECT * prototype_measurable_objects_delete(?, ?, ?)";
 
-    
     private DAOFactory daoFactory;
-
-    MeasurableObjectDAOJDBC(DAOFactory daoFactory) {
-        this.daoFactory = daoFactory;
+	
+    public MeasurableObjectBean() {
     }
 
-
+    MeasurableObjectBean(DAOFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
+    
     @Override
     public List<MeasurableObject> list() throws DAOException {
         List<MeasurableObject> measurableobject = new ArrayList<>();
@@ -127,6 +127,6 @@ public class MeasurableObjectDAOJDBC implements MeasurableObjectDAO {
     	measurableobject.setMeasurableObjectServicesType(resultSet.getString("MeasurableObjectServicesType"));
 
         return measurableobject; 
-    }    
+    }
     
 }
