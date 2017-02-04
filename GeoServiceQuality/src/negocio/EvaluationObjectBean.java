@@ -22,6 +22,7 @@ public class EvaluationObjectBean {
     private String name;
     private String description;
     private String url;
+    private String type;
     
 	@EJB
     private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
@@ -66,15 +67,22 @@ public class EvaluationObjectBean {
 		this.url = url;
 	}
     
+    public String getType() {
+		return type;
+	}
+    
+    public void setType(String type) {
+    	System.out.println("setType: " + type);
+		this.type = type;
+	}
+    
     public void save() {
     	
     	MeasurableObject object = new MeasurableObject();
     	object.setMeasurableObjectName(name);
     	object.setMeasurableObjectDescription(description);
     	object.setMeasurableObjectURL(url);
-    	
-    	//TODO: elegir tipo en el form
-    	object.setMeasurableObjectServicesType("WMS");
+    	object.setMeasurableObjectServicesType(type);
     	
     	System.out.println("save.. " + object);
     	
