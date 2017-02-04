@@ -42,7 +42,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Reportes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Usuarios</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/users.jsp">Usuarios</a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Acerca</a>

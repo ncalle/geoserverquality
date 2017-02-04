@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 	
-	<title>Ingresar Perfil</title> 
+	<title>ABM de Perfil</title> 
 
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 	<!--  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">-->
@@ -42,7 +42,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Reportes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Usuarios</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/users.jsp">Usuarios</a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Acerca</a>

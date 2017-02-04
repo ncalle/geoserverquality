@@ -10,14 +10,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
 	
-	<title>ABM de Objetos</title> 
+	<title>ABM Usuarios</title> 
 
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 	<!--  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">-->
 	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script> -->
 	
 	<!-- Custom styles for this template -->
-	<link href="./css/evaluation_objects.css" rel="stylesheet">
+	<link href="./css/users.css" rel="stylesheet">
 	
 	
 </head>
@@ -31,8 +31,8 @@
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Home</a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="${pageContext.request.contextPath}/evaluationObjects.jsp">Objetos de evaluación<span class="sr-only">(current)</span></a>
+        <li class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/evaluationObjects.jsp">Objetos de evaluación</a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/profileAdd.jsp">Perfiles</a>
@@ -43,8 +43,8 @@
           <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Reportes</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/users.jsp">Usuarios</a>
+        <li class="nav-item active">
+          <a class="nav-link" href="${pageContext.request.contextPath}/users.jsp">Usuarios<span class="sr-only">(current)</span></a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Acerca</a>
@@ -60,7 +60,7 @@
     <div class="container">
     
     	<form class="form-signin" action="" method="post">
-	    	<h2 class="form-signin-heading">Objetos de evaluación</h2>
+	    	<h2 class="form-signin-heading">Datos de Usuarios</h2>
 	
 	      	<hr>
 	      	
@@ -73,37 +73,41 @@
 				    <thead>
 				      <tr>
 				        <th>ID</th>
-				        <th>Objeto</th>
-				        <th>Nombre</th>
-				        <th>Descripción</th>
-				        <th>Url</th>
+				        <th>Institución</th>
+				        <th>Email</th>
 				        <th>Tipo</th>
+				        <th>Nombre</th>
+				        <th>Apellido</th>
+				        <th>Telefono</th>
 				      </tr>
 				    </thead>
 				    <tbody>
 				      <tr>
 				        <td>1</td>
-				        <td>Servicio</td>
-				        <td>nombre </td>
-				        <td>servicio de google</td>
-				        <td>https://www.google.com/</td>
-				        <td>WCS</td>
+				        <td>1Institución</td>
+				        <td>1Email</td>
+				        <td>1Tipo</td>
+				        <td>1Nombre</td>
+				        <td>1Apellido</td>
+				        <td>1Telefono</td>
 				      </tr>
 				      <tr>
 				        <td>2</td>
-				        <td>Servicio</td>
-				        <td>nombre</td>
-				        <td>servicio de mapas</td>
-				        <td>https://www.google.com/maps</td>
-				        <td>WCS</td>
+				        <td>2Institución</td>
+				        <td>2Email</td>
+				        <td>2Tipo</td>
+				        <td>2Nombre</td>
+				        <td>2Apellido</td>
+				        <td>2Telefono</td>
 				      </tr>
 				      <tr>
 				        <td>3</td>
-				        <td>Servicio</td>
-				        <td>nombre</td>
-				        <td>servicio de mapas</td>
-				        <td>https://www.google.com/maps</td>
-				        <td>WCS</td>
+				        <td>3Institución</td>
+				        <td>3Email</td>
+				        <td>3Tipo</td>
+				        <td>3Nombre</td>
+				        <td>3Apellido</td>
+				        <td>3Telefono</td>
 				      </tr>
 				
 				    </tbody>
@@ -117,7 +121,7 @@
 			<div class="panel panel-default">
 			  <div class="panel-body">
 			  
-		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/evaluationObjectAdd.xhtml">Agregar
+		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/welcome.jsp">Agregar
 		  		<span class="glyphicon glyphicon-plus" aria-hidden="true" ></span></a>
 		  		
 		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/welcome.jsp">Editar
