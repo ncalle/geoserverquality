@@ -72,7 +72,7 @@
 		        <h:inputText id="url" value="#{evaluationObjectBean.url}" class="form-control" a:placeholder="Url del servicio" required="required"/>
 		        <br></br>
 		        
-		        <button class="btn btn-lg btn-primary btn-block" type="reset" action="result" value="Accept">Aceptar</button>
+		       <h:commandButton id="save" value="Guardar" action="#{evaluationObjectBean.save()}" class="btn btn-lg btn-primary btn-block"/>
 		        
         </div>
 		</div>

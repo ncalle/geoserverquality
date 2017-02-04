@@ -82,7 +82,7 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
 		
             affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
-                throw new DAOException("No fue posible crear el usuario. Error.");
+                throw new DAOException("No fue posible crear el objeto. Error.");
             }
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -106,7 +106,7 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
                    
             affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
-                throw new DAOException("No se ha podido remover al usuario. Error.");
+                throw new DAOException("No se ha podido remover el objeto. Error.");
             } else {
             	measurableobject.setMeasurableObjectID(null);
             }
