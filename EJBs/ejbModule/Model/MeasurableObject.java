@@ -113,7 +113,7 @@ public class MeasurableObject implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("User[MeasurableObjectID=%d, MeasurableObjectTypeID=%d, MeasurableObjectType=%s, MeasurableObjectName=%s, MeasurableObjectDescription=%s, MeasurableObjectURL=%s, MeasurableObjectServicesType=%s]",
+        return String.format("MeasurableObject[MeasurableObjectID=%d, MeasurableObjectTypeID=%d, MeasurableObjectType=%s, MeasurableObjectName=%s, MeasurableObjectDescription=%s, MeasurableObjectURL=%s, MeasurableObjectServicesType=%s]",
         		getMeasurableObjectID(), getMeasurableObjectTypeID(), getMeasurableObjectType(), getMeasurableObjectName(), getMeasurableObjectDescription(), getMeasurableObjectURL(), getMeasurableObjectServicesType());
     }
 
