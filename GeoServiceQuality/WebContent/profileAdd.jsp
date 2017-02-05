@@ -29,8 +29,8 @@
           <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Home</a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="${pageContext.request.contextPath}/evaluationObjects.jsp">Objetos de evaluación</a>
+        <li class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/evaluationObjectList.xhtml">Objetos de evaluación</a>
         </li>
      	<li class="nav-item active">
           <a class="nav-link" href="${pageContext.request.contextPath}/profileAdd.jsp">Perfiles <span class="sr-only">(current)</span></a>
