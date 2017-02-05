@@ -22,18 +22,10 @@ public class UserServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 
     @EJB
-    private UserBeanRemote userBean;
+    private UserBeanRemote userBean; 
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)  
-			throws ServletException, IOException { 
-		
-		// Obtener DAOFactory
-        DAOFactory javabase = DAOFactory.getInstance("geoservicequality.jdbc");
-        System.out.println("DAOFactory obtenido: " + javabase);
-        
-        // Obtener UserDAO
-        UserBeanRemote userBean = javabase.getUserBeanRemote();
-        System.out.println("UserDAO obtenido: " + userBean);		
+			throws ServletException, IOException { 	
         
 		try{
 			System.out.println("UserServlet doPost...");
