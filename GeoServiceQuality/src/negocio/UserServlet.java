@@ -17,7 +17,7 @@ import daos.DAOFactory;
 import daos.UserBeanRemote;
 
 
-public class UserServerlet extends HttpServlet{
+public class UserServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class UserServerlet extends HttpServlet{
         System.out.println("UserDAO obtenido: " + userBean);		
         
 		try{
-			System.out.println("UserServerlet doPost...");
+			System.out.println("UserServlet doPost...");
 			response.setContentType("text/html");  
 			PrintWriter out = response.getWriter();  
 						
@@ -65,7 +65,7 @@ public class UserServerlet extends HttpServlet{
 
 			out.close();  
 		} catch(Exception e) {
-			System.out.println("UserServerlet Exception:" + e);
+			System.out.println("UserServlet Exception:" + e);
 		}
 
 		

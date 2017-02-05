@@ -37,12 +37,12 @@
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>userServerlet</servlet-name>
-    <servlet-class>negocio.UserServerlet</servlet-class>
+    <servlet-name>userServlet</servlet-name>
+    <servlet-class>negocio.UserServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>userServerlet</servlet-name>
-    <url-pattern>/userServerlet</url-pattern>
+    <servlet-name>userServlet</servlet-name>
+    <url-pattern>/userServlet</url-pattern>
   </servlet-mapping>
 
 </web-app>

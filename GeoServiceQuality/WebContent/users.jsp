@@ -44,7 +44,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Reportes</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="userServerlet">Usuarios<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="userServlet">Usuarios<span class="sr-only">(current)</span></a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Acerca</a>
