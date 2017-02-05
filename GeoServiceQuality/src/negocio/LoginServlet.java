@@ -25,15 +25,7 @@ public class LoginServlet extends HttpServlet{
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)  
 			throws ServletException, IOException { 
-
-		// Obtener DAOFactory
-        DAOFactory javabase = DAOFactory.getInstance("geoservicequality.jdbc");
-        System.out.println("DAOFactory obtenido: " + javabase);
-        
-        // Obtener UserDAO
-        UserBeanRemote userBean = javabase.getUserBeanRemote();
-        System.out.println("UserDAO obtenido: " + userBean);		
-        
+       
 		try{
 			System.out.println("LoginServlet doPost...");
 			response.setContentType("text/html");  

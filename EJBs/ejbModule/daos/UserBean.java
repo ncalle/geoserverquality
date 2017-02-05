@@ -39,19 +39,28 @@ public class UserBean implements UserBeanRemote {
     }
     
     public UserBean() {
+		// Obtener DAOFactory
+        DAOFactory javabase = DAOFactory.getInstance("geoservicequality.jdbc");
+        System.out.println("DAOFactory obtenido: " + javabase);
+        
+        this.daoFactory = javabase;
+        
+        // Obtener UserDAO
+        UserBeanRemote userBean = javabase.getUserBeanRemote();
+        System.out.println("UserDAO obtenido: " + userBean);	
     }
     
     
     //@Override
-    public User find(String email, String password) throws DAOException {       
+    public User find(String email, String password) throws DAOException {           	
     	User user = null;
-
+    	
         Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		
 		try {			
-			connection = daoFactory.getConnection();			
+			connection = daoFactory.getConnection();					
 			statement = connection.prepareStatement(SQL_FIND_BY_EMAIL_AND_PASSWORD);
 			
 			statement.setObject(1, null); //userID
