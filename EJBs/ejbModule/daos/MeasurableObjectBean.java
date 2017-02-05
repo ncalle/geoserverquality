@@ -29,6 +29,7 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
     private DAOFactory daoFactory;
 	
     public MeasurableObjectBean() {
+    	daoFactory = DAOFactory.getInstance("geoservicequality.jdbc");
     }
 
     MeasurableObjectBean(DAOFactory daoFactory) {

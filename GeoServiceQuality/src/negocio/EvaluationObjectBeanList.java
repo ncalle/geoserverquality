@@ -3,12 +3,13 @@ package negocio;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import Model.MeasurableObject;
 import daos.DAOException;
-import daos.DAOFactory;
+import daos.MeasurableObjectBean;
 import daos.MeasurableObjectBeanRemote;
 
 
@@ -19,16 +20,15 @@ public class EvaluationObjectBeanList {
     
 	private List<MeasurableObject> listObjects;
 	
+	@EJB
+    private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
+	
 	
 	@PostConstruct
-	private void init()
-	{
+	private void init()	{
 		try {
 			
-            DAOFactory javabase = DAOFactory.getInstance("geoservicequality.jdbc");
-            MeasurableObjectBeanRemote mobr = javabase.geMeasurableObjectBeanRemote();
-            listObjects = mobr.list();
-            
+            listObjects = moDao.list();
             System.out.println("list size: "+ listObjects.size());
 	            
     	} catch(DAOException e) {
