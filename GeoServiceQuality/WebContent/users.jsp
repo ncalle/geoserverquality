@@ -18,7 +18,7 @@
 	
 	<!-- Custom styles for this template -->
 	<link href="./css/users.css" rel="stylesheet">
-	
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 	
 </head>
 
@@ -62,18 +62,13 @@
     	<form class="form-signin" action="" method="post">
 	    	<h2 class="form-signin-heading">Datos de Usuarios</h2>
 	
-	      	<hr>
-	      	
-      		<div class="container">
-        		<h1 class="display-3">El nombre del segundo usuarios es: <%=session.getAttribute("name")%></h1>
-	      	</div>
-	      	
+	      	<hr>	      	
 	      	<div class="panel panel-default">
 			  <div class="panel-body">
 			    
 			    <!-- tabla -->
 		      	<div class="table-responsive">
-				  <table class="table table-striped">
+				  <table class="table table-striped">	  
 				    <thead>
 				      <tr>
 				        <th>ID</th>
@@ -86,39 +81,20 @@
 				      </tr>
 				    </thead>
 				    <tbody>
-				      <tr>
-				        <td>1</td>
-				        <td>1Institución</td>
-				        <td>1Email</td>
-				        <td>1Tipo</td>
-				        <td>1Nombre</td>
-				        <td>1Apellido</td>
-				        <td>1Telefono</td>
-				      </tr>
-				      <tr>
-				        <td>2</td>
-				        <td>2Institución</td>
-				        <td>2Email</td>
-				        <td>2Tipo</td>
-				        <td>2Nombre</td>
-				        <td>2Apellido</td>
-				        <td>2Telefono</td>
-				      </tr>
-				      <tr>
-				        <td>3</td>
-				        <td>3Institución</td>
-				        <td>3Email</td>
-				        <td>3Tipo</td>
-				        <td>3Nombre</td>
-				        <td>3Apellido</td>
-				        <td>3Telefono</td>
-				      </tr>
-				
+					    <c:forEach items="${userList}" var="ulist" varStatus="status">
+					    	<tr>
+					            <td>${ulist.getUserId()}</td>
+					            <td>${ulist.getInstitutionName()}</td>
+					            <td>${ulist.getEmail()}</td>
+					            <td>${ulist.getUserGroupName()}</td>
+					            <td>${ulist.getFirstName()}</td>
+					            <td>${ulist.getLastName()}</td>
+					            <td>${ulist.getPhoneNumber()}</td>
+					        </tr>
+					    </c:forEach>
 				    </tbody>
 				  </table>
 				</div>
-				
-				
 			 </div>
 			</div>
 			

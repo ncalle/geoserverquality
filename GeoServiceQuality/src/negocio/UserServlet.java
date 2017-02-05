@@ -22,7 +22,7 @@ public class UserServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 
     @EJB
-    private UserBeanRemote userBean; 
+    private UserBeanRemote userBeanList; 
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)  
 			throws ServletException, IOException { 	
@@ -32,14 +32,14 @@ public class UserServlet extends HttpServlet{
 			response.setContentType("text/html");  
 			PrintWriter out = response.getWriter();  
 						
-			List<User> userList = userBean.list();
+			List<User> userList = userBeanList.list();
 	        System.out.println("La lista de usuarios es la siguiente: " + userList);
 	        
 	        if(userList!=null){
 				HttpSession session = request.getSession(false);
 					
 				if(session!=null) {
-					session.setAttribute("name", userList.get(2).getFirstName() + ' ' + userList.get(2).getLastName());
+					session.setAttribute("userList", userList);
 				}
 	        	RequestDispatcher rd = request.getRequestDispatcher("users.jsp");
 	        	response.sendRedirect(request.getContextPath() + "/users.jsp");
