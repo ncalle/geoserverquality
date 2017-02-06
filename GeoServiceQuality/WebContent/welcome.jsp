@@ -33,7 +33,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/evaluationObjectList.xhtml">Objetos de evaluación</a>
         </li>
          <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/profileAdd.jsp">Perfiles</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/profileList.xhtml">Perfiles</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Evaluaciones</a>
