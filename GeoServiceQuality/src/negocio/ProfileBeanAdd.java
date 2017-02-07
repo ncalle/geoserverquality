@@ -2,8 +2,10 @@ package negocio;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 import Model.Profile;
 import daos.DAOException;
@@ -17,6 +19,7 @@ public class ProfileBeanAdd {
 	
     private String name;
     private String granularity;
+    private boolean message;
     
 	@EJB
     private ProfileBeanRemote moDao = new ProfileBean();
@@ -45,8 +48,16 @@ public class ProfileBeanAdd {
 		System.out.println("setGranularity: " + granularity);
 		this.granularity = granularity;
 	}
+	
+	public void setMessage(boolean message) {
+		this.message = message;
+	}
+	
+	public boolean isMessage() {
+		return message;
+	}
     
-    public void save() {
+    public void save() throws DAOException{
     	
     	Profile object = new Profile();
     	object.setName(name);
@@ -57,7 +68,15 @@ public class ProfileBeanAdd {
     	
     	try{
             moDao.create(object);
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+    		context.addMessage(null, new FacesMessage("El perfil fue guardado correctamente"));
+    		
     	} catch(DAOException e) {
+    		
+    		FacesContext context = FacesContext.getCurrentInstance();
+    		context.addMessage(null, new FacesMessage("Error al guardar el perfil"));
+    		
     		e.printStackTrace();
     	} 
 

@@ -2,8 +2,10 @@ package negocio;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 import Model.MeasurableObject;
 import daos.DAOException;
@@ -77,11 +79,16 @@ public class EvaluationObjectBean {
     	System.out.println("save.. " + object);
     	
     	try{
-            //DAOFactory javabase = DAOFactory.getInstance("geoservicequality.jdbc");
-            //MeasurableObjectBeanRemote mobr = javabase.geMeasurableObjectBeanRemote();
-            //mobr.create(object, 1, 1);
             moDao.create(object, 1, 1);
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+        	context.addMessage(null, new FacesMessage("El objeto de evaluación fue guardado correctamente"));
+        		
     	} catch(DAOException e) {
+    		
+    		FacesContext context = FacesContext.getCurrentInstance();
+    		context.addMessage(null, new FacesMessage("Error al guardar el objeto de evaluación"));
+    		
     		e.printStackTrace();
     	} 
 
