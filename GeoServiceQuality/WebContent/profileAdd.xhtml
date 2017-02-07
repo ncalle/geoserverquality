@@ -11,10 +11,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 	
-	<title>Perfiles de evaluación</title> 
+	<title>Ingresar Perfil</title> 
 
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
-	<link href="./css/evaluation_objects.css" rel="stylesheet"/>
+	<link href="./css/evaluation_objects_add.css" rel="stylesheet"/>
 </head>
 
 <h:body>
@@ -26,10 +26,10 @@
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Home</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="${request.contextPath}/evaluationObjectList.xhtml">Objetos de evaluación</a>
+          <a class="nav-link" href="${request.contextPath}/evaluationObjectList.xhtml">Objetos de evaluación<span class="sr-only">(current)</span></a>
         </li>
          <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/profileList.xhtml">Perfiles <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="${request.contextPath}/profileList.xhtml">Perfiles</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Evaluaciones</a>
@@ -38,7 +38,7 @@
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Reportes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/users.jsp">Usuarios</a>
+          <a class="nav-link" href="userServlet">Usuarios</a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Acerca</a>
@@ -54,50 +54,41 @@
     <div class="container">
     
     	<h:form id="evobject" class="form-signin" action="" method="post">
-	    	<h2 class="form-signin-heading">Perfiles de evaluación</h2>
+	    	<h2 class="form-signin-heading">Ingresar perfil</h2>
 	
 	      	<hr></hr>
 	      	
 	      	<div class="panel panel-default">
 			  <div class="panel-body">
 	      	
-		      	<h:dataTable styleClass="table table-striped" value="#{profileBeanList.list}" var="item">
-		      		<h:column>
-						<f:facet name="header"> Id</f:facet>
-						<h:outputText value="#{item.profileId}" />
-					</h:column>
+		      	<label for="inputName" class="sr-only">Nombre</label>
+		      	<h:inputText id="name" value="#{profileBean.name}" class="form-control" a:placeholder="Nombre" required="autofocus"/>
+		        <br></br>
+        
+		        
+		        
+		        <label for="inputType">Granularidad del servicio</label>
+		        <br></br>
+				<h:selectOneMenu value="#{profileBean.granularity}">
+					<f:selectItem itemValue="Ide" itemLabel="Ide"/>
+					<f:selectItem itemValue="Institucion" itemLabel="Institución"/>
+					<f:selectItem itemValue="Nodo" itemLabel="Nodo"/>
+					<f:selectItem itemValue="Capa" itemLabel="Capa"/>
+					<f:selectItem itemValue="Servicio" itemLabel="Servicio"/>
+				</h:selectOneMenu>
+				<br></br>
+				<br></br>
 					
-					<h:column>
-						<f:facet name="header"> Nombre</f:facet>
-						 <h:outputText value="#{item.name}" />
-					</h:column>
-					
-					<h:column>
-						<f:facet name="header"> Granularidad</f:facet>
-						 <h:outputText value="#{item.granurality}" />
-					</h:column>
-							
-					<h:column>
-						<f:facet name="header"> IsWeighted</f:facet>
-						<h:outputText value="#{item.isWeightedFlag}" />
-					</h:column>
-					
-				</h:dataTable>
-					
+		       <h:commandButton id="save" value="Guardar" action="#{profileBean.save()}" class="btn btn-lg btn-primary btn-block"/>
+		        
         </div>
 		</div>
 		 	
-		<div class="panel panel-default">
+	 	<div class="panel panel-default">
 		  <div class="panel-body">
 		  
-	  		<a class="btn btn-default" href="${request.contextPath}/profileAdd.xhtml">Agregar
-	  		<span class="glyphicon glyphicon-plus" aria-hidden="true" ></span></a>
-	  		
-	  		<a class="btn btn-default" href="${request.contextPath}/welcome.jsp">Editar
-	  		<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-	  	
-	  		<a class="btn btn-default" href="${request.contextPath}/welcome.jsp">Eliminar
-	  		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+	  		<a class="btn btn-default" href="${request.contextPath}/profileList.xhtml">Volver
+	  		<span class="glyphicon glyphicon-arrow-left" aria-hidden="true" ></span></a>
 		
 		  </div>
 		</div>
