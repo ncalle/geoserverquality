@@ -38,11 +38,11 @@
       </form>
       
       
-      <form class="form-signin" action="registry.jsp" smethod="post">
+      <!--<form class="form-signin" action="registry.jsp" smethod="post">
           <button class="btn btn-lg btn-primary btn-block" type="submit" value="Registry">Registro</button>
-      </form>
+      </form>-->
 
-    </div> <!-- /container -->
+    </div>  
 
 </body>
 </html>
