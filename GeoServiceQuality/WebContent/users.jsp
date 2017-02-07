@@ -101,7 +101,7 @@
 			<div class="panel panel-default">
 			  <div class="panel-body">
 			  
-		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/welcome.jsp">Agregar
+		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/userAdd.xhtml">Agregar
 		  		<span class="glyphicon glyphicon-plus" aria-hidden="true" ></span></a>
 		  		
 		  		<a class="btn btn-default" href="${pageContext.request.contextPath}/welcome.jsp">Editar
