@@ -70,7 +70,6 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
 
         Connection connection = null;
 		PreparedStatement statement = null;
-		int affectedRows;
         
         try {
             connection = daoFactory.getConnection();
@@ -81,10 +80,8 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             statement.setString(3, measurableobject.getMeasurableObjectURL());
             statement.setString(4, measurableobject.getMeasurableObjectServicesType());
 		
-            affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new DAOException("No fue posible crear el objeto. Error.");
-            }
+            statement.executeQuery();            
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }        
@@ -95,7 +92,6 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
 
     	Connection connection = null;
 		PreparedStatement statement = null;
-		int affectedRows;
         
         try {
             connection = daoFactory.getConnection();
@@ -105,12 +101,10 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             statement.setInt(2, measurableobject.getMeasurableObjectID());
             statement.setInt(3, measurableobject.getMeasurableObjectTypeID());
                    
-            affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new DAOException("No se ha podido remover el objeto. Error.");
-            } else {
-            	measurableobject.setMeasurableObjectID(null);
-            }
+            statement.executeQuery();
+            
+            measurableobject.setMeasurableObjectID(null);
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }

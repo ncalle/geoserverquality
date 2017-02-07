@@ -138,7 +138,6 @@ public class UserBean implements UserBeanRemote {
 
         Connection connection = null;
 		PreparedStatement statement = null;
-		int affectedRows;
         
         try {
             connection = daoFactory.getConnection();
@@ -152,10 +151,8 @@ public class UserBean implements UserBeanRemote {
 			statement.setString(6, user.getPhoneNumber());
 			statement.setInt(7, user.getInstitutionID());
 
-            affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new DAOException("No fue posible crear el usuario. Error.");
-            }
+            statement.executeQuery();
+
         } catch (SQLException e) {
             throw new DAOException(e);
         }        
@@ -166,7 +163,6 @@ public class UserBean implements UserBeanRemote {
 
     	Connection connection = null;
 		PreparedStatement statement = null;
-		int affectedRows;
         
         try {
             connection = daoFactory.getConnection();
@@ -174,12 +170,10 @@ public class UserBean implements UserBeanRemote {
 
             statement.setInt(1, user.getUserId());
         
-            affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new DAOException("No se ha podido remover al usuario. Error.");
-            } else {
-                user.setUserId(null);
-            }
+            statement.executeQuery();
+
+            user.setUserId(null);
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
