@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.LocalBean;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 import Model.Profile;
@@ -69,7 +68,27 @@ public class ProfileBean implements ProfileBeanRemote {
 
 	@Override
 	public void create(Profile profile) throws IllegalArgumentException, DAOException {
-		// TODO Auto-generated method stub
+		Connection connection = null;
+		PreparedStatement statement = null;
+		int affectedRows;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_INSERT);
+
+            statement.setString(1, profile.getName());
+			statement.setString(2, profile.getGranurality());
+			statement.setString(3, null); 
+			
+			//TODO: agregar lista de metricas
+
+            affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new DAOException("No fue posible crear el perfil. Error.");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }        
 		
 	}
 

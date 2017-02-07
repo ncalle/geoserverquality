@@ -83,7 +83,7 @@ public class Profile implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Profile[ProfileId=%d, Name=%d, Granularity=%s, Weighted=%s]",
+        return String.format("Profile[ProfileId=%d, Name=%s, Granularity=%s, Weighted=%s]",
         		getProfileId(), getName(), getGranurality(), getIsWeightedFlag());
     }
 
