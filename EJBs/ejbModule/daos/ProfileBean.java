@@ -70,7 +70,6 @@ public class ProfileBean implements ProfileBeanRemote {
 	public void create(Profile profile) throws IllegalArgumentException, DAOException {
 		Connection connection = null;
 		PreparedStatement statement = null;
-		int affectedRows;
         
         try {
             connection = daoFactory.getConnection();
@@ -82,10 +81,8 @@ public class ProfileBean implements ProfileBeanRemote {
 			
 			//TODO: agregar lista de metricas
 
-            affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new DAOException("No fue posible crear el perfil. Error.");
-            }
+            statement.executeQuery();
+
         } catch (SQLException e) {
             throw new DAOException(e);
         }        
