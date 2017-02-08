@@ -65,9 +65,7 @@
 		      	<h:inputText id="name" value="#{profileBean.name}" class="form-control" a:placeholder="Nombre" required="autofocus"/>
 		        <br></br>
         
-		        
-		        
-		        <label for="inputType">Granularidad del servicio</label>
+		        <label for="inputType">Granularidad </label>
 		        <br></br>
 				<h:selectOneMenu value="#{profileBean.granularity}">
 					<f:selectItem itemValue="Ide" itemLabel="Ide"/>
@@ -79,10 +77,32 @@
 				<br></br>
 				<br></br>
 					
-		       <h:commandButton id="save" value="Guardar" action="#{profileBean.save()}" class="btn btn-lg btn-primary btn-block"/>
+		      
 		       
+		       
+				<!--Metricas-->	
+	      		
+	      		<div class="panel panel-default">
+			    <div class="panel-body">
+			    
+				    <label for="inputType">Seleccione una métrica</label>
+			        <br></br>
+					<h:selectOneMenu >
+						<f:selectItem itemValue="Metadatos" itemLabel="Metadatos"/>
+						<f:selectItem itemValue="Seguridad" itemLabel="Seguridad"/>
+						<f:selectItem itemValue="Rendimiento" itemLabel="Rendimiento"/>
+					</h:selectOneMenu>
+					<br></br>
+					<br></br>
+			    	<h:commandButton id="add" value="Agregar Métrica"  class="btn btn-lg btn-primary btn-block"/>
+		          
+		        </div>
+			    </div>
+			    
+			    
+			    <br></br>
+			   <h:commandButton id="save" value="Guardar" action="#{profileBean.save()}" class="btn btn-lg btn-primary btn-block"/>
 		       <h:messages globalOnly="true" />
-		        
         </div>
 		</div>
 		 	
