@@ -77,8 +77,19 @@
 				<br></br>
 				<br></br>
 					
-		      
-		       
+		       <label for="inputType">Lista de Métricas </label>
+		       	<h:dataTable styleClass="table table-striped" value="#{profileBean.listMetricsAdd}" var="item">
+		      		<h:column>
+						<f:facet name="header"> ID</f:facet>
+						<h:outputText value="#{item.metricID}" />
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header"> Nombre</f:facet>
+						 <h:outputText value="#{item.name}" />
+					</h:column>
+					
+				</h:dataTable>
 		       
 				<!--Metricas-->	
 	      		
