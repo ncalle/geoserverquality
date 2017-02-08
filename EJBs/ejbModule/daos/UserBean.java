@@ -148,7 +148,7 @@ public class UserBean implements UserBeanRemote {
 			statement.setInt(3, user.getUserGroupID());
 			statement.setString(4, user.getFirstName());
 			statement.setString(5, user.getLastName());
-			statement.setString(6, user.getPhoneNumber());
+			statement.setInt(6, user.getPhoneNumber());
 			statement.setInt(7, user.getInstitutionID());
 
             statement.executeQuery();
@@ -190,7 +190,7 @@ public class UserBean implements UserBeanRemote {
         user.setUserGroupName(resultSet.getString("UserGroupName"));
         user.setFirstName(resultSet.getString("FirstName"));
         user.setLastName(resultSet.getString("LastName"));
-        user.setPhoneNumber(resultSet.getString("PhoneNumber"));
+        user.setPhoneNumber(resultSet.getInt("PhoneNumber"));
 
         return user;
     }    

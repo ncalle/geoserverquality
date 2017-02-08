@@ -19,7 +19,7 @@ public class User implements Serializable {
     private String UserGroupName;
     private String FirstName;
     private String LastName;
-    private String PhoneNumber;
+    private Integer PhoneNumber;
 
 
 	public Integer getUserId() {
@@ -94,11 +94,11 @@ public class User implements Serializable {
 		LastName = lastName;
 	}
 
-	public String getPhoneNumber() {
+	public Integer getPhoneNumber() {
 		return PhoneNumber;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
+	public void setPhoneNumber(Integer phoneNumber) {
 		PhoneNumber = phoneNumber;
 	}    
 

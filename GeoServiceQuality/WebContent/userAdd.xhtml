@@ -61,31 +61,34 @@
 	      	<div class="panel panel-default">
 			  <div class="panel-body">
 
-		      	<label for="inputName" class="sr-only">Institución</label>
-		      	<h:inputText id="institutionName" value="#{userBean.institutionName}" class="form-control" a:placeholder="Institución" required="true"/>
+		      	<label for="inputName" class="sr-only">Institución ID</label>
+		      	<h:inputText id="institutionID" value="#{userBeanAdd.institutionID}" class="form-control" a:placeholder="Institución ID" required="true"/>
 		        <br></br>
 		      	<label for="inputName" class="sr-only">Email</label>
-		      	<h:inputText id="email" value="#{userBean.email}" class="form-control" a:placeholder="Email" required="true"/>
+		      	<h:inputText id="email" value="#{userBeanAdd.email}" class="form-control" a:placeholder="Email" required="true"/>
+		        <br></br>
+		      	<label for="inputName" class="sr-only">Password</label>
+		      	<h:inputText id="password" value="#{userBeanAdd.password}" class="form-control" a:placeholder="Password" required="true"/>		        
 		        <br></br>   		             
 		      	<label for="inputName" class="sr-only">Nombre</label>
-		      	<h:inputText id="firstName" value="#{userBean.firstName}" class="form-control" a:placeholder="Nombre" required="true"/>
+		      	<h:inputText id="firstName" value="#{userBeanAdd.firstName}" class="form-control" a:placeholder="Nombre" required="true"/>
 		        <br></br>
 		      	<label for="inputName" class="sr-only">Apellido</label>
-		      	<h:inputText id="lastName" value="#{userBean.lastName}" class="form-control" a:placeholder="Apellido" required="true"/>
+		      	<h:inputText id="lastName" value="#{userBeanAdd.lastName}" class="form-control" a:placeholder="Apellido" required="true"/>
 		        <br></br>
 		      	<label for="inputName" class="sr-only">Teléfono</label>
-		      	<h:inputText id="phoneNumber" value="#{userBean.phoneNumber}" class="form-control" a:placeholder="Teléfono" required="true"/>
+		      	<h:inputText id="phoneNumber" value="#{userBeanAdd.phoneNumber}" class="form-control" a:placeholder="Teléfono" required="true"/>
 		        <br></br>
 		        <label for="inputType">Tipo</label>
 				<br></br>
-				<h:selectOneMenu value="#{userBean.grupoName}">
-					<f:selectItem itemValue="Tipo1" itemLabel="Tipo1"/>
-					<f:selectItem itemValue="Tipo2" itemLabel="Tipo2"/>
+				<h:selectOneMenu value="#{userBeanAdd.userGroupID}">
+					<f:selectItem itemValue="1" itemLabel="1"/>
+					<f:selectItem itemValue="2" itemLabel="2"/>
 					<f:selectItem itemValue="Tipo3" itemLabel="Tipo3"/>
 				</h:selectOneMenu>
 		        <br></br>
 				<br></br>	
-		        <h:commandButton id="save" value="Guardar" action="#{userBean.save()}" class="btn btn-lg btn-primary btn-block"/>
+		        <h:commandButton id="save" value="Guardar" action="#{userBeanAdd.save()}" class="btn btn-lg btn-primary btn-block"/>
 		      </div>
 		    </div>
 		 	
