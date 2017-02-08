@@ -9,14 +9,6 @@
     <url-pattern>/loginServlet</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>registry</servlet-name>
-    <servlet-class>negocio.RegistryServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>registry</servlet-name>
-    <url-pattern>/RegistryServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
     <servlet-name>LogoutServlet</servlet-name>
     <servlet-class>negocio.LogoutServlet</servlet-class>
   </servlet>
