@@ -1,4 +1,4 @@
-package negocio;
+package service;
 
 import java.util.List;
 
@@ -7,15 +7,15 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import Model.MeasurableObject;
-import daos.DAOException;
-import daos.MeasurableObjectBean;
-import daos.MeasurableObjectBeanRemote;
+import entity.MeasurableObject;
+import dao.DAOException;
+import dao.MeasurableObjectBean;
+import dao.MeasurableObjectBeanRemote;
 
 
-@ManagedBean(name="evaluationObjectBeanList")
+@ManagedBean(name="measurableObjectBeanList")
 @RequestScoped
-public class EvaluationObjectBeanList {
+public class MeasurableObjectBeanList {
 	
     
 	private List<MeasurableObject> listObjects;

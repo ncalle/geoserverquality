@@ -1,8 +1,9 @@
-package daos;
+package dao;
 
 import java.util.List;
 import javax.ejb.Remote;
-import Model.User;
+
+import entity.User;
 
 @Remote
 public interface UserBeanRemote {

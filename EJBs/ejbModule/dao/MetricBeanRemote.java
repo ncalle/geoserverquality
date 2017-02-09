@@ -1,9 +1,9 @@
-package daos;
+package dao;
 
 import java.util.List;
 import javax.ejb.Remote;
 
-import Model.Metric;
+import entity.Metric;
 
 @Remote
 public interface MetricBeanRemote {

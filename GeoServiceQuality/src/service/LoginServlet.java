@@ -1,4 +1,4 @@
-package negocio;
+package service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import Model.User;
-import daos.UserBeanRemote;
+import entity.User;
+import dao.UserBeanRemote;
 
 
 public class LoginServlet extends HttpServlet{

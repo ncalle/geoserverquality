@@ -1,8 +1,9 @@
-package daos;
+package dao;
 
 import java.util.List;
 import javax.ejb.Remote;
-import Model.MeasurableObject;
+
+import entity.MeasurableObject;
 
 @Remote
 public interface MeasurableObjectBeanRemote {

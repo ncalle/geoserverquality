@@ -1,4 +1,4 @@
-package negocio;
+package service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import Model.User;
-import daos.UserBeanRemote;
+import entity.User;
+import dao.UserBeanRemote;
 
 
 public class UserServlet extends HttpServlet{
@@ -40,7 +40,7 @@ public class UserServlet extends HttpServlet{
 				if(session!=null) {
 					session.setAttribute("userList", userList);
 				}
-	        	RequestDispatcher rd = request.getRequestDispatcher("users.jsp");
+	        	request.getRequestDispatcher("users.jsp");
 	        	response.sendRedirect(request.getContextPath() + "/users.jsp");
 	        }
 	        				

@@ -14,7 +14,7 @@
 	<title>Objetos de evaluación</title> 
 
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
-	<link href="./css/evaluation_objects.css" rel="stylesheet"/>
+	<link href="./css/measurable_objects.css" rel="stylesheet"/>
 </head>
 
 <h:body>
@@ -26,7 +26,7 @@
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Home</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="${request.contextPath}/evaluationObjectList.xhtml">Objetos de evaluación<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="${request.contextPath}/measurableObjectList.xhtml">Objetos de evaluación<span class="sr-only">(current)</span></a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${request.contextPath}/profileList.xhtml">Perfiles</a>
@@ -61,7 +61,7 @@
 	      	<div class="panel panel-default">
 			  <div class="panel-body">
 	      	
-		      	<h:dataTable styleClass="table table-striped" value="#{evaluationObjectBeanList.listObjects}" var="item">
+		      	<h:dataTable styleClass="table table-striped" value="#{measurableObjectBeanList.listObjects}" var="item">
 					<h:column>
 						<f:facet name="header"> Nombre</f:facet>
 						 <h:outputText value="#{item.measurableObjectName}" />
@@ -94,7 +94,7 @@
 		<div class="panel panel-default">
 		  <div class="panel-body">
 		  
-	  		<a class="btn btn-default" href="${request.contextPath}/evaluationObjectAdd.xhtml">Agregar
+	  		<a class="btn btn-default" href="${request.contextPath}/measurableObjectAdd.xhtml">Agregar
 	  		<span class="glyphicon glyphicon-plus" aria-hidden="true" ></span></a>
 	  		
 	  		<a class="btn btn-default" href="${request.contextPath}/welcome.jsp">Editar
