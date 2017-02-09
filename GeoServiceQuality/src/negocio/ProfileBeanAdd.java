@@ -1,5 +1,7 @@
 package negocio;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -7,8 +9,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
+import Model.Metric;
 import Model.Profile;
 import daos.DAOException;
+import daos.MetricBean;
+import daos.MetricBeanRemote;
 import daos.ProfileBean;
 import daos.ProfileBeanRemote;
 
@@ -20,14 +25,20 @@ public class ProfileBeanAdd {
     private String name;
     private String granularity;
     private boolean message;
+    private List<Metric> listMetrics, listMetricsAdd;
     
 	@EJB
     private ProfileBeanRemote moDao = new ProfileBean();
+	
+	@EJB
+    private MetricBeanRemote metricsDao = new MetricBean();
 	
 	
 	@PostConstruct
 	private void init()
 	{
+		listMetrics = metricsDao.list();
+		System.out.println("listMetrics: " + listMetrics.size());
 	}
 	
 
@@ -56,6 +67,22 @@ public class ProfileBeanAdd {
 	public boolean isMessage() {
 		return message;
 	}
+	
+	public List<Metric> getListMetrics() {
+		return listMetrics;
+	}
+	
+	public void setListMetrics(List<Metric> listMetrics) {
+		this.listMetrics = listMetrics;
+	}
+	
+	public void setListMetricsAdd(List<Metric> listMetricsAdd) {
+		this.listMetricsAdd = listMetricsAdd;
+	}
+	
+	public List<Metric> getListMetricsAdd() {
+		return listMetricsAdd;
+	}
     
     public void save() throws DAOException{
     	
@@ -81,4 +108,6 @@ public class ProfileBeanAdd {
     	} 
 
 	}
+    
+
 }
