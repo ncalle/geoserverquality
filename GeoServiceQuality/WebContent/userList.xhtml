@@ -11,10 +11,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 	
-	<title>Objetos de evaluación</title> 
+	<title>Datos de Usuarios</title> 
 
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
-	<link href="./css/evaluation_objects.css" rel="stylesheet"/>
+	<link href="./css/users.css" rel="stylesheet"/>
 </head>
 
 <h:body>
@@ -25,8 +25,8 @@
         <li class="nav-item">
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Home</a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="${request.contextPath}/evaluationObjectList.xhtml">Objetos de evaluación<span class="sr-only">(current)</span></a>
+        <li class="nav-item">
+          <a class="nav-link" href="${request.contextPath}/measurableObjectList.xhtml">Objetos de evaluación</a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${request.contextPath}/profileList.xhtml">Perfiles</a>
@@ -37,8 +37,8 @@
           <li class="nav-item">
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Reportes</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/users.jsp">Usuarios</a>
+        <li class="nav-item active">
+          <a class="nav-link" href="${request.contextPath}/userList.xhtml">Usuarios<span class="sr-only">(current)</span></a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Acerca</a>
@@ -54,38 +54,48 @@
     <div class="container">
     
     	<h:form id="evobject" class="form-signin" action="" method="post">
-	    	<h2 class="form-signin-heading">Objetos de evaluación</h2>
+	    	<h2 class="form-signin-heading">Datos de Usuarios</h2>
 	
 	      	<hr></hr>
 	      	
 	      	<div class="panel panel-default">
 			  <div class="panel-body">
 	      	
-		      	<h:dataTable styleClass="table table-striped" value="#{evaluationObjectBeanList.listObjects}" var="item">
+		      	<h:dataTable styleClass="table table-striped" value="#{userBeanList.listUsers}" var="item">
 					<h:column>
-						<f:facet name="header"> Nombre</f:facet>
-						 <h:outputText value="#{item.measurableObjectName}" />
+						<f:facet name="header"> ID</f:facet>
+						 <h:outputText value="#{item.getUserId()}" />
 					</h:column>
 					
 					<h:column>
-						<f:facet name="header"> Descripción</f:facet>
-						 <h:outputText value="#{item.measurableObjectDescription}" />
+						<f:facet name="header"> Institución</f:facet>
+						 <h:outputText value="#{item.getInstitutionName()}" />
 					</h:column>
 							
 					<h:column>
+						<f:facet name="header"> Email</f:facet>
+						<h:outputText value="#{item.getEmail()}" />
+					</h:column>
+					
+					<h:column>
 						<f:facet name="header"> Tipo</f:facet>
-						<h:outputText value="#{item.measurableObjectType}" />
+						<h:outputText value="#{item.getUserGroupName()}" />
 					</h:column>
 					
 					<h:column>
-						<f:facet name="header"> Tipo de Servicio</f:facet>
-						<h:outputText value="#{item.measurableObjectServicesType}" />
+						<f:facet name="header"> Nombre</f:facet>
+						<h:outputText value="#{item.getFirstName()}" />
 					</h:column>
 					
 					<h:column>
-						<f:facet name="header"> URL</f:facet>
-						<h:outputText value="#{item.measurableObjectURL}" />
+						<f:facet name="header"> Apellido</f:facet>
+						<h:outputText value="#{item.getLastName()}" />
 					</h:column>
+
+					<h:column>
+						<f:facet name="header"> Telefono</f:facet>
+						<h:outputText value="#{item.getPhoneNumber()}" />
+					</h:column>										
 				</h:dataTable>
 					
         </div>
@@ -94,7 +104,7 @@
 		<div class="panel panel-default">
 		  <div class="panel-body">
 		  
-	  		<a class="btn btn-default" href="${request.contextPath}/evaluationObjectAdd.xhtml">Agregar
+	  		<a class="btn btn-default" href="${request.contextPath}/userAdd.xhtml">Agregar
 	  		<span class="glyphicon glyphicon-plus" aria-hidden="true" ></span></a>
 	  		
 	  		<a class="btn btn-default" href="${request.contextPath}/welcome.jsp">Editar

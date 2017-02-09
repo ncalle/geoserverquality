@@ -1,4 +1,4 @@
-package negocio;
+package service;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -7,15 +7,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
-import Model.MeasurableObject;
-import daos.DAOException;
-import daos.MeasurableObjectBean;
-import daos.MeasurableObjectBeanRemote;
+import entity.MeasurableObject;
+import dao.DAOException;
+import dao.MeasurableObjectBean;
+import dao.MeasurableObjectBeanRemote;
 
 
-@ManagedBean(name="evaluationObjectBean")
+@ManagedBean(name="measurableObjectBean")
 @RequestScoped
-public class EvaluationObjectBean {
+public class MeasurableObjectBeanAdd {
 	
     private String name;
     private String description;

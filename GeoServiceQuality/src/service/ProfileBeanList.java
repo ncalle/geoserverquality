@@ -1,4 +1,4 @@
-package negocio;
+package service;
 
 import java.util.List;
 
@@ -7,10 +7,10 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import Model.Profile;
-import daos.DAOException;
-import daos.ProfileBean;
-import daos.ProfileBeanRemote;
+import entity.Profile;
+import dao.DAOException;
+import dao.ProfileBean;
+import dao.ProfileBeanRemote;
 
 
 @ManagedBean(name="profileBeanList")

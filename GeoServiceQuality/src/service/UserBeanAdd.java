@@ -1,4 +1,4 @@
-package negocio;
+package service;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -7,10 +7,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
-import Model.User;
-import daos.UserBeanRemote;
-import daos.UserBean;
-import daos.DAOException;
+import entity.User;
+import dao.UserBeanRemote;
+import dao.UserBean;
+import dao.DAOException;
 
 
 @ManagedBean(name="userBeanAdd")

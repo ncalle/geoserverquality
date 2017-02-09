@@ -30,7 +30,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/evaluationObjectList.xhtml">Objetos de evaluación</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/measurableObjectList.xhtml">Objetos de evaluación</a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/profileList.xhtml">Perfiles</a>
@@ -42,7 +42,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Reportes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="userServlet">Usuarios</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/userList.xhtml">Usuarios</a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Acerca</a>

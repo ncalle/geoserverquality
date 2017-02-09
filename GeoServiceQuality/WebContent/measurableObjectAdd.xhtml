@@ -14,7 +14,7 @@
 	<title>Ingresar Objetos de evaluación</title> 
 
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
-	<link href="./css/evaluation_objects_add.css" rel="stylesheet"/>
+	<link href="./css/measurable_objects_add.css" rel="stylesheet"/>
 </head>
 
 <h:body>
@@ -26,7 +26,7 @@
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Home</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="${request.contextPath}/evaluationObjectList.xhtml">Objetos de evaluación<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="${request.contextPath}/measurableObjectList.xhtml">Objetos de evaluación<span class="sr-only">(current)</span></a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${request.contextPath}/profileList.xhtml">Perfiles</a>
@@ -38,7 +38,7 @@
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Reportes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="userServlet">Usuarios</a>
+          <a class="nav-link" href="${request.contextPath}/userList.xhtml">Usuarios</a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Acerca</a>
@@ -62,22 +62,22 @@
 			  <div class="panel-body">
 	      	
 		      	<label for="inputName" class="sr-only">Nombre</label>
-		      	<h:inputText id="name" value="#{evaluationObjectBean.name}" class="form-control" a:placeholder="Nombre" required="autofocus"/>
+		      	<h:inputText id="name" value="#{measurableObjectBean.name}" class="form-control" a:placeholder="Nombre" required="autofocus"/>
 		        <br></br>
 		        
 		        <label for="inputDescription" class="sr-only">Descripción</label>
-		        <h:inputText id="descrip" value="#{evaluationObjectBean.description}" class="form-control" a:placeholder="Descripción" required="required"/>
+		        <h:inputText id="descrip" value="#{measurableObjectBean.description}" class="form-control" a:placeholder="Descripción" required="required"/>
 		        <br></br>
 		        
 		        <label for="inputUrl" class="sr-only">Url del servicio</label>
-		        <h:inputText id="url" value="#{evaluationObjectBean.url}" class="form-control" a:placeholder="Url del servicio" required="required"/>
+		        <h:inputText id="url" value="#{measurableObjectBean.url}" class="form-control" a:placeholder="Url del servicio" required="required"/>
 		        <br></br>
 		        
 		        
 		        
 		        <label for="inputType">Tipo de servicio  </label>
 		        <br></br>
-				<h:selectOneMenu value="#{evaluationObjectBean.type}">
+				<h:selectOneMenu value="#{measurableObjectBean.type}">
 					<f:selectItem itemValue="WMS" itemLabel="WMS"/>
 					<f:selectItem itemValue="WFS" itemLabel="WFS"/>
 					<f:selectItem itemValue="CSW" itemLabel="CSW"/>
@@ -85,7 +85,7 @@
 				<br></br>
 				<br></br>
 					
-		       <h:commandButton id="save" value="Guardar" action="#{evaluationObjectBean.save()}" class="btn btn-lg btn-primary btn-block"/>
+		       <h:commandButton id="save" value="Guardar" action="#{measurableObjectBean.save()}" class="btn btn-lg btn-primary btn-block"/>
 		        
 		       <h:messages globalOnly="true" />
         </div>
@@ -94,7 +94,7 @@
 	 	<div class="panel panel-default">
 		  <div class="panel-body">
 		  
-	  		<a class="btn btn-default" href="${request.contextPath}/evaluationObjectList.xhtml">Volver
+	  		<a class="btn btn-default" href="${request.contextPath}/measurableObjectList.xhtml">Volver
 	  		<span class="glyphicon glyphicon-arrow-left" aria-hidden="true" ></span></a>
 		
 		  </div>

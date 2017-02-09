@@ -1,4 +1,4 @@
-package negocio;
+package service;
 
 import java.util.List;
 
@@ -9,13 +9,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
-import Model.Metric;
-import Model.Profile;
-import daos.DAOException;
-import daos.MetricBean;
-import daos.MetricBeanRemote;
-import daos.ProfileBean;
-import daos.ProfileBeanRemote;
+import entity.Metric;
+import entity.Profile;
+import dao.DAOException;
+import dao.MetricBean;
+import dao.MetricBeanRemote;
+import dao.ProfileBean;
+import dao.ProfileBeanRemote;
 
 
 @ManagedBean(name="profileBean")
