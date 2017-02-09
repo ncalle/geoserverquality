@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Model.User;
-import daos.DAOFactory;
 import daos.UserBeanRemote;
 
 
@@ -44,7 +43,7 @@ public class LoginServlet extends HttpServlet{
 					session.setAttribute("name", foundUser.getFirstName() + ' ' + foundUser.getLastName());
 					
 				}
-	        	RequestDispatcher rd = request.getRequestDispatcher("welcome.jsp");
+	        	request.getRequestDispatcher("welcome.jsp");
 	        	response.sendRedirect(request.getContextPath() + "/welcome.jsp");
 	        }
 	        				
