@@ -12,6 +12,8 @@ import javax.faces.context.FacesContext;
 import Model.Metric;
 import Model.Profile;
 import daos.DAOException;
+import daos.MetricBean;
+import daos.MetricBeanRemote;
 import daos.ProfileBean;
 import daos.ProfileBeanRemote;
 
@@ -28,10 +30,15 @@ public class ProfileBeanAdd {
 	@EJB
     private ProfileBeanRemote moDao = new ProfileBean();
 	
+	@EJB
+    private MetricBeanRemote metricsDao = new MetricBean();
+	
 	
 	@PostConstruct
 	private void init()
 	{
+		listMetrics = metricsDao.list();
+		System.out.println("listMetrics: " + listMetrics.size());
 	}
 	
 
