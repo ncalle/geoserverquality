@@ -53,7 +53,7 @@
 
     <div class="container">
     
-    	<h:form id="evobject" class="form-signin" action="" method="post">
+    	<h:form id="users" class="form-signin" action="" method="post">
 	    	<h2 class="form-signin-heading">Datos de Usuarios</h2>
 	
 	      	<hr></hr>
@@ -116,7 +116,26 @@
 		  </div>
 		</div>
      </h:form>
-	  
+    </div>
+
+    <div class="container">
+    	<h:form id="evobject" class="form-signin" action="" method="post">
+	    	<h2 class="form-signin-heading">Objetos Medibles - Usuario ID: xxxx</h2>
+	
+	      	<hr></hr>     
+     	 	<div class="panel panel-default">
+				<div class="panel-body">
+	      	
+		      	  <h:dataTable styleClass="table table-striped" value="#{measurableObjectBeanList.listObjects}" var="item">				
+					<h:column>
+						<f:facet name="header"> URL</f:facet>
+						<h:outputText value="#{item.measurableObjectURL}" />
+					</h:column>
+				  </h:dataTable>
+					
+        	    </div>
+		    </div>
+        </h:form>		    
 	</div> 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
