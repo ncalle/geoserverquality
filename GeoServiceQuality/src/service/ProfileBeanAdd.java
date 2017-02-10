@@ -1,5 +1,6 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -25,7 +26,8 @@ public class ProfileBeanAdd {
     private String name;
     private String granularity;
     private boolean message;
-    private List<Metric> listMetrics, listMetricsAdd;
+    private Integer selectedMetricId=-1;
+    private List<Metric> listMetrics, listMetricsAdd = new ArrayList<>();
     
 	@EJB
     private ProfileBeanRemote moDao = new ProfileBean();
@@ -33,12 +35,19 @@ public class ProfileBeanAdd {
 	@EJB
     private MetricBeanRemote metricsDao = new MetricBean();
 	
+
+	public ProfileBeanAdd() {
+		listMetricsAdd = new ArrayList<>();
+		listMetrics = metricsDao.list();
+		System.out.println("ProfileBeanAdd.. ");
+	}
 	
-	@PostConstruct
+	
 	private void init()
 	{
+		listMetricsAdd = new ArrayList<>();
 		listMetrics = metricsDao.list();
-		System.out.println("listMetrics: " + listMetrics.size());
+		System.out.println("init.. ");
 	}
 	
 
@@ -47,7 +56,6 @@ public class ProfileBeanAdd {
     }
 
     public void setName(String name) {
-    	System.out.println("setName: " + name);
         this.name = name;
     }
     
@@ -56,7 +64,6 @@ public class ProfileBeanAdd {
 	}
 	
 	public void setGranularity(String granularity) {
-		System.out.println("setGranularity: " + granularity);
 		this.granularity = granularity;
 	}
 	
@@ -73,16 +80,28 @@ public class ProfileBeanAdd {
 	}
 	
 	public void setListMetrics(List<Metric> listMetrics) {
+		System.out.println("setListMetrics: " + listMetrics);
 		this.listMetrics = listMetrics;
 	}
 	
 	public void setListMetricsAdd(List<Metric> listMetricsAdd) {
+		System.out.println("setListMetricsAdd: " + listMetricsAdd);
 		this.listMetricsAdd = listMetricsAdd;
 	}
 	
 	public List<Metric> getListMetricsAdd() {
 		return listMetricsAdd;
 	}
+	
+	public void setSelectedMetricId(Integer selectedMetricId) {
+		System.out.println("setSelectedMetricId: " + selectedMetricId);
+		this.selectedMetricId = selectedMetricId;
+	}
+	
+	public Integer getSelectedMetricId() {
+		return selectedMetricId;
+	}
+
     
     public void save() throws DAOException{
     	
@@ -107,6 +126,21 @@ public class ProfileBeanAdd {
     		e.printStackTrace();
     	} 
 
+	}
+    
+    public void addMetric() throws DAOException{
+    	
+    	if(selectedMetricId!=-1){
+    		for(int i=0; i<listMetrics.size(); i++){
+    			if(listMetrics.get(i).getMetricID()==selectedMetricId){
+    				Metric selectedMetric = new Metric();
+    				selectedMetric.setMetricID(listMetrics.get(i).getMetricID());
+    				selectedMetric.setName(listMetrics.get(i).getName());
+    				listMetricsAdd.add(selectedMetric);
+    			}
+    		}
+    	}
+    	
 	}
     
 
