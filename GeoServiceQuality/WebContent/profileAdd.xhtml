@@ -98,14 +98,12 @@
 			    
 				    <label for="inputType">Seleccione una métrica</label>
 			        <br></br>
-					<h:selectOneMenu >
-						<f:selectItem itemValue="Metadatos" itemLabel="Metadatos"/>
-						<f:selectItem itemValue="Seguridad" itemLabel="Seguridad"/>
-						<f:selectItem itemValue="Rendimiento" itemLabel="Rendimiento"/>
+					<h:selectOneMenu value="#{profileBean.selectedMetricId}">
+						<f:selectItems value="#{profileBean.listMetrics}" var="m" itemValue="#{m.metricID}" itemLabel="#{m.name}" />
 					</h:selectOneMenu>
 					<br></br>
 					<br></br>
-			    	<h:commandButton id="add" value="Agregar Métrica"  class="btn btn-lg btn-primary btn-block"/>
+			    	<h:commandButton id="add" value="Agregar Métrica" action="#{profileBean.addMetric()}"  class="btn btn-lg btn-primary btn-block"/>
 		          
 		        </div>
 			    </div>
