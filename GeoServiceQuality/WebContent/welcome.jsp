@@ -36,7 +36,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/profileList.xhtml">Perfiles</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Evaluaciones</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/evaluationList.xhtml">Evaluaciones</a>
         </li>
           <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Reportes</a>
