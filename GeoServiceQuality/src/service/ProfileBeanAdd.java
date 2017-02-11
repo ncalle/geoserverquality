@@ -110,6 +110,14 @@ public class ProfileBeanAdd {
     	object.setGranurality(granularity);
     	object.setIsWeightedFlag(false);
     	
+    	/*String listId = "";
+     	for(int i=0; i<listMetricsAdd.size(); i++){
+			int id = listMetricsAdd.get(i).getMetricID();
+			listId += id + ",";
+		}*/
+     	
+     	object.setMetricIds(""+selectedMetricId);
+    	
     	System.out.println("save.. " + object);
     	
     	try{
