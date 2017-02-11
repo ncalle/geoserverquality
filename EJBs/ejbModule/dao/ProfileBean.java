@@ -77,7 +77,6 @@ public class ProfileBean implements ProfileBeanRemote {
 
             statement.setString(1, profile.getName());
 			statement.setString(2, profile.getGranurality());
-			//statement.setString(3, profile.getMetricKeys().toString());
 			statement.setString(3, profile.getMetricIds()); 
 			
             statement.executeQuery();
