@@ -28,4 +28,10 @@
   	<servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
+       
+  <!--Current project stage. When it is set to 'Development' Primefaces give a lot of debug information on the screen.-->
+   <context-param>
+       <param-name>javax.faces.PROJECT_STAGE</param-name>
+       <param-value>Development</param-value>
+   </context-param>
 </web-app>

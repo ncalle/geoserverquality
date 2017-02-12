@@ -1,148 +1,144 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://java.sun.com/jsf/core">
-      
-<head>
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
 
- 	<meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-	
-	<title>Datos de Usuarios</title> 
+<h:head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Datos de Usuarios</title>
 
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
-	<link href="./css/form_list.css" rel="stylesheet"/>
-</head>
+	<link rel="stylesheet"
+		href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" />
+	<link href="./css/form_list.css" rel="stylesheet" />
+</h:head>
 
 <h:body>
 
-      <nav class="navbar navbar-static-top navbar-dark bg-inverse navbar-inverse">
-      <a class="navbar-brand" href="#">GeoServiceQuality</a>
-      <ul class="nav navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/welcome.jsp">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/measurableObjectList.xhtml">Objetos de evaluación</a>
-        </li>
-         <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/profileList.xhtml">Perfiles</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/welcome.jsp">Evaluaciones</a>
-        </li>
-          <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/welcome.jsp">Reportes</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="${request.contextPath}/userList.xhtml">Usuarios<span class="sr-only">(current)</span></a>
-        </li>
-         <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/welcome.jsp">Acerca</a>
-        </li>
-      
-       </ul>
-       <ul class="nav navbar-nav navbar-right">
-	      <li><a href="${pageContext.request.contextPath}/logoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
-	  </ul>
-    </nav>
+	<nav
+		class="navbar navbar-static-top navbar-dark bg-inverse navbar-inverse">
+		<a class="navbar-brand" href="#">GeoServiceQuality</a>
+		<ul class="nav navbar-nav">
+			<li class="nav-item"><a class="nav-link"
+				href="${request.contextPath}/welcome.jsp">Home</a></li>
+			<li class="nav-item"><a class="nav-link"
+				href="${request.contextPath}/measurableObjectList.xhtml">Objetos
+					de evaluación</a></li>
+			<li class="nav-item"><a class="nav-link"
+				href="${request.contextPath}/profileList.xhtml">Perfiles</a></li>
+			<li class="nav-item"><a class="nav-link"
+				href="${request.contextPath}/welcome.jsp">Evaluaciones</a></li>
+			<li class="nav-item"><a class="nav-link"
+				href="${request.contextPath}/welcome.jsp">Reportes</a></li>
+			<li class="nav-item active"><a class="nav-link"
+				href="${request.contextPath}/userList.xhtml">Usuarios<span
+					class="sr-only">(current)</span></a></li>
+			<li class="nav-item"><a class="nav-link"
+				href="${request.contextPath}/welcome.jsp">Acerca</a></li>
 
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="${pageContext.request.contextPath}/logoutServlet"><span
+					class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+		</ul>
+	</nav>
 
-    <div class="container">
-    
-    	<h:form id="users" class="form-signin" action="" method="post">
-	    	<h2 class="form-signin-heading">Datos de Usuarios</h2>
-	
-	      	<hr></hr>
-	      	
-	      	<div class="panel panel-default">
-			  <div class="panel-body">
-	      	
-		      	<h:dataTable styleClass="table table-striped" value="#{userBeanList.listUsers}" var="item">
-					<h:column>
-						<f:facet name="header"> ID</f:facet>
-						 <h:outputText value="#{item.getUserId()}" />
-					</h:column>
-					
-					<h:column>
-						<f:facet name="header"> Institución</f:facet>
-						 <h:outputText value="#{item.getInstitutionName()}" />
-					</h:column>
-							
-					<h:column>
-						<f:facet name="header"> Email</f:facet>
-						<h:outputText value="#{item.getEmail()}" />
-					</h:column>
-					
-					<h:column>
-						<f:facet name="header"> Tipo</f:facet>
-						<h:outputText value="#{item.getUserGroupName()}" />
-					</h:column>
-					
-					<h:column>
-						<f:facet name="header"> Nombre</f:facet>
-						<h:outputText value="#{item.getFirstName()}" />
-					</h:column>
-					
-					<h:column>
-						<f:facet name="header"> Apellido</f:facet>
-						<h:outputText value="#{item.getLastName()}" />
-					</h:column>
+	<div class="container">
 
-					<h:column>
-						<f:facet name="header"> Telefono</f:facet>
-						<h:outputText value="#{item.getPhoneNumber()}" />
-					</h:column>										
-				</h:dataTable>
-					
-        </div>
-		</div>
-		 	
-		<div class="panel panel-default">
-		  <div class="panel-body">
-		  
-	  		<a class="btn btn-default" href="${request.contextPath}/userAdd.xhtml">Agregar
-	  		<span class="glyphicon glyphicon-plus" aria-hidden="true" ></span></a>
-	  		
-	  		<a class="btn btn-default" href="${request.contextPath}/welcome.jsp">Editar
-	  		<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-	  	
-	  		<a class="btn btn-default" href="${request.contextPath}/welcome.jsp">Eliminar
-	  		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-		
-		  </div>
-		</div>
-     </h:form>
-    </div>
+		<h:form id="users" class="form-signin" action="" method="post">
+			<h2 class="form-signin-heading">Datos de Usuarios</h2>
 
-    <div class="container">
-    	<h:form id="evobject" class="form-signin" action="" method="post">
-	    	<h2 class="form-signin-heading">Objetos Medibles - Usuario ID: xxxx</h2>
-	
-	      	<hr></hr>     
-     	 	<div class="panel panel-default">
+			<hr></hr>
+
+			<div class="panel panel-default">
 				<div class="panel-body">
-	      	
-		      	  <h:dataTable styleClass="table table-striped" value="#{measurableObjectBeanList.listObjects}" var="item">				
-					<h:column>
-						<f:facet name="header"> URL</f:facet>
-						<h:outputText value="#{item.measurableObjectURL}" />
-					</h:column>
-				  </h:dataTable>
-					
-        	    </div>
-		    </div>
-        </h:form>		    
-	</div> 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-    <script src="../../assets/js/vendor/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-    
+					<p:dataTable value="#{userBeanList.listUsers}" var="item">
+						<p:column headerText="ID" sortBy="#{item.getUserId()}">
+							<h:outputText value="#{item.getUserId()}" />
+						</p:column>
+
+						<p:column headerText="Institución"
+							sortBy="#{item.getInstitutionName()}">
+							<h:outputText value="#{item.getInstitutionName()}" />
+						</p:column>
+
+						<p:column headerText="Email" sortBy="#{item.getEmail()}">
+							<h:outputText value="#{item.getEmail()}" />
+						</p:column>
+
+						<p:column headerText="Tipo" sortBy="#{item.getUserGroupName()}">
+							<h:outputText value="#{item.getUserGroupName()}" />
+						</p:column>
+
+						<p:column headerText="Nombre" sortBy="#{item.getFirstName()}">
+							<h:outputText value="#{item.getFirstName()}" />
+						</p:column>
+
+						<p:column headerText="Apellido" sortBy="#{item.getLastName()}">
+							<h:outputText value="#{item.getLastName()}" />
+						</p:column>
+
+						<p:column headerText="Telefono" sortBy="#{item.getPhoneNumber()}">
+							<h:outputText value="#{item.getPhoneNumber()}" />
+						</p:column>
+
+					</p:dataTable>
+
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+					<a class="btn btn-default"
+						href="${request.contextPath}/userAdd.xhtml">Agregar <span
+						class="glyphicon glyphicon-plus" aria-hidden="true"></span></a> <a
+						class="btn btn-default" href="${request.contextPath}/welcome.jsp">Editar
+						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+					</a> <a class="btn btn-default"
+						href="${request.contextPath}/welcome.jsp">Eliminar <span
+						class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+
+				</div>
+			</div>
+		</h:form>
+	</div>
+
+	<div class="container">
+		<h:form id="evobject" class="form-signin" action="" method="post">
+			<h2 class="form-signin-heading">Objetos Medibles - Usuario ID:
+				xxxx</h2>
+
+			<hr></hr>
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+					<h:dataTable styleClass="table table-striped"
+						value="#{measurableObjectBeanList.listObjects}" var="item">
+						<h:column>
+							<f:facet name="header"> URL</f:facet>
+							<h:outputText value="#{item.measurableObjectURL}" />
+						</h:column>
+					</h:dataTable>
+
+				</div>
+			</div>
+		</h:form>
+	</div>
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	<script src="../../assets/js/vendor/jquery.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+	<script src="../../dist/js/bootstrap.min.js"></script>
+	<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
 </h:body>
 </html>
