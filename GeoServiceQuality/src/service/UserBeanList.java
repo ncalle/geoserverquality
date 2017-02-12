@@ -19,6 +19,8 @@ public class UserBeanList {
 	    
 	private List<User> listUsers;
 	
+	private User selectedUser;
+	
 	@EJB
     private UserBeanRemote uDao = new UserBean();
 		
@@ -41,5 +43,22 @@ public class UserBeanList {
 	public void setListUsers(List<User> listUsers) {
 		this.listUsers = listUsers;
 	}
+	
+    public User getSelectedUser() {
+        return selectedUser;
+    }
+ 
+    public void setSelectedUser(User selectedUser) {
+        this.selectedUser = selectedUser;
+    }
+      
+    public void deleteUser() {
+    	
+    	System.out.println("Usuario a borrar: "+ selectedUser);
+    	
+    	uDao.delete(selectedUser);    	
+    	listUsers.remove(selectedUser);
+        selectedUser = null;
+    }
 
 }
