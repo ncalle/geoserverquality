@@ -49,9 +49,12 @@ public class UserBeanList {
     }
  
     public void setSelectedUser(User selectedUser) {
-        this.selectedUser = selectedUser;
+    	System.out.println("Usuario a actualizar: "+ selectedUser);
+    	
+    	this.selectedUser = selectedUser;
+    	uDao.update(selectedUser);
     }
-      
+    
     public void deleteUser() {
     	
     	System.out.println("Usuario a borrar: "+ selectedUser);

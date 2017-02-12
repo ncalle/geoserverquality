@@ -16,5 +16,7 @@ public interface UserBeanRemote {
 
     public void create(User user) throws IllegalArgumentException, DAOException;
 
+    public void update(User user) throws DAOException;
+    
     public void delete(User user) throws DAOException;
 }

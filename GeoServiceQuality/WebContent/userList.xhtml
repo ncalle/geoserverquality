@@ -51,54 +51,69 @@
 				<h2 class="form-signin-heading">Datos de Usuarios</h2>
 
 				<hr></hr>
+				<p:dataTable id="users" value="#{userBeanList.listUsers}" var="item"
+					styleClass="userTable"
+					rowKey="#{item.getUserId()}"
+					selection="#{userBeanList.selectedUser}" selectionMode="single"
+					style="margin-bottom:40" rows="10" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					widgetVar="50" editable="true">
 
-				<div class="panel panel-default">
-					<div class="panel-body">
+					<p:column headerText="ID" sortBy="#{item.getUserId()}">
+						<h:outputText value="#{item.getUserId()}" />
+					</p:column>
 
-						<p:dataTable id="users" value="#{userBeanList.listUsers}" var="item" 
-							rowKey="#{item.getUserId()}" selection="#{userBeanList.selectedUser}" selectionMode="single"
-							style="margin-bottom:20px" rows="10" paginator="true"
-							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-							rowsPerPageTemplate="5,10,15">
+					<p:column headerText="Institución" sortBy="#{item.institutionName}">
+           				<p:cellEditor>
+               				<f:facet name="output"><h:outputText value="#{item.institutionName}" /></f:facet>
+               				<f:facet name="input"><p:inputText id="institutionNameInput" value="#{item.institutionName}" style="width:100%"/></f:facet>
+           				</p:cellEditor>						
+					</p:column>
 
-							<p:column headerText="ID" sortBy="#{item.getUserId()}">
-								<h:outputText value="#{item.getUserId()}" />
-							</p:column>
+					<p:column headerText="Email" sortBy="#{item.email}">
+           				<p:cellEditor>
+               				<f:facet name="output"><h:outputText value="#{item.email}" /></f:facet>
+               				<f:facet name="input"><p:inputText id="emailInput" value="#{item.email}" style="width:100%"/></f:facet>
+           				</p:cellEditor>						
+					</p:column>
 
-							<p:column headerText="Institución"
-								sortBy="#{item.getInstitutionName()}">
-								<h:outputText value="#{item.getInstitutionName()}" />
-							</p:column>
+					<p:column headerText="Tipo" sortBy="#{item.userGroupName}">
+           				<p:cellEditor>
+               				<f:facet name="output"><h:outputText value="#{item.userGroupName}" /></f:facet>
+               				<f:facet name="input"><p:inputText id="userGroupNameInput" value="#{item.userGroupName}" style="width:100%"/></f:facet>
+           				</p:cellEditor>						
+					</p:column>
 
-							<p:column headerText="Email" sortBy="#{item.getEmail()}">
-								<h:outputText value="#{item.getEmail()}" />
-							</p:column>
+					<p:column headerText="Nombre" sortBy="#{item.firstName}">
+           				<p:cellEditor>
+               				<f:facet name="output"><h:outputText value="#{item.firstName}" /></f:facet>
+               				<f:facet name="input"><p:inputText id="firstNameInput" value="#{item.firstName}" style="width:100%"/></f:facet>
+           				</p:cellEditor>
+					</p:column>
 
-							<p:column headerText="Tipo" sortBy="#{item.getUserGroupName()}">
-								<h:outputText value="#{item.getUserGroupName()}" />
-							</p:column>
+					<p:column headerText="Apellido" sortBy="#{item.lastName}">
+           				<p:cellEditor>
+               				<f:facet name="output"><h:outputText value="#{item.lastName}" /></f:facet>
+               				<f:facet name="input"><p:inputText id="lastNameInput" value="#{item.lastName}" style="width:100%"/></f:facet>
+           				</p:cellEditor>
+					</p:column>
 
-							<p:column headerText="Nombre" sortBy="#{item.getFirstName()}">
-								<h:outputText value="#{item.getFirstName()}" />
-							</p:column>
+					<p:column headerText="Telefono" sortBy="#{item.phoneNumber}">
+           				<p:cellEditor>
+               				<f:facet name="output"><h:outputText value="#{item.phoneNumber}" /></f:facet>
+               				<f:facet name="input"><p:inputText id="phoneNumberInput" value="#{item.phoneNumber}" style="width:100%"/></f:facet>
+           				</p:cellEditor>
+       				</p:column>
 
-							<p:column headerText="Apellido" sortBy="#{item.getLastName()}">
-								<h:outputText value="#{item.getLastName()}" />
-							</p:column>
+                    <p:column headerText="Acciones">  
+                        <p:rowEditor />  
+                    </p:column>		
+				</p:dataTable>
 
-							<p:column headerText="Telefono" sortBy="#{item.getPhoneNumber()}">
-								<h:outputText value="#{item.getPhoneNumber()}" />
-							</p:column>
-
-						</p:dataTable>
-
-						<p:contextMenu for="users">
-							<p:menuitem value="Remover" update="users" icon="ui-icon-close"
-								actionListener="#{userBeanList.deleteUser}" />
-						</p:contextMenu>
-
-					</div>
-				</div>
+				<p:contextMenu for="users">
+					<p:menuitem value="Eliminar" update="users" icon="ui-icon-trash" actionListener="#{userBeanList.deleteUser}" />
+				</p:contextMenu>
 
 				<div class="panel panel-default">
 					<div class="panel-body">
@@ -108,10 +123,7 @@
 							class="glyphicon glyphicon-plus" aria-hidden="true"></span></a> <a
 							class="btn btn-default" href="${request.contextPath}/welcome.jsp">Editar
 							<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-						</a> <a class="btn btn-default"
-							href="${request.contextPath}/welcome.jsp">Eliminar <span
-							class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-
+						</a>
 					</div>
 				</div>
 			</h:form>

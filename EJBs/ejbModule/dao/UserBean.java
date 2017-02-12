@@ -27,6 +27,8 @@ public class UserBean implements UserBeanRemote {
     		"SELECT UserID, InstitutionID, InstitutionName, Email, UserGroupID, UserGroupName, FirstName, LastName, PhoneNumber FROM user_get (?, ?, ?)";
 	private static final String SQL_INSERT =
             "SELECT * FROM user_insert (?, ?, ?, ?, ?, ?, ?)";
+	private static final String SQL_UPDATE =
+        	"SELECT * FROM user_update (?, ?, ?, ?, ?)";
 	private static final String SQL_DELETE =
         	"SELECT * FROM user_delete (?)";
     //private static final String SQL_CHANGE_PASSWORD =
@@ -158,6 +160,31 @@ public class UserBean implements UserBeanRemote {
         }        
     }
 
+    @Override
+    public void update(User user) throws DAOException {
+
+    	Connection connection = null;
+		PreparedStatement statement = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE);
+
+            statement.setInt(1, user.getUserId());
+            statement.setString(2, user.getEmail());
+            //statement.setInt(3, user.getUserGroupID());
+            statement.setString(3, user.getFirstName());
+            statement.setString(4, user.getLastName());
+            statement.setInt(5, user.getPhoneNumber());
+            //statement.setInt(7, user.getInstitutionID());            
+        
+            statement.executeQuery();
+            
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+    
     @Override
     public void delete(User user) throws DAOException {
 
