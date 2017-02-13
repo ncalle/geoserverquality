@@ -52,14 +52,15 @@
 
 				<hr></hr>
 				<p:dataTable id="users" value="#{userBeanList.listUsers}" var="item"
-					styleClass="userTable"
+					selection="#{userBeanList.selectedUser}"
 					rowKey="#{item.getUserId()}"
-					selection="#{userBeanList.selectedUser}" selectionMode="single"
 					style="margin-bottom:40" rows="10" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15"
 					widgetVar="50" editable="true">
-
+					
+					<p:column selectionMode="single" style="width:40px; text-align:center"/>        
+					
 					<p:column headerText="ID" sortBy="#{item.getUserId()}">
 						<h:outputText value="#{item.getUserId()}" />
 					</p:column>
@@ -120,9 +121,7 @@
 
 						<a class="btn btn-default"
 							href="${request.contextPath}/userAdd.xhtml">Agregar <span
-							class="glyphicon glyphicon-plus" aria-hidden="true"></span></a> <a
-							class="btn btn-default" href="${request.contextPath}/welcome.jsp">Editar
-							<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+							class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 						</a>
 					</div>
 				</div>
