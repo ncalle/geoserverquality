@@ -53,76 +53,106 @@
 				<hr></hr>
 				<p:dataTable id="users" value="#{userBeanList.listUsers}" var="item"
 					selection="#{userBeanList.selectedUser}"
-					rowKey="#{item.getUserId()}"
-					style="margin-bottom:40" rows="10" paginator="true"
+					rowKey="#{item.getUserId()}" style="margin-bottom:40" rows="10"
+					paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15"
-					widgetVar="50" editable="true">
-					
-					<p:column selectionMode="single" style="width:40px; text-align:center"/>        
-					
+					rowsPerPageTemplate="5,10,15" widgetVar="50" editable="true">
+
+					<p:column selectionMode="single"
+						style="width:40px; text-align:center" />
+
 					<p:column headerText="ID" sortBy="#{item.getUserId()}">
 						<h:outputText value="#{item.getUserId()}" />
 					</p:column>
 
 					<p:column headerText="Institución" sortBy="#{item.institutionName}">
-           				<p:cellEditor>
-               				<f:facet name="output"><h:outputText value="#{item.institutionName}" /></f:facet>
-               				<f:facet name="input"><p:inputText id="institutionNameInput" value="#{item.institutionName}" style="width:100%"/></f:facet>
-           				</p:cellEditor>						
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.institutionName}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="institutionNameInput"
+									value="#{item.institutionName}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
 
 					<p:column headerText="Email" sortBy="#{item.email}">
-           				<p:cellEditor>
-               				<f:facet name="output"><h:outputText value="#{item.email}" /></f:facet>
-               				<f:facet name="input"><p:inputText id="emailInput" value="#{item.email}" style="width:100%"/></f:facet>
-           				</p:cellEditor>						
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.email}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="emailInput" value="#{item.email}"
+									style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
 
 					<p:column headerText="Tipo" sortBy="#{item.userGroupName}">
-           				<p:cellEditor>
-               				<f:facet name="output"><h:outputText value="#{item.userGroupName}" /></f:facet>
-               				<f:facet name="input"><p:inputText id="userGroupNameInput" value="#{item.userGroupName}" style="width:100%"/></f:facet>
-           				</p:cellEditor>						
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.userGroupName}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="userGroupNameInput"
+									value="#{item.userGroupName}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
 
 					<p:column headerText="Nombre" sortBy="#{item.firstName}">
-           				<p:cellEditor>
-               				<f:facet name="output"><h:outputText value="#{item.firstName}" /></f:facet>
-               				<f:facet name="input"><p:inputText id="firstNameInput" value="#{item.firstName}" style="width:100%"/></f:facet>
-           				</p:cellEditor>
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.firstName}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="firstNameInput" value="#{item.firstName}"
+									style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
 
 					<p:column headerText="Apellido" sortBy="#{item.lastName}">
-           				<p:cellEditor>
-               				<f:facet name="output"><h:outputText value="#{item.lastName}" /></f:facet>
-               				<f:facet name="input"><p:inputText id="lastNameInput" value="#{item.lastName}" style="width:100%"/></f:facet>
-           				</p:cellEditor>
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.lastName}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="lastNameInput" value="#{item.lastName}"
+									style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
 
 					<p:column headerText="Telefono" sortBy="#{item.phoneNumber}">
-           				<p:cellEditor>
-               				<f:facet name="output"><h:outputText value="#{item.phoneNumber}" /></f:facet>
-               				<f:facet name="input"><p:inputText id="phoneNumberInput" value="#{item.phoneNumber}" style="width:100%"/></f:facet>
-           				</p:cellEditor>
-       				</p:column>
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{item.phoneNumber}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="phoneNumberInput" value="#{item.phoneNumber}"
+									style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
 
-                    <p:column headerText="Acciones">  
-                        <p:rowEditor />  
-                    </p:column>		
+					<p:column headerText="Acciones">
+						<p:rowEditor />
+					</p:column>
 				</p:dataTable>
-
-				<p:contextMenu for="users">
-					<p:menuitem value="Eliminar" update="users" icon="ui-icon-trash" actionListener="#{userBeanList.deleteUser}" />
-				</p:contextMenu>
 
 				<div class="panel panel-default">
 					<div class="panel-body">
+						<h:form>
+							<p:button class="btn btn-default" icon="ui-icon-plus"
+								value="Nuevo" outcome="userAdd" />
+							<p:commandButton class="btn btn-default" icon="ui-icon-trash"
+								value="Eliminar" id="deleteUserIcon"
+								actionListener="#{userBeanList.deleteUser}" update="users" />
+						</h:form>
 
-						<a class="btn btn-default"
-							href="${request.contextPath}/userAdd.xhtml">Agregar <span
-							class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-						</a>
+
 					</div>
 				</div>
 			</h:form>
