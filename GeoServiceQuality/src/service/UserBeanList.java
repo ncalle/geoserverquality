@@ -6,7 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
@@ -20,7 +20,7 @@ import dao.UserBeanRemote;
 
 
 @ManagedBean(name="userBeanList")
-@SessionScoped 
+@RequestScoped 
 public class UserBeanList {
 	    
 	private List<User> listUsers;	
