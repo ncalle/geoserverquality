@@ -37,7 +37,6 @@
 						class="sr-only">(current)</span></a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="${request.contextPath}/welcome.jsp">Acerca</a></li>
-
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="${pageContext.request.contextPath}/logoutServlet"><span
@@ -47,91 +46,99 @@
 
 		<div class="container">
 
-			<h:form id="users" class="form-signin" action="" method="post">
+			<h:form id="users" method="post"><p:growl id="msgs" />
 				<h2 class="form-signin-heading">Datos de Usuarios</h2>
-
 				<hr></hr>
-				<p:dataTable id="users" value="#{userBeanList.listUsers}" var="item"
+				<p:dataTable id="users" 
+					value="#{userBeanList.listUsers}" 
+					var="uitem" 
+					tableStyle="table-layout: auto;"
 					selection="#{userBeanList.selectedUser}"
-					rowKey="#{item.getUserId()}" style="margin-bottom:40" rows="10"
-					paginator="true"
+					rowKey="#{uitem.getUserId()}" 
+					style="margin-bottom:40" 
+					rows="5"
+					paginator="true" 
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" widgetVar="50" editable="true">
+					rowsPerPageTemplate="5,10,15" 
+					widgetVar="u" 
+					editable="true">
+
+       				<p:ajax event="rowEdit" listener="#{userBeanList.onRowEdit}" update=":users:msgs" />
 
 					<p:column selectionMode="single"
 						style="width:40px; text-align:center" />
 
-					<p:column headerText="ID" sortBy="#{item.getUserId()}">
-						<h:outputText value="#{item.getUserId()}" />
+					<p:column headerText="ID" sortBy="#{uitem.getUserId()}">
+						<h:outputText value="#{uitem.getUserId()}" />
 					</p:column>
 
-					<p:column headerText="Institución" sortBy="#{item.institutionName}">
+					<p:column headerText="Institución" sortBy="#{uitem.institutionName}">
 						<p:cellEditor>
 							<f:facet name="output">
-								<h:outputText value="#{item.institutionName}" />
+								<h:outputText value="#{uitem.institutionName}" />
 							</f:facet>
 							<f:facet name="input">
 								<p:inputText id="institutionNameInput"
-									value="#{item.institutionName}" style="width:100%" />
+									value="#{uitem.institutionName}" style="width:100%" />
 							</f:facet>
 						</p:cellEditor>
 					</p:column>
 
-					<p:column headerText="Email" sortBy="#{item.email}">
+					<p:column headerText="Email" sortBy="#{uitem.email}">
 						<p:cellEditor>
 							<f:facet name="output">
-								<h:outputText value="#{item.email}" />
+								<h:outputText value="#{uitem.email}" />
 							</f:facet>
 							<f:facet name="input">
-								<p:inputText id="emailInput" value="#{item.email}"
+								<p:inputText id="emailInput" value="#{uitem.email}"
 									style="width:100%" />
 							</f:facet>
 						</p:cellEditor>
 					</p:column>
 
-					<p:column headerText="Tipo" sortBy="#{item.userGroupName}">
+					<p:column headerText="Tipo" sortBy="#{uitem.userGroupName}">
 						<p:cellEditor>
 							<f:facet name="output">
-								<h:outputText value="#{item.userGroupName}" />
+								<h:outputText value="#{uitem.userGroupName}" />
 							</f:facet>
 							<f:facet name="input">
 								<p:inputText id="userGroupNameInput"
-									value="#{item.userGroupName}" style="width:100%" />
+									value="#{uitem.userGroupName}" style="width:100%" />
 							</f:facet>
 						</p:cellEditor>
 					</p:column>
 
-					<p:column headerText="Nombre" sortBy="#{item.firstName}">
+					<p:column headerText="Nombre" sortBy="#{uitem.firstName}">
 						<p:cellEditor>
 							<f:facet name="output">
-								<h:outputText value="#{item.firstName}" />
+								<h:outputText value="#{uitem.firstName}" />
 							</f:facet>
 							<f:facet name="input">
-								<p:inputText id="firstNameInput" value="#{item.firstName}"
+								<p:inputText id="firstNameInput" value="#{uitem.firstName}"
 									style="width:100%" />
 							</f:facet>
 						</p:cellEditor>
 					</p:column>
 
-					<p:column headerText="Apellido" sortBy="#{item.lastName}">
+					<p:column headerText="Apellido" sortBy="#{uitem.lastName}">
 						<p:cellEditor>
 							<f:facet name="output">
-								<h:outputText value="#{item.lastName}" />
+								<h:outputText value="#{uitem.lastName}" />
 							</f:facet>
 							<f:facet name="input">
-								<p:inputText id="lastNameInput" value="#{item.lastName}"
+								<p:inputText id="lastNameInput" value="#{uitem.lastName}"
 									style="width:100%" />
 							</f:facet>
 						</p:cellEditor>
 					</p:column>
 
-					<p:column headerText="Telefono" sortBy="#{item.phoneNumber}">
+					<p:column headerText="Telefono" sortBy="#{uitem.phoneNumber}">
 						<p:cellEditor>
 							<f:facet name="output">
-								<h:outputText value="#{item.phoneNumber}" />
+								<h:outputText value="#{uitem.phoneNumber}" />
 							</f:facet>
 							<f:facet name="input">
-								<p:inputText id="phoneNumberInput" value="#{item.phoneNumber}"
+								<p:inputText id="phoneNumberInput" value="#{uitem.phoneNumber}"
 									style="width:100%" />
 							</f:facet>
 						</p:cellEditor>
@@ -149,37 +156,29 @@
 								value="Nuevo" outcome="userAdd" />
 							<p:commandButton class="btn btn-default" icon="ui-icon-trash"
 								value="Eliminar" id="deleteUserIcon"
-								actionListener="#{userBeanList.deleteUser}" update="users" />
+								actionListener="#{userBeanList.deleteUser}" update="users :users:msgs" />
 						</h:form>
-
-
 					</div>
 				</div>
 			</h:form>
 		</div>
-
+		
 		<div class="container">
-			<h:form id="evobject" class="form-signin" action="" method="post">
-				<h2 class="form-signin-heading">Objetos Medibles - Usuario ID:
-					xxxx</h2>
-
+			<h:form id="evobject" method="post">
+				<h2 class="form-signin-heading">Objetos Medibles - Usuario ID: xxxx</h2>
 				<hr></hr>
-				<div class="panel panel-default">
-					<div class="panel-body">
+				<p:dataTable id="measurableObjects" value="#{measurableObjectBeanList.listObjects}" var="moitem" tableStyle="table-layout: auto;"
+					rowKey="#{moitem.measurableObjectURL}" style="margin-bottom:40" rows="5"
+					paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" widgetVar="mo">
 
-						<h:dataTable styleClass="table table-striped"
-							value="#{measurableObjectBeanList.listObjects}" var="item">
-							<h:column>
-								<f:facet name="header"> URL</f:facet>
-								<h:outputText value="#{item.measurableObjectURL}" />
-							</h:column>
-						</h:dataTable>
-
-					</div>
-				</div>
+					<p:column headerText="URL" sortBy="#{moitem.measurableObjectURL}">
+						<h:outputText value="#{moitem.measurableObjectURL}" />
+					</p:column>		
+				</p:dataTable>
 			</h:form>
 		</div>
-
+		
 		<script
 			src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 		<script src="../../assets/js/vendor/jquery.min.js"></script>
