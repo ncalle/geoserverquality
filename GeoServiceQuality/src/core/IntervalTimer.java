@@ -11,6 +11,8 @@ import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TimerConfig;
 
+import EvaluationCore.App;
+
 @Singleton
 @Startup
 public class IntervalTimer {
@@ -21,6 +23,8 @@ public class IntervalTimer {
     	
     	//Timer automatico programado
     	scheduleTimer();
+    	
+         
     }
     
     @Schedule(minute="*/5", hour="*", persistent = true) // despierta cada 5 min
@@ -29,6 +33,9 @@ public class IntervalTimer {
         timerConfig.setInfo("Timer");
         
         System.out.println("scheduleTimer : " + System.currentTimeMillis());
+        
+        App.proccessWMS();
+        
     }
     
     @Timeout

@@ -15,7 +15,7 @@ import net.opengis.wms.v_1_3_0.Layer;
 import net.opengis.wms.v_1_3_0.WMSCapabilities;
 
 
-public class App 
+public final class App 
 {
 
 	static String URL = "http://www2.demis.nl/wms/wms.asp?REQUEST=GetCapabilities&VERSION=1.3.0&wms=WorldMap";
@@ -28,7 +28,7 @@ public class App
     
     
     @SuppressWarnings("restriction")
-	private static void proccessWMS(){
+	public static void proccessWMS(){
     	try {
     		
     		System.out.println( "proccessWMS.." );
