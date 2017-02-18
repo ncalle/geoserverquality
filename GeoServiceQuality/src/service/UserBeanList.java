@@ -12,10 +12,13 @@ import javax.faces.context.FacesContext;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 
+import entity.Institution;
 import entity.MeasurableObject;
 import entity.User;
 import entity.UserGroup;
 import dao.DAOException;
+import dao.InstitutionBean;
+import dao.InstitutionBeanRemote;
 import dao.UserBean;
 import dao.UserBeanRemote;
 import dao.UserGroupBean;
@@ -32,9 +35,13 @@ public class UserBeanList {
 	private List<UserGroup> listUserGroups;
 	private UserGroup userGroup;
 	
+	private List<Institution> listInstitutions;
+	private Institution institution;
+	
 	@EJB
 	private UserBeanRemote uDao = new UserBean();
 	private UserGroupBeanRemote ugDao = new UserGroupBean();
+	private InstitutionBeanRemote insDao = new InstitutionBean();
 		
 	@PostConstruct
 	private void init()	{
@@ -45,6 +52,9 @@ public class UserBeanList {
 
             listUserGroups = ugDao.list();
             System.out.println("user group list size: "+ listUserGroups.size());
+            
+            listInstitutions = insDao.list();
+            System.out.println("Institution list size: "+ listInstitutions.size());
             
     	} catch(DAOException e) {
     		e.printStackTrace();
@@ -90,6 +100,22 @@ public class UserBeanList {
 	public void setUserGroup(UserGroup userGroup) {
 		this.userGroup = userGroup;
 	}
+	
+	public List<Institution> getListInstitutions() {
+		return listInstitutions;
+	}
+	
+	public void setListInstitutions(List<Institution> listInstitutions) {
+		this.listInstitutions = listInstitutions;
+	}
+	
+	public Institution getInstitution() {
+		return institution;
+	}
+
+	public void setInstitution(Institution institution) {
+		this.institution = institution;
+	}	
     	
 	public void deleteUser() {   	
     	uDao.delete(selectedUser);    	
@@ -112,12 +138,17 @@ public class UserBeanList {
 			u.setUserGroupName(userGroup.getName());			
 		}
 
+		if (institution != null){
+			u.setInstitutionID(institution.getInstitutionID());
+			u.setInstitutionName(institution.getName());			
+		}
+		
 		uDao.update(u);
 		FacesMessage msg = new FacesMessage("Usuario editado correctamente.");
 		System.out.println("event: Grupo de Usuario: " + ((User) event.getObject()));
 		System.out.println("userGroup: Grupo de Usuario: " + userGroup);
+		System.out.println("institution: " + institution);
         FacesContext.getCurrentInstance().addMessage(null, msg);
         selectedUser = null;
     }
-
 }

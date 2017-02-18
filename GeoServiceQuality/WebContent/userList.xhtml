@@ -80,8 +80,10 @@
 								<h:outputText value="#{uitem.institutionName}" />
 							</f:facet>
 							<f:facet name="input">
-								<p:inputText id="institutionNameInput"
-									value="#{uitem.institutionName}" style="width:100%" />
+								<h:selectOneMenu value="#{userBeanList.institution}" converter="omnifaces.SelectItemsConverter" style="width:100%">
+						        	<f:selectItem itemLabel="Seleccione Institución" noSelectionOption="true" />
+						            <f:selectItems value="#{userBeanList.listInstitutions}" var="ins" itemLabel="#{ins.name}" />
+						        </h:selectOneMenu>
 							</f:facet>
 						</p:cellEditor>
 					</p:column>

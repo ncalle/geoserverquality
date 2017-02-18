@@ -45,4 +45,6 @@ SELECT * FROM evaluation_insert (1, 2, TRUE); --err
 --------------------------------------------------------------------
 SELECT * FROM user_group_get(null); --ok
 SELECT * FROM user_group_get(2); --ok
-   
+--------------------------------------------------------------------   
+SELECT * FROM institution_get(null); --ok
+SELECT * FROM institution_get(2); --ok

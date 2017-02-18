@@ -28,7 +28,7 @@ public class UserBean implements UserBeanRemote {
 	private static final String SQL_INSERT =
             "SELECT * FROM user_insert (?, ?, ?, ?, ?, ?, ?)";
 	private static final String SQL_UPDATE =
-        	"SELECT * FROM user_update (?, ?, ?, ?, ?, ?)";
+        	"SELECT * FROM user_update (?, ?, ?, ?, ?, ?, ?)";
 	private static final String SQL_DELETE =
         	"SELECT * FROM user_delete (?)";
     //private static final String SQL_CHANGE_PASSWORD =
@@ -176,7 +176,7 @@ public class UserBean implements UserBeanRemote {
             statement.setString(4, user.getFirstName());
             statement.setString(5, user.getLastName());
             statement.setInt(6, user.getPhoneNumber());
-            //statement.setInt(7, user.getInstitutionID());            
+            statement.setInt(7, user.getInstitutionID());            
         
             statement.executeQuery();
             

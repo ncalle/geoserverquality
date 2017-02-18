@@ -6,7 +6,7 @@
    , pFirstName VARCHAR(40)
    , pLastName VARCHAR(40)
    , pPhoneNumber BIGINT
-   --, pInstitutionID INT
+   , pInstitutionID INT
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
@@ -37,7 +37,7 @@ BEGIN
       , FirstName = pFirstName
       , LastName = pLastName
       , PhoneNumber = pPhoneNumber
-      --, InstitutionID = pInstitutionID
+      , InstitutionID = pInstitutionID
    WHERE UserID = pUserID;
     
 END;
