@@ -4,7 +4,9 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
 <f:view contentType="text/html">
 	<h:head>
 		<meta charset="utf-8" />
@@ -102,11 +104,14 @@
 								<h:outputText value="#{uitem.userGroupName}" />
 							</f:facet>
 							<f:facet name="input">
-								<p:inputText id="userGroupNameInput"
-									value="#{uitem.userGroupName}" style="width:100%" />
+						        <h:selectOneMenu value="#{userBeanList.userGroup}" converter="omnifaces.SelectItemsConverter" style="width:100%">
+						        	<f:selectItem itemLabel="Seleccione Tipo" noSelectionOption="true" />
+						            <f:selectItems value="#{userBeanList.listUserGroups}" var="ug" itemLabel="#{ug.name}" />
+						        </h:selectOneMenu>	
 							</f:facet>
 						</p:cellEditor>
 					</p:column>
+
 
 					<p:column headerText="Nombre" sortBy="#{uitem.firstName}">
 						<p:cellEditor>
@@ -151,13 +156,11 @@
 
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<h:form>
-							<p:button class="btn btn-default" icon="ui-icon-plus"
-								value="Nuevo" outcome="userAdd" />
-							<p:commandButton class="btn btn-default" icon="ui-icon-trash"
-								value="Eliminar" id="deleteUserIcon"
-								actionListener="#{userBeanList.deleteUser}" update="users :users:msgs" />
-						</h:form>
+						<p:button class="btn btn-default" icon="ui-icon-plus"
+							value="Nuevo" outcome="userAdd" />
+						<p:commandButton class="btn btn-default" icon="ui-icon-trash"
+							value="Eliminar" id="deleteUserIcon"
+							actionListener="#{userBeanList.deleteUser}" update="users :users:msgs" />
 					</div>
 				</div>
 			</h:form>

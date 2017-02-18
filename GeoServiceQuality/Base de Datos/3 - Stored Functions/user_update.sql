@@ -2,7 +2,7 @@
 (
    pUserID INT
    , pEmail VARCHAR(40)
-   --, pUserGroupID INT
+   , pUserGroupID INT
    , pFirstName VARCHAR(40)
    , pLastName VARCHAR(40)
    , pPhoneNumber BIGINT
@@ -33,7 +33,7 @@ BEGIN
    -- Borrado del usuario de la tabla Usuario
    UPDATE SystemUser
    SET Email = pEmail
-      --, UserGroupID = pUserGroupID
+      , UserGroupID = pUserGroupID
       , FirstName = pFirstName
       , LastName = pLastName
       , PhoneNumber = pPhoneNumber

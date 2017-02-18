@@ -14,9 +14,12 @@ import org.primefaces.event.SelectEvent;
 
 import entity.MeasurableObject;
 import entity.User;
+import entity.UserGroup;
 import dao.DAOException;
 import dao.UserBean;
 import dao.UserBeanRemote;
+import dao.UserGroupBean;
+import dao.UserGroupBeanRemote;
 
 
 @ManagedBean(name="userBeanList")
@@ -26,9 +29,12 @@ public class UserBeanList {
 	private List<User> listUsers;	
 	private User selectedUser;
 	private MeasurableObject listUserMeasurableObjects;
+	private List<UserGroup> listUserGroups;
+	private UserGroup userGroup;
 	
 	@EJB
-    private UserBeanRemote uDao = new UserBean();
+	private UserBeanRemote uDao = new UserBean();
+	private UserGroupBeanRemote ugDao = new UserGroupBean();
 		
 	@PostConstruct
 	private void init()	{
@@ -36,7 +42,10 @@ public class UserBeanList {
 			
             listUsers = uDao.list();
             System.out.println("user list size: "+ listUsers.size());
-	            
+
+            listUserGroups = ugDao.list();
+            System.out.println("user group list size: "+ listUserGroups.size());
+            
     	} catch(DAOException e) {
     		e.printStackTrace();
     	} 
@@ -48,10 +57,14 @@ public class UserBeanList {
 	
 	public void setListUsers(List<User> listUsers) {
 		this.listUsers = listUsers;
-	}
+	}	
 	
     public User getSelectedUser() {
         return selectedUser;
+    }
+    
+    public void setSelectedUser(User selectedUser) {   	
+    	this.selectedUser = selectedUser;
     }
      
 	public MeasurableObject getListUserMeasurableObjects() {
@@ -60,12 +73,24 @@ public class UserBeanList {
 
 	public void setListUserMeasurableObjects(MeasurableObject listUserMeasurableObjects) {
 		this.listUserMeasurableObjects = listUserMeasurableObjects;
-	}      
-    
-    public void setSelectedUser(User selectedUser) {   	
-    	this.selectedUser = selectedUser;
-    }
+	}
 	
+	public List<UserGroup> getListUserGroups() {
+		return listUserGroups;
+	}
+	
+	public void setListUserGroups(List<UserGroup> listUserGroups) {
+		this.listUserGroups = listUserGroups;
+	}
+    
+	public UserGroup getUserGroup() {
+		return userGroup;
+	}
+
+	public void setUserGroup(UserGroup userGroup) {
+		this.userGroup = userGroup;
+	}
+    	
 	public void deleteUser() {   	
     	uDao.delete(selectedUser);    	
     	listUsers.remove(selectedUser);
@@ -80,8 +105,17 @@ public class UserBeanList {
     }
        	
 	public void onRowEdit(RowEditEvent event) {    	
-		uDao.update(((User) event.getObject()));
-		FacesMessage msg = new FacesMessage("Usuario editado correctamente.");       
+		User u = ((User) event.getObject());
+		
+		if (userGroup != null){
+			u.setUserGroupID(userGroup.getUserGroupID());
+			u.setUserGroupName(userGroup.getName());			
+		}
+
+		uDao.update(u);
+		FacesMessage msg = new FacesMessage("Usuario editado correctamente.");
+		System.out.println("event: Grupo de Usuario: " + ((User) event.getObject()));
+		System.out.println("userGroup: Grupo de Usuario: " + userGroup);
         FacesContext.getCurrentInstance().addMessage(null, msg);
         selectedUser = null;
     }

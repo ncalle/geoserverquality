@@ -42,4 +42,7 @@ SELECT * FROM profile_get (); --ok
 SELECT * FROM evaluation_insert (1, 1, TRUE); --ok
    SELECT * FROM user_evaluation_get (1, NULL, NULL, NULL, NULL, NULL); --ok
 SELECT * FROM evaluation_insert (1, 2, TRUE); --err
+--------------------------------------------------------------------
+SELECT * FROM user_group_get(null); --ok
+SELECT * FROM user_group_get(2); --ok
    
