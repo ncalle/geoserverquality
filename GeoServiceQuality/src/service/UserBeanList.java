@@ -34,7 +34,6 @@ public class UserBeanList {
 	private MeasurableObject listUserMeasurableObjects;
 	private List<UserGroup> listUserGroups;
 	private UserGroup userGroup;
-	
 	private List<Institution> listInstitutions;
 	private Institution institution;
 	
@@ -46,16 +45,9 @@ public class UserBeanList {
 	@PostConstruct
 	private void init()	{
 		try {
-			
             listUsers = uDao.list();
-            System.out.println("user list size: "+ listUsers.size());
-
             listUserGroups = ugDao.list();
-            System.out.println("user group list size: "+ listUserGroups.size());
-            
             listInstitutions = insDao.list();
-            System.out.println("Institution list size: "+ listInstitutions.size());
-            
     	} catch(DAOException e) {
     		e.printStackTrace();
     	} 

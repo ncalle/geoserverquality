@@ -1,5 +1,7 @@
 package service;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -7,10 +9,18 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
+
+import entity.Institution;
 import entity.User;
+import entity.UserGroup;
 import dao.UserBeanRemote;
+import dao.UserGroupBean;
+import dao.UserGroupBeanRemote;
 import dao.UserBean;
 import dao.DAOException;
+import dao.InstitutionBean;
+import dao.InstitutionBeanRemote;
 
 
 @ManagedBean(name="userBeanAdd")
@@ -25,11 +35,23 @@ public class UserBeanAdd {
     private Integer phoneNumber;
     private Integer institutionID;
     
+	private List<UserGroup> listUserGroups;
+	private UserGroup userGroup;
+	private List<Institution> listInstitutions;
+	private Institution institution;
+    
 	@EJB
     private UserBeanRemote uDao = new UserBean();
+	private UserGroupBeanRemote ugDao = new UserGroupBean();
+	private InstitutionBeanRemote insDao = new InstitutionBean();
 	
 	@PostConstruct
 	private void init()	{
+        listUserGroups = ugDao.list();
+        System.out.println("user group list size: "+ listUserGroups.size());
+        
+        listInstitutions = insDao.list();
+        System.out.println("Institution list size: "+ listInstitutions.size());
 	}	
   
 	public String getEmail() {
@@ -87,35 +109,70 @@ public class UserBeanAdd {
 	public void setInstitutionID(Integer institutionID) {
 		this.institutionID = institutionID;
 	}
+	
+	public List<UserGroup> getListUserGroups() {
+		return listUserGroups;
+	}
+
+	public void setListUserGroups(List<UserGroup> listUserGroups) {
+		this.listUserGroups = listUserGroups;
+	}
+
+	public UserGroup getUserGroup() {
+		return userGroup;
+	}
+
+	public void setUserGroup(UserGroup userGroup) {
+		this.userGroup = userGroup;
+	}
+
+	public List<Institution> getListInstitutions() {
+		return listInstitutions;
+	}
+
+	public void setListInstitutions(List<Institution> listInstitutions) {
+		this.listInstitutions = listInstitutions;
+	}
+
+	public Institution getInstitution() {
+		return institution;
+	}
+
+	public void setInstitution(Institution institution) {
+		this.institution = institution;
+	}	
 		
 	public void save() {
     	
 		User user = new User();
+		FacesMessage msg;
+		
+		if (userGroup != null){
+			user.setUserGroupID(userGroup.getUserGroupID());
+			user.setUserGroupName(userGroup.getName());			
+		}
+
+		if (institution != null){
+			user.setInstitutionID(institution.getInstitutionID());
+			user.setInstitutionName(institution.getName());			
+		}
 		
         user.setEmail(email);
         user.setPassword(password);
-        user.setUserGroupID(userGroupID);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setPhoneNumber(phoneNumber);
-        user.setInstitutionID(institutionID);
         
     	System.out.println("save.. " + user);
     	
     	try{
     		uDao.create(user);
-            
-            FacesContext context = FacesContext.getCurrentInstance();
-        	context.addMessage(null, new FacesMessage("El usuario fue guardado correctamente"));
-        		
-    	} catch(DAOException e) {
-    		
-    		FacesContext context = FacesContext.getCurrentInstance();
-    		context.addMessage(null, new FacesMessage("Error al guardar el usuario"));
-    		
-    		e.printStackTrace();
-    	} 
-
+    		msg = new FacesMessage("El usuario fue guardado correctamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+    	} catch(DAOException e) {   		
+    		msg = new FacesMessage("Error al guardar el usuario.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+    	}
 	}
 	
 }
