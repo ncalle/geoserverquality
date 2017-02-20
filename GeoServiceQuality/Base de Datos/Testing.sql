@@ -24,6 +24,8 @@ SELECT * FROM measurable_object_get (); --ok
 	SELECT * FROM prototype_measurable_objects_get (1); --ok	
 	SELECT * FROM prototype_measurable_objects_get (2); --ok
 --------------------------------------------------------------------
+SELECT * FROM prototype_user_remove_measurable_object(1,5) --ok
+--------------------------------------------------------------------
 SELECT * FROM measurable_objects_by_user_get (1); --ok
 SELECT * FROM measurable_objects_by_user_get (NULL); --err
 --------------------------------------------------------------------

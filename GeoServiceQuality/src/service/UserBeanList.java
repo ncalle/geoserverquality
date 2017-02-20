@@ -6,7 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
@@ -28,7 +28,7 @@ import dao.UserGroupBeanRemote;
 
 
 @ManagedBean(name="userBeanList")
-@RequestScoped 
+@ViewScoped 
 public class UserBeanList {
 	    
 	private List<User> listUsers;	
@@ -154,14 +154,10 @@ public class UserBeanList {
 		System.out.println("userGroup: Grupo de Usuario: " + userGroup);
 		System.out.println("institution: " + institution);
         FacesContext.getCurrentInstance().addMessage(null, msg);
-        selectedUser = null;
     }
 	
 	
 	public void deleteUserMeasurableObject() {
-		System.out.println("deleteUserMeasurableObject " + selectedUser);
-		System.out.println("deleteUserMeasurableObject " + selectedUserMeasurableObject);
-		
 		uDao.removeUserMeasurableObject(selectedUser, selectedUserMeasurableObject);    	
     	listUserMeasurableObjects.remove(selectedUserMeasurableObject);
     	selectedUserMeasurableObject = null;
