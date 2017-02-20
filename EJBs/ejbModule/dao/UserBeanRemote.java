@@ -3,6 +3,7 @@ package dao;
 import java.util.List;
 import javax.ejb.Remote;
 
+import entity.MeasurableObject;
 import entity.User;
 
 @Remote
@@ -19,4 +20,6 @@ public interface UserBeanRemote {
     public void update(User user) throws DAOException;
     
     public void delete(User user) throws DAOException;
+    
+    public void removeUserMeasurableObject(User user, MeasurableObject measurableObject) throws DAOException;
 }

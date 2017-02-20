@@ -66,6 +66,7 @@
 					editable="true">
 
        				<p:ajax event="rowEdit" listener="#{userBeanList.onRowEdit}" update=":users:msgs" />
+       				<p:ajax event="rowSelectRadio" listener="#{userBeanList.onRowSelect}" update=":evobject:measurableObjects :evobject:userIDOutputLabel" />
 
 					<p:column selectionMode="single"
 						style="width:40px; text-align:center" />
@@ -162,25 +163,40 @@
 							value="Nuevo" outcome="userAdd" />
 						<p:commandButton class="btn btn-default" icon="ui-icon-trash"
 							value="Eliminar" id="deleteUserIcon"
-							actionListener="#{userBeanList.deleteUser}" update="users :users:msgs" />
+							actionListener="#{userBeanList.deleteUser}" update="evobject users :users:msgs" />
 					</div>
 				</div>
 			</h:form>
 		</div>
 		
 		<div class="container">
-			<h:form id="evobject" method="post">
-				<h2 class="form-signin-heading">Objetos Medibles - Usuario ID: xxxx</h2>
+			<h:form id="evobject" method="post"><p:growl id="msgs" />
+				<h3 class="form-signin-heading"><h:outputLabel id="userIDOutputLabel" value="Lista de objetos medibles para el usuario de ID: #{userBeanList.selectedUser.getUserId()}" /></h3>
 				<hr></hr>
-				<p:dataTable id="measurableObjects" value="#{measurableObjectBeanList.listObjects}" var="moitem" tableStyle="table-layout: auto;"
-					rowKey="#{moitem.measurableObjectURL}" style="margin-bottom:40" rows="5"
-					paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" widgetVar="mo">
+				<p:dataTable id="measurableObjects" 
+					value="#{userBeanList.listUserMeasurableObjects}" 
+					var="moitem" 
+					tableStyle="table-layout: auto;" 
+					selection="#{userBeanList.selectedUserMeasurableObject}"
+					rowKey="#{moitem.getMeasurableObjectID()}"
+					widgetVar="mo">
+					
+					<p:column selectionMode="single"
+						style="width:40px; text-align:center" />
 
 					<p:column headerText="URL" sortBy="#{moitem.measurableObjectURL}">
 						<h:outputText value="#{moitem.measurableObjectURL}" />
 					</p:column>		
 				</p:dataTable>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<p:button class="btn btn-default" icon="ui-icon-plus"
+							value="Nuevo" outcome="userList" />
+						<p:commandButton class="btn btn-default" icon="ui-icon-trash"
+							value="Eliminar" id="deleteUserIcon"
+							actionListener="#{userBeanList.deleteUserMeasurableObject}" update="evobject :evobject:msgs" />
+					</div>
+				</div>
 			</h:form>
 		</div>
 		

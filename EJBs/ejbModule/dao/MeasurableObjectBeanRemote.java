@@ -9,6 +9,8 @@ import entity.MeasurableObject;
 public interface MeasurableObjectBeanRemote {
 
     public List<MeasurableObject> list() throws DAOException;
+    
+    public List<MeasurableObject> list(Integer userID) throws DAOException;
 
     public void create(MeasurableObject measurableobject, Integer userID, Integer nodeID) throws IllegalArgumentException, DAOException;
 

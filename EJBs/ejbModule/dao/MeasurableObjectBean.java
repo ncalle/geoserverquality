@@ -61,6 +61,32 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
 
         return measurableobject;
     }
+    
+    @Override
+    public List<MeasurableObject> list(Integer userID) throws DAOException {
+        List<MeasurableObject> measurableobject = new ArrayList<>();
+
+        Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_LIST_ORDER_BY_ID);
+            
+			statement.setObject(1, userID);
+			
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+            	measurableobject.add(map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+
+        return measurableobject;
+    }    
 
     @Override
     public void create(MeasurableObject measurableobject, Integer userID, Integer nodeID) throws IllegalArgumentException, DAOException {

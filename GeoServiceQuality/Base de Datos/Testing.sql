@@ -21,6 +21,8 @@ SELECT * FROM user_delete (1111); --err
 SELECT * FROM measurable_object_get (); --ok
 	--prototipo
 	SELECT * FROM prototype_measurable_objects_get (null); --ok
+	SELECT * FROM prototype_measurable_objects_get (1); --ok	
+	SELECT * FROM prototype_measurable_objects_get (2); --ok
 --------------------------------------------------------------------
 SELECT * FROM measurable_objects_by_user_get (1); --ok
 SELECT * FROM measurable_objects_by_user_get (NULL); --err

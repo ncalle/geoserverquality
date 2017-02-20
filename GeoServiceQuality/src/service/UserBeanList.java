@@ -19,6 +19,8 @@ import entity.UserGroup;
 import dao.DAOException;
 import dao.InstitutionBean;
 import dao.InstitutionBeanRemote;
+import dao.MeasurableObjectBean;
+import dao.MeasurableObjectBeanRemote;
 import dao.UserBean;
 import dao.UserBeanRemote;
 import dao.UserGroupBean;
@@ -31,16 +33,18 @@ public class UserBeanList {
 	    
 	private List<User> listUsers;	
 	private User selectedUser;
-	private MeasurableObject listUserMeasurableObjects;
 	private List<UserGroup> listUserGroups;
 	private UserGroup userGroup;
 	private List<Institution> listInstitutions;
 	private Institution institution;
+	private List<MeasurableObject> listUserMeasurableObjects;
+	private MeasurableObject selectedUserMeasurableObject;
 	
 	@EJB
 	private UserBeanRemote uDao = new UserBean();
 	private UserGroupBeanRemote ugDao = new UserGroupBean();
 	private InstitutionBeanRemote insDao = new InstitutionBean();
+	private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
 		
 	@PostConstruct
 	private void init()	{
@@ -48,6 +52,7 @@ public class UserBeanList {
             listUsers = uDao.list();
             listUserGroups = ugDao.list();
             listInstitutions = insDao.list();
+            listUserMeasurableObjects = moDao.list(0);
     	} catch(DAOException e) {
     		e.printStackTrace();
     	} 
@@ -69,14 +74,6 @@ public class UserBeanList {
     	this.selectedUser = selectedUser;
     }
      
-	public MeasurableObject getListUserMeasurableObjects() {
-		return listUserMeasurableObjects;
-	}
-
-	public void setListUserMeasurableObjects(MeasurableObject listUserMeasurableObjects) {
-		this.listUserMeasurableObjects = listUserMeasurableObjects;
-	}
-	
 	public List<UserGroup> getListUserGroups() {
 		return listUserGroups;
 	}
@@ -107,6 +104,22 @@ public class UserBeanList {
 
 	public void setInstitution(Institution institution) {
 		this.institution = institution;
+	}
+	
+	public List<MeasurableObject> getListUserMeasurableObjects() {
+		return listUserMeasurableObjects;
+	}
+
+	public void setListUserMeasurableObjects(List<MeasurableObject> listUserMeasurableObjects) {
+		this.listUserMeasurableObjects = listUserMeasurableObjects;
+	}
+	
+	public MeasurableObject getSelectedUserMeasurableObject() {
+		return selectedUserMeasurableObject;
+	}
+
+	public void setSelectedUserMeasurableObject(MeasurableObject selectedUserMeasurableObject) {
+		this.selectedUserMeasurableObject = selectedUserMeasurableObject;
 	}	
     	
 	public void deleteUser() {   	
@@ -119,7 +132,7 @@ public class UserBeanList {
     }
     
     public void onRowSelect(SelectEvent event) {
-        // actualizar objetos medibles del usuario
+    	listUserMeasurableObjects = moDao.list(selectedUser.getUserId());
     }
        	
 	public void onRowEdit(RowEditEvent event) {    	
@@ -142,5 +155,18 @@ public class UserBeanList {
 		System.out.println("institution: " + institution);
         FacesContext.getCurrentInstance().addMessage(null, msg);
         selectedUser = null;
+    }
+	
+	
+	public void deleteUserMeasurableObject() {
+		System.out.println("deleteUserMeasurableObject " + selectedUser);
+		System.out.println("deleteUserMeasurableObject " + selectedUserMeasurableObject);
+		
+		uDao.removeUserMeasurableObject(selectedUser, selectedUserMeasurableObject);    	
+    	listUserMeasurableObjects.remove(selectedUserMeasurableObject);
+    	selectedUserMeasurableObject = null;
+        
+		FacesMessage msg = new FacesMessage("Objeto medible eliminado correctamente.");       
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }
