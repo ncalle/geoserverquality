@@ -1,6 +1,7 @@
 package EvaluationCore;
 
 import java.security.KeyStore.Entry.Attribute;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -15,13 +16,12 @@ import net.opengis.wms.v_1_3_0.Layer;
 import net.opengis.wms.v_1_3_0.WMSCapabilities;
 
 
-public final class App 
-{
+public final class App {
 
+	//static String URL = "http://www2.demis.nl/wms/wms.asp?REQUEST=GetCapabilities&VERSION=1.3.0&wms=WorldMap";
 	static String URL = "http://www2.demis.nl/wms/wms.asp?REQUEST=GetCapabilities&VERSION=1.3.0&wms=WorldMap";
 	
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ) {
         System.out.println( "Evaluation Core Test --------------------" );
         proccessWMS();
     }
@@ -31,23 +31,11 @@ public final class App
 	public static void proccessWMS(){
     	try {
     		
-    		System.out.println( "proccessWMS.." );
-    		
-    		// Para un esquema determinado
-			JAXBContext context = JAXBContext.newInstance("net.opengis.wms.v_1_3_0");
-			
-			// Varios esquemas
-			//JAXBContext context = JAXBContext.newInstance("net.opengis.filter.v_1_1_0:net.opengis.gml.v_3_1_1");
-			
-			
-			// Use the created JAXB context to construct an unmarshaller
-			Unmarshaller unmarshaller = context.createUnmarshaller();
+    		Unmarshaller unmarshaller = getUnmarshaller();
 			 
-			// Unmarshal the given URL, retrieve WMSCapabilities element
 			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
 			        .unmarshal(new StreamSource(URL), WMSCapabilities.class);
 			 
-			// Retrieve WMSCapabilities instance
 			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
 			
 			//Excepciones
@@ -125,5 +113,63 @@ public final class App
 	    System.out.println("isSetBoundingBox: " + layer.isSetBoundingBox());
     }
     
+    
+    /* Indica si las excepciones del servicio se encuentran en algún formato que evite exponer datos 
+     * que sean de utilidad para un atacante. Algunos de estos datos pueden ser: servidor, sistema 
+     * operativo, base de datos, etc. 
+     * Ejemplos de estos formatos: application/vnd.ogc.se_inimage, application/vnd.ogc.se_blank*/
+    
+    @SuppressWarnings("restriction")
+   	public static boolean metricInformationException(String url, String serviceType){
+    	boolean res = false;
+       	try {
+       		
+       		System.out.println( "metricInformationException.." );
+       		
+       		Unmarshaller unmarshaller = getUnmarshaller();
+   			 
+       		if(serviceType.equals("WMS")) {
+       			// Unmarshal the given URL, retrieve WMSCapabilities element
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			// Retrieve WMSCapabilities instance
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			Capability c = wmsCapabilities.getCapability();
+       			
+       			if(c.isSetException()){
+       				List<String> list = c.getException().getFormat();
+       				for (int i = 0; i < list.size(); i++) {
+						if(list.get(i).equals("application/vnd.ogc.se_inimage")){
+							return true;
+						}
+					}
+       			}
+       		}
+   			
+   		} catch (JAXBException e) {
+   			e.printStackTrace();
+   		}
+       	return res;
+    }
+    
+    @SuppressWarnings("restriction")
+	public static Unmarshaller getUnmarshaller(){
+		try{
+			// Para un esquema determinado
+			JAXBContext context = JAXBContext.newInstance("net.opengis.wms.v_1_3_0");
+			
+			// Varios esquemas
+			//JAXBContext context = JAXBContext.newInstance("net.opengis.filter.v_1_1_0:net.opengis.gml.v_3_1_1");
+			
+			// Use the created JAXB context to construct an unmarshaller
+			return context.createUnmarshaller();
+			
+		} catch (JAXBException e) {
+   			e.printStackTrace();
+   			return null;
+   		}
+		
+	}
 
 }
