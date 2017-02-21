@@ -27,7 +27,7 @@ public class IntervalTimer {
          
     }
     
-    @Schedule(minute="*/5", hour="*", persistent = true) // despierta cada 5 min
+    @Schedule(minute="*/15", hour="*", persistent = true)
     public void scheduleTimer() {
     	TimerConfig timerConfig = new TimerConfig();
         timerConfig.setInfo("Timer");
