@@ -19,11 +19,18 @@ import net.opengis.wms.v_1_3_0.WMSCapabilities;
 public final class App {
 
 	//static String URL = "http://www2.demis.nl/wms/wms.asp?REQUEST=GetCapabilities&VERSION=1.3.0&wms=WorldMap";
-	static String URL = "http://www2.demis.nl/wms/wms.asp?REQUEST=GetCapabilities&VERSION=1.3.0&wms=WorldMap";
+	static String URL = "http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/wms?service=WMS&version=1.3.0&request=GetCapabilities";
 	
     public static void main( String[] args ) {
         System.out.println( "Evaluation Core Test --------------------" );
         proccessWMS();
+        
+        boolean ok = metricInformationException(URL, "WMS");
+        System.out.println( "metricInformationException -------------------- " + ok);
+        
+        ok = metricOGCFormatException(URL, "WMS");
+        System.out.println( "metricInformationException -------------------- " + ok);
+        
     }
     
     
@@ -41,7 +48,7 @@ public final class App {
 			//Excepciones
 			Capability c = wmsCapabilities.getCapability();
 			ExceptionInfo(c);
-			 
+			
 			// Capas
 			for (Layer layer : wmsCapabilities.getCapability().getLayer().getLayer()) {
 				layerInfo(layer);
@@ -114,10 +121,12 @@ public final class App {
     }
     
     
-    /* Indica si las excepciones del servicio se encuentran en algún formato que evite exponer datos 
+    /* --------------------------------------------------------------------------
+     * Indica si las excepciones del servicio se encuentran en algún formato que evite exponer datos 
      * que sean de utilidad para un atacante. Algunos de estos datos pueden ser: servidor, sistema 
      * operativo, base de datos, etc. 
-     * Ejemplos de estos formatos: application/vnd.ogc.se_inimage, application/vnd.ogc.se_blank*/
+     * Ejemplos de estos formatos: application/vnd.ogc.se_inimage, application/vnd.ogc.se_blank
+     * --------------------------------------------------------------------------*/
     
     @SuppressWarnings("restriction")
    	public static boolean metricInformationException(String url, String serviceType){
@@ -140,7 +149,7 @@ public final class App {
        			if(c.isSetException()){
        				List<String> list = c.getException().getFormat();
        				for (int i = 0; i < list.size(); i++) {
-						if(list.get(i).equals("application/vnd.ogc.se_inimage")){
+						if(list.get(i).equals("INIMAGE") || list.get(i).equals("BLANK")){
 							return true;
 						}
 					}
@@ -152,6 +161,83 @@ public final class App {
    		}
        	return res;
     }
+    
+    /* --------------------------------------------------------------------------
+     * Indica si las excepciones que son retornadas por el servicio se encuentran en 
+     * algún formato propuesto por los estándares OGC.
+     * --------------------------------------------------------------------------*/
+    
+    @SuppressWarnings("restriction")
+   	public static boolean metricOGCFormatException(String url, String serviceType){
+    	boolean res = false;
+       	try {
+       		
+       		System.out.println( "metricOGCFormatException.." );
+       		
+       		Unmarshaller unmarshaller = getUnmarshaller();
+   			 
+       		if(serviceType.equals("WMS")) {
+       			// Unmarshal the given URL, retrieve WMSCapabilities element
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			// Retrieve WMSCapabilities instance
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			Capability c = wmsCapabilities.getCapability();
+       			
+       			if(c.isSetException()){
+       				List<String> list = c.getException().getFormat();
+       				for (int i = 0; i < list.size(); i++) {
+						if(list.get(i).equals("INIMAGE") || list.get(i).equals("BLANK") 
+								|| list.get(i).equals("XML") || list.get(i).equals("PARTIALMAP")
+								|| list.get(i).equals("JSON") || list.get(i).equals("JSONP")){
+							return true;
+						}
+					}
+       			}
+       		}
+   			
+   		} catch (JAXBException e) {
+   			e.printStackTrace();
+   		}
+       	return res;
+    }
+    
+    
+    /* --------------------------------------------------------------------------
+     * Indica si el método getMap() soporta el formato Format.
+     * --------------------------------------------------------------------------*/
+    
+    @SuppressWarnings("restriction")
+   	public static boolean metricMapFormat(String url, String serviceType, String format){
+    	boolean res = false;
+       	try {
+       		
+       		System.out.println( "metricMapFormat.." );
+       		
+       		Unmarshaller unmarshaller = getUnmarshaller();
+   			 
+       		if(serviceType.equals("WMS")) {
+       			// Unmarshal the given URL, retrieve WMSCapabilities element
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			// Retrieve WMSCapabilities instance
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			Capability c = wmsCapabilities.getCapability();
+       			
+       		}
+   			
+   		} catch (JAXBException e) {
+   			e.printStackTrace();
+   		}
+       	return res;
+    }
+    
+    
+    /* --------------------------------------------------------------------------
+     * Obtiene el xml parseaado en un objeto java
+     * --------------------------------------------------------------------------*/
     
     @SuppressWarnings("restriction")
 	public static Unmarshaller getUnmarshaller(){
