@@ -155,7 +155,7 @@ public class UserBeanList {
     }
 	
 	
-	public void deleteUserMeasurableObject() {
+	public void removeUserMeasurableObject() {
 		uDao.removeUserMeasurableObject(selectedUser, selectedUserMeasurableObject);    	
     	listUserMeasurableObjects.remove(selectedUserMeasurableObject);
     	selectedUserMeasurableObject = null;

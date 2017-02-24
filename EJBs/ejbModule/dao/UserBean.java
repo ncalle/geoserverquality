@@ -33,7 +33,7 @@ public class UserBean implements UserBeanRemote {
 	private static final String SQL_DELETE =
         	"SELECT * FROM user_delete (?)";
 	private static final String SQL_USER_REMOVE_MEASURABLE_OBJECT =
-        	"SELECT * FROM prototype_user_remove_measurable_object (?, ?)";
+        	"SELECT * FROM prototype_user_remove_measurable_object (?, ?, ?)";
     private static final String SQL_USER_ADD_MEASURABLE_OBJECT =
         	"SELECT * FROM prototype_user_add_measurable_object(?, ?, ?)";	
     //private static final String SQL_CHANGE_PASSWORD =
@@ -222,6 +222,7 @@ public class UserBean implements UserBeanRemote {
 	
 	        statement.setInt(1, user.getUserId());
 	        statement.setInt(2, measurableObject.getMeasurableObjectID());
+	        statement.setString(3, measurableObject.getMeasurableObjectType());
 	    
 	        statement.executeQuery();
 	        
@@ -231,7 +232,7 @@ public class UserBean implements UserBeanRemote {
 	}
     
     @Override
-    public void userAddMeasurableObject(Integer userID, MeasurableObject measurableobject) throws DAOException {
+    public void userAddMeasurableObject(Integer userID, MeasurableObject measurableObject) throws DAOException {
 
     	Connection connection = null;
 		PreparedStatement statement = null;
@@ -241,12 +242,12 @@ public class UserBean implements UserBeanRemote {
             statement = connection.prepareStatement(SQL_USER_ADD_MEASURABLE_OBJECT);
 
             statement.setInt(1, userID);
-            statement.setInt(2, measurableobject.getMeasurableObjectID());
-            statement.setString(3, measurableobject.getMeasurableObjectType());
+            statement.setInt(2, measurableObject.getMeasurableObjectID());
+            statement.setString(3, measurableObject.getMeasurableObjectType());
                    
             statement.executeQuery();
             
-            measurableobject.setMeasurableObjectID(null);
+            measurableObject.setMeasurableObjectID(null);
             
         } catch (SQLException e) {
             throw new DAOException(e);
