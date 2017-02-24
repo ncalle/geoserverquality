@@ -115,7 +115,7 @@ CREATE TABLE SystemUser
     FirstName VARCHAR(40) NULL,
     LastName VARCHAR(40) NULL,
     PhoneNumber BIGINT NULL,
-    InstitutionID INT NULL, -- Institucion a la cual pertenece el usuario
+    InstitutionID INT NOT NULL, -- Institucion a la cual pertenece el usuario
 
     PRIMARY KEY (UserID),
     UNIQUE (Email),

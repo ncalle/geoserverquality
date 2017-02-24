@@ -95,5 +95,38 @@ INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality) VALUES
 (13, 'Especifica Rango Util', FALSE, 1, 'Capa'),
 (14, 'Errores descriptivos', FALSE, 1, 'Servicio');
 
+INSERT INTO Ide (Name, Description) VALUES
+('Ide1','desc ide 1'),
+('Ide2','desc ide 2'),
+('Ide3','desc ide 3');
+
+INSERT INTO Institution (IdeID, Name, Description) VALUES
+(1, 'Ins1.1', 'desc Ins1.1'),
+(2, 'Ins1.2', 'desc Ins1.2'),
+(2, 'Ins2.2', 'desc Ins2.2'),
+(3, 'Ins1.3', 'desc Ins1.3'),
+(3, 'Ins2.3', 'desc Ins2.3'),
+(3, 'Ins3.3', 'desc Ins3.3');
+
+INSERT INTO Node (InstitutionID, Name, Description) VALUES
+(1, 'Nodo1.1.1', 'desc Nodo1.1.1'),
+(2, 'Nodo1.1.2', 'desc Nodo1.1.2'),
+(3, 'Nodo1.2.2', 'desc Nodo1.2.2'),
+(4, 'Nodo1.1.3', 'desc Nodo1.1.3'),
+(5, 'Nodo1.2.3', 'desc Nodo1.2.3'),
+(6, 'Nodo1.3.3', 'desc Nodo1.3.3');
+
+INSERT INTO Layer (NodeID, Name, Url) VALUES
+(1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),
+(2, 'Capa edificios', 'http://CapaEdificios1.1.1.2');
+
+INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType) VALUES
+(1, 'http://Servicio1.1.1.1', 'WMS'),
+(2, 'http://Servicio1.1.1.2', 'WFS'),
+(3, 'http://Servicio1.1.2.2', 'CSW'),
+(4, 'http://Servicio1.1.1.3', 'WMS'),
+(5, 'http://Servicio1.1.2.3', 'WFS'),
+(6, 'http://Servicio1.1.3.3', 'CSW');
+
 INSERT INTO SystemUser (Email, Password, UserGroupID, FirstName, LastName, PhoneNumber, InstitutionID) VALUES 
-('adminTecnico@mail.com', 'admint', 1, 'NombreAdmint', 'ApellidoAdmint', '098715432', NULL);
+('adminTecnico@mail.com', 'admint', 1, 'NombreAdmint', 'ApellidoAdmint', '098715432', 1);

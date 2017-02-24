@@ -6,7 +6,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:o="http://omnifaces.org/ui"
-	xmlns:of="http://omnifaces.org/functions">
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jstl/core">
 <f:view contentType="text/html">
 	<h:head>
 		<meta charset="utf-8" />
@@ -164,14 +165,20 @@
 						<p:commandButton class="btn btn-default" icon="ui-icon-trash"
 							value="Eliminar" id="deleteUserIcon"
 							actionListener="#{userBeanList.deleteUser}" update="evobject users :users:msgs" />
+						<p:commandButton class="btn btn-default" icon="ui-icon-refresh"
+							value="Refresh" id="refreshUserIcon"
+							actionListener="#{userBeanList.init()}" update="users" process="@this" >
+						</p:commandButton>	
 					</div>
 				</div>
 			</h:form>
 		</div>
 		
+		<c:set var="selectedUserID" value="#{userBeanList.selectedUser.userId}" />
+		
 		<div class="container">
 			<h:form id="evobject" method="post"><p:growl id="msgs" />
-				<h3 class="form-signin-heading"><h:outputLabel id="userIDOutputLabel" value="Lista de objetos medibles para el usuario de ID: #{userBeanList.selectedUser.getUserId()}" /></h3>
+				<h3 class="form-signin-heading"><h:outputLabel id="userIDOutputLabel" value="Lista de objetos medibles para el usuario de ID: #{selectedUserID}" /></h3>
 				<hr></hr>
 				<p:dataTable id="measurableObjects" 
 					value="#{userBeanList.listUserMeasurableObjects}" 
@@ -191,10 +198,12 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<p:button class="btn btn-default" icon="ui-icon-plus"
-							value="Nuevo" outcome="userList" />
+							value="Nuevo" outcome="userMeasurableObjectAdd" > 
+						</p:button>
 						<p:commandButton class="btn btn-default" icon="ui-icon-trash"
 							value="Eliminar" id="deleteUserIcon"
-							actionListener="#{userBeanList.deleteUserMeasurableObject}" update="evobject :evobject:msgs" />
+							actionListener="#{userBeanList.deleteUserMeasurableObject}" update="evobject :evobject:msgs" >
+						</p:commandButton>
 					</div>
 				</div>
 			</h:form>
