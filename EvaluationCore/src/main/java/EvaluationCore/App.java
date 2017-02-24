@@ -13,6 +13,7 @@ import net.opengis.wms.v_1_3_0.AuthorityURL;
 import net.opengis.wms.v_1_3_0.Capability;
 import net.opengis.wms.v_1_3_0.Dimension;
 import net.opengis.wms.v_1_3_0.Layer;
+import net.opengis.wms.v_1_3_0.Style;
 import net.opengis.wms.v_1_3_0.WMSCapabilities;
 
 
@@ -118,6 +119,18 @@ public final class App {
 	    System.out.println("isSetOpaque: " + layer.isSetOpaque());
 	    System.out.println("isQueryable: " + layer.isQueryable());
 	    System.out.println("isSetBoundingBox: " + layer.isSetBoundingBox());
+	    
+	    if(layer.getAttribution()!=null){
+	    	System.out.println("getLogoURL: " + layer.getAttribution().getLogoURL());
+	    }
+	    
+	    System.out.println("getMetadataURL: " + layer.getMetadataURL());
+	    
+	    for (Style l : layer.getStyle()) {
+	    	System.out.println("Style: " + l.getName());
+		}
+	    
+	    
     }
     
     
@@ -203,13 +216,48 @@ public final class App {
        	return res;
     }
     
+    /* --------------------------------------------------------------------------
+     * Indica la cantidad de diferentes formatos que soporta el servicio para 
+     * retornar una excepción.
+     * --------------------------------------------------------------------------*/
+    
+    @SuppressWarnings("restriction")
+   	public static Integer metricNumberFormatException(String url, String serviceType){
+    	int res = 0;
+       	try {
+       		
+       		System.out.println( "metricNumberFormatException.." );
+       		
+       		Unmarshaller unmarshaller = getUnmarshaller();
+   			 
+       		if(serviceType.equals("WMS")) {
+       			// Unmarshal the given URL, retrieve WMSCapabilities element
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			// Retrieve WMSCapabilities instance
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			Capability c = wmsCapabilities.getCapability();
+       			
+       			if(c.isSetException()){
+       				List<String> list = c.getException().getFormat();
+       				res = list.size();
+       			}
+       		}
+   			
+   		} catch (JAXBException e) {
+   			e.printStackTrace();
+   		}
+       	return res;
+    }
+    
     
     /* --------------------------------------------------------------------------
      * Indica si el método getMap() soporta el formato Format.
      * --------------------------------------------------------------------------*/
     
     @SuppressWarnings("restriction")
-   	public static boolean metricMapFormat(String url, String serviceType, String format){
+   	public static boolean metricGetMapFormat(String url, String serviceType, String format){
     	boolean res = false;
        	try {
        		
@@ -226,9 +274,75 @@ public final class App {
        			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
        			Capability c = wmsCapabilities.getCapability();
        			
+       			if(c.getRequest()!=null && c.getRequest().getGetMap()!=null) {
+       				for (String l : c.getRequest().getGetMap().getFormat()) {
+    			    	if(format.equals(l)){
+    			    		return true;
+    			    	}
+    				}
+       			}
+				
        		}
    			
    		} catch (JAXBException e) {
+   			e.printStackTrace();
+   		}
+       	return res;
+    }
+    
+    
+    
+    /* --------------------------------------------------------------------------
+     * Indica si el método GetFeatureInfo() soporta el formato Format.
+     * --------------------------------------------------------------------------*/
+    
+    @SuppressWarnings("restriction")
+   	public static boolean metricGetFeatureInfoFormat(String url, String serviceType, String format){
+    	boolean res = false;
+       	try {
+       		
+       		System.out.println( "metricGetFeatureInfoFormat.." );
+       		
+       		Unmarshaller unmarshaller = getUnmarshaller();
+   			 
+       		if(serviceType.equals("WMS")) {
+       			// Unmarshal the given URL, retrieve WMSCapabilities element
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			// Retrieve WMSCapabilities instance
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			Capability c = wmsCapabilities.getCapability();
+       			
+       			if(c.getRequest()!=null && c.getRequest().getGetFeatureInfo()!=null) {
+       				for (String l : c.getRequest().getGetFeatureInfo().getFormat()) {
+    			    	if(format.equals(l)){
+    			    		return true;
+    			    	}
+    				}
+       			}
+				
+       		}
+   			
+   		} catch (JAXBException e) {
+   			e.printStackTrace();
+   		}
+       	return res;
+    }
+    
+    
+    /* --------------------------------------------------------------------------
+     * Indica si la capa cumple con el CRS adecuado.
+     * --------------------------------------------------------------------------*/
+    
+   	public static boolean metricCRSInLayer(Layer layer){
+    	boolean res = false;
+       	try {
+       		
+       		System.out.println( "metricCRSInLayer.." );
+       		return layer.isSetCRS();
+       		
+   		} catch (Exception e) {
    			e.printStackTrace();
    		}
        	return res;
