@@ -26,13 +26,13 @@
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/measurableObjectList.xhtml">Objetos de evaluación<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="${request.contextPath}/measurableObjectList.xhtml">Objetos de evaluación</a>
         </li>
          <li class="nav-item active">
-          <a class="nav-link" href="${request.contextPath}/profileList.xhtml">Perfiles</a>
+          <a class="nav-link" href="${request.contextPath}/profileList.xhtml">Perfiles<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/welcome.jsp">Evaluaciones</a>
+          <a class="nav-link" href="${request.contextPath}/evaluationList.xhtml">Evaluaciones</a>
         </li>
           <li class="nav-item">
           <a class="nav-link" href="${request.contextPath}/welcome.jsp">Reportes</a>
@@ -46,7 +46,7 @@
       
        </ul>
        <ul class="nav navbar-nav navbar-right">
-	      <li><a href="${pageContext.request.contextPath}/logoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+	      <li><a href="${request.contextPath}/logoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
 	  </ul>
     </nav>
 
