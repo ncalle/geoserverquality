@@ -3,6 +3,7 @@ CREATE OR REPLACE FUNCTION prototype_user_remove_measurable_object
 (
    pUserID INT
    , pMeasurableObjectID INT
+   , pMeasurableObjectType VARCHAR(11) --Servicio
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
@@ -35,22 +36,25 @@ BEGIN
    END IF;
    
       -- validacion NodoID
-   IF NOT EXISTS 
+   IF EXISTS 
       (
          SELECT 1 
          FROM UserMeasurableObject umo 
          WHERE umo.MeasurableObjectID = pMeasurableObjectID
-            AND umo.MeasurableObjectType = 'Servicio'
+            AND umo.MeasurableObjectType = pMeasurableObjectType
             AND umo.UserID = pUserID
+            AND umo.CanMeasureFlag = FALSE
       )
    THEN
-      RAISE EXCEPTION 'Error - El Servicio Geografico que se intenta eliminar no corresponde al usuario.';
+      RAISE EXCEPTION 'Error - El Servicio Geografico que se intenta remover ya no se encuentra habilitado para ser evaluado por el usuario.';
    END IF;
 
-   DELETE FROM UserMeasurableObject
+   UPDATE UserMeasurableObject
+   SET CanMeasureFlag = FALSE
    WHERE MeasurableObjectID = pMeasurableObjectID
-      AND MeasurableObjectType = 'Servicio'
-      AND UserID = pUserID;
+      AND MeasurableObjectType = pMeasurableObjectType
+      AND UserID = pUserID
+      AND CanMeasureFlag = TRUE;
          
 END;
 $$ LANGUAGE plpgsql;

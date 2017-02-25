@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.omnifaces.util.Faces;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 
@@ -28,9 +29,9 @@ import dao.UserGroupBeanRemote;
 
 
 @ManagedBean(name="userBeanList")
-@ViewScoped 
+@ViewScoped
 public class UserBeanList {
-	    
+	
 	private List<User> listUsers;	
 	private User selectedUser;
 	private List<UserGroup> listUserGroups;
@@ -52,7 +53,6 @@ public class UserBeanList {
             listUsers = uDao.list();
             listUserGroups = ugDao.list();
             listInstitutions = insDao.list();
-            listUserMeasurableObjects = moDao.list(0);
     	} catch(DAOException e) {
     		e.printStackTrace();
     	} 
@@ -72,8 +72,9 @@ public class UserBeanList {
     
     public void setSelectedUser(User selectedUser) {   	
     	this.selectedUser = selectedUser;
+    	Faces.setRequestAttribute("selectedUser", selectedUser);
     }
-     
+
 	public List<UserGroup> getListUserGroups() {
 		return listUserGroups;
 	}
@@ -124,7 +125,7 @@ public class UserBeanList {
     	
 	public void deleteUser() {   	
     	uDao.delete(selectedUser);    	
-    	listUsers.remove(selectedUser);
+        listUsers = uDao.list();
         selectedUser = null;
         
 		FacesMessage msg = new FacesMessage("Usuario eliminado correctamente.");       
@@ -150,14 +151,11 @@ public class UserBeanList {
 		
 		uDao.update(u);
 		FacesMessage msg = new FacesMessage("Usuario editado correctamente.");
-		System.out.println("event: Grupo de Usuario: " + ((User) event.getObject()));
-		System.out.println("userGroup: Grupo de Usuario: " + userGroup);
-		System.out.println("institution: " + institution);
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 	
 	
-	public void deleteUserMeasurableObject() {
+	public void removeUserMeasurableObject() {
 		uDao.removeUserMeasurableObject(selectedUser, selectedUserMeasurableObject);    	
     	listUserMeasurableObjects.remove(selectedUserMeasurableObject);
     	selectedUserMeasurableObject = null;

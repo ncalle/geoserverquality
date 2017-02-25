@@ -22,4 +22,6 @@ public interface UserBeanRemote {
     public void delete(User user) throws DAOException;
     
     public void removeUserMeasurableObject(User user, MeasurableObject measurableObject) throws DAOException;
+    
+    public void userAddMeasurableObject(Integer userID, MeasurableObject measurableobject) throws DAOException;
 }

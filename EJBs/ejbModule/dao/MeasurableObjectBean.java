@@ -25,6 +25,8 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             "SELECT * FROM prototype_measurable_objects_insert (?, ?, ?, ?)";
     private static final String SQL_DELETE =
         	"SELECT * prototype_measurable_objects_delete(?, ?, ?)";
+    private static final String SQL_USER_MEASURABLE_OBJECT_TO_ADD_GET =
+    		"SELECT MeasurableObjectID, MeasurableObjectTypeID, MeasurableObjectType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_user_measurable_object_to_add_get (?)";
 
     private DAOFactory daoFactory;
 	
@@ -135,7 +137,33 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             throw new DAOException(e);
         }
     }
+    
+    @Override
+    public List<MeasurableObject> userMeasurableObjectsToAddGet(Integer userID) throws DAOException {
+        System.out.println("userID en MOBEAN" + userID);
+    	List<MeasurableObject> measurableobject = new ArrayList<>();
 
+        Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_USER_MEASURABLE_OBJECT_TO_ADD_GET);
+            
+			statement.setObject(1, userID);
+			
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+            	measurableobject.add(map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+
+        return measurableobject;
+    }          
 
     private static MeasurableObject map(ResultSet resultSet) throws SQLException {
     	MeasurableObject measurableobject = new MeasurableObject();
