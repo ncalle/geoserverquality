@@ -15,6 +15,9 @@ INSERT INTO UserPermission (Name, Description) VALUES
 ('Alta de objeto medible','Alta de objetos medibles'),
 ('Baja de objeto medible','Baja de objetos medibles'),
 ('Modificacion de objeto medible','Modificacion de objetos medibles'),
+('Alta de modelo','Alta de modelo de calidad'),
+('Baja de modelo','Baja de modelo de calidad'),
+('Modificacion de modelo','Modificacion de modelo de calidad'),
 ('Evaluacion de objeto medible','Evaluacion de objetos medibles');
 
 INSERT INTO GroupPermission (UserPermissionID, UserGroupID)
@@ -23,15 +26,15 @@ FROM UserPermission p
 UNION
 SELECT p.UserPermissionID, 2 -- General
 FROM UserPermission p
-WHERE p.UserPermissionID IN (10) --Evaluacion
+WHERE p.UserPermissionID IN (13) --Evaluacion
 UNION
 SELECT p.UserPermissionID, 3 -- IDE
 FROM UserPermission p
-WHERE p.UserPermissionID IN (10) --Evaluacion
+WHERE p.UserPermissionID IN (13) --Evaluacion
 UNION
 SELECT p.UserPermissionID, 4 -- Institucion
 FROM UserPermission p
-WHERE p.UserPermissionID IN (11); --Evaluacion
+WHERE p.UserPermissionID IN (13); --Evaluacion
 
 INSERT INTO QualityModel (Name) VALUES
 ('ModeloIDEuy');
@@ -96,37 +99,52 @@ INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality) VALUES
 (14, 'Errores descriptivos', FALSE, 1, 'Servicio');
 
 INSERT INTO Ide (Name, Description) VALUES
-('Ide1','desc ide 1'),
-('Ide2','desc ide 2'),
-('Ide3','desc ide 3');
+('ide.uy','Infraestructura de Datos Espaciales del Uruguay');
 
 INSERT INTO Institution (IdeID, Name, Description) VALUES
-(1, 'Ins1.1', 'desc Ins1.1'),
-(2, 'Ins1.2', 'desc Ins1.2'),
-(2, 'Ins2.2', 'desc Ins2.2'),
-(3, 'Ins1.3', 'desc Ins1.3'),
-(3, 'Ins2.3', 'desc Ins2.3'),
-(3, 'Ins3.3', 'desc Ins3.3');
+(1, 'MTOP', 'Ministerio de Transporte y Obras Públicas');
 
 INSERT INTO Node (InstitutionID, Name, Description) VALUES
-(1, 'Nodo1.1.1', 'desc Nodo1.1.1'),
-(2, 'Nodo1.1.2', 'desc Nodo1.1.2'),
-(3, 'Nodo1.2.2', 'desc Nodo1.2.2'),
-(4, 'Nodo1.1.3', 'desc Nodo1.1.3'),
-(5, 'Nodo1.2.3', 'desc Nodo1.2.3'),
-(6, 'Nodo1.3.3', 'desc Nodo1.3.3');
+(1, 'Dirección Nacional de Topografía', 'Direción Nacional de Topografía');
 
-INSERT INTO Layer (NodeID, Name, Url) VALUES
-(1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),
-(2, 'Capa edificios', 'http://CapaEdificios1.1.1.2');
+--INSERT INTO Layer (NodeID, Name, Url) VALUES
+--(1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),
+--(2, 'Capa edificios', 'http://CapaEdificios1.1.1.2');
 
+--ide.uy/Ministerio de Transporte y Obras Públicas/ Dirección Nacional de Topografía
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType) VALUES
-(1, 'http://Servicio1.1.1.1', 'WMS'),
-(2, 'http://Servicio1.1.1.2', 'WFS'),
-(3, 'http://Servicio1.1.2.2', 'CSW'),
-(4, 'http://Servicio1.1.1.3', 'WMS'),
-(5, 'http://Servicio1.1.2.3', 'WFS'),
-(6, 'http://Servicio1.1.3.3', 'CSW');
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_terrestre/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_terrestre/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_fluvial/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_fluvial/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_ferroviario/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_ferroviario/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_aereo/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_aereo/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_otros/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_otros/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/relevamiento_transito/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/relevamiento_transito/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_soc_comunitaria/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/inf_soc_comunitaria/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/acc_intern_cosiplan/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/acc_intern_cosiplan/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/rec_hidrograficos/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/rec_hidrograficos/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/planos_publicar/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/planos_publicar/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/mb_hervidero/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/mb_hervidero/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/mb_sayago/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/mb_sayago/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/mb_pap/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/mb_pap/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/mb_piria/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/mb_piria/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS'),
+(1,'http://geoservicios.mtop.gub.uy/geoserver/rutas_SD/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS');
 
 INSERT INTO SystemUser (Email, Password, UserGroupID, FirstName, LastName, PhoneNumber, InstitutionID) VALUES 
-('adminTecnico@mail.com', 'admint', 1, 'NombreAdmint', 'ApellidoAdmint', '098715432', 1);
+('ncalle@mail.com', 'ncalle', 1, 'Natalia', 'Calle', '098765432', 1),
+('rsanchez@mail.com', 'rsanchez', 1, 'Ramiro', 'Sanchez', '098961259', 1);

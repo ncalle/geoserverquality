@@ -1,48 +1,90 @@
 ﻿INSERT INTO SystemUser (Email, Password, UserGroupID, FirstName, LastName, PhoneNumber, InstitutionID) VALUES 
-('tecnico1@mail.com', 'tecnico1', 1, 'Natalia', 'Calle', '098765432', 2),
-('tecnico2@mail.com', 'tecnico2', 1, 'Ramiro', 'Sanchez', '098961259', 3),
-('general1@mail.com', 'general1', 2, 'Micaela', 'Gomez', '099336253', 4),
-('general2@mail.com', 'general2', 2, 'Celso', 'Rodriguez', '099532253', 5),
-('ide1@mail.com', 'ide1', 3, 'Carlos', 'Gutierrez', '098962253', 6),
-('ide2@mail.com', 'ide2', 3, 'Juan', 'Alamo', '098332253', 1),
-('institucional1@mail.com', 'institucional1', 4, 'Luciana', 'Ilenfeld', '091332253', 1),
-('institucional2@mail.com', 'institucional2', 4, 'Javier', 'Rodriguez', '099332253', 2);
+('mgomez@mail.com', 'mgomez', 2, 'Micaela', 'Gomez', '099336253', 1),
+('crodriguez@mail.com', 'crodriguez', 2, 'Celso', 'Rodriguez', '099532253', 1),
+('cgutierrez@mail.com', 'cgutierrez', 3, 'Carlos', 'Gutierrez', '098962253', 1),
+('jalamo@mail.com', 'jalamo', 3, 'Juan', 'Alamo', '098332253', 1),
+('lilenfeld@mail.com', 'lilenfeld', 4, 'Luciana', 'Ilenfeld', '091332253', 1),
+('jrodriguez@mail.com', 'jrodriguez', 4, 'Javier', 'Rodriguez', '099332253', 1),
+('lsimaldone@mail.com', 'lsimaldone', 4, 'Luciano', 'Simaldone', '098715432', 1);
+
+--Dar permisos de evaluación sobre todos los objetos medible existentes a los usuarios ncalle y rsanchez
+INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
+SELECT u.UserID, ide.IdeID, 'Ide', TRUE
+FROM Ide ide
+CROSS JOIN 
+   (
+      SELECT su.UserID
+      FROM SystemUser su
+      WHERE su.UserID IN (1,2)
+   ) u;
 
 INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT 1, ide.IdeID, 'Ide', TRUE
-FROM Ide ide;
+SELECT u.UserID, ins.InstitutionID, 'Institución', TRUE
+FROM Institution ins
+CROSS JOIN 
+   (
+      SELECT su.UserID
+      FROM SystemUser su
+      WHERE su.UserID IN (1,2)
+   ) u;
 
 INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT 1, ins.InstitutionID, 'Institución', TRUE
-FROM Institution ins;
+SELECT u.UserID, n.NodeID, 'Nodo', TRUE
+FROM Node n
+CROSS JOIN 
+   (
+      SELECT su.UserID
+      FROM SystemUser su
+      WHERE su.UserID IN (1,2)
+   ) u;
 
 INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT 1, n.NodeID, 'Nodo', TRUE
-FROM Node n;
+SELECT u.UserID, sg.GeographicServicesID, 'Servicio', TRUE
+FROM GeographicServices sg
+CROSS JOIN 
+   (
+      SELECT su.UserID
+      FROM SystemUser su
+      WHERE su.UserID IN (1,2)
+   ) u;
+
+--Negar permisos de evaluación sobre todos los objetos medible existentes a los usuarios que no sean ncalle o rsanchez
+INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
+SELECT u.UserID, ide.IdeID, 'Ide', FALSE
+FROM Ide ide
+CROSS JOIN 
+   (
+      SELECT su.UserID
+      FROM SystemUser su
+      WHERE su.UserID NOT IN (1,2)
+   ) u;
 
 INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT 1, sg.GeographicServicesID, 'Servicio', TRUE
-FROM GeographicServices sg;
-
-INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType) VALUES
-(6, 'http://Servicio1.1.3.4', 'CSW');
-
-INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT 1, 7, 'Servicio', FALSE;
-
-
-INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT 2, ide.IdeID, 'Ide', FALSE
-FROM Ide ide;
+SELECT u.UserID, ins.InstitutionID, 'Institución', FALSE
+FROM Institution ins
+CROSS JOIN 
+   (
+      SELECT su.UserID
+      FROM SystemUser su
+      WHERE su.UserID NOT IN (1,2)
+   ) u;
 
 INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT 2, ins.InstitutionID, 'Institución', FALSE
-FROM Institution ins;
+SELECT u.UserID, n.NodeID, 'Nodo', FALSE
+FROM Node n
+CROSS JOIN 
+   (
+      SELECT su.UserID
+      FROM SystemUser su
+      WHERE su.UserID NOT IN (1,2)
+   ) u;
 
 INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT 2, n.NodeID, 'Nodo', FALSE
-FROM Node n;
-
-INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT 2, sg.GeographicServicesID, 'Servicio', FALSE
-FROM GeographicServices sg;
+SELECT u.UserID, sg.GeographicServicesID, 'Servicio', FALSE
+FROM GeographicServices sg
+CROSS JOIN 
+   (
+      SELECT su.UserID
+      FROM SystemUser su
+      WHERE su.UserID NOT IN (1,2)
+   ) u;
