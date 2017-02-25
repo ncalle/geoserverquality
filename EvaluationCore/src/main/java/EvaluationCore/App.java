@@ -32,6 +32,9 @@ public final class App {
         ok = metricOGCFormatException(URL, "WMS");
         System.out.println( "metricInformationException -------------------- " + ok);
         
+        int i = metricCountMapFormat(URL, "WMS");
+        System.out.println( "metricCountMapFormat -------------------- " + i);
+        
     }
     
     
@@ -146,7 +149,6 @@ public final class App {
     	boolean res = false;
        	try {
        		
-       		System.out.println( "metricInformationException.." );
        		
        		Unmarshaller unmarshaller = getUnmarshaller();
    			 
@@ -184,8 +186,6 @@ public final class App {
    	public static boolean metricOGCFormatException(String url, String serviceType){
     	boolean res = false;
        	try {
-       		
-       		System.out.println( "metricOGCFormatException.." );
        		
        		Unmarshaller unmarshaller = getUnmarshaller();
    			 
@@ -226,8 +226,6 @@ public final class App {
     	int res = 0;
        	try {
        		
-       		System.out.println( "metricNumberFormatException.." );
-       		
        		Unmarshaller unmarshaller = getUnmarshaller();
    			 
        		if(serviceType.equals("WMS")) {
@@ -260,8 +258,6 @@ public final class App {
    	public static boolean metricGetMapFormat(String url, String serviceType, String format){
     	boolean res = false;
        	try {
-       		
-       		System.out.println( "metricMapFormat.." );
        		
        		Unmarshaller unmarshaller = getUnmarshaller();
    			 
@@ -301,8 +297,6 @@ public final class App {
     	boolean res = false;
        	try {
        		
-       		System.out.println( "metricGetFeatureInfoFormat.." );
-       		
        		Unmarshaller unmarshaller = getUnmarshaller();
    			 
        		if(serviceType.equals("WMS")) {
@@ -339,7 +333,6 @@ public final class App {
     	boolean res = false;
        	try {
        		
-       		System.out.println( "metricCRSInLayer.." );
        		return layer.isSetCRS();
        		
    		} catch (Exception e) {
@@ -348,6 +341,39 @@ public final class App {
        	return res;
     }
     
+   	
+    /* --------------------------------------------------------------------------
+     * Representa la cantidad total de formatos que puede soportar el servicio 
+     * geográfico, en la totalidad de sus métodos.
+     * --------------------------------------------------------------------------*/
+   	
+   	@SuppressWarnings("restriction")
+   	public static int metricCountMapFormat(String url, String serviceType){
+    	int res = 0;
+       	try {
+       		
+       		Unmarshaller unmarshaller = getUnmarshaller();
+   			 
+       		if(serviceType.equals("WMS")) {
+       			// Unmarshal the given URL, retrieve WMSCapabilities element
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			// Retrieve WMSCapabilities instance
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			Capability c = wmsCapabilities.getCapability();
+       			
+       			if(c.getRequest()!=null && c.getRequest().getGetMap()!=null) {
+       				return c.getRequest().getGetMap().getFormat().size();
+       			}
+				
+       		}
+   			
+   		} catch (JAXBException e) {
+   			e.printStackTrace();
+   		}
+       	return res;
+    }
     
     /* --------------------------------------------------------------------------
      * Obtiene el xml parseaado en un objeto java
