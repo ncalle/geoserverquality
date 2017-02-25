@@ -9,13 +9,13 @@ RETURNS TABLE
       , IdeName VARCHAR(40)
       , IdeDescription VARCHAR(100)
       , InstitutionID INT
-      , InstitutionName VARCHAR(40)
+      , InstitutionName VARCHAR(70)
       , InstitutionDescription VARCHAR(100)
       , NodeID INT
-      , NodeName VARCHAR(40)
+      , NodeName VARCHAR(70)
       , NodeDescription VARCHAR(100)
       , LayerID INT
-      , LayerName VARCHAR(40)
+      , LayerName VARCHAR(70)
       , LayerURL VARCHAR(1024)
       , GeographicServicesID INT
       , GeographicServicesURL VARCHAR(1024)

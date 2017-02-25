@@ -8,7 +8,7 @@ RETURNS TABLE
       MeasurableObjectID INT
       , MeasurableObjectTypeID INT
       , MeasurableObjectType VARCHAR(11)
-      , MeasurableObjectName VARCHAR(40)
+      , MeasurableObjectName VARCHAR(70)
       , MeasurableObjectDescription VARCHAR(100)
       , MeasurableObjectURL VARCHAR(1024)
       , MeasurableObjectServicesType CHAR(3)
@@ -40,7 +40,7 @@ BEGIN
          --WHEN umo.MeasurableObjectType = 'Institución' THEN ins.Name
          --WHEN umo.MeasurableObjectType = 'Nodo' THEN n.Name
          --WHEN umo.MeasurableObjectType = 'Capa' THEN l.Name
-         WHEN umo.MeasurableObjectType = 'Servicio' THEN NULL ::VARCHAR(40)
+         WHEN umo.MeasurableObjectType = 'Servicio' THEN NULL ::VARCHAR(70)
          END AS MeasurableObjectName
       , CASE
          --WHEN umo.MeasurableObjectType = 'Ide' THEN ide.Description

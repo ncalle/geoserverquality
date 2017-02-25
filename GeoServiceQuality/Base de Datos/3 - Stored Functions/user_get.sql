@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION user_get
     , pEmail VARCHAR(40)
     , pPassword VARCHAR(40)
 ) 
-RETURNS TABLE (UserID INT, InstitutionID INT, InstitutionName VARCHAR(40), Email VARCHAR(40), UserGroupID INT, UserGroupName VARCHAR(40), FirstName VARCHAR(40), LastName VARCHAR(40), PhoneNumber BIGINT) AS $$
+RETURNS TABLE (UserID INT, InstitutionID INT, InstitutionName VARCHAR(70), Email VARCHAR(40), UserGroupID INT, UserGroupName VARCHAR(40), FirstName VARCHAR(40), LastName VARCHAR(40), PhoneNumber BIGINT) AS $$
 
 /************************************************************************************************************
 ** Name: user_get
