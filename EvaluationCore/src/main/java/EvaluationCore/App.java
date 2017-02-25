@@ -11,8 +11,10 @@ import javax.xml.transform.stream.StreamSource;
 
 import net.opengis.wms.v_1_3_0.AuthorityURL;
 import net.opengis.wms.v_1_3_0.Capability;
+import net.opengis.wms.v_1_3_0.DCPType;
 import net.opengis.wms.v_1_3_0.Dimension;
 import net.opengis.wms.v_1_3_0.Layer;
+import net.opengis.wms.v_1_3_0.OperationType;
 import net.opengis.wms.v_1_3_0.Style;
 import net.opengis.wms.v_1_3_0.WMSCapabilities;
 
@@ -123,6 +125,7 @@ public final class App {
 	    System.out.println("isQueryable: " + layer.isQueryable());
 	    System.out.println("isSetBoundingBox: " + layer.isSetBoundingBox());
 	    
+	    
 	    if(layer.getAttribution()!=null){
 	    	System.out.println("getLogoURL: " + layer.getAttribution().getLogoURL());
 	    }
@@ -135,6 +138,25 @@ public final class App {
 	    
 	    
     }
+    
+    @SuppressWarnings("restriction")
+   	public static Unmarshaller getUnmarshaller(){
+   		try{
+   			// Para un esquema determinado
+   			JAXBContext context = JAXBContext.newInstance("net.opengis.wms.v_1_3_0");
+   			
+   			// Varios esquemas
+   			//JAXBContext context = JAXBContext.newInstance("net.opengis.filter.v_1_1_0:net.opengis.gml.v_3_1_1");
+   			
+   			// Use the created JAXB context to construct an unmarshaller
+   			return context.createUnmarshaller();
+   			
+   		} catch (JAXBException e) {
+      			e.printStackTrace();
+      			return null;
+      		}
+   		
+   	}
     
     
     /* --------------------------------------------------------------------------
@@ -165,6 +187,44 @@ public final class App {
        				List<String> list = c.getException().getFormat();
        				for (int i = 0; i < list.size(); i++) {
 						if(list.get(i).equals("INIMAGE") || list.get(i).equals("BLANK")){
+							return true;
+						}
+					}
+       			}
+       		}
+   			
+   		} catch (JAXBException e) {
+   			e.printStackTrace();
+   		}
+       	return res;
+    }
+    
+    
+    /* --------------------------------------------------------------------------
+     * Indica si el método soporta el formato de excepción format
+     * --------------------------------------------------------------------------*/
+    
+    @SuppressWarnings("restriction")
+   	public static boolean metricFormatException(String url, String serviceType, String format){
+    	boolean res = false;
+       	try {
+       		
+       		
+       		Unmarshaller unmarshaller = getUnmarshaller();
+   			 
+       		if(serviceType.equals("WMS")) {
+       			// Unmarshal the given URL, retrieve WMSCapabilities element
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			// Retrieve WMSCapabilities instance
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			Capability c = wmsCapabilities.getCapability();
+       			
+       			if(c.isSetException()){
+       				List<String> list = c.getException().getFormat();
+       				for (int i = 0; i < list.size(); i++) {
+						if(list.get(i).equals(format)){
 							return true;
 						}
 					}
@@ -374,28 +434,81 @@ public final class App {
    		}
        	return res;
     }
-    
-    /* --------------------------------------------------------------------------
-     * Obtiene el xml parseaado en un objeto java
+   	
+   	
+   	/* --------------------------------------------------------------------------
+     * Indica si el servicio implementa el método GetLegendGraphic.
+     * Esta operacion esta solamente para versiones menores o iguales a v_1_1_0 del wms
      * --------------------------------------------------------------------------*/
     
     @SuppressWarnings("restriction")
-	public static Unmarshaller getUnmarshaller(){
-		try{
-			// Para un esquema determinado
-			JAXBContext context = JAXBContext.newInstance("net.opengis.wms.v_1_3_0");
-			
-			// Varios esquemas
-			//JAXBContext context = JAXBContext.newInstance("net.opengis.filter.v_1_1_0:net.opengis.gml.v_3_1_1");
-			
-			// Use the created JAXB context to construct an unmarshaller
-			return context.createUnmarshaller();
-			
-		} catch (JAXBException e) {
+   	public static boolean metricGetLegendGraphic(String url, String serviceType){
+    	boolean res = false;
+       	try {
+       		
+       		Unmarshaller unmarshaller = getUnmarshaller();
+   			 
+       		if(serviceType.equals("WMS")) {
+       			// Unmarshal the given URL, retrieve WMSCapabilities element
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			// Retrieve WMSCapabilities instance
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			Capability c = wmsCapabilities.getCapability();
+       			
+       			//Todo habilitar esto para versiones anteriores
+       			//if(c.getRequest()!=null && c.getRequest().getGetLegendGraphic()!=null) {
+		    		return true;
+       				
+       			//}
+				
+       		}
+   			
+   		} catch (JAXBException e) {
    			e.printStackTrace();
-   			return null;
    		}
-		
-	}
-
+       	return res;
+    }
+    
+    
+    
+    /* --------------------------------------------------------------------------
+     * Indica si la capa tiene definido el parámetro <ScaleHint>. 
+     * Dicho dato es el que sugiere cuál es la escala mínima y máxima en que es 
+     * apropiado mostrar la capa.
+     * Esta operacion esta solamente para versiones menores o iguales a v_1_1_0 del wms
+     * --------------------------------------------------------------------------*/
+    
+    @SuppressWarnings("restriction")
+   	public static boolean metricScaleHint(String url, String serviceType){
+    	boolean res = false;
+       	try {
+       		
+       		Unmarshaller unmarshaller = getUnmarshaller();
+   			 
+       		if(serviceType.equals("WMS")) {
+       			// Unmarshal the given URL, retrieve WMSCapabilities element
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			// Retrieve WMSCapabilities instance
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			Capability c = wmsCapabilities.getCapability();
+       			
+       			//TODO: habilitar esto para versiones anteriores
+       			//if(c.getRequest()!=null && c.getRequest().getScaleHint()!=null) {
+		    		return true;
+       				
+       			//}
+				
+       		}
+   			
+   		} catch (JAXBException e) {
+   			e.printStackTrace();
+   		}
+       	return res;
+    }
+    
+    
 }
