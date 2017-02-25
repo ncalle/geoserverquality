@@ -18,24 +18,22 @@ import net.opengis.wms.v_1_3_0.OperationType;
 import net.opengis.wms.v_1_3_0.Style;
 import net.opengis.wms.v_1_3_0.WMSCapabilities;
 
+import net.opengis.wms.v_1_1_1.Request;
+import net.opengis.wms.v_1_1_1.WMTMSCapabilities;
+
 
 public final class App {
 
 	//static String URL = "http://www2.demis.nl/wms/wms.asp?REQUEST=GetCapabilities&VERSION=1.3.0&wms=WorldMap";
 	static String URL = "http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/wms?service=WMS&version=1.3.0&request=GetCapabilities";
+	static String URL2 = "http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/wms?service=WMS&version=1.1.1&request=GetCapabilities";
 	
     public static void main( String[] args ) {
         System.out.println( "Evaluation Core Test --------------------" );
         proccessWMS();
         
-        boolean ok = metricInformationException(URL, "WMS");
-        System.out.println( "metricInformationException -------------------- " + ok);
-        
-        ok = metricOGCFormatException(URL, "WMS");
-        System.out.println( "metricInformationException -------------------- " + ok);
-        
-        int i = metricCountMapFormat(URL, "WMS");
-        System.out.println( "metricCountMapFormat -------------------- " + i);
+        boolean ok = metricGetLegendGraphic(URL2, "WMS");
+        System.out.println( "metricGetLegendGraphic -------------------- " + ok);
         
     }
     
@@ -144,6 +142,44 @@ public final class App {
    		try{
    			// Para un esquema determinado
    			JAXBContext context = JAXBContext.newInstance("net.opengis.wms.v_1_3_0");
+   			
+   			// Varios esquemas
+   			//JAXBContext context = JAXBContext.newInstance("net.opengis.filter.v_1_1_0:net.opengis.gml.v_3_1_1");
+   			
+   			// Use the created JAXB context to construct an unmarshaller
+   			return context.createUnmarshaller();
+   			
+   		} catch (JAXBException e) {
+      			e.printStackTrace();
+      			return null;
+      		}
+   		
+   	}
+    
+    @SuppressWarnings("restriction")
+   	public static Unmarshaller getUnmarshaller_1_1_1(){
+   		try{
+   			// Para un esquema determinado
+   			JAXBContext context = JAXBContext.newInstance("net.opengis.wms.v_1_1_1");
+   			
+   			// Varios esquemas
+   			//JAXBContext context = JAXBContext.newInstance("net.opengis.filter.v_1_1_0:net.opengis.gml.v_3_1_1");
+   			
+   			// Use the created JAXB context to construct an unmarshaller
+   			return context.createUnmarshaller();
+   			
+   		} catch (JAXBException e) {
+      			e.printStackTrace();
+      			return null;
+      		}
+   		
+   	}
+    
+    @SuppressWarnings("restriction")
+   	public static Unmarshaller getUnmarshaller_1_1_0(){
+   		try{
+   			// Para un esquema determinado
+   			JAXBContext context = JAXBContext.newInstance("net.opengis.wms.v_1_1_0");
    			
    			// Varios esquemas
    			//JAXBContext context = JAXBContext.newInstance("net.opengis.filter.v_1_1_0:net.opengis.gml.v_3_1_1");
@@ -438,7 +474,7 @@ public final class App {
    	
    	/* --------------------------------------------------------------------------
      * Indica si el servicio implementa el método GetLegendGraphic.
-     * Esta operacion esta solamente para versiones menores o iguales a v_1_1_0 del wms
+     * Esta operacion esta solamente para versiones menores o iguales a v_1_1_1 del wms
      * --------------------------------------------------------------------------*/
     
     @SuppressWarnings("restriction")
@@ -446,26 +482,24 @@ public final class App {
     	boolean res = false;
        	try {
        		
-       		Unmarshaller unmarshaller = getUnmarshaller();
-   			 
+       		Unmarshaller unmarshaller = getUnmarshaller_1_1_1();
+  			 
        		if(serviceType.equals("WMS")) {
-       			// Unmarshal the given URL, retrieve WMSCapabilities element
-       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
-       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			JAXBElement<net.opengis.wms.v_1_1_1.WMTMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), net.opengis.wms.v_1_1_1.WMTMSCapabilities.class);
        			
-       			// Retrieve WMSCapabilities instance
-       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
-       			Capability c = wmsCapabilities.getCapability();
+       			net.opengis.wms.v_1_1_1.WMTMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
        			
-       			//Todo habilitar esto para versiones anteriores
-       			//if(c.getRequest()!=null && c.getRequest().getGetLegendGraphic()!=null) {
-		    		return true;
-       				
-       			//}
+       			net.opengis.wms.v_1_1_1.Capability c = wmsCapabilities.getCapability();
+       			
+	       		if(c.getRequest()!=null && c.getRequest().getGetLegendGraphic()!=null) {
+	       			return true;
+	       		}
 				
        		}
-   			
-   		} catch (JAXBException e) {
+       		
+       		
+   		} catch (Exception e) {
    			e.printStackTrace();
    		}
        	return res;
@@ -485,22 +519,21 @@ public final class App {
     	boolean res = false;
        	try {
        		
-       		Unmarshaller unmarshaller = getUnmarshaller();
+       		Unmarshaller unmarshaller = getUnmarshaller_1_1_0();
    			 
        		if(serviceType.equals("WMS")) {
-       			// Unmarshal the given URL, retrieve WMSCapabilities element
-       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
-       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			JAXBElement<net.opengis.wms.v_1_1_0.WMTMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), net.opengis.wms.v_1_1_0.WMTMSCapabilities.class);
        			
-       			// Retrieve WMSCapabilities instance
-       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
-       			Capability c = wmsCapabilities.getCapability();
+       			net.opengis.wms.v_1_1_0.WMTMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
        			
-       			//TODO: habilitar esto para versiones anteriores
-       			//if(c.getRequest()!=null && c.getRequest().getScaleHint()!=null) {
-		    		return true;
-       				
-       			//}
+    			for (net.opengis.wms.v_1_1_0.Layer layer : wmsCapabilities.getCapability().getLayer().getLayer()) {
+    				net.opengis.wms.v_1_1_0.ScaleHint scale = layer.getScaleHint();
+    				
+    				if(scale!=null) {
+    					return true;
+    				}
+    			}
 				
        		}
    			

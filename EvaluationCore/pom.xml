@@ -32,7 +32,19 @@
     <dependency>
 		<groupId>org.jvnet.ogc</groupId>
 		<artifactId>wms-v_1_3_0-schema</artifactId>
-		<version>1.0.3</version>
+		<version>1.1.0</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.jvnet.ogc</groupId>
+		<artifactId>wms-v_1_1_1-schema</artifactId>
+		<version>1.1.0</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.jvnet.ogc</groupId>
+		<artifactId>wms-v_1_1_0-schema</artifactId>
+		<version>1.1.0</version>
 	</dependency>
   </dependencies>
 </project>
