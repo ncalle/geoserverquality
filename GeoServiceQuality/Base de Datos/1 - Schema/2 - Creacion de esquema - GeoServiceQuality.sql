@@ -52,7 +52,7 @@ CREATE TABLE Institution
 (
     InstitutionID SERIAL NOT NULL,
     IdeID INT NOT NULL,
-    Name VARCHAR(40) NOT NULL,
+    Name VARCHAR(70) NOT NULL,
     Description VARCHAR(100) NULL,
 
     PRIMARY KEY (InstitutionID),
@@ -66,7 +66,7 @@ CREATE TABLE Node
 (
     NodeID SERIAL NOT NULL,
     InstitutionID INT NOT NULL,
-    Name VARCHAR(40) NOT NULL,
+    Name VARCHAR(70) NOT NULL,
     Description VARCHAR(100) NULL,
 
     PRIMARY KEY (NodeID),
@@ -80,9 +80,10 @@ CREATE TABLE Layer
 (
     LayerID SERIAL NOT NULL,
     NodeID INT NOT NULL,
-    Name VARCHAR(40) NOT NULL,
+    Name VARCHAR(70) NOT NULL,
     Url VARCHAR(1024) NOT NULL,
-    
+    Description VARCHAR(100) NULL,
+
     PRIMARY KEY (LayerID),
     UNIQUE (Url),
     FOREIGN KEY (NodeID) REFERENCES Node(NodeID)
@@ -96,6 +97,7 @@ CREATE TABLE GeographicServices
     NodeID INT NOT NULL,
     Url VARCHAR(1024) NOT NULL,
     GeographicServicesType CHAR(3) NOT NULL, -- WMS, WFS, CSW
+    Description VARCHAR(100) NULL,
     -- Metadato XML
     
     PRIMARY KEY (GeographicServicesID),

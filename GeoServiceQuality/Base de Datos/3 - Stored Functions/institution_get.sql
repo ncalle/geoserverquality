@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION institution_get
 (
     pInstitutionID INT
 ) 
-RETURNS TABLE (InstitutionID INT, Name VARCHAR(40), Description VARCHAR(100)) AS $$
+RETURNS TABLE (InstitutionID INT, Name VARCHAR(70), Description VARCHAR(100)) AS $$
 
 /************************************************************************************************************
 ** Name: institution_get
