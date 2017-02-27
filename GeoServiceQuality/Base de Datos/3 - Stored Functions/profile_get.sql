@@ -1,4 +1,4 @@
-﻿--DROP FUNCTION profile_get()
+﻿--DROP FUNCTION profile_get();
 CREATE OR REPLACE FUNCTION profile_get()
 RETURNS TABLE 
    (
@@ -6,7 +6,7 @@ RETURNS TABLE
       , ProfileName VARCHAR(40)
       , ProfileGranurality VARCHAR(11)
       , ProfileIsWeightedFlag BOOLEAN
-      , MetricID INT
+      /*, MetricID INT
       , MetricFactorID INT	  
       , MetricName VARCHAR(100)
       , MetricAgrgegationFlag BOOLEAN
@@ -21,7 +21,7 @@ RETURNS TABLE
       , IntegerFlag BOOLEAN
       , IntegerAcceptanceValue INT
       , EnumerateFlag BOOLEAN
-      , EnumerateAcceptanceValue CHAR(1)
+      , EnumerateAcceptanceValue CHAR(1)*/
    ) AS $$
 /************************************************************************************************************
 ** Name: profile_get
@@ -38,7 +38,7 @@ BEGIN
       , p.Name
       , p.Granurality
       , p.IsWeightedFlag
-      , m.MetricID
+      /*, m.MetricID
       , m.FactorID	  
       , m.Name
       , m.AgrgegationFlag
@@ -53,13 +53,13 @@ BEGIN
       , r.IntegerFlag
       , r.IntegerAcceptanceValue
       , r.EnumerateFlag
-      , r.EnumerateAcceptanceValue
+      , r.EnumerateAcceptanceValue*/
    FROM Profile p
-   INNER JOIN MetricRange r ON r.ProfileID = p.ProfileID
-   INNER JOIN Metric m ON m.MetricID = r.MetricID
+  /* INNER JOIN MetricRange r ON r.ProfileID = p.ProfileID
+   INNER JOIN Metric m ON m.MetricID = r.MetricID*/
    ORDER BY p.ProfileID
-      , m.MetricID
-      , r.MetricRangeID;
+      /*, m.MetricID
+      , r.MetricRangeID*/;
          
 END;
 $$ LANGUAGE plpgsql;
