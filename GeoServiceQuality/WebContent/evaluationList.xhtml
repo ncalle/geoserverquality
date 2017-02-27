@@ -58,32 +58,61 @@
 	
 	      	<hr></hr>
 	      	
+	      	
+      		<div class="panel panel-default">
+		    <div class="panel-body">
+		    
+			    <label for="inputType">Seleccione un perfil</label>
+		        <br></br>
+				<h:selectOneMenu value="#{evaluationBeanList.selectedProfileId}" >
+					<f:selectItems value="#{evaluationBeanList.listProfile}" var="p" itemValue="#{p.profileId}" itemLabel="#{p.profileId} - #{p.name}" />
+				</h:selectOneMenu>
+				<br></br>
+				<br></br>
+				
+				
+				<label for="inputType">Seleccione un objeto de evaluación</label>
+		        <br></br>
+				<h:selectOneMenu value="#{evaluationBeanList.selectedObjectId}" >
+					<f:selectItems value="#{evaluationBeanList.listObjects}" var="o" itemValue="#{o.measurableObjectID}" itemLabel="#{o.measurableObjectURL}" />
+				</h:selectOneMenu>
+				<br></br>
+				<br></br>
+				
+				<br></br>
+			   <h:commandButton id="evaluate" value="Evaluar" action="#{evaluationBeanList.evaluate()}" class="btn btn-lg btn-primary btn-block"/>
+		       <h:messages globalOnly="true" />
+	          
+	        </div>
+		    </div>
+		
+	      	
 	      	<div class="panel panel-default">
 			  <div class="panel-body">
 	      	
 		      	<h:dataTable styleClass="table table-striped" value="#{evaluationBeanList.list}" var="item">
 		      		<h:column>
-						<f:facet name="header"> ID</f:facet>
+						<f:facet name="header"> ID Evaluacion</f:facet>
 						<h:outputText value="#{item.evaluationID}" />
 					</h:column>
 					
 					<h:column>
-						<f:facet name="header"> UserID</f:facet>
+						<f:facet name="header"> ID Usuario</f:facet>
 						 <h:outputText value="#{item.userID}" />
 					</h:column>
 					
 					<h:column>
-						<f:facet name="header"> ProfileID</f:facet>
+						<f:facet name="header"> ID Perfil</f:facet>
 						 <h:outputText value="#{item.profileID}" />
 					</h:column>
 					
 					<h:column>
-						<f:facet name="header"> IsEvaluationCompleted</f:facet>
+						<f:facet name="header"> Completa</f:facet>
 						 <h:outputText value="#{item.isEvaluationCompleted}" />
 					</h:column>
 							
 					<h:column>
-						<f:facet name="header"> Success</f:facet>
+						<f:facet name="header"> Resultado</f:facet>
 						<h:outputText value="#{item.success}" />
 					</h:column>
 					

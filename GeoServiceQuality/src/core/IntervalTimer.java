@@ -34,7 +34,7 @@ public class IntervalTimer {
         
         System.out.println("scheduleTimer : " + System.currentTimeMillis());
         
-        App.proccessWMS();
+        //App.proccessWMS();
         
     }
     
