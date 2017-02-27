@@ -72,19 +72,15 @@ INSERT INTO Unit (Name, Description) VALUES
 ('Entero','');
 
 INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality) VALUES
-(1, 'Integridad de datos', FALSE, 1, 'Nodo'),
+--(1, 'Integridad de datos', FALSE, 1, 'Nodo'),
 (2, 'Informacion en excepciones', FALSE, 1, 'Servicio'),
-(3, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio'),
-(4, 'Tolerancia a parametros nulos', FALSE, 1, 'Método'),
-(4, 'Tolerancia a parametros largos', FALSE, 1, 'Método'),
-(5, 'Promedio tiempo de respuesta diario', FALSE, 3, 'Método'),
-(6, 'Tope Maximo de Objetos', FALSE, 1, 'Nodo'),
-(7, 'Adopcion del estandar OGC', FALSE, 4, 'Servicio'),
+--(3, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio'),
+--(4, 'Tolerancia a parametros nulos', FALSE, 1, 'Método'),
+--(4, 'Tolerancia a parametros largos', FALSE, 1, 'Método'),
+--(5, 'Promedio tiempo de respuesta diario', FALSE, 3, 'Método'),
+--(7, 'Adopcion del estandar OGC', FALSE, 4, 'Servicio'),
 (7, 'Excepciones en formato OGC', FALSE, 1, 'Servicio'),
-(7, 'Estilo de capas en formato SLD', FALSE, 1, 'Servicio'),
 (8, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 2, 'Servicio'),
-(9, 'Soporta imagen simplificada', FALSE, 1, 'Método'),
-(9, 'Soporta imagen vacia', FALSE, 1, 'Método'),
 (10, 'Formato PNG', FALSE, 1, 'Método'),
 (10, 'Formato KML', FALSE, 1, 'Método'),
 (10, 'Formato text/html metodo getFeatureInfo', FALSE, 1, 'Método'),
@@ -92,11 +88,11 @@ INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality) VALUES
 (10, 'Formato Excepcion application/vnd.ogc.se_blank', FALSE, 1, 'Método'),
 (10, 'Cantidad de formatos soportados', FALSE, 5, 'Servicio'),
 (10, 'Cantidad de formatos de excepciones soportadas', FALSE, 5, 'Servicio'),
-(11, 'Contiene servicio CSW', FALSE, 1, 'Institución'),
-(12, 'Fecha del dato', FALSE, 2, 'Institución'),
+--(11, 'Contiene servicio CSW', FALSE, 1, 'Institución'),
+--(12, 'Fecha del dato', FALSE, 2, 'Institución'),
 (13, 'Leyenda de la Capa', FALSE, 2, 'Servicio'),
-(13, 'Especifica Rango Util', FALSE, 1, 'Capa'),
-(14, 'Errores descriptivos', FALSE, 1, 'Servicio');
+(13, 'Especifica Rango Util', FALSE, 1, 'Capa');
+--(14, 'Errores descriptivos', FALSE, 1, 'Servicio');
 
 INSERT INTO Ide (Name, Description) VALUES
 ('ide.uy','Infraestructura de Datos Espaciales del Uruguay');
@@ -139,6 +135,13 @@ INSERT INTO Node (InstitutionID, Name, Description) VALUES
 (14, 'Unidad del Sistema de Información Geográfica', 'Unidad del Sistema de Información Geográfica'),
 (15, 'Servicio de Geomática', 'Servicio de Geomática'),
 (16, 'Rivera', 'Intendencia de Rivera');
+
+
+INSERT INTO Profile (ProfileID, Name, Granurality, IsWeightedFlag) VALUES
+(0, 'Perfil 1', 'Servicio', FALSE);
+
+INSERT INTO MetricRange (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue) VALUES
+(1, 0, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL);
 
 --INSERT INTO Layer (NodeID, Name, Url) VALUES
 --(1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),
