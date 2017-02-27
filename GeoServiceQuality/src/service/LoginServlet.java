@@ -41,6 +41,7 @@ public class LoginServlet extends HttpServlet{
 					
 				if(session!=null) {
 					session.setAttribute("name", foundUser.getFirstName() + ' ' + foundUser.getLastName());
+					session.setAttribute("userId", foundUser.getUserId());
 					
 				}
 	        	request.getRequestDispatcher("welcome.jsp");

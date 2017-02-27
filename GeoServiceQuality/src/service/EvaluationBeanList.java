@@ -8,6 +8,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import EvaluationCore.App;
 import entity.Evaluation;
@@ -31,6 +33,7 @@ public class EvaluationBeanList {
 	private List<Profile> listProfile;
 	private List<MeasurableObject> listObjects;
 	private int selectedProfileId, selectedObjectId;
+	private int userId;
 	
 	
 	@EJB
@@ -92,6 +95,11 @@ public class EvaluationBeanList {
             listProfile = profileDao.list();
             
             listObjects = moDao.list();
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            HttpSession appsession = request.getSession(true);
+            userId = (Integer)appsession.getAttribute("userId");
 	            
     	} catch(DAOException e) {
     		e.printStackTrace();
@@ -113,7 +121,7 @@ public class EvaluationBeanList {
 			 
 			 Evaluation e = new Evaluation();
 			 e.setProfileID(selectedProfileId);
-			 e.setUserID(1);
+			 e.setUserID(userId);
 			 e.setSuccess(success);
 			 e.setIsEvaluationCompleted(true);
 			 
