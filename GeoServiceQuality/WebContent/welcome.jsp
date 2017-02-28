@@ -44,7 +44,10 @@
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/userList.xhtml">Usuarios</a>
         </li>
-         <li class="nav-item">
+        <li class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/qualityModelList.xhtml">Modelo de Calidad</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Acerca</a>
         </li>
       </ul>

@@ -58,3 +58,5 @@ SELECT * FROM user_group_get(2); --ok
 --------------------------------------------------------------------   
 SELECT * FROM institution_get(null); --ok
 SELECT * FROM institution_get(2); --ok
+--------------------------------------------------------------------   
+SELECT * FROM quality_models_get(); --ok
