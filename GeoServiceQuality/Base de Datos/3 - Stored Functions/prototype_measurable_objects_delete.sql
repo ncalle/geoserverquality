@@ -1,9 +1,8 @@
-﻿--DROP FUNCTION prototype_measurable_objects_delete(integer, integer, integer)
+﻿--DROP FUNCTION prototype_measurable_objects_delete(integer, character varying);
 CREATE OR REPLACE FUNCTION prototype_measurable_objects_delete
 (
-   pUserID INT
-   , pMeasurableObjectID INT
-   , pMeasurableObjectTypeID INT
+   pMeasurableObjectID INT
+   , pMeasurableObjectType VARCHAR(11)
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
@@ -18,42 +17,38 @@ RETURNS VOID AS $$
 BEGIN
 
    -- parametros requeridos
-   IF (pUserID IS NULL OR pMeasurableObjectID IS NULL OR pMeasurableObjectTypeID IS NULL)
+   IF (pMeasurableObjectID IS NULL OR pMeasurableObjectType IS NULL)
    THEN
-      RAISE EXCEPTION 'Error - Los parametros ID de usuario, Measurable ObjectID, Measurable ObjectTypeID son requerido.';
+      RAISE EXCEPTION 'Error - Los parametros Measurable ObjectID, Measurable ObjectType son requerido.';
    END IF;
     
-   -- validacion Usuario
-   IF NOT EXISTS (SELECT 1 FROM SystemUser u WHERE u.UserID = pUserID)
-   THEN
-      RAISE EXCEPTION 'Error - El Usuario que intenta eliminar el Servicio no es correcto.';
-   END IF;
-
-   -- validacion NodoID
-   IF NOT EXISTS (SELECT 1 FROM GeographicServices sg WHERE sg.GeographicServicesID = pMeasurableObjectID)
+   -- validacion Servicio Geografico
+   IF pMeasurableObjectType = 'Servicio' AND NOT EXISTS (SELECT 1 FROM GeographicServices sg WHERE sg.GeographicServicesID = pMeasurableObjectID)
    THEN
       RAISE EXCEPTION 'Error - El Servicio Geografico que se intenta eliminar no existe.';
    END IF;
    
-      -- validacion NodoID
+   -- validacion de Objeto Medible
    IF NOT EXISTS 
-       (
-	       SELECT 1 
-		   FROM UserMeasurableObject umo 
-		   WHERE MeasurableObjectID = pMeasurableObjectID
-               AND MeasurableObjectTypeID = pMeasurableObjectTypeID
-			   AND umo.UserID = pUserID
-	    )
+      (
+         SELECT 1 
+         FROM UserMeasurableObject umo 
+         WHERE MeasurableObjectID = pMeasurableObjectID
+            AND MeasurableObjectType = pMeasurableObjectType
+      )
    THEN
-      RAISE EXCEPTION 'Error - El Servicio Geografico que se intenta eliminar no puede ser eliminado por el usuario.';
+      RAISE EXCEPTION 'Error - El Objeto Medible que se intenta eliminar no existe.';
    END IF;
 
    DELETE FROM UserMeasurableObject
    WHERE MeasurableObjectID = pMeasurableObjectID
-       AND MeasurableObjectTypeID = pMeasurableObjectTypeID;
+       AND MeasurableObjectType = pMeasurableObjectType;
    
-   DELETE FROM GeographicServices
-   WHERE GeographicServicesID = pMeasurableObjectID;
+   IF pMeasurableObjectType = 'Servicio'
+   THEN
+      DELETE FROM GeographicServices
+      WHERE GeographicServicesID = pMeasurableObjectID;
+   END IF;
          
 END;
 $$ LANGUAGE plpgsql;

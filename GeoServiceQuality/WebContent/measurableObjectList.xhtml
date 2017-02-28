@@ -53,15 +53,29 @@
 
 		<div class="container">
 
-			<h:form id="users" method="post">
+			<h:form id="measurableObjects" method="post">
 				<p:growl id="msgs" />
 				<h2 class="form-signin-heading">Objetos medibles</h2>
 				<hr></hr>
 				<p:dataTable id="measurableObjects"
-					value="#{measurableObjectBeanList.listObjects}" var="moitem"
-					tableStyle="table-layout: auto;" rows="20" paginator="true"
+					value="#{measurableObjectBeanList.listObjects}" 
+					var="moitem"
+					tableStyle="table-layout: auto;" 
+					selection="#{measurableObjectBeanList.selectedMeasurableObject}"
+					rowKey="#{moitem.getMeasurableObjectID()}" 
+					style="margin-bottom:40" 					
+					rows="20" 
+					paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="20,50,100" widgetVar="mo" editable="true">
+					rowsPerPageTemplate="20,50,100" 
+					widgetVar="mo" 
+					editable="true">
+					
+					<p:ajax event="rowEdit" listener="#{measurableObjectBeanList.onRowEdit}" update=":measurableObjects:msgs" />
+       				<p:ajax event="rowSelectRadio" listener="#{measurableObjectBeanList.onRowSelect}" />
+
+					<p:column selectionMode="single"
+						style="width:40px; text-align:center" />
 
 					<p:column headerText="ID"
 						sortBy="#{moitem.measurableObjectID}">
@@ -92,9 +106,10 @@
 						<p:button class="btn btn-default" icon="ui-icon-plus"
 							value="Nuevo" outcome="measurableObjectAdd" />
 						<p:button class="btn btn-default" icon="ui-icon-pencil"
-							value="Editar" outcome="measurableObjectList" />
-						<p:button class="btn btn-default" icon="ui-icon-trash"
-							value="Eliminar" outcome="measurableObjectList" />
+							value="Editar" outcome="measurableObjectList" />						
+						<p:commandButton class="btn btn-default" icon="ui-icon-trash"
+							value="Eliminar" id="deleteMeasurableObjectIcon"
+							actionListener="#{measurableObjectBeanList.deleteMeasurableObject}" update="measurableObjects :measurableObjects:msgs" />							
 					</div>
 				</div>
 			</h:form>

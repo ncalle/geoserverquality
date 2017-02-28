@@ -4,6 +4,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import entity.MeasurableObject;
+import entity.User;
 
 @Remote
 public interface MeasurableObjectBeanRemote {
@@ -14,7 +15,8 @@ public interface MeasurableObjectBeanRemote {
 
     public void create(MeasurableObject measurableobject, Integer userID, Integer nodeID) throws IllegalArgumentException, DAOException;
 
-    public void delete(MeasurableObject measurableobject, Integer userID) throws DAOException;
+    public void delete(MeasurableObject measurableobject) throws DAOException;
     
     public List<MeasurableObject> userMeasurableObjectsToAddGet(Integer userID) throws DAOException;
+    
 }

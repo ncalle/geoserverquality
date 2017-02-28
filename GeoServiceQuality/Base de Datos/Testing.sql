@@ -60,3 +60,6 @@ SELECT * FROM institution_get(null); --ok
 SELECT * FROM institution_get(2); --ok
 --------------------------------------------------------------------   
 SELECT * FROM quality_models_get(); --ok
+--------------------------------------------------------------------  
+SELECT * FROM prototype_measurable_objects_get (null); --ok
+SELECT * FROM prototype_measurable_objects_delete(5, 'Servicio'); --ok

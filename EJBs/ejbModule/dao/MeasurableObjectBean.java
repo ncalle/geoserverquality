@@ -24,7 +24,7 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
 	private static final String SQL_INSERT =
             "SELECT * FROM prototype_measurable_objects_insert (?, ?, ?, ?)";
     private static final String SQL_DELETE =
-        	"SELECT * prototype_measurable_objects_delete(?, ?, ?)";
+        	"SELECT * FROM prototype_measurable_objects_delete(?, ?)";
     private static final String SQL_USER_MEASURABLE_OBJECT_TO_ADD_GET =
     		"SELECT MeasurableObjectID, MeasurableObjectTypeID, MeasurableObjectType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_user_measurable_object_to_add_get (?)";
 
@@ -116,18 +116,17 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
     }
 
     @Override
-    public void delete(MeasurableObject measurableobject, Integer userID) throws DAOException {
+    public void delete(MeasurableObject measurableobject) throws DAOException {
 
     	Connection connection = null;
 		PreparedStatement statement = null;
-        
+		
         try {
             connection = daoFactory.getConnection();
             statement = connection.prepareStatement(SQL_DELETE);
 
-            statement.setInt(1, userID);
-            statement.setInt(2, measurableobject.getMeasurableObjectID());
-            statement.setInt(3, measurableobject.getMeasurableObjectTypeID());
+            statement.setInt(1, measurableobject.getMeasurableObjectID());
+            statement.setString(2, measurableobject.getMeasurableObjectType());
                    
             statement.executeQuery();
             
