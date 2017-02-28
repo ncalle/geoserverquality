@@ -27,6 +27,8 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
         	"SELECT * FROM prototype_measurable_objects_delete(?, ?)";
     private static final String SQL_USER_MEASURABLE_OBJECT_TO_ADD_GET =
     		"SELECT MeasurableObjectID, MeasurableObjectTypeID, MeasurableObjectType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_user_measurable_object_to_add_get (?)";
+	private static final String SQL_UPDATE =
+        	"SELECT * FROM prototype_measurable_object_update (?, ?, ?, ?, ?)";    
 
     private DAOFactory daoFactory;
 	
@@ -162,7 +164,30 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
         }
 
         return measurableobject;
-    }          
+    }
+    
+    @Override
+    public void update(MeasurableObject measurableObject) throws DAOException{
+
+    	Connection connection = null;
+		PreparedStatement statement = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE);
+
+            statement.setInt(1, measurableObject.getMeasurableObjectID());
+            statement.setString(2, measurableObject.getMeasurableObjectType());
+            statement.setString(3, measurableObject.getMeasurableObjectURL());
+            statement.setString(4, measurableObject.getMeasurableObjectServicesType());
+            statement.setString(5, measurableObject.getMeasurableObjectDescription());
+        
+            statement.executeQuery();
+            
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
 
     private static MeasurableObject map(ResultSet resultSet) throws SQLException {
     	MeasurableObject measurableobject = new MeasurableObject();

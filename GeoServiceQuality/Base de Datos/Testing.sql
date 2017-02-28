@@ -63,3 +63,6 @@ SELECT * FROM quality_models_get(); --ok
 --------------------------------------------------------------------  
 SELECT * FROM prototype_measurable_objects_get (null); --ok
 SELECT * FROM prototype_measurable_objects_delete(5, 'Servicio'); --ok
+--------------------------------------------------------------------  
+SELECT * FROM prototype_measurable_object_update(2, 'Servicio', 'http://testing', 'CSW', 'Testing url description') --ok
+SELECT * FROM prototype_measurable_objects_get (null); --ok

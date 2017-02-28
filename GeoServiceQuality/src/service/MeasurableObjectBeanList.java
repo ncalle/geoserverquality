@@ -13,7 +13,6 @@ import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 
 import entity.MeasurableObject;
-import entity.User;
 import dao.DAOException;
 import dao.MeasurableObjectBean;
 import dao.MeasurableObjectBeanRemote;
@@ -66,7 +65,7 @@ public class MeasurableObjectBeanList {
 	public void onRowEdit(RowEditEvent event) {    	
 		MeasurableObject mo = ((MeasurableObject) event.getObject());
 			
-		//moDao.update(mo);
+		moDao.update(mo);
 		FacesMessage msg = new FacesMessage("Objeto Medible editado correctamente.");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }	

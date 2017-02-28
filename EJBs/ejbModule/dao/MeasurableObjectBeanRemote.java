@@ -19,4 +19,6 @@ public interface MeasurableObjectBeanRemote {
     
     public List<MeasurableObject> userMeasurableObjectsToAddGet(Integer userID) throws DAOException;
     
+    public void update(MeasurableObject measurableObject) throws DAOException;
+    
 }

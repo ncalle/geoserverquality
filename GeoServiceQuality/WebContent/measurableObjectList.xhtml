@@ -77,27 +77,61 @@
 					<p:column selectionMode="single"
 						style="width:40px; text-align:center" />
 
-					<p:column headerText="ID"
-						sortBy="#{moitem.measurableObjectID}">
+					<p:column headerText="ID" sortBy="#{moitem.measurableObjectID}">
 						<h:outputText value="#{moitem.measurableObjectID}" />
 					</p:column>
-					<p:column headerText="Nombre"
-						sortBy="#{moitem.measurableObjectName}">
-						<h:outputText value="#{moitem.measurableObjectName}" />
+					<p:column headerText="Nombre" sortBy="#{moitem.measurableObjectName}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{moitem.measurableObjectName}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="NameInput" value="#{moitem.measurableObjectName}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
-					<p:column headerText="Descripción"
-						sortBy="#{moitem.measurableObjectDescription}">
-						<h:outputText value="#{moitem.measurableObjectDescription}" />
+					<p:column headerText="Descripción" sortBy="#{moitem.measurableObjectDescription}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{moitem.measurableObjectDescription}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="DescriptionInput" value="#{moitem.measurableObjectDescription}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
 					<p:column headerText="Tipo" sortBy="#{moitem.measurableObjectType}">
-						<h:outputText value="#{moitem.measurableObjectType}" />
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{moitem.measurableObjectType}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="TypeInput" value="#{moitem.measurableObjectType}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
-					<p:column headerText="Tipo de Servicio"
-						sortBy="#{moitem.measurableObjectServicesType}">
-						<h:outputText value="#{moitem.measurableObjectServicesType}" />
+					<p:column headerText="Tipo de Servicio" sortBy="#{moitem.measurableObjectServicesType}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{moitem.measurableObjectServicesType}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="ServiceTypeInput" value="#{moitem.measurableObjectServicesType}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>					
 					</p:column>
 					<p:column headerText="URL" sortBy="#{moitem.measurableObjectURL}">
-						<h:outputText value="#{moitem.measurableObjectURL}" />
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{moitem.measurableObjectURL}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="URLInput" value="#{moitem.measurableObjectURL}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Acciones">
+						<p:rowEditor />
 					</p:column>
 				</p:dataTable>
 
