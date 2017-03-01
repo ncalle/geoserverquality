@@ -30,7 +30,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/measurableObjectList.xhtml">Objetos de evaluación</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/measurableObjectList.xhtml">Objetos Medibles</a>
         </li>
          <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/profileList.xhtml">Perfiles</a>

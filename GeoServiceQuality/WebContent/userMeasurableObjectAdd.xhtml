@@ -10,7 +10,7 @@
 	<h:head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<title>Ingresar Usuarios</title>
+		<title>Asociar Objeto Mebile a Usuario</title>
 
 		<link rel="stylesheet"
 			href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" />
@@ -25,8 +25,7 @@
 				<li class="nav-item"><a class="nav-link"
 					href="${request.contextPath}/welcome.jsp">Home</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="${request.contextPath}/measurableObjectList.xhtml">Objetos
-						de evaluación</a></li>
+					href="${request.contextPath}/measurableObjectList.xhtml">Objetos Medibles</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="${request.contextPath}/profileList.xhtml">Perfiles</a></li>
 				<li class="nav-item"><a class="nav-link"
@@ -49,6 +48,7 @@
 		
 		<div class="container">
 			<h:form id="evobject" class="form-signin" method="post">
+			<h2 class="form-signin-heading">Asociar Objeto Medible a Usuario</h2>
 				<p:growl id="msgs" />
 				<h3 class="form-signin-heading"><h:outputLabel id="userIDOutputLabel" value="Lista de objetos medibles para el usuario de ID: #{userMeasurableObjectBeanAdd.userID}" /></h3>
 				<p:panel id="panel" class="panel panel-default">
