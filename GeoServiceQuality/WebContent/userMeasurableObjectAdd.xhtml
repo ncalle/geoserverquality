@@ -25,7 +25,8 @@
 				<li class="nav-item"><a class="nav-link"
 					href="${request.contextPath}/welcome.jsp">Home</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="${request.contextPath}/measurableObjectList.xhtml">Objetos Medibles</a></li>
+					href="${request.contextPath}/measurableObjectList.xhtml">Objetos
+						Medibles</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="${request.contextPath}/profileList.xhtml">Perfiles</a></li>
 				<li class="nav-item"><a class="nav-link"
@@ -36,7 +37,8 @@
 					href="${request.contextPath}/userList.xhtml">Usuarios<span
 						class="sr-only">(current)</span></a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="${request.contextPath}/qualityModelList.xhtml">Modelo de Calidad</a></li>						
+					href="${request.contextPath}/qualityModelList.xhtml">Modelo de
+						Calidad</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="${request.contextPath}/welcome.jsp">Acerca</a></li>
 			</ul>
@@ -45,32 +47,42 @@
 						class="glyphicon glyphicon-log-in"></span> Logout</a></li>
 			</ul>
 		</nav>
-		
+
 		<div class="container">
 			<h:form id="evobject" class="form-signin" method="post">
-			<h2 class="form-signin-heading">Asociar Objeto Medible a Usuario</h2>
+				<h2 class="form-signin-heading">Asociar Objeto Medible a
+					Usuario</h2>
 				<p:growl id="msgs" />
-				<h3 class="form-signin-heading"><h:outputLabel id="userIDOutputLabel" value="Lista de objetos medibles para el usuario de ID: #{userMeasurableObjectBeanAdd.userID}" /></h3>
+				<h3 class="form-signin-heading">
+					<h:outputLabel id="userIDOutputLabel"
+						value="Lista de objetos medibles para el usuario de ID: #{userMeasurableObjectBeanAdd.userID}" />
+				</h3>
 				<p:panel id="panel" class="panel panel-default">
 					<label for="inputType">URL</label>
 					<br></br>
-					<h:selectOneMenu value="#{userMeasurableObjectBeanAdd.userMeasurableObject}"
+					<h:selectOneMenu
+						value="#{userMeasurableObjectBeanAdd.userMeasurableObject}"
 						converter="omnifaces.SelectItemsConverter" style="width:100%">
 						<f:selectItem itemLabel="Seleccione un objeto medible"
 							noSelectionOption="false" />
-						<f:selectItems value="#{userMeasurableObjectBeanAdd.listUserMeasurableObjects}" var="ug"
-							itemLabel="#{ug.measurableObjectURL}" />
+						<f:selectItems
+							value="#{userMeasurableObjectBeanAdd.listUserMeasurableObjects}"
+							var="ug" itemLabel="#{ug.measurableObjectURL}" />
 					</h:selectOneMenu>
-					<br></br>
-					<br></br>
-					<p:commandButton class="btn btn-default" icon="ui-icon-disk"
-						value="Guardar" id="saveUserIcon"
-						actionListener="#{userMeasurableObjectBeanAdd.save}"
-						update="evobject :evobject:msgs">
-					</p:commandButton>
-					<p:button class="btn btn-default" icon="ui-icon-circle-arrow-w"
-						value="Volver" outcome="userList" />
 				</p:panel>
+
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<p:commandButton class="btn btn-default" icon="ui-icon-disk"
+							value="Guardar" id="saveUserIcon"
+							actionListener="#{userMeasurableObjectBeanAdd.save}"
+							update="evobject :evobject:msgs">
+						</p:commandButton>
+						<p:button class="btn btn-default" icon="ui-icon-circle-arrow-w"
+							value="Volver" outcome="userList" />
+					</div>
+				</div>
+				
 			</h:form>
 		</div>
 	</h:body>

@@ -26,7 +26,8 @@
 				<li class="nav-item"><a class="nav-link"
 					href="${request.contextPath}/welcome.jsp">Home</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="${request.contextPath}/measurableObjectList.xhtml">Objetos Medibles</a></li>
+					href="${request.contextPath}/measurableObjectList.xhtml">Objetos
+						Medibles</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="${request.contextPath}/profileList.xhtml">Perfiles</a></li>
 				<li class="nav-item"><a class="nav-link"
@@ -37,8 +38,8 @@
 					href="${request.contextPath}/userList.xhtml">Usuarios<span
 						class="sr-only">(current)</span></a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="${request.contextPath}/qualityModelList.xhtml">Modelo de Calidad</a>
-				</li>
+					href="${request.contextPath}/qualityModelList.xhtml">Modelo de
+						Calidad</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="${request.contextPath}/welcome.jsp">Acerca</a></li>
 
@@ -52,7 +53,7 @@
 
 		<div class="container">
 
-			<h:form id="evobject" class="form-signin" method="post">
+			<h:form id="userf" class="form-signin" method="post">
 				<p:growl id="msgs" />
 				<h2 class="form-signin-heading">Ingreso de usuario</h2>
 				<p:panel id="panel" class="panel panel-default">
@@ -96,20 +97,24 @@
 						<f:selectItems value="#{userBeanAdd.listInstitutions}" var="ins"
 							itemLabel="#{ins.name}" />
 					</h:selectOneMenu>
-					<br></br>
-					<br></br>
-					<p:commandButton class="btn btn-default" icon="ui-icon-disk"
-						value="Guardar" id="saveUserIcon"
-						actionListener="#{userBeanAdd.save}"
-						update="evobject :evobject:msgs">
-					</p:commandButton>
-					<p:button class="btn btn-default" icon="ui-icon-circle-arrow-w"
-						value="Volver" outcome="userList" />
-					<p:commandButton class="btn btn-default" icon="ui-icon-refresh"
-						value="Reset" update="panel" process="@this">
-						<p:resetInput target="panel" />
-					</p:commandButton>
 				</p:panel>
+
+
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<p:commandButton class="btn btn-default" icon="ui-icon-disk"
+							value="Guardar" id="saveUserIcon"
+							actionListener="#{userBeanAdd.save}" update="userf :userf:msgs">
+						</p:commandButton>
+						<p:button class="btn btn-default" icon="ui-icon-circle-arrow-w"
+							value="Volver" outcome="userList" />
+						<p:commandButton class="btn btn-default" icon="ui-icon-refresh"
+							value="Reset" update="panel" process="@this">
+							<p:resetInput target="panel" />
+						</p:commandButton>
+					</div>
+				</div>
+
 			</h:form>
 
 		</div>
