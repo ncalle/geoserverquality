@@ -20,13 +20,13 @@ import entity.MeasurableObject;
 public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
 
     private static final String SQL_LIST_ORDER_BY_ID =
-    		"SELECT MeasurableObjectID, MeasurableObjectTypeID, MeasurableObjectType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_measurable_objects_get (?)";
+    		"SELECT MeasurableObjectID, MeasurableObjectType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_measurable_objects_get (?)";
 	private static final String SQL_INSERT =
             "SELECT * FROM prototype_measurable_objects_insert (?, ?, ?, ?, ?)";
     private static final String SQL_DELETE =
         	"SELECT * FROM prototype_measurable_objects_delete(?, ?)";
     private static final String SQL_USER_MEASURABLE_OBJECT_TO_ADD_GET =
-    		"SELECT MeasurableObjectID, MeasurableObjectTypeID, MeasurableObjectType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_user_measurable_object_to_add_get (?)";
+    		"SELECT MeasurableObjectID, MeasurableObjectType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_user_measurable_object_to_add_get (?)";
 	private static final String SQL_UPDATE =
         	"SELECT * FROM prototype_measurable_object_update (?, ?, ?, ?, ?)";    
 
@@ -193,7 +193,6 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
     private static MeasurableObject map(ResultSet resultSet) throws SQLException {
     	MeasurableObject measurableobject = new MeasurableObject();
     	measurableobject.setMeasurableObjectID(resultSet.getInt("MeasurableObjectID"));
-    	measurableobject.setMeasurableObjectTypeID(resultSet.getInt("MeasurableObjectTypeID"));
     	measurableobject.setMeasurableObjectType(resultSet.getString("MeasurableObjectType"));
     	measurableobject.setMeasurableObjectName(resultSet.getString("MeasurableObjectName"));
     	measurableobject.setMeasurableObjectDescription(resultSet.getString("MeasurableObjectDescription"));

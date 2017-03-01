@@ -17,7 +17,6 @@ import dao.MeasurableObjectBeanRemote;
 @RequestScoped
 public class MeasurableObjectBeanAdd {
 	
-    private String name;
     private String description;
     private String url;
     private String type;
@@ -30,15 +29,6 @@ public class MeasurableObjectBeanAdd {
 	private void init()
 	{
 	}
-	
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
     
     public String getDescription() {
 		return description;
@@ -67,7 +57,6 @@ public class MeasurableObjectBeanAdd {
     public void save() {
     	
     	MeasurableObject object = new MeasurableObject();
-    	object.setMeasurableObjectName(name);
     	object.setMeasurableObjectDescription(description);
     	object.setMeasurableObjectURL(url);
     	object.setMeasurableObjectServicesType(type);

@@ -80,16 +80,6 @@
 					<p:column headerText="ID" sortBy="#{moitem.measurableObjectID}">
 						<h:outputText value="#{moitem.measurableObjectID}" />
 					</p:column>
-					<p:column headerText="Nombre" sortBy="#{moitem.measurableObjectName}">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{moitem.measurableObjectName}" />
-							</f:facet>
-							<f:facet name="input">
-								<p:inputText id="NameInput" value="#{moitem.measurableObjectName}" style="width:100%" />
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
 					<p:column headerText="Descripción" sortBy="#{moitem.measurableObjectDescription}">
 						<p:cellEditor>
 							<f:facet name="output">

@@ -5,7 +5,6 @@ CREATE OR REPLACE FUNCTION prototype_user_measurable_object_to_add_get
 )
 RETURNS TABLE (
    MeasurableObjectID INT
-   , MeasurableObjectTypeID INT
    , MeasurableObjectType VARCHAR(11)
    , MeasurableObjectName VARCHAR(70)
    , MeasurableObjectDescription VARCHAR(100)
@@ -38,13 +37,6 @@ BEGIN
    -- Lista de objetos medibles sobre los cuales el usuario puede realizar evaluaciones
    RETURN QUERY
    SELECT umo.MeasurableObjectID
-      , CASE
-         --WHEN umo.MeasurableObjectType = 'Ide' THEN 1
-         --WHEN umo.MeasurableObjectType = 'Institución' THEN 2
-         --WHEN umo.MeasurableObjectType = 'Nodo' THEN 3
-         --WHEN umo.MeasurableObjectType = 'Capa' THEN 4
-         WHEN umo.MeasurableObjectType = 'Servicio' THEN 5
-         END AS MeasurableObjectTypeID
       , umo.MeasurableObjectType
       , CASE
          --WHEN umo.MeasurableObjectType = 'Ide' THEN ide.Name

@@ -19,11 +19,10 @@ SELECT * FROM user_delete (10); --ok
 SELECT * FROM user_delete (1111); --err ok
 --------------------------------------------------------------------
 SELECT * FROM measurable_object_get (); --ok
-	--prototipo
-	SELECT * FROM prototype_measurable_objects_get (null); --ok
-	SELECT * FROM prototype_measurable_objects_get (1); --ok	
-	SELECT * FROM prototype_measurable_objects_get (2); --ok
-	SELECT * FROM prototype_measurable_objects_get (3); --ok
+   SELECT * FROM prototype_measurable_objects_get (null); --ok
+   SELECT * FROM prototype_measurable_objects_get (1); --ok	
+   SELECT * FROM prototype_measurable_objects_get (2); --ok
+   SELECT * FROM prototype_measurable_objects_get (3); --ok
 --------------------------------------------------------------------
 SELECT * FROM prototype_user_measurable_object_to_add_get(1); --ok
 SELECT * FROM prototype_user_measurable_object_to_add_get(3); --ok
