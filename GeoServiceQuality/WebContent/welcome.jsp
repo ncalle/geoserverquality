@@ -39,7 +39,7 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/evaluationList.xhtml">Evaluaciones</a>
         </li>
           <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/welcome.jsp">Reportes</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/reports.xhtml">Reportes</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/userList.xhtml">Usuarios</a>
@@ -64,8 +64,9 @@
       <div class="container">
         <h1 class="display-3">Bienvenido, <%=session.getAttribute("name")%>!</h1>
 		
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+        <p>Aquí podrá realizar mediciones sobre los servicios web geograficos que la IdeUy dispone, evaluar el estado general de los mismos así como agregar y/o modificar los mecanismos de medición de calidad existentes dentro de la plataforma.</p>
+        <p>Para mayor información ver: 
+        	<a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/welcome.jsp" role="button">Acerca</a></p>
       </div>
     </div>
 
@@ -73,8 +74,8 @@
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <h2>Servicios por Insitucion</h2>
+          <p>Muestra la cantidad de servicios geograficos disponibles por Institución. </p>
           <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
         </div>
         <div class="col-md-4">

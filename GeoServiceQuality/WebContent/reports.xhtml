@@ -4,13 +4,14 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:o="http://omnifaces.org/ui"
 	xmlns:of="http://omnifaces.org/functions">
 <f:view contentType="text/html">
 	<h:head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<title>Asociar Objeto Mebile a Usuario</title>
+		<title>Reportes</title>
 
 		<link rel="stylesheet"
 			href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" />
@@ -18,6 +19,7 @@
 	</h:head>
 
 	<h:body>
+
 		<nav
 			class="navbar navbar-static-top navbar-dark bg-inverse navbar-inverse">
 			<a class="navbar-brand" href="#">GeoServiceQuality</a>
@@ -31,60 +33,52 @@
 					href="${request.contextPath}/profileList.xhtml">Perfiles</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="${request.contextPath}/evaluationList.xhtml">Evaluaciones</a></li>
-				<li class="nav-item"><a class="nav-link"
-					href="${request.contextPath}/reports.xhtml">Reportes</a></li>
 				<li class="nav-item active"><a class="nav-link"
-					href="${request.contextPath}/userList.xhtml">Usuarios<span
+					href="${request.contextPath}/reports.xhtml">Reportes<span
 						class="sr-only">(current)</span></a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${request.contextPath}/userList.xhtml">Usuarios</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="${request.contextPath}/qualityModelList.xhtml">Modelo de
 						Calidad</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="${request.contextPath}/welcome.jsp">Acerca</a></li>
+
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="${request.contextPath}/logoutServlet"><span
 						class="glyphicon glyphicon-log-in"></span> Logout</a></li>
 			</ul>
 		</nav>
+             
+	<div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Servicios por Insitucion</h2>
+          <p>Muestra la cantidad de servicios geograficos disponibles por Institución. </p>
+          <p:chart type="pie" model="#{reportsBean.pieChartServicesPerInstitution}" />
+          <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Tiempo medio de respuesta</h2>
+          <p>Muestra el tiempo de respuesta medio de los últimas 10 evaluaciones realizadas.</p>
+          <p:chart type="line" model="#{reportsBean.mediaResponseTime}" />
+          <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
+        </div>
+      </div>
+     </div> <!-- /container -->
 
-		<div class="container">
-			<h:form id="evobject" class="form-signin" method="post">
-				<h2 class="form-signin-heading">Asociar Objeto Medible a
-					Usuario</h2>
-				<p:growl id="msgs" />
-				<h3 class="form-signin-heading">
-					<h:outputLabel id="userIDOutputLabel"
-						value="Lista de objetos medibles para el usuario de ID: #{userMeasurableObjectBeanAdd.userID}" />
-				</h3>
-				<p:panel id="panel" class="panel panel-default">
-					<label for="inputType">URL</label>
-					<br></br>
-					<h:selectOneMenu
-						value="#{userMeasurableObjectBeanAdd.userMeasurableObject}"
-						converter="omnifaces.SelectItemsConverter" style="width:100%">
-						<f:selectItem itemLabel="Seleccione un objeto medible"
-							noSelectionOption="false" />
-						<f:selectItems
-							value="#{userMeasurableObjectBeanAdd.listUserMeasurableObjects}"
-							var="ug" itemLabel="#{ug.measurableObjectURL}" />
-					</h:selectOneMenu>
-				</p:panel>
+		<script src="../../assets/js/vendor/jquery.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+		<script src="../../dist/js/bootstrap.min.js"></script>
+		<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<p:commandButton class="btn btn-default" icon="ui-icon-disk"
-							value="Guardar" id="saveUserIcon"
-							actionListener="#{userMeasurableObjectBeanAdd.save}"
-							update="evobject :evobject:msgs">
-						</p:commandButton>
-						<p:button class="btn btn-default" icon="ui-icon-circle-arrow-w"
-							value="Volver" outcome="userList" />
-					</div>
-				</div>
-				
-			</h:form>
-		</div>
 	</h:body>
 </f:view>
 </html>
