@@ -64,10 +64,10 @@
 					selection="#{measurableObjectBeanList.selectedMeasurableObject}"
 					rowKey="#{moitem.getMeasurableObjectID()}" 
 					style="margin-bottom:40" 					
-					rows="20" 
+					rows="10" 
 					paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="20,50,100" 
+					rowsPerPageTemplate="10,25,50" 
 					widgetVar="mo" 
 					editable="true">
 					
@@ -106,7 +106,9 @@
 								<h:outputText value="#{moitem.measurableObjectType}" />
 							</f:facet>
 							<f:facet name="input">
-								<p:inputText id="TypeInput" value="#{moitem.measurableObjectType}" style="width:100%" />
+								<h:selectOneMenu value="#{moitem.measurableObjectType}" style="width:100%">
+									<f:selectItem itemValue="Servicio" itemLabel="Servicio"/>
+								</h:selectOneMenu>
 							</f:facet>
 						</p:cellEditor>
 					</p:column>
@@ -116,7 +118,11 @@
 								<h:outputText value="#{moitem.measurableObjectServicesType}" />
 							</f:facet>
 							<f:facet name="input">
-								<p:inputText id="ServiceTypeInput" value="#{moitem.measurableObjectServicesType}" style="width:100%" />
+								<h:selectOneMenu value="#{moitem.measurableObjectServicesType}" style="width:100%">
+									<f:selectItem itemValue="WMS" itemLabel="WMS"/>
+									<f:selectItem itemValue="WFS" itemLabel="WFS"/>
+									<f:selectItem itemValue="CSW" itemLabel="CSW"/>
+								</h:selectOneMenu>
 							</f:facet>
 						</p:cellEditor>					
 					</p:column>
@@ -139,8 +145,6 @@
 					<div class="panel-body">
 						<p:button class="btn btn-default" icon="ui-icon-plus"
 							value="Nuevo" outcome="measurableObjectAdd" />
-						<p:button class="btn btn-default" icon="ui-icon-pencil"
-							value="Editar" outcome="measurableObjectList" />						
 						<p:commandButton class="btn btn-default" icon="ui-icon-trash"
 							value="Eliminar" id="deleteMeasurableObjectIcon"
 							actionListener="#{measurableObjectBeanList.deleteMeasurableObject}" update="measurableObjects :measurableObjects:msgs" />							
