@@ -58,7 +58,7 @@ BEGIN
          --WHEN umo.MeasurableObjectType = 'Institución' THEN ins.Description
          --WHEN umo.MeasurableObjectType = 'Nodo' THEN n.Description
          --WHEN umo.MeasurableObjectType = 'Capa' THEN NULL
-         WHEN umo.MeasurableObjectType = 'Servicio' THEN NULL ::VARCHAR(100)
+         WHEN umo.MeasurableObjectType = 'Servicio' THEN sg.Description
          END AS MeasurableObjectDescription
       , CASE
          --WHEN umo.MeasurableObjectType = 'Ide' THEN NULL
@@ -89,6 +89,7 @@ BEGIN
       --, ins.Description
       --, n.Description
       --, l.Url
+      , sg.Description
       , sg.Url
       , sg.GeographicServicesType;
          

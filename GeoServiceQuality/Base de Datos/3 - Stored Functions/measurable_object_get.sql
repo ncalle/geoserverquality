@@ -17,6 +17,7 @@ RETURNS TABLE
       , GeographicServicesID INT
       , GeographicServicesURL VARCHAR(1024)
       , GeographicServicesType CHAR(3)
+      , GeographicServicesDescription VARCHAR(100)
  ) AS $$
 /************************************************************************************************************
 ** Name: measurable_object_get
@@ -45,6 +46,7 @@ BEGIN
       , NULL AS GeographicServicesID
       , NULL AS GeographicServicesURL
       , NULL AS GeographicServicesType
+      , NULL AS GeographicServicesDescription
    FROM Ide ide
    INNER JOIN Institution ins ON ins.IdeID = ide.IdeID
    INNER JOIN Node n ON n.InstitutionID = ins.InstitutionID
@@ -79,7 +81,8 @@ BEGIN
       , NULL AS LayerURL
       , sg.GeographicServicesID
       , sg.URL AS GeographicServicesURL
-      , sg.GeographicServicesType AS GeographicServicesType
+      , sg.GeographicServicesType
+      , sg.Description AS GeographicServicesDescription
    FROM Ide ide
    INNER JOIN Institution ins ON ins.IdeID = ide.IdeID
    INNER JOIN Node n ON n.InstitutionID = ins.InstitutionID
@@ -96,6 +99,7 @@ BEGIN
       , sg.GeographicServicesID
       , sg.URL
       , sg.GeographicServicesType
+      , sg.Description
 
    ORDER BY IdeID
       , InstitutionID

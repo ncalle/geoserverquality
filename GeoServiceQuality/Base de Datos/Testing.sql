@@ -38,9 +38,10 @@ SELECT * FROM measurable_objects_by_user_get (NULL); --err ok
 SELECT * FROM user_evaluation_get (1, NULL, NULL, NULL, NULL, NULL); --ok
 SELECT * FROM user_evaluation_get (NULL, NULL, NULL, NULL, NULL, NULL); --err ok
 --------------------------------------------------------------------
-SELECT * FROM prototype_measurable_objects_insert (1, 5, 'http://serviciogeografico/Nodo1.2.3/Servicio2.1.2.3', 'WMS'); --ok
+SELECT * FROM prototype_measurable_objects_insert (5, 'http://serviciogeografico/Nodo1.2.3/Servicio2.1.2.3', 'WMS', 'Descripcion TESTING', 'Servicio'); --ok
    SELECT * FROM measurable_object_get (); --ok
    SELECT * FROM measurable_objects_by_user_get (1); --ok
+   SELECT * FROM prototype_user_measurable_object_to_add_get(1); --ok
 --------------------------------------------------------------------
 SELECT * FROM profile_insert ('TestPerfil2', 'Servicio', '1,2,3,4,5,6,7,8,9,10,11,12,43,56,14,231'); --ok
 SELECT * FROM profile_insert ('TestPerfil2', NULL, '1,2,3,4,5,6,7,8,9,10,11,12,43,56,14,231'); --err ok

@@ -37,7 +37,6 @@ public class MeasurableObjectBeanAdd {
     }
 
     public void setName(String name) {
-    	System.out.println("setName: " + name);
         this.name = name;
     }
     
@@ -46,7 +45,6 @@ public class MeasurableObjectBeanAdd {
 	}
     
     public void setDescription(String description) {
-    	System.out.println("setDescription: " + description);
 		this.description = description;
 	}
     
@@ -55,7 +53,6 @@ public class MeasurableObjectBeanAdd {
 	}
     
     public void setUrl(String url) {
-    	System.out.println("setUrl: " + url);
 		this.url = url;
 	}
     
@@ -64,7 +61,6 @@ public class MeasurableObjectBeanAdd {
 	}
     
     public void setType(String type) {
-    	System.out.println("setType: " + type);
 		this.type = type;
 	}
     
@@ -79,7 +75,7 @@ public class MeasurableObjectBeanAdd {
     	System.out.println("save.. " + object);
     	
     	try{
-            moDao.create(object, 1, 1);
+            moDao.create(object, 1); //TODO: parametrizar NodeID, cuando se amplíe el prototipo
             
             FacesContext context = FacesContext.getCurrentInstance();
         	context.addMessage(null, new FacesMessage("El objeto de evaluación fue guardado correctamente"));

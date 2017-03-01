@@ -22,7 +22,7 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
     private static final String SQL_LIST_ORDER_BY_ID =
     		"SELECT MeasurableObjectID, MeasurableObjectTypeID, MeasurableObjectType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_measurable_objects_get (?)";
 	private static final String SQL_INSERT =
-            "SELECT * FROM prototype_measurable_objects_insert (?, ?, ?, ?)";
+            "SELECT * FROM prototype_measurable_objects_insert (?, ?, ?, ?, ?)";
     private static final String SQL_DELETE =
         	"SELECT * FROM prototype_measurable_objects_delete(?, ?)";
     private static final String SQL_USER_MEASURABLE_OBJECT_TO_ADD_GET =
@@ -93,7 +93,7 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
     }    
 
     @Override
-    public void create(MeasurableObject measurableobject, Integer userID, Integer nodeID) throws IllegalArgumentException, DAOException {
+    public void create(MeasurableObject measurableobject, Integer nodeID) throws IllegalArgumentException, DAOException {
         if (measurableobject.getMeasurableObjectID() != null) {
             throw new IllegalArgumentException("El objeto medible ya existe. Error.");
         }
@@ -105,10 +105,11 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             connection = daoFactory.getConnection();
             statement = connection.prepareStatement(SQL_INSERT);
 
-            statement.setInt(1, userID);
-            statement.setInt(2, nodeID);
-            statement.setString(3, measurableobject.getMeasurableObjectURL());
-            statement.setString(4, measurableobject.getMeasurableObjectServicesType());
+            statement.setInt(1, nodeID); //TODO: parametrizar cuando se amplíe el prototipo
+            statement.setString(2, measurableobject.getMeasurableObjectURL());
+            statement.setString(3, measurableobject.getMeasurableObjectServicesType());
+            statement.setString(4, measurableobject.getMeasurableObjectDescription());
+            statement.setString(5, "Servicio"); //TODO: parametrizar cuando se amplíe el prototipo
 		
             statement.executeQuery();            
             
