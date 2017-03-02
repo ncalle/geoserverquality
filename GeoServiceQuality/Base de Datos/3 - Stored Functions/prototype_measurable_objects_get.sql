@@ -1,4 +1,4 @@
-﻿--DROP FUNCTION prototype_measurable_objects_get(integer)
+﻿--DROP FUNCTION prototype_measurable_objects_get(integer);
 CREATE OR REPLACE FUNCTION prototype_measurable_objects_get
 (
    pUserID INT
