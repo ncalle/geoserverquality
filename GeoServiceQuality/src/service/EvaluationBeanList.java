@@ -108,6 +108,7 @@ public class EvaluationBeanList {
 	
 	 public void evaluate() throws DAOException{
 		 
+		 //Cargo el objeto medible seleccionado
 		 MeasurableObject m = null;
 		 for(int i=0; i<listObjects.size(); i++){
 			int id = listObjects.get(i).getMeasurableObjectID();
@@ -116,8 +117,21 @@ public class EvaluationBeanList {
 			}
 		}
 		 
-		 if(m!=null){
-			 boolean success = App.metricInformationException(m.getMeasurableObjectURL(), m.getMeasurableObjectType());
+		//Cargo el perfil seleccionado
+		 Profile p = null;
+		 for(int i=0; i<listProfile.size(); i++){
+			int id = listProfile.get(i).getProfileId();
+			if(id==selectedObjectId){
+				p = listProfile.get(i);
+			}
+		}
+		 
+		 if(m!=null && p!=null){
+			 System.out.println( "loadMetrics -------------------- " + p.getMetricIds());
+			 
+			 String listMetrics = "0"; //p.getMetricIds();
+			 
+			 boolean success = App.loadMetrics(listMetrics, m.getMeasurableObjectURL(), m.getMeasurableObjectType());
 			 
 			 Evaluation e = new Evaluation();
 			 e.setProfileID(selectedProfileId);
@@ -133,7 +147,7 @@ public class EvaluationBeanList {
 		            
 	            FacesContext context = FacesContext.getCurrentInstance();
 	    		context.addMessage(null, new FacesMessage("La evaluación se realizó correctamente"));
-		    		
+	    		
 	    	} catch(DAOException ex) {
 	    		
 	    		FacesContext context = FacesContext.getCurrentInstance();

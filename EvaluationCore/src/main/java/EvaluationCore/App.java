@@ -30,7 +30,6 @@ public final class App {
 	
     public static void main( String[] args ) {
         System.out.println( "Evaluation Core Test --------------------" );
-        proccessWMS();
         
         boolean ok = metricGetLegendGraphic(URL2, "WMS");
         System.out.println( "metricGetLegendGraphic -------------------- " + ok);
@@ -38,103 +37,54 @@ public final class App {
     }
     
     
-    @SuppressWarnings("restriction")
-	public static void proccessWMS(){
-    	try {
-    		
-    		Unmarshaller unmarshaller = getUnmarshaller();
-			 
-			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
-			        .unmarshal(new StreamSource(URL), WMSCapabilities.class);
-			 
-			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
-			
-			//Excepciones
-			Capability c = wmsCapabilities.getCapability();
-			ExceptionInfo(c);
-			
-			// Capas
-			for (Layer layer : wmsCapabilities.getCapability().getLayer().getLayer()) {
-				layerInfo(layer);
+    public static boolean loadMetrics(String listMetrics, String url, String serviceType){
+    	 System.out.println( "loadMetrics -------------------- " + listMetrics);
+    	 boolean res = false;
+    	 int metricId = Integer.parseInt(listMetrics);
+    	 
+    	 switch (metricId) {
+			case 0:
+				res = metricInformationException(url, serviceType);
+				break;
+			case 1:
+				res = metricOGCFormatException(url, serviceType);
+				break;
+			case 2:
+				res = metricCRSInLayer(url, serviceType);
+				break;
+			case 3:
+				res = metricGetMapFormat(url, serviceType, "PNG");
+				break;
+			case 4:
+				res = metricGetMapFormat(url, serviceType, "KML");
+				break;
+			case 5:
+				res = metricGetFeatureInfoFormat(url, serviceType, "text/html");
+				break;
+			case 6:
+				res = metricFormatException(url, serviceType, "INIMAGE");
+				break;
+			case 7:
+				res = metricFormatException(url, serviceType, "BLANK");
+				break;
+			case 8:
+				res = metricCountMapFormat(url, serviceType) > 3;
+				break;
+			case 9:
+				res = metricCountFormatException(url, serviceType) > 3;
+				break;
+			case 10:
+				res = metricGetLegendGraphic(url, serviceType);
+				break;
+			case 11:
+				res = metricScaleHint(url, serviceType);
+				break;
+	
+			default:
+				break;
 			}
-			
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
-    }
-    
-    private static void ExceptionInfo(Capability c){
-    	System.out.println("------------------------- ");
-    	System.out.println("Formato Excepcion: " + c.getException().getFormat().toString());
-		System.out.println("Excepcion manejo: " + c.isSetException());
-    }
-    
-    private static void layerInfo(Layer layer){
-    	System.out.println("------------------------- ");
-    	System.out.println("ID capa: " + layer.getIdentifier());
-	    System.out.println("Nombre Capa: " + layer.getName());
-	    
-	    if(layer.isSetTitle()){
-	    	 System.out.println("Titulo Capa: " + layer.getTitle());
-	    }
-	   
-	    System.out.println("Escala max: " + layer.getMaxScaleDenominator());
-	    System.out.println("Escala min: " + layer.getMinScaleDenominator());
-	    
-	    if(layer.getAttribution()!=null){
-	    	System.out.println("Atributo: " + layer.getAttribution().getTitle());
-	    }
-	    
-	    System.out.println("isSetAuthorityURL: " + layer.isSetAuthorityURL());
-	    for (AuthorityURL a : layer.getAuthorityURL()) {
-	    	System.out.println("AuthorityURL: " + a.getName());
-		}
-	    
-	    System.out.println("isSetCRS: " + layer.isSetCRS());
-	    if(layer.isSetCRS()){
-	    	System.out.println("CRS: " + layer.getCRS());
-	    }
-	    
-	    System.out.println("isSetCascaded: " + layer.isSetCascaded());
-	    if(layer.isSetCascaded()){
-	    	System.out.println("Cascaded: " + layer.getCascaded());
-	    }
-	    
-	    if(layer.getKeywordList()!=null){
-	    	 System.out.println("KeywordList: " + layer.getKeywordList().toString());
-	    }
-	    
-	    for (Dimension l : layer.getDimension()) {
-	    	System.out.println("Dimension: " + l.getName() + " unidad: " + l.getUnits());
-		}
-	    
-	    System.out.println("isSetFixedHeight: " + layer.isSetFixedHeight());
-	    if(layer.isSetFixedHeight()){
-	    	System.out.println("Height: " + layer.getFixedHeight());
-	    }
-	    
-	    System.out.println("isSetFixedHeight: " + layer.isSetFixedWidth());
-	    if(layer.isSetFixedWidth()){
-	    	System.out.println("Width: " + layer.getFixedWidth());
-	    }
-	    
-	    System.out.println("isOpaque: " + layer.isOpaque());
-	    System.out.println("isSetOpaque: " + layer.isSetOpaque());
-	    System.out.println("isQueryable: " + layer.isQueryable());
-	    System.out.println("isSetBoundingBox: " + layer.isSetBoundingBox());
-	    
-	    
-	    if(layer.getAttribution()!=null){
-	    	System.out.println("getLogoURL: " + layer.getAttribution().getLogoURL());
-	    }
-	    
-	    System.out.println("getMetadataURL: " + layer.getMetadataURL());
-	    
-	    for (Style l : layer.getStyle()) {
-	    	System.out.println("Style: " + l.getName());
-		}
-	    
-	    
+    	 
+    	 return res;
     }
     
     @SuppressWarnings("restriction")
@@ -142,9 +92,6 @@ public final class App {
    		try{
    			// Para un esquema determinado
    			JAXBContext context = JAXBContext.newInstance("net.opengis.wms.v_1_3_0");
-   			
-   			// Varios esquemas
-   			//JAXBContext context = JAXBContext.newInstance("net.opengis.filter.v_1_1_0:net.opengis.gml.v_3_1_1");
    			
    			// Use the created JAXB context to construct an unmarshaller
    			return context.createUnmarshaller();
@@ -162,9 +109,6 @@ public final class App {
    			// Para un esquema determinado
    			JAXBContext context = JAXBContext.newInstance("net.opengis.wms.v_1_1_1");
    			
-   			// Varios esquemas
-   			//JAXBContext context = JAXBContext.newInstance("net.opengis.filter.v_1_1_0:net.opengis.gml.v_3_1_1");
-   			
    			// Use the created JAXB context to construct an unmarshaller
    			return context.createUnmarshaller();
    			
@@ -180,9 +124,6 @@ public final class App {
    		try{
    			// Para un esquema determinado
    			JAXBContext context = JAXBContext.newInstance("net.opengis.wms.v_1_1_0");
-   			
-   			// Varios esquemas
-   			//JAXBContext context = JAXBContext.newInstance("net.opengis.filter.v_1_1_0:net.opengis.gml.v_3_1_1");
    			
    			// Use the created JAXB context to construct an unmarshaller
    			return context.createUnmarshaller();
@@ -318,7 +259,7 @@ public final class App {
      * --------------------------------------------------------------------------*/
     
     @SuppressWarnings("restriction")
-   	public static Integer metricNumberFormatException(String url, String serviceType){
+   	public static Integer metricCountFormatException(String url, String serviceType){
     	int res = 0;
        	try {
        		
@@ -415,6 +356,34 @@ public final class App {
        		}
    			
    		} catch (JAXBException e) {
+   			e.printStackTrace();
+   		}
+       	return res;
+    }
+    
+    /* --------------------------------------------------------------------------
+     * Indica si las capas del servicio cumplen con el CRS adecuado.
+     * --------------------------------------------------------------------------*/
+    @SuppressWarnings("restriction")
+   	public static boolean metricCRSInLayer(String url, String serviceType){
+    	boolean res = true;
+       	try {
+       		Unmarshaller unmarshaller = getUnmarshaller();
+  			 
+       		if(serviceType.equals("WMS")) {
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			for (Layer layer : wmsCapabilities.getCapability().getLayer().getLayer()) {
+       				if(!metricCRSInLayer(layer)){
+       					return false;
+       				}
+    			}
+       		}
+       		
+       		
+   		} catch (Exception e) {
    			e.printStackTrace();
    		}
        	return res;
