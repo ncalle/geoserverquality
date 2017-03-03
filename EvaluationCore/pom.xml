@@ -29,6 +29,8 @@
       <scope>test</scope>
     </dependency>
     
+    
+    <!-- WMS -->
     <dependency>
 		<groupId>org.jvnet.ogc</groupId>
 		<artifactId>wms-v_1_3_0-schema</artifactId>
@@ -46,5 +48,22 @@
 		<artifactId>wms-v_1_1_0-schema</artifactId>
 		<version>1.1.0</version>
 	</dependency>
+	
+	
+	<!-- WFS -->
+	<dependency>
+	    <groupId>org.jvnet.ogc</groupId>
+	    <artifactId>wfs-v_1_1_0-schema</artifactId>
+	    <version>1.1.0</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.jvnet.ogc</groupId>
+	    <artifactId>wfs-v_1_0_0-schema</artifactId>
+	    <version>1.1.0</version>
+	</dependency>
+
+
+
   </dependencies>
 </project>

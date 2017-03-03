@@ -1,5 +1,6 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -127,29 +128,34 @@ public class EvaluationBeanList {
 		}
 		 
 		 if(m!=null && p!=null){
-			 System.out.println( "loadMetrics -------------------- " + p.getMetricIds());
 			 
-			 String listMetrics = "0"; //p.getMetricIds();
+			 //TODO: obtener lista de ids de metricas asociadas
+			 List<Integer> listMetrics = new ArrayList<>(); //p.getMetricIds();
+			 listMetrics.add(0);
+			 listMetrics.add(1);
 			 
-			 boolean success = App.loadMetrics(listMetrics, m.getMeasurableObjectURL(), m.getMeasurableObjectType());
-			 
-			 Evaluation e = new Evaluation();
-			 e.setProfileID(selectedProfileId);
-			 e.setUserID(userId);
-			 e.setSuccess(success);
-			 e.setIsEvaluationCompleted(true);
-			 
-			 System.out.println("evaluate.. selectedObjectId: " + selectedObjectId + " selectedProfileId: " + selectedProfileId
-					 + " success: " + success);
-			 
+			 boolean success = false;
 			 try{
-				 evaluationDao.create(e);
-		            
-	            FacesContext context = FacesContext.getCurrentInstance();
-	    		context.addMessage(null, new FacesMessage("La evaluación se realizó correctamente"));
-	    		
-	    	} catch(DAOException ex) {
-	    		
+				 
+				 for(Integer metricId:listMetrics){
+					 success = App.ejecuteMetric(metricId, m.getMeasurableObjectURL(), m.getMeasurableObjectType());
+					 
+					 Evaluation e = new Evaluation();
+					 e.setProfileID(selectedProfileId);
+					 e.setUserID(userId);
+					 e.setSuccess(success);
+					 e.setIsEvaluationCompleted(true);
+					 
+					 System.out.println("Evaluation: ObjectId: " + selectedObjectId + " MetricId: " + metricId + " Success: " + success);
+					 
+					 evaluationDao.create(e);
+				 }
+				 
+				 FacesContext context = FacesContext.getCurrentInstance();
+	    		 context.addMessage(null, new FacesMessage("La evaluación se realizó correctamente"));
+	    		 
+			 } catch(DAOException ex) {
+		    		
 	    		FacesContext context = FacesContext.getCurrentInstance();
 	    		context.addMessage(null, new FacesMessage("Error al realizar la evaluación"));
 	    		

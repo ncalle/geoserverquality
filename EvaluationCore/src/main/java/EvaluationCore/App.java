@@ -20,27 +20,24 @@ import net.opengis.wms.v_1_3_0.WMSCapabilities;
 
 import net.opengis.wms.v_1_1_1.Request;
 import net.opengis.wms.v_1_1_1.WMTMSCapabilities;
+import net.opengis.filter.v_1_1_0.FilterCapabilities;
+import net.opengis.wfs.v_1_1_0.WFSCapabilitiesType;
+
 
 
 public final class App {
 
 	//static String URL = "http://www2.demis.nl/wms/wms.asp?REQUEST=GetCapabilities&VERSION=1.3.0&wms=WorldMap";
 	static String URL = "http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/wms?service=WMS&version=1.3.0&request=GetCapabilities";
-	static String URL2 = "http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/wms?service=WMS&version=1.1.1&request=GetCapabilities";
 	
     public static void main( String[] args ) {
         System.out.println( "Evaluation Core Test --------------------" );
         
-        boolean ok = metricGetLegendGraphic(URL2, "WMS");
-        System.out.println( "metricGetLegendGraphic -------------------- " + ok);
-        
     }
     
     
-    public static boolean loadMetrics(String listMetrics, String url, String serviceType){
-    	 System.out.println( "loadMetrics -------------------- " + listMetrics);
+    public static boolean ejecuteMetric(Integer metricId, String url, String serviceType){
     	 boolean res = false;
-    	 int metricId = Integer.parseInt(listMetrics);
     	 
     	 switch (metricId) {
 			case 0:
@@ -88,6 +85,22 @@ public final class App {
     }
     
     @SuppressWarnings("restriction")
+   	public static Unmarshaller getUnmarshallerWFS_1_1_0(){
+   		try{
+   			// Para un esquema determinado
+   			JAXBContext context = JAXBContext.newInstance("net.opengis.wfs.v_1_1_0");
+   			
+   			// Use the created JAXB context to construct an unmarshaller
+   			return context.createUnmarshaller();
+   			
+   		} catch (JAXBException e) {
+  			e.printStackTrace();
+  			return null;
+  		}
+   		
+   	}
+    
+    @SuppressWarnings("restriction")
    	public static Unmarshaller getUnmarshaller(){
    		try{
    			// Para un esquema determinado
@@ -97,9 +110,9 @@ public final class App {
    			return context.createUnmarshaller();
    			
    		} catch (JAXBException e) {
-      			e.printStackTrace();
-      			return null;
-      		}
+  			e.printStackTrace();
+  			return null;
+  		}
    		
    	}
     
@@ -113,9 +126,9 @@ public final class App {
    			return context.createUnmarshaller();
    			
    		} catch (JAXBException e) {
-      			e.printStackTrace();
-      			return null;
-      		}
+  			e.printStackTrace();
+  			return null;
+  		}
    		
    	}
     
@@ -129,9 +142,9 @@ public final class App {
    			return context.createUnmarshaller();
    			
    		} catch (JAXBException e) {
-      			e.printStackTrace();
-      			return null;
-      		}
+  			e.printStackTrace();
+  			return null;
+  		}
    		
    	}
     
@@ -148,15 +161,13 @@ public final class App {
     	boolean res = false;
        	try {
        		
-       		
-       		Unmarshaller unmarshaller = getUnmarshaller();
-   			 
        		if(serviceType.equals("WMS")) {
-       			// Unmarshal the given URL, retrieve WMSCapabilities element
+       			
+       			Unmarshaller unmarshaller = getUnmarshaller();
+       			
        			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
        			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
        			
-       			// Retrieve WMSCapabilities instance
        			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
        			Capability c = wmsCapabilities.getCapability();
        			
@@ -168,6 +179,16 @@ public final class App {
 						}
 					}
        			}
+       		} else if(serviceType.equals("WFS")){
+       			Unmarshaller unmarshaller = getUnmarshallerWFS_1_1_0();
+       			
+       			JAXBElement<WFSCapabilitiesType> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WFSCapabilitiesType.class);
+       			
+       			WFSCapabilitiesType wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			FilterCapabilities c = wmsCapabilities.getFilterCapabilities();
+       			
+       			return false;
        		}
    			
    		} catch (JAXBException e) {
