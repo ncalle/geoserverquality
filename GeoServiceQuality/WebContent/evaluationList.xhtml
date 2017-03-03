@@ -1,139 +1,197 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-      
-<head>
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jstl/core">
 
- 	<meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-	
-	<title>Evaluaciones</title> 
+<f:view contentType="text/html">
+	<h:head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Evaluaciones</title>
 
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
-	<link href="./css/form_list.css" rel="stylesheet"/>
-</head>
+		<link rel="stylesheet"
+			href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" />
+		<link href="./css/form_list.css" rel="stylesheet" />
+	</h:head>
 
-<h:body>
+	<h:body>
 
-      <nav class="navbar navbar-static-top navbar-dark bg-inverse navbar-inverse">
-      <a class="navbar-brand" href="#">GeoServiceQuality</a>
-      <ul class="nav navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/welcome.jsp">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/measurableObjectList.xhtml">Objetos Medibles</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/profileList.xhtml">Perfiles</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="${request.contextPath}/evaluationList.xhtml">Evaluaciones<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/reports.xhtml">Reportes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/userList.xhtml">Usuarios</a>
-        </li>
-		<li class="nav-item"><a class="nav-link"
-			href="${request.contextPath}/qualityModelList.xhtml">Modelo de Calidad</a>
-		</li>        
-        <li class="nav-item">
-          <a class="nav-link" href="${request.contextPath}/welcome.jsp">Acerca</a>
-        </li>
-      
-       </ul>
-       <ul class="nav navbar-nav navbar-right">
-	      <li><a href="${request.contextPath}/logoutServlet"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
-	  </ul>
-    </nav>
+		<nav
+			class="navbar navbar-static-top navbar-dark bg-inverse navbar-inverse">
+			<a class="navbar-brand" href="#">GeoServiceQuality</a>
+			<ul class="nav navbar-nav">
+				<li class="nav-item"><a class="nav-link"
+					href="${request.contextPath}/welcome.jsp">Home</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${request.contextPath}/measurableObjectList.xhtml">Objetos
+						Medibles</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${request.contextPath}/profileList.xhtml">Perfiles</a></li>
+				<li class="nav-item active"><a class="nav-link"
+					href="${request.contextPath}/evaluationList.xhtml">Evaluaciones<span
+						class="sr-only">(current)</span></a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${request.contextPath}/reports.xhtml">Reportes</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${request.contextPath}/userList.xhtml">Usuarios</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${request.contextPath}/qualityModelList.xhtml">Modelo de
+						Calidad</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${request.contextPath}/welcome.jsp">Acerca</a></li>
+
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="${request.contextPath}/logoutServlet"><span
+						class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+			</ul>
+		</nav>
 
 
-    <div class="container">
-    
-    	<h:form id="evobject" class="form-signin" action="" method="post">
-	    	<h2 class="form-signin-heading">Evaluaciones</h2>
-	
-	      	<hr></hr>
-	      	
-	      	
-      		<div class="panel panel-default">
-		    <div class="panel-body">
-		    
-			    <label for="inputType">Seleccione un perfil</label>
-		        <br></br>
-				<h:selectOneMenu value="#{evaluationBeanList.selectedProfileId}" >
-					<f:selectItems value="#{evaluationBeanList.listProfile}" var="p" itemValue="#{p.profileId}" itemLabel="#{p.profileId} - #{p.name}" />
-				</h:selectOneMenu>
-				<br></br>
-				<br></br>
-				
-				
-				<label for="inputType">Seleccione un objeto de evaluación</label>
-		        <br></br>
-				<h:selectOneMenu style="width:900px;" value="#{evaluationBeanList.selectedObjectId}" >
-					<f:selectItems style="width:900px;" value="#{evaluationBeanList.listObjects}" var="o" itemValue="#{o.measurableObjectID}" itemLabel="#{o.measurableObjectURL}" />
-				</h:selectOneMenu>
-				<br></br>
-				<br></br>
-				
-				<br></br>
-			   <h:commandButton id="evaluate" value="Evaluar" action="#{evaluationBeanList.evaluate()}" class="btn btn-lg btn-primary btn-block"/>
-		       <h:messages globalOnly="true" />
-	          
-	        </div>
-		    </div>
-		
-	      	
-	      	<div class="panel panel-default">
-			  <div class="panel-body">
-	      	
-		      	<h:dataTable styleClass="table table-striped" value="#{evaluationBeanList.list}" var="item">
-		      		<h:column>
-						<f:facet name="header"> ID Evaluacion</f:facet>
-						<h:outputText value="#{item.evaluationID}" />
-					</h:column>
-					
-					<h:column>
-						<f:facet name="header"> ID Usuario</f:facet>
-						 <h:outputText value="#{item.userID}" />
-					</h:column>
-					
-					<h:column>
-						<f:facet name="header"> ID Perfil</f:facet>
-						 <h:outputText value="#{item.profileID}" />
-					</h:column>
-					
-					<h:column>
-						<f:facet name="header"> Completa</f:facet>
-						 <h:outputText value="#{item.isEvaluationCompleted}" />
-					</h:column>
-							
-					<h:column>
-						<f:facet name="header"> Resultado</f:facet>
-						<h:outputText value="#{item.success}" />
-					</h:column>
-					
-				</h:dataTable>
-					
-        	</div>
+		<div class="container">
+
+			<h:form id="profiles" method="post">
+				<p:growl id="msgs" />
+				<h2 class="form-signin-heading">Evaluaciones</h2>
+				<h3 class="form-signin-heading">Seleccione un Perfil con el	cual realizar la evaluación.</h3>
+				<hr></hr>
+				<p:dataTable id="profiles" value="#{evaluationBeanList.listProfile}"
+					var="pitem" tableStyle="table-layout: auto;"
+					selection="#{evaluationBeanList.selectedProfile}"
+					rowKey="#{pitem.getProfileId()}" style="margin-bottom:40"
+					widgetVar="p">
+
+					<p:ajax event="rowSelectRadio"
+						listener="#{evaluationBeanList.onRowSelect}" />
+
+					<p:column selectionMode="single"
+						style="width:40px; text-align:center" />
+
+					<p:column headerText="ID" sortBy="#{pitem.profileId}">
+						<h:outputText value="#{pitem.profileId}" />
+					</p:column>
+
+					<p:column headerText="Nombre" sortBy="#{pitem.name}">
+						<h:outputText value="#{pitem.name}" />
+					</p:column>
+
+					<p:column headerText="Granuralidad" sortBy="#{pitem.granurality}">
+						<h:outputText value="#{pitem.granurality}" />
+					</p:column>
+
+					<p:column headerText="Ponderado" sortBy="#{pitem.isWeightedFlag}">
+						<h:outputText value="#{pitem.isWeightedFlag}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
 		</div>
-		 	
-     </h:form>
-	  
-	</div> 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-    <script src="../../assets/js/vendor/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-    
-</h:body>
+		<div class="container">
+			<h:form id="evobject" method="post">
+				<p:growl id="msgs" />
+				<hr></hr>
+				<h3 class="form-signin-heading">Seleccione un Objeto Medible a ser evaluado.</h3>
+				<p:dataTable id="measurableObjects" 
+					value="#{evaluationBeanList.listMeasurableObjects}" 
+					var="moitem" 
+					tableStyle="table-layout: auto;" 
+					selection="#{evaluationBeanList.selectedMeasurableObject}"
+					rowKey="#{moitem.getMeasurableObjectID()}"
+					style="margin-bottom:40" 
+					rows="10" 
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,25,50"					
+					widgetVar="mo">
+
+					<p:ajax event="rowSelectRadio"
+						listener="#{evaluationBeanList.onRowSelect}" />
+
+					<p:column selectionMode="single"
+						style="width:40px; text-align:center" />
+
+					<p:column headerText="ID" sortBy="#{moitem.measurableObjectID}">
+						<h:outputText value="#{moitem.measurableObjectID}" />
+					</p:column>
+					
+					<p:column headerText="Descripción" sortBy="#{moitem.measurableObjectDescription}">
+						<h:outputText value="#{moitem.measurableObjectDescription}" />
+					</p:column>
+					
+					<p:column headerText="Tipo" sortBy="#{moitem.measurableObjectType}">
+						<h:outputText value="#{moitem.measurableObjectType}" />
+					</p:column>
+					
+					<p:column headerText="Tipo de Servicio" sortBy="#{moitem.measurableObjectServicesType}">
+						<h:outputText value="#{moitem.measurableObjectServicesType}" />					
+					</p:column>
+					
+					<p:column headerText="URL" sortBy="#{moitem.measurableObjectURL}">
+						<h:outputText value="#{moitem.measurableObjectURL}" />
+					</p:column>
+	
+				</p:dataTable>
+
+				<hr></hr>
+
+				<div class="panel panel-default">
+					<h:commandButton id="evaluate" value="Evaluar"
+						action="#{evaluationBeanList.evaluate()}"
+						class="btn btn-lg btn-primary btn-block" />
+				</div>
+			</h:form>
+		</div>
+
+		<div class="container">
+			<h:form id="evaluation" method="post">
+				<p:growl id="msgs" />
+				<hr></hr>
+				<h3 class="form-signin-heading">Evaluaciónes realizadas hasta el momento.</h3>
+				<p:dataTable id="evaluation"
+					value="#{evaluationBeanList.listEvaluation}" var="eitem"
+					tableStyle="table-layout: auto;"
+					rowKey="#{eitem.getEvaluationID()}" widgetVar="ev" rows="10"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,20,50">
+
+					<p:column headerText="Evaluación ID" sortBy="#{eitem.evaluationID}">
+						<h:outputText value="#{eitem.evaluationID}" />
+					</p:column>
+
+					<p:column headerText="Usuario ID" sortBy="#{eitem.userID}">
+						<h:outputText value="#{eitem.userID}" />
+					</p:column>
+
+					<p:column headerText="Perfil ID" sortBy="#{eitem.profileID}">
+						<h:outputText value="#{eitem.profileID}" />
+					</p:column>
+
+					<p:column headerText="Completa"
+						sortBy="#{eitem.isEvaluationCompleted}">
+						<h:outputText value="#{eitem.isEvaluationCompleted}" />
+					</p:column>
+
+					<p:column headerText="Resultado" sortBy="#{eitem.success}">
+						<h:outputText value="#{eitem.success}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+		<script src="../../assets/js/vendor/jquery.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+		<script src="../../dist/js/bootstrap.min.js"></script>
+		<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+	</h:body>
+</f:view>
 </html>

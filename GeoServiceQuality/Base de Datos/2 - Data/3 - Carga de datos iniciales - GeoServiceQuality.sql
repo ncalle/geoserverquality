@@ -137,12 +137,17 @@ INSERT INTO Node (InstitutionID, Name, Description) VALUES
 (16, 'Rivera', 'Intendencia de Rivera');
 
 
-INSERT INTO Profile (ProfileID, Name, Granurality, IsWeightedFlag) VALUES
-(0, 'Perfil Basico', 'Servicio', FALSE);
+INSERT INTO Profile (Name, Granurality, IsWeightedFlag) VALUES
+('Perfil Basico', 'Servicio', FALSE),
+('Perfil Avanzado', 'Servicio', FALSE);
 
 INSERT INTO MetricRange (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue) VALUES
-(1, 0, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL);
-(2, 0, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL);
+(1, 1, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
+(2, 1, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
+(3, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
+(4, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
+(5, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
+(6, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL);
 
 --INSERT INTO Layer (NodeID, Name, Url) VALUES
 --(1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),
