@@ -1,4 +1,4 @@
-﻿--DROP FUNCTION prototype_user_measurable_object_to_add_get(integer)
+﻿--DROP FUNCTION prototype_user_measurable_object_to_add_get(integer);
 CREATE OR REPLACE FUNCTION prototype_user_measurable_object_to_add_get
 (
    pUserID INT
