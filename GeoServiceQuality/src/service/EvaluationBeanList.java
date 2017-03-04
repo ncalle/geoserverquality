@@ -18,6 +18,7 @@ import EvaluationCore.App;
 import entity.Evaluation;
 import entity.MeasurableObject;
 import entity.Profile;
+import entity.ProfileMetric;
 import dao.DAOException;
 import dao.EvaluationBean;
 import dao.EvaluationBeanRemote;
@@ -25,6 +26,8 @@ import dao.MeasurableObjectBean;
 import dao.MeasurableObjectBeanRemote;
 import dao.ProfileBean;
 import dao.ProfileBeanRemote;
+import dao.ProfileMetricBean;
+import dao.ProfileMetricBeanRemote;
 
 @ManagedBean(name = "evaluationBeanList")
 @ViewScoped
@@ -35,12 +38,14 @@ public class EvaluationBeanList {
 	private Profile selectedProfile;
 	private List<MeasurableObject> listMeasurableObjects;
 	private MeasurableObject selectedMeasurableObject;
+	private List<ProfileMetric> listProfileMetric;
 	private int userId;
 
 	@EJB
 	private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
 	private EvaluationBeanRemote evaluationDao = new EvaluationBean();
 	private ProfileBeanRemote profileDao = new ProfileBean();
+	private ProfileMetricBeanRemote pmDao = new ProfileMetricBean();
 
 	
 	@PostConstruct
@@ -59,10 +64,63 @@ public class EvaluationBeanList {
 		}
 	}
 	
+	public Profile getSelectedProfile() {
+		return selectedProfile;
+	}
+
+	public void setSelectedProfile(Profile selectedProfile) {
+		this.selectedProfile = selectedProfile;
+	}
+
+	public List<Profile> getListProfile() {
+		return listProfile;
+	}
+
+	public void setListProfile(List<Profile> listProfile) {
+		this.listProfile = listProfile;
+	}
+
+	public List<Evaluation> getListEvaluation() {
+		return listEvaluation;
+	}
+
+	public void setListEvaluation(List<Evaluation> listEvaluation) {
+		this.listEvaluation = listEvaluation;
+	}
+
+
+	public List<MeasurableObject> getListMeasurableObjects() {
+		return listMeasurableObjects;
+	}
+
+
+	public void setListMeasurableObjects(List<MeasurableObject> listMeasurableObjects) {
+		this.listMeasurableObjects = listMeasurableObjects;
+	}
+
+
+	public MeasurableObject getSelectedMeasurableObject() {
+		return selectedMeasurableObject;
+	}
+
+
+	public void setSelectedMeasurableObject(MeasurableObject selectedMeasurableObject) {
+		this.selectedMeasurableObject = selectedMeasurableObject;
+	}
+
+
+	public List<ProfileMetric> getListProfileMetric() {
+		return listProfileMetric;
+	}
+
+
+	public void setListProfileMetric(List<ProfileMetric> listProfileMetric) {
+		this.listProfileMetric = listProfileMetric;
+	}
+	
 
 	public void onRowSelect(SelectEvent event) {
-		// TODO: Devolver lista de metricas que incluye el perfil
-		// listMetrics = profileDao.metricList(selectedProfile.getProfileId());
+		listProfileMetric = pmDao.profileMetricList(selectedProfile);
 	}
 	
 
@@ -126,49 +184,5 @@ public class EvaluationBeanList {
 			context.addMessage(null, new FacesMessage("Error al realizar la evaluación"));
 		}
 
-	}
-
-	public Profile getSelectedProfile() {
-		return selectedProfile;
-	}
-
-	public void setSelectedProfile(Profile selectedProfile) {
-		this.selectedProfile = selectedProfile;
-	}
-
-	public List<Profile> getListProfile() {
-		return listProfile;
-	}
-
-	public void setListProfile(List<Profile> listProfile) {
-		this.listProfile = listProfile;
-	}
-
-	public List<Evaluation> getListEvaluation() {
-		return listEvaluation;
-	}
-
-	public void setListEvaluation(List<Evaluation> listEvaluation) {
-		this.listEvaluation = listEvaluation;
-	}
-
-
-	public List<MeasurableObject> getListMeasurableObjects() {
-		return listMeasurableObjects;
-	}
-
-
-	public void setListMeasurableObjects(List<MeasurableObject> listMeasurableObjects) {
-		this.listMeasurableObjects = listMeasurableObjects;
-	}
-
-
-	public MeasurableObject getSelectedMeasurableObject() {
-		return selectedMeasurableObject;
-	}
-
-
-	public void setSelectedMeasurableObject(MeasurableObject selectedMeasurableObject) {
-		this.selectedMeasurableObject = selectedMeasurableObject;
 	}
 }

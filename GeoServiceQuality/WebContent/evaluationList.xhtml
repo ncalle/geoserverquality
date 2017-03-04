@@ -52,50 +52,80 @@
 			</ul>
 		</nav>
 
+		<div class="container">
+			<h2 class="form-signin-heading">Evaluaciones</h2>
+			<hr></hr>
+		</div>
 
 		<div class="container">
+		
+		<div class="ui-g">
+		    <div class="ui-g-6">
+		    
+				<h:form id="profiles" method="post">			
+					<p:growl id="msgs" />
+					<h4 class="form-signin-heading">Seleccione un Perfil con el	cual realizar la evaluación.</h4>
+					<p:dataTable id="profiles" 
+						value="#{evaluationBeanList.listProfile}"
+						var="pitem" 
+						tableStyle="table-layout: auto;"
+						selection="#{evaluationBeanList.selectedProfile}"
+						rowKey="#{pitem.getProfileId()}" 
+						style="margin-bottom:40"
+						widgetVar="p">
+	
+						<p:ajax event="rowSelectRadio"
+							listener="#{evaluationBeanList.onRowSelect}" update=":profileMetrics:profileMetrics" />
+	
+						<p:column selectionMode="single"
+							style="width:40px; text-align:center" />
+	
+						<p:column headerText="ID" sortBy="#{pitem.profileId}">
+							<h:outputText value="#{pitem.profileId}" />
+						</p:column>
+	
+						<p:column headerText="Nombre" sortBy="#{pitem.name}">
+							<h:outputText value="#{pitem.name}" />
+						</p:column>
+	
+						<p:column headerText="Granuralidad" sortBy="#{pitem.granurality}">
+							<h:outputText value="#{pitem.granurality}" />
+						</p:column>
+	
+						<p:column headerText="Ponderado" sortBy="#{pitem.isWeightedFlag}">
+							<h:outputText value="#{pitem.isWeightedFlag}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+		    </div>	
+		
+			<div class="ui-g-6">
+			
+				<h:form id="profileMetrics" method="post"><p:growl id="msgs" />
+					<h4 class="form-signin-heading">Lista de Metricas disponibles para el Perfil seleccionado.</h4>
+					<p:dataTable id="profileMetrics" 
+						value="#{evaluationBeanList.listProfileMetric}" 
+						var="pmitem" 
+						tableStyle="table-layout: auto;"
+						widgetVar="pm">
+							
+						<p:column headerText="Métrica" sortBy="#{pmitem.getMetricName()}">
+							<h:outputText value="#{pmitem.getMetricName()}" />
+						</p:column>		
+					</p:dataTable>
+				</h:form>
+			
+			</div>
+		</div>
 
-			<h:form id="profiles" method="post">
-				<p:growl id="msgs" />
-				<h2 class="form-signin-heading">Evaluaciones</h2>
-				<h3 class="form-signin-heading">Seleccione un Perfil con el	cual realizar la evaluación.</h3>
-				<hr></hr>
-				<p:dataTable id="profiles" value="#{evaluationBeanList.listProfile}"
-					var="pitem" tableStyle="table-layout: auto;"
-					selection="#{evaluationBeanList.selectedProfile}"
-					rowKey="#{pitem.getProfileId()}" style="margin-bottom:40"
-					widgetVar="p">
 
-					<p:ajax event="rowSelectRadio"
-						listener="#{evaluationBeanList.onRowSelect}" />
-
-					<p:column selectionMode="single"
-						style="width:40px; text-align:center" />
-
-					<p:column headerText="ID" sortBy="#{pitem.profileId}">
-						<h:outputText value="#{pitem.profileId}" />
-					</p:column>
-
-					<p:column headerText="Nombre" sortBy="#{pitem.name}">
-						<h:outputText value="#{pitem.name}" />
-					</p:column>
-
-					<p:column headerText="Granuralidad" sortBy="#{pitem.granurality}">
-						<h:outputText value="#{pitem.granurality}" />
-					</p:column>
-
-					<p:column headerText="Ponderado" sortBy="#{pitem.isWeightedFlag}">
-						<h:outputText value="#{pitem.isWeightedFlag}" />
-					</p:column>
-				</p:dataTable>
-			</h:form>
 		</div>
 
 		<div class="container">
 			<h:form id="evobject" method="post">
 				<p:growl id="msgs" />
 				<hr></hr>
-				<h3 class="form-signin-heading">Seleccione un Objeto Medible a ser evaluado.</h3>
+				<h4 class="form-signin-heading">Seleccione un Objeto Medible a ser evaluado.</h4>
 				<p:dataTable id="measurableObjects" 
 					value="#{evaluationBeanList.listMeasurableObjects}" 
 					var="moitem" 
@@ -184,8 +214,6 @@
 			</h:form>
 		</div>
 
-		<script
-			src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 		<script src="../../assets/js/vendor/jquery.min.js"></script>
 		<script
 			src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>

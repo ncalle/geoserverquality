@@ -67,8 +67,7 @@
 					style="margin-bottom:40"
 					widgetVar="p">
 
-					<p:ajax event="rowSelectRadio"
-						listener="#{profileBeanList.onRowSelect}" />
+					<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelect}" update=":profileMetrics:profileMetrics "/>
 
 					<p:column selectionMode="single"
 						style="width:40px; text-align:center" />
@@ -102,6 +101,40 @@
 				
 			</h:form>
 		</div>
+			
+		<div class="container">
+			<h:form id="profileMetrics" method="post"><p:growl id="msgs" />
+				<h3 class="form-signin-heading"><h:outputLabel value="Lista de Metricas disponibles para el Perfil seleccionado." /></h3>
+				<hr></hr>
+				<p:dataTable id="profileMetrics" 
+					value="#{profileBeanList.listProfileMetric}" 
+					var="pmitem" 
+					tableStyle="table-layout: auto;"
+					selection="#{profileBeanList.selectedProfileMetric}"
+					rowKey="#{pmitem.getMetricRangeID()}" 
+					style="margin-bottom:40" 
+					widgetVar="pm">
+					
+					<p:column selectionMode="single"
+						style="width:40px; text-align:center" />
+
+					<p:column headerText="Métrica" sortBy="#{pmitem.getMetricName()}">
+						<h:outputText value="#{pmitem.getMetricName()}" />
+					</p:column>		
+				</p:dataTable>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<p:button class="btn btn-default" icon="ui-icon-plus"
+							value="Nuevo" > 
+						</p:button>
+						<p:commandButton class="btn btn-default" icon="ui-icon-trash"
+							value="Remover" id="removeProfileMetricIcon"
+							actionListener="#{profileBeanList.removeProfileMetric}" update="profileMetrics :profileMetrics:msgs" >
+						</p:commandButton>
+					</div>
+				</div>
+			</h:form>
+		</div>		
 	
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 	    <script src="../../assets/js/vendor/jquery.min.js"></script>

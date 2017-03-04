@@ -160,7 +160,7 @@ public class UserBeanList {
     	listUserMeasurableObjects.remove(selectedUserMeasurableObject);
     	selectedUserMeasurableObject = null;
         
-		FacesMessage msg = new FacesMessage("Objeto medible eliminado correctamente.");       
+		FacesMessage msg = new FacesMessage("Objeto medible removido correctamente.");       
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }
