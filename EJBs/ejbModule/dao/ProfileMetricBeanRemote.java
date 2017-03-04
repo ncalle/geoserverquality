@@ -11,4 +11,6 @@ public interface ProfileMetricBeanRemote {
 
     public List<ProfileMetric> profileMetricList(Profile profile) throws DAOException;
     
+    public void removeProfileMetric(Profile profile, ProfileMetric profileMetric) throws DAOException;
+    
 }

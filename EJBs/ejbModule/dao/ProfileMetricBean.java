@@ -22,6 +22,8 @@ public class ProfileMetricBean implements ProfileMetricBeanRemote {
 
     private static final String SQL_PROFILE_METRIC_LIST =
     		"SELECT QualityModelID, QualityModelName, DimensionID, DimensionName, FactorID, FactorName, MetricID, MetricName, MetricAgrgegationFlag, MetricGranurality, MetricDescription, UnitID, UnitName, UnitDescription, MetricRangeID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue FROM profile_metric_get (?)";
+	private static final String SQL_PROFILE_REMOVE_METRIC =
+        	"SELECT * FROM profile_remove_metric (?, ?)";
     
     private DAOFactory daoFactory;
 
@@ -60,6 +62,24 @@ public class ProfileMetricBean implements ProfileMetricBeanRemote {
 
         return metricList;    
     	
+    }
+    
+    public void removeProfileMetric(Profile profile, ProfileMetric profileMetric) throws DAOException{
+    	Connection connection = null;
+    	PreparedStatement statement = null;
+        
+    	    try {
+    	        connection = daoFactory.getConnection();
+    	        statement = connection.prepareStatement(SQL_PROFILE_REMOVE_METRIC);
+    	
+    	        statement.setInt(1, profile.getProfileId());
+    	        statement.setInt(2, profileMetric.getMetricID());
+    	    
+    	        statement.executeQuery();
+    	        
+    	    } catch (SQLException e) {
+    	        throw new DAOException(e);
+    	    }
     }
         
     private static ProfileMetric map(ResultSet resultSet) throws SQLException {

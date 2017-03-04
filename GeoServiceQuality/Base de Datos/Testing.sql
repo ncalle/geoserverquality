@@ -79,3 +79,7 @@ SELECT * FROM profile_update (1, 'Cambio de Nombre', 'Ide'); --ok
 SELECT * FROM profile_get (); --ok
 SELECT * FROM profile_update (1, 'Cambio de Nombre', 'otra cosa'); --err ok
 SELECT * FROM profile_update (123, 'Cambio de Nombre', 'Ide'); --err ok
+--------------------------------------------------------------------
+SELECT * FROM profile_remove_metric (2, 3); --ok
+SELECT * FROM profile_remove_metric (64, 3); --ok
+SELECT * FROM profile_remove_metric (2, 34533); --ok

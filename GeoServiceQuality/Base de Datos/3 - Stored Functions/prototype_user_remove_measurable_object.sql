@@ -1,4 +1,4 @@
-﻿--DROP FUNCTION prototype_user_remove_measurable_object(integer, integer)
+﻿--DROP FUNCTION prototype_user_remove_measurable_object(integer, integer);
 CREATE OR REPLACE FUNCTION prototype_user_remove_measurable_object
 (
    pUserID INT

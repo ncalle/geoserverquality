@@ -98,8 +98,7 @@ public class ProfileBeanList {
     }
 	
 	public void removeProfileMetric() {
-		//TODO: Terminar
-		//pDao.removeProfileMetric(selectedProfile, selectedMetric);    	
+		pmDao.removeProfileMetric(selectedProfile, selectedProfileMetric);
 		listProfileMetric.remove(selectedProfileMetric);
 		selectedProfileMetric = null;
         

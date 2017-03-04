@@ -213,22 +213,22 @@ public class UserBean implements UserBeanRemote {
     
     @Override
     public void removeUserMeasurableObject(User user, MeasurableObject measurableObject) throws DAOException {
-	Connection connection = null;
-	PreparedStatement statement = null;
-    
-	    try {
-	        connection = daoFactory.getConnection();
-	        statement = connection.prepareStatement(SQL_USER_REMOVE_MEASURABLE_OBJECT);
-	
-	        statement.setInt(1, user.getUserId());
-	        statement.setInt(2, measurableObject.getMeasurableObjectID());
-	        statement.setString(3, measurableObject.getMeasurableObjectType());
+		Connection connection = null;
+		PreparedStatement statement = null;
 	    
-	        statement.executeQuery();
-	        
-	    } catch (SQLException e) {
-	        throw new DAOException(e);
-	    }
+		    try {
+		        connection = daoFactory.getConnection();
+		        statement = connection.prepareStatement(SQL_USER_REMOVE_MEASURABLE_OBJECT);
+		
+		        statement.setInt(1, user.getUserId());
+		        statement.setInt(2, measurableObject.getMeasurableObjectID());
+		        statement.setString(3, measurableObject.getMeasurableObjectType());
+		    
+		        statement.executeQuery();
+		        
+		    } catch (SQLException e) {
+		        throw new DAOException(e);
+		    }
 	}
     
     @Override
