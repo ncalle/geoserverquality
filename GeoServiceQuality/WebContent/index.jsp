@@ -22,27 +22,21 @@
 	
 </head>
 <body>
-	<div class="container">
+	
 	
       <form class="form-signin" action="loginServlet" method="post">
-        <h2 class="form-signin-heading">Ingresar</h2>
+        <h3 class="form-signin-heading">GeoServiceQuality</h3>
         
         <label for="inputEmail" class="sr-only">Email</label>
-        <input type="text" id="inputEmail" class="form-control" placeholder="Email address" name="username" required autofocus>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="username" required autofocus>
         
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="userpass" required>
         
-        <button class="btn btn-lg btn-primary btn-block" type="submit" value="Login">Login</button>
-       
+        <button class="btn btn-lg btn-secondary btn-block" type="submit" value="Login">Login</button>
+        <h4 class="form-signin-text">Olvidé mi contraseña</h4>
       </form>
       
-      
-      <!--<form class="form-signin" action="registry.jsp" smethod="post">
-          <button class="btn btn-lg btn-primary btn-block" type="submit" value="Registry">Registro</button>
-      </form>-->
-
-    </div>  
 
 </body>
 </html>
