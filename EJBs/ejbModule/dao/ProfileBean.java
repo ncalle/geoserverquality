@@ -56,15 +56,6 @@ public class ProfileBean implements ProfileBeanRemote {
 	        return list;
 	}
 	
-	 private static Profile map(ResultSet resultSet) throws SQLException {
-	    Profile profile = new Profile();
-    	profile.setProfileId(resultSet.getInt("ProfileID"));
-    	profile.setName(resultSet.getString("ProfileName"));
-    	profile.setGranurality(resultSet.getString("ProfileGranurality"));
-    	profile.setIsWeightedFlag(resultSet.getBoolean("ProfileIsWeightedFlag"));
-
-        return profile; 
-    }
 
 	@Override
 	public void create(Profile profile) throws IllegalArgumentException, DAOException {
@@ -91,6 +82,16 @@ public class ProfileBean implements ProfileBeanRemote {
 	public void delete(Profile profile) throws DAOException {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private static Profile map(ResultSet resultSet) throws SQLException {
+	    Profile profile = new Profile();
+	   	profile.setProfileId(resultSet.getInt("ProfileID"));
+	   	profile.setName(resultSet.getString("ProfileName"));
+	   	profile.setGranurality(resultSet.getString("ProfileGranurality"));
+	   	profile.setIsWeightedFlag(resultSet.getBoolean("ProfileIsWeightedFlag"));
+	
+	   	return profile; 
 	}
 	
 }
