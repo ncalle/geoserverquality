@@ -65,8 +65,10 @@
 					selection="#{profileBeanList.selectedProfile}"
 					rowKey="#{pitem.getProfileId()}" 
 					style="margin-bottom:40"
-					widgetVar="p">
+					widgetVar="p"
+					editable="true">
 
+					<p:ajax event="rowEdit" listener="#{profileBeanList.onRowEdit}" update=":profileMetrics:msgs" />
 					<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelect}" update=":profileMetrics:profileMetrics "/>
 
 					<p:column selectionMode="single"
@@ -77,15 +79,40 @@
 					</p:column>
 
 					<p:column headerText="Nombre" sortBy="#{pitem.name}">
-						<h:outputText value="#{pitem.name}" />
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{pitem.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="nameInput" value="#{pitem.name}"
+									style="width:100%" />
+							</f:facet>
+						</p:cellEditor>						
 					</p:column>
 
 					<p:column headerText="Granuralidad" sortBy="#{pitem.granurality}">
-						<h:outputText value="#{pitem.granurality}" />
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{pitem.granurality}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:selectOneMenu value="#{pitem.granurality}" style="width:100%">
+									<f:selectItem itemValue="Ide" itemLabel="Ide"/>
+									<f:selectItem itemValue="Institución" itemLabel="Institución"/>
+									<f:selectItem itemValue="Nodo" itemLabel="Nodo"/>
+									<f:selectItem itemValue="Capa" itemLabel="Capa"/>
+									<f:selectItem itemValue="Servicio" itemLabel="Servicio"/>
+								</h:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
 
 					<p:column headerText="Ponderado" sortBy="#{pitem.isWeightedFlag}">
 						<h:outputText value="#{pitem.isWeightedFlag}" />
+					</p:column>
+					
+					<p:column headerText="Acciones">
+						<p:rowEditor />
 					</p:column>
 				</p:dataTable>
 				

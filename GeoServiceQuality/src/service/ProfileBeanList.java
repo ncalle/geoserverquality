@@ -91,9 +91,8 @@ public class ProfileBeanList {
        	
 	public void onRowEdit(RowEditEvent event) {    	
 		Profile p = ((Profile) event.getObject());
-			
-		//TODO: Terminar
-		//pDao.update(p);
+
+		pDao.update(p);
 		FacesMessage msg = new FacesMessage("Perfil editado correctamente.");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }

@@ -4,7 +4,6 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import entity.MeasurableObject;
-import entity.User;
 
 @Remote
 public interface MeasurableObjectBeanRemote {

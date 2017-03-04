@@ -74,3 +74,8 @@ SELECT * FROM profile_metric_get(null); --err ok
 SELECT * FROM profile_delete(2); --ok
 SELECT * FROM profile_delete(null); --err ok
 SELECT * FROM profile_delete(67); --err ok
+--------------------------------------------------------------------
+SELECT * FROM profile_update (1, 'Cambio de Nombre', 'Ide'); --ok
+SELECT * FROM profile_get (); --ok
+SELECT * FROM profile_update (1, 'Cambio de Nombre', 'otra cosa'); --err ok
+SELECT * FROM profile_update (123, 'Cambio de Nombre', 'Ide'); --err ok

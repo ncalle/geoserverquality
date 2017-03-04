@@ -13,5 +13,7 @@ public interface ProfileBeanRemote {
     public void create(Profile profile) throws IllegalArgumentException, DAOException;
 
     public void delete(Profile profile) throws DAOException;
+    
+    public void update(Profile profile) throws DAOException;
 	
 }

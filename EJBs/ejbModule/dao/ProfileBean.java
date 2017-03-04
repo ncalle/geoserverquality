@@ -22,6 +22,8 @@ public class ProfileBean implements ProfileBeanRemote {
             "SELECT * FROM profile_insert (?, ?, ?)";
 	private static final String SQL_DELETE =
         	"SELECT * FROM profile_delete (?)";
+	private static final String SQL_UPDATE =
+        	"SELECT * FROM profile_update (?, ?, ?)";
 
     private DAOFactory daoFactory;
 	
@@ -98,6 +100,26 @@ public class ProfileBean implements ProfileBeanRemote {
         } catch (SQLException e) {
             throw new DAOException(e);
         }		
+	}
+	
+	@Override
+	public void update(Profile profile) throws DAOException{
+    	Connection connection = null;
+		PreparedStatement statement = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE);
+
+            statement.setInt(1, profile.getProfileId());
+            statement.setString(2, profile.getName());
+            statement.setString(3, profile.getGranurality());
+        
+            statement.executeQuery();
+            
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
 	}
 	
 	private static Profile map(ResultSet resultSet) throws SQLException {
