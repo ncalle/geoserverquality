@@ -67,7 +67,9 @@
 					<label for="inputUrl" class="sr-only">Url del servicio</label>
 					<h:inputText id="url" value="#{measurableObjectBean.url}"
 						class="form-control" a:placeholder="Url del servicio"
-						required="required" />
+						required="required" validatorMessage="Url inválida">
+						<f:validateRegex for="site" pattern="^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$"/>    
+					</h:inputText>
 					<br></br>
 
 					<label for="inputType">Tipo de servicio </label>

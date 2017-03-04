@@ -56,6 +56,12 @@ public class MeasurableObjectBeanAdd {
     
     public void save() {
     	
+    	if(url.length()==0){
+    		FacesContext context = FacesContext.getCurrentInstance();
+    		context.addMessage(null, new FacesMessage("Debe ingresar una url"));
+    		return;
+    	}
+    	
     	MeasurableObject object = new MeasurableObject();
     	object.setMeasurableObjectDescription(description);
     	object.setMeasurableObjectURL(url);

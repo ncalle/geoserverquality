@@ -58,11 +58,13 @@
 				<h2 class="form-signin-heading">Ingreso de usuario</h2>
 				<p:panel id="panel" class="panel panel-default">
 					<label for="inputName" class="sr-only">Email</label>
-					<h:inputText id="email" value="#{userBeanAdd.email}"
-						class="form-control" a:placeholder="Email" required="true" />
+					<h:inputText id="email" value="#{userBeanAdd.email}" validatorMessage="Email inválido"
+						class="form-control" a:placeholder="Email" required="true" >
+						<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+					</h:inputText>
 					<br></br>
 					<label for="inputName" class="sr-only">Password</label>
-					<h:inputText id="password" value="#{userBeanAdd.password}"
+					<h:inputText id="password" value="#{userBeanAdd.password}" 
 						class="form-control" a:placeholder="Password" required="true" />
 					<br></br>
 					<label for="inputName" class="sr-only">Nombre</label>
