@@ -1,6 +1,7 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -144,11 +145,14 @@ public class EvaluationBeanList {
 		}
 
 		if (m != null && p != null) {
+			List<Integer> listMetrics = new ArrayList<>();
 			
-			// TODO: obtener lista de ids de metricas asociadas
-			List<Integer> listMetrics = new ArrayList<>(); // p.getMetricIds();
-			listMetrics.add(0);
-			listMetrics.add(1);
+			Iterator<ProfileMetric> iterator = listProfileMetric.iterator();
+			while (iterator.hasNext()) {
+				listMetrics.add(iterator.next().getMetricID());
+			}
+			
+			System.out.println("Metricas incluidas en listMetrics: " + listMetrics);
 
 			boolean success = false;
 			try {

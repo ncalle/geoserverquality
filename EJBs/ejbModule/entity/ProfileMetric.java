@@ -235,7 +235,7 @@ public class ProfileMetric implements Serializable {
 
     @Override
     public int hashCode() {
-        return (QualityModelID != null) 
+        return (MetricRangeID != null) 
              ? (
             		 this.getClass().hashCode() 
             		 + QualityModelID.hashCode()
@@ -249,7 +249,7 @@ public class ProfileMetric implements Serializable {
     
     @Override
     public String toString() {
-        return String.format("QualityModel[%d, %s, %d, %s, %d, %s, %d, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s, %s, %d, %s, %d, %s, %s]",
+        return String.format("ProfileMetric[%d, %s, %d, %s, %d, %s, %d, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s, %s, %d, %s, %d, %s, %s]",
         		QualityModelID, QualityModelName, DimensionID, DimensionName, FactorID, FactorName, MetricID, MetricName, MetricAgrgegationFlag, MetricGranurality, MetricDescription, UnitID, UnitName, UnitDescription, 
         		MetricRangeID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue);
     }
