@@ -105,6 +105,12 @@ public class ProfileBeanAdd {
     
     public void save() throws DAOException{
     	
+    	if(name.length()==0){
+    		FacesContext context = FacesContext.getCurrentInstance();
+    		context.addMessage(null, new FacesMessage("Debe ingresar un nombre"));
+    		return;
+    	}
+    	
     	Profile object = new Profile();
     	object.setName(name);
     	object.setGranurality(granularity);
