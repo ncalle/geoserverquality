@@ -20,6 +20,8 @@ public class ProfileBean implements ProfileBeanRemote {
     		"SELECT ProfileID, ProfileName, ProfileGranurality, ProfileIsWeightedFlag FROM profile_get ()";
 	private static final String SQL_INSERT =
             "SELECT * FROM profile_insert (?, ?, ?)";
+	private static final String SQL_DELETE =
+        	"SELECT * FROM profile_delete (?)";
 
     private DAOFactory daoFactory;
 	
@@ -80,8 +82,22 @@ public class ProfileBean implements ProfileBeanRemote {
 
 	@Override
 	public void delete(Profile profile) throws DAOException {
-		// TODO Auto-generated method stub
-		
+    	Connection connection = null;
+		PreparedStatement statement = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_DELETE);
+
+            statement.setInt(1, profile.getProfileId());
+        
+            statement.executeQuery();
+
+            profile.setProfileId(null);
+            
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }		
 	}
 	
 	private static Profile map(ResultSet resultSet) throws SQLException {

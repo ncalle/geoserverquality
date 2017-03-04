@@ -76,8 +76,7 @@ public class ProfileBeanList {
 		this.selectedProfileMetric = selectedProfileMetric;
 	}
 			
-	public void deleteProfile() {   	
-    	//TODO: Terminar
+	public void deleteProfile() {
 		pDao.delete(selectedProfile);    	
     	listProfile = pDao.list();
     	selectedProfile = null;
