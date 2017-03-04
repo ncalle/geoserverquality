@@ -118,7 +118,7 @@
 					<p:column selectionMode="single"
 						style="width:40px; text-align:center" />
 
-					<p:column headerText="Métrica" sortBy="#{pmitem.selectedProfileMetric.getMetricName()}">
+					<p:column headerText="Métrica" sortBy="#{pmitem.getMetricName()}">
 						<h:outputText value="#{pmitem.getMetricName()}" />
 					</p:column>		
 				</p:dataTable>
