@@ -179,7 +179,9 @@ public final class App {
 						}
 					}
        			}
-       		} else if(serviceType.equals("WFS")){
+       		} 
+       		
+       		/*else if(serviceType.equals("WFS")){
        			Unmarshaller unmarshaller = getUnmarshallerWFS_1_1_0();
        			
        			JAXBElement<WFSCapabilitiesType> wmsCapabilitiesElement = unmarshaller
@@ -189,7 +191,7 @@ public final class App {
        			FilterCapabilities c = wmsCapabilities.getFilterCapabilities();
        			
        			return false;
-       		}
+       		}*/
    			
    		} catch (JAXBException e) {
    			e.printStackTrace();
