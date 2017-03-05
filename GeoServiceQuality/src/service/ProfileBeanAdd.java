@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.model.DualListModel;
+
 import entity.Metric;
 import entity.Profile;
 import dao.DAOException;
@@ -19,35 +21,25 @@ import dao.ProfileBean;
 import dao.ProfileBeanRemote;
 
 
-@ManagedBean(name="profileBean")
+@ManagedBean(name="profileBeanAdd")
 @RequestScoped
 public class ProfileBeanAdd {
 	
     private String name;
     private String granularity;
-    private boolean message;
-    private Integer selectedMetricId=-1;
-    private List<Metric> listMetrics, listMetricsAdd = new ArrayList<>();
+	private List<Metric> listMetrics;
+    private DualListModel<Metric> dualListMetrics;
     
 	@EJB
-    private ProfileBeanRemote moDao = new ProfileBean();
+    private ProfileBeanRemote pDao = new ProfileBean();
+    private MetricBeanRemote mDao = new MetricBean();
 	
-	@EJB
-    private MetricBeanRemote metricsDao = new MetricBean();
-	
-
-	public ProfileBeanAdd() {
-		listMetricsAdd = new ArrayList<>();
-		listMetrics = metricsDao.list();
-		System.out.println("ProfileBeanAdd.. ");
-	}
-	
-	
+    
+	@PostConstruct
 	private void init()
 	{
-		listMetricsAdd = new ArrayList<>();
-		listMetrics = metricsDao.list();
-		System.out.println("init.. ");
+		listMetrics = mDao.list();
+		dualListMetrics = new DualListModel<>(new ArrayList<>(listMetrics), new ArrayList<Metric>()); 
 	}
 	
 
@@ -66,96 +58,42 @@ public class ProfileBeanAdd {
 	public void setGranularity(String granularity) {
 		this.granularity = granularity;
 	}
-	
-	public void setMessage(boolean message) {
-		this.message = message;
-	}
-	
-	public boolean isMessage() {
-		return message;
-	}
-	
-	public List<Metric> getListMetrics() {
-		return listMetrics;
-	}
-	
-	public void setListMetrics(List<Metric> listMetrics) {
-		System.out.println("setListMetrics: " + listMetrics);
-		this.listMetrics = listMetrics;
-	}
-	
-	public void setListMetricsAdd(List<Metric> listMetricsAdd) {
-		System.out.println("setListMetricsAdd: " + listMetricsAdd);
-		this.listMetricsAdd = listMetricsAdd;
-	}
-	
-	public List<Metric> getListMetricsAdd() {
-		return listMetricsAdd;
-	}
-	
-	public void setSelectedMetricId(Integer selectedMetricId) {
-		System.out.println("setSelectedMetricId: " + selectedMetricId);
-		this.selectedMetricId = selectedMetricId;
-	}
-	
-	public Integer getSelectedMetricId() {
-		return selectedMetricId;
+				
+	public DualListModel<Metric> getDualListMetrics() {
+		return dualListMetrics;
 	}
 
-    
-    public void save() throws DAOException{
+	public void setDualListMetrics(DualListModel<Metric> dualListMetrics) {
+		this.dualListMetrics = dualListMetrics;
+	}
+	    
+    public List<Metric> getListMetrics() {
+		return listMetrics;
+	}
+
+
+	public void save() {
+    	FacesMessage msg;
     	
     	if(name.length()==0){
-    		FacesContext context = FacesContext.getCurrentInstance();
-    		context.addMessage(null, new FacesMessage("Debe ingresar un nombre"));
+    		msg = new FacesMessage("Debe ingresar un nombre.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
     		return;
     	}
     	
-    	Profile object = new Profile();
-    	object.setName(name);
-    	object.setGranurality(granularity);
-    	object.setIsWeightedFlag(false);
-    	
-    	/*String listId = "";
-     	for(int i=0; i<listMetricsAdd.size(); i++){
-			int id = listMetricsAdd.get(i).getMetricID();
-			listId += id + ",";
-		}*/
-     	
-     	object.setMetricIds(""+selectedMetricId);
-    	
-    	System.out.println("save.. " + object);
-    	
+    	Profile profile = new Profile();
+    	profile.setName(name);
+    	profile.setGranurality(granularity);
+    	profile.setIsWeightedFlag(false);
+    	    	
     	try{
-            moDao.create(object);
+            pDao.create(profile, dualListMetrics.getTarget());
             
-            FacesContext context = FacesContext.getCurrentInstance();
-    		context.addMessage(null, new FacesMessage("El perfil fue guardado correctamente"));
-    		
+    		msg = new FacesMessage("El Perfil fue creado correctamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);    		
     	} catch(DAOException e) {
-    		
-    		FacesContext context = FacesContext.getCurrentInstance();
-    		context.addMessage(null, new FacesMessage("Error al guardar el perfil"));
-    		
-    		e.printStackTrace();
-    	} 
-
-	}
-    
-    public void addMetric() throws DAOException{
-    	
-    	if(selectedMetricId!=-1){
-    		for(int i=0; i<listMetrics.size(); i++){
-    			if(listMetrics.get(i).getMetricID()==selectedMetricId){
-    				Metric selectedMetric = new Metric();
-    				selectedMetric.setMetricID(listMetrics.get(i).getMetricID());
-    				selectedMetric.setName(listMetrics.get(i).getName());
-    				listMetricsAdd.add(selectedMetric);
-    			}
-    		}
+    		msg = new FacesMessage("Error al crear el Perfil.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);       		
     	}
-    	
 	}
-    
-
 }

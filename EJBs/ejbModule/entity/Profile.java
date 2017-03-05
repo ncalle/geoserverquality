@@ -14,9 +14,8 @@ public class Profile implements Serializable {
     private String Name;
     private String Granurality; //'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio'
     private Boolean IsWeightedFlag;
-    private String MetricIds; // Lista de enteros separada por coma, que representa los IDs de las metricas
 
-
+    
 	public Integer getProfileId() {
 		return ProfileId;
 	}
@@ -61,20 +60,12 @@ public class Profile implements Serializable {
 		return serialVersionUID;
 	}
 	
-	public String getMetricIds() {
-		return MetricIds;
-	}
 	
-	public void setMetricIds(String metricIds) {
-		MetricIds = metricIds;
-	}
-
 	@Override
     public boolean equals(Object other) {
         return (other instanceof Profile) && (getProfileId() != null)
              ? (
             		 getProfileId().equals(((Profile) other).getProfileId())
-            		 && getName().equals(((Profile) other).getName())
             	)
              : (other == this);
     }
@@ -90,8 +81,8 @@ public class Profile implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Profile[ProfileId=%d, Name=%s, Granularity=%s, Weighted=%s, MetricKeys=%s]",
-        		getProfileId(), getName(), getGranurality(), getIsWeightedFlag(), getMetricIds());
+        return String.format("Profile[ProfileId=%d, Name=%s, Granularity=%s, Weighted=%s]",
+        		getProfileId(), getName(), getGranurality(), getIsWeightedFlag());
     }
 
 }

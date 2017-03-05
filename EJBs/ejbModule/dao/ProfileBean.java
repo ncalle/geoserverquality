@@ -5,11 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import entity.Metric;
 import entity.Profile;
 
 @Stateless
@@ -62,17 +64,37 @@ public class ProfileBean implements ProfileBeanRemote {
 	
 
 	@Override
-	public void create(Profile profile) throws IllegalArgumentException, DAOException {
+	public void create(Profile profile, List<Metric> metrics) throws IllegalArgumentException, DAOException {
 		Connection connection = null;
 		PreparedStatement statement = null;
         
+		System.out.println("DAO Metricas recibidas: " + metrics);
+		
         try {
-            connection = daoFactory.getConnection();
+        	String metricIDs = "";
+        	Integer iterCount = 0;
+        	
+    		Iterator<Metric> iterator = metrics.iterator();
+    		while (iterator.hasNext()) {
+    			
+    			if (iterCount == 0) {
+    				metricIDs = Integer.toString(iterator.next().getMetricID());
+    			}
+    			else{
+    				metricIDs = metricIDs + "," + Integer.toString(iterator.next().getMetricID());	
+    			};
+    			
+    			iterCount = iterCount + 1;
+    		}
+        	
+    		System.out.println("DAO Profile metricIDs: " + metricIDs);
+    		
+        	connection = daoFactory.getConnection();
             statement = connection.prepareStatement(SQL_INSERT);
 
             statement.setString(1, profile.getName());
 			statement.setString(2, profile.getGranurality());
-			statement.setString(3, profile.getMetricIds()); 
+			statement.setString(3, metricIDs); 
 			
             statement.executeQuery();
 

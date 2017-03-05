@@ -84,19 +84,27 @@ public class Metric implements Serializable {
 		Granurality = granurality;
 	}
 
+	
+	@Override
+    public boolean equals(Object other) {
+        return (other instanceof Metric) && (MetricID != null)
+             ? MetricID.equals(((Metric) other).MetricID)
+             : (other == this);
+    }
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
+    @Override
+    public int hashCode() {
+        return (MetricID != null) 
+             ? (this.getClass().hashCode() + MetricID.hashCode()) 
+             : super.hashCode();
+    }
 
-
-    
 
     @Override
     public String toString() {
         return String.format("Metric[MetricID=%d, Name=%s, Granularity=%s, Description=%s, FactorID=%d, UnitID=%d, AgrgegationFlag=%s]",
-        		getMetricID(), getName(), getGranurality(), getDescription(), getFactorID(), getUnitID(), getAgrgegationFlag());
+        		MetricID, Name, Granurality, Description, FactorID, UnitID, AgrgegationFlag);
     }
 
 }

@@ -22,18 +22,19 @@ public class MetricBean implements MetricBeanRemote {
 
     private DAOFactory daoFactory;
 	
-    public MetricBean() {
-    	daoFactory = DAOFactory.getInstance("geoservicequality.jdbc");
-    }
-
     MetricBean(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
     }
+    
+    public MetricBean() {
+    	daoFactory = DAOFactory.getInstance("geoservicequality.jdbc");
+    }
+   
 
 	@Override
 	public List<Metric> list() throws DAOException {
 
-		List<Metric> list = new ArrayList<>();
+		List<Metric> metrics = new ArrayList<>();
 
         Connection connection = null;
 		PreparedStatement statement = null;
@@ -46,13 +47,13 @@ public class MetricBean implements MetricBeanRemote {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-            	list.add(map(resultSet));
+            	metrics.add(map(resultSet));
             }
         } catch (SQLException e) {
             throw new DAOException(e);
         }
 
-        return list;
+        return metrics;
 	}
 	
 	 private static Metric map(ResultSet resultSet) throws SQLException {
