@@ -62,6 +62,8 @@ public class EvaluationBean implements EvaluationBeanRemote {
 		object.setEvaluationID(resultSet.getInt("EvaluationID"));
 		object.setUserID(resultSet.getInt("UserID"));
 		object.setProfileID(resultSet.getInt("ProfileID"));
+		object.setIsEvaluationCompleted(resultSet.getBoolean("IsEvaluationCompletedFlag"));
+		object.setSuccess(resultSet.getBoolean("SuccessFlag"));
 
         return object; 
     }
