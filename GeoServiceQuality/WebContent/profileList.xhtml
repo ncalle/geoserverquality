@@ -148,7 +148,28 @@
 
 					<p:column headerText="Métrica" sortBy="#{pmitem.getMetricName()}">
 						<h:outputText value="#{pmitem.getMetricName()}" />
-					</p:column>		
+					</p:column>
+					
+					<p:column headerText="Unidad" sortBy="#{pmitem.getUnitName()}">
+						<h:outputText value="#{pmitem.getUnitName()}" />
+					</p:column>
+
+					<p:column headerText="Valor Boleano" sortBy="#{pmitem.getBooleanAcceptanceValue()}">
+						<h:outputText value="#{pmitem.getBooleanAcceptanceValue()}" />
+					</p:column>
+					
+					<p:column headerText="Valor Porcentaje" sortBy="#{pmitem.getPercentageAcceptanceValue()}">
+						<h:outputText value="#{pmitem.getPercentageAcceptanceValue()}" />
+					</p:column>
+					
+					<p:column headerText="Valor Entero" sortBy="#{pmitem.getIntegerAcceptanceValue()}">
+						<h:outputText value="#{pmitem.getIntegerAcceptanceValue()}" />
+					</p:column>
+					
+					<p:column headerText="Valor Enumerado" sortBy="#{pmitem.getEnumerateAcceptanceValue()}">
+						<h:outputText value="#{pmitem.getEnumerateAcceptanceValue()}" />
+					</p:column>					
+
 				</p:dataTable>
 				<div class="panel panel-default">
 					<div class="panel-body">

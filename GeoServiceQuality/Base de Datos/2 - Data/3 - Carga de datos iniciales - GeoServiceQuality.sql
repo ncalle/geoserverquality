@@ -144,10 +144,8 @@ INSERT INTO Profile (Name, Granurality, IsWeightedFlag) VALUES
 INSERT INTO MetricRange (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue) VALUES
 (1, 1, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
 (2, 1, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
-(3, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
 (4, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
-(5, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
-(6, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL);
+(5, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL);
 
 --INSERT INTO Layer (NodeID, Name, Url) VALUES
 --(1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),
