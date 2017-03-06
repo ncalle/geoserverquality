@@ -18,6 +18,8 @@ public class EvaluationBean implements EvaluationBeanRemote {
 
     private static final String SQL_LIST_ORDER_BY_ID =
     		"SELECT EvaluationID, UserID, ProfileID, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag FROM evaluation_get ()";
+    private static final String SQL_INSERT =
+            "SELECT * FROM evaluation_insert (?, ?, ?)";
 
 
     private DAOFactory daoFactory;
@@ -66,8 +68,23 @@ public class EvaluationBean implements EvaluationBeanRemote {
 
 	@Override
 	public void create(Evaluation evaluation) throws IllegalArgumentException, DAOException {
-		// TODO: operaciones de crear objeto
+		Connection connection = null;
+		PreparedStatement statement = null;
+        
+        try {
+        	
+        	connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_INSERT);
+
+            statement.setInt(1, evaluation.getUserID());
+			statement.setInt(2, evaluation.getProfileID());
+			statement.setBoolean(3, evaluation.getSuccess()); 
+			
+            statement.executeQuery();
 		
+        } catch (SQLException e) {
+        	throw new DAOException(e);
+        }        
 	}
 
 }
