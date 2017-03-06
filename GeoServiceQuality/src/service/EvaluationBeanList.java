@@ -126,25 +126,8 @@ public class EvaluationBeanList {
 	
 
 	public void evaluate() throws DAOException {
-		// Cargo el objeto medible seleccionado
-		MeasurableObject m = null;
-		for (int i = 0; i < listMeasurableObjects.size(); i++) {
-			int id = listMeasurableObjects.get(i).getMeasurableObjectID();
-			if (id == selectedMeasurableObject.getMeasurableObjectID()) {
-				m = listMeasurableObjects.get(i);
-			}
-		}
 
-		// Cargo el perfil seleccionado
-		Profile p = null;
-		for (int i = 0; i < listProfile.size(); i++) {
-			int id = listProfile.get(i).getProfileId();
-			if (id == selectedProfile.getProfileId()) {
-				p = listProfile.get(i);
-			}
-		}
-
-		if (m != null && p != null) {
+		if (selectedMeasurableObject != null && selectedProfile != null) {
 			List<Integer> listMetrics = new ArrayList<>();
 			
 			Iterator<ProfileMetric> iterator = listProfileMetric.iterator();
@@ -158,7 +141,7 @@ public class EvaluationBeanList {
 			try {
 
 				for (Integer metricId : listMetrics) {
-					success = App.ejecuteMetric(metricId, m.getMeasurableObjectURL(), m.getMeasurableObjectType());
+					success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getMeasurableObjectType());
 
 					Evaluation e = new Evaluation();
 					e.setProfileID(selectedProfile.getProfileId());
@@ -167,13 +150,16 @@ public class EvaluationBeanList {
 					e.setIsEvaluationCompleted(true);
 
 					System.out.println("Evaluation: ObjectId: " + selectedMeasurableObject.getMeasurableObjectID() + " MetricId: "
-							+ metricId + " Success: " + success);
+							+ metricId + " Success: " + success + " URL: " + selectedMeasurableObject.getMeasurableObjectURL());
 
 					evaluationDao.create(e);
 				}
 
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("La evaluación se realizó correctamente"));
+				
+				// Se actualiza el listado de evaluaciones
+				listEvaluation = evaluationDao.list();
 
 			} catch (DAOException ex) {
 
