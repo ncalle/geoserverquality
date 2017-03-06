@@ -247,8 +247,6 @@ public class UserBean implements UserBeanRemote {
                    
             statement.executeQuery();
             
-            measurableObject.setMeasurableObjectID(null);
-            
         } catch (SQLException e) {
             throw new DAOException(e);
         }

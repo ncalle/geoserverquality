@@ -1,8 +1,9 @@
-﻿CREATE OR REPLACE FUNCTION profile_insert
+﻿--DROP FUNCTION profile_insert (character varying, character varying, text);
+CREATE OR REPLACE FUNCTION profile_insert
 (
    pName VARCHAR(40)
    , pGranurality VARCHAR(11)
-   , pMetricKeys VARCHAR(100) -- Lista de enteros separada por coma, que representa los IDs de las metricas
+   , pMetricKeys TEXT -- Lista de enteros separada por coma, que representa los IDs de las metricas
    --por defecto para el prototipo se toman rangos boleanos, por lo que no es necesario pasar el valor de los rangos por parametro ya que son todos 1
 )
 RETURNS VOID AS $$
@@ -87,5 +88,7 @@ BEGIN
    FROM Metric m
    WHERE m.MetricID IN (SELECT mb.MetricID FROM MetricKeys mb)
       AND m.UnitID = 1; --Boleano
+   --TODO: Agregar insert para el resto de los tipos de metricas, de unidad distinta a la Boleana.
+
 END;
 $$ LANGUAGE plpgsql;

@@ -18,7 +18,8 @@ public class MetricBean implements MetricBeanRemote {
 
     private static final String SQL_LIST_ORDER_BY_ID =
     		"SELECT MetricID, MetricFactorID, MetricName, MetricAgrgegationFlag, MetricUnitID, MetricGranurality, MetricDescription FROM metric_get ()";
-
+    private static final String SQL_PROFILE_METRIC_TO_ADD_GET =
+    		"SELECT MetricID, MetricFactorID, MetricName, MetricAgrgegationFlag, MetricUnitID, MetricGranurality, MetricDescription FROM prototype_profile_metric_to_add_get (?)";
 
     private DAOFactory daoFactory;
 	
@@ -55,6 +56,34 @@ public class MetricBean implements MetricBeanRemote {
 
         return metrics;
 	}
+	
+	
+	@Override
+    public List<Metric> profileMetricsToAddGet(Integer profileID) throws DAOException{
+        System.out.println("profileID en PMBEAN" + profileID);
+    	List<Metric> metric = new ArrayList<>();
+
+        Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_PROFILE_METRIC_TO_ADD_GET);
+            
+			statement.setObject(1, profileID);
+			
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+            	metric.add(map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+
+        return metric;    	
+    }
 	
 	 private static Metric map(ResultSet resultSet) throws SQLException {
 		Metric metric = new Metric();

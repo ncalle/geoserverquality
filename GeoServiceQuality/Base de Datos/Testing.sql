@@ -83,3 +83,11 @@ SELECT * FROM profile_update (123, 'Cambio de Nombre', 'Ide'); --err ok
 SELECT * FROM profile_remove_metric (2, 3); --ok
 SELECT * FROM profile_remove_metric (64, 3); --ok
 SELECT * FROM profile_remove_metric (2, 34533); --ok
+--------------------------------------------------------------------
+SELECT * FROM prototype_profile_add_metric (2, 5); --err ok
+SELECT * FROM prototype_profile_add_metric (30, 5); --err ok
+SELECT * FROM prototype_profile_add_metric (1, 5); --ok
+--------------------------------------------------------------------
+SELECT * FROM prototype_profile_metric_to_add_get (1); --ok
+--------------------------------------------------------------------
+SELECT * FROM metric_get(); --ok

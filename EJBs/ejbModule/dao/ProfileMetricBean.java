@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import entity.Metric;
 import entity.Profile;
 import entity.ProfileMetric;
 
@@ -24,6 +25,8 @@ public class ProfileMetricBean implements ProfileMetricBeanRemote {
     		"SELECT QualityModelID, QualityModelName, DimensionID, DimensionName, FactorID, FactorName, MetricID, MetricName, MetricAgrgegationFlag, MetricGranurality, MetricDescription, UnitID, UnitName, UnitDescription, MetricRangeID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue FROM profile_metric_get (?)";
 	private static final String SQL_PROFILE_REMOVE_METRIC =
         	"SELECT * FROM profile_remove_metric (?, ?)";
+    private static final String SQL_PROFILE_ADD_METRIC =
+        	"SELECT * FROM prototype_profile_add_metric(?, ?)";
     
     private DAOFactory daoFactory;
 
@@ -80,6 +83,24 @@ public class ProfileMetricBean implements ProfileMetricBeanRemote {
     	    } catch (SQLException e) {
     	        throw new DAOException(e);
     	    }
+    }
+    
+    public void profileAddMetric(Integer profileID, Metric metric) throws DAOException{
+    	Connection connection = null;
+		PreparedStatement statement = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_PROFILE_ADD_METRIC);
+
+            statement.setInt(1, profileID);
+            statement.setInt(2, metric.getMetricID());
+                   
+            statement.executeQuery();
+                        
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }    	
     }
         
     private static ProfileMetric map(ResultSet resultSet) throws SQLException {

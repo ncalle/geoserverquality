@@ -16,5 +16,5 @@ public interface ProfileBeanRemote {
     public void delete(Profile profile) throws DAOException;
     
     public void update(Profile profile) throws DAOException;
-	
+    
 }

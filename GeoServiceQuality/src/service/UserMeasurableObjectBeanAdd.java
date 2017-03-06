@@ -38,6 +38,7 @@ public class UserMeasurableObjectBeanAdd {
 		this.setUserID(1); //this.setUserID(selectedUser.getUserId());
 		//System.out.println("selectedUser.. " + selectedUser);
 		listUserMeasurableObjects = moDao.userMeasurableObjectsToAddGet(1); //userID
+		//TODO: Parametrizar llamada una vez que se pueda pasar el userID como parametro entre las vistas
 	}
 	
 	public Integer getUserID() {
