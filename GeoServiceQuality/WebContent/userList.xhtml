@@ -165,11 +165,8 @@
 							value="Nuevo" outcome="userAdd" />
 						<p:commandButton class="btn btn-default" icon="ui-icon-trash"
 							value="Eliminar" id="deleteUserIcon"
-							actionListener="#{userBeanList.deleteUser}" update="evobject users :users:msgs" />
-						<p:commandButton class="btn btn-default" icon="ui-icon-refresh"
-							value="Refresh" id="refreshUserIcon"
-							actionListener="#{userBeanList.init()}" update="users" process="@this" >
-						</p:commandButton>	
+							actionListener="#{userBeanList.deleteUser}" update="evobject users :users:msgs" >
+						</p:commandButton>
 					</div>
 				</div>
 			</h:form>
