@@ -1,7 +1,8 @@
-﻿--DROP FUNCTION profile_metric_get(integer);
+﻿--DROP FUNCTION profile_metric_get(integer, integer);
 CREATE OR REPLACE FUNCTION profile_metric_get
 (
-   pProfileID Integer
+   pProfileID INT
+   , pUnitID INT
 )
 RETURNS TABLE 
    (
@@ -32,7 +33,8 @@ RETURNS TABLE
 /************************************************************************************************************
 ** Name: profile_metric_get
 **
-** Desc: Devuelve las metricas asociadas al perfil pasado por parmetro, así como todo el modelo de calidad en cuestión
+** Desc: Devuelve las Metricas asociadas al Perfil y para la Unidad pasada por parmetro, así como todo el modelo de calidad en cuestión.
+**       Si no se especifica Unidad, entonces se devuelve la lista entera de Metricas asociadas al Perfil.
 **
 ** 02/28/2016 - Created
 **
@@ -54,6 +56,17 @@ BEGIN
       )
    THEN
       RAISE EXCEPTION 'Error - El ID de Perfil pasado por parametro no es correcto.';
+   END IF;
+
+   -- validación de Unidad
+   IF (pUnitID IS NOT NULL) AND NOT EXISTS
+      (
+         SELECT 1
+         FROM Unit u
+         WHERE u.UnitID = pUnitID
+      )
+   THEN
+      RAISE EXCEPTION 'Error - El ID de Unidad pasado por parametro no es correcto.';
    END IF;
 
    -- Lista de modelos de calidad
@@ -89,6 +102,7 @@ BEGIN
    INNER JOIN MetricRange mr ON mr.MetricID = m.MetricID
    INNER JOIN Profile p ON p.ProfileID = mr.ProfileID
    WHERE p.ProfileID = pProfileID
+      AND u.UnitID = COALESCE(pUnitID,u.UnitID)
    GROUP BY qm.QualityModelID
       , qm.Name
       , d.DimensionID

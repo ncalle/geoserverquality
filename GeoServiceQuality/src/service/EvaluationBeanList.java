@@ -121,7 +121,7 @@ public class EvaluationBeanList {
 	
 
 	public void onRowSelect(SelectEvent event) {
-		listProfileMetric = pmDao.profileMetricList(selectedProfile);
+		listProfileMetric = pmDao.profileMetricList(selectedProfile, null);
 	}
 	
 

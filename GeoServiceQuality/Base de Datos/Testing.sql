@@ -67,7 +67,9 @@ SELECT * FROM prototype_measurable_objects_delete(5, 'Servicio'); --ok
 SELECT * FROM prototype_measurable_object_update(2, 'Servicio', 'http://testing', 'CSW', 'Testing url description'); --ok
 SELECT * FROM prototype_measurable_objects_get (null); --ok
 --------------------------------------------------------------------  
-SELECT * FROM profile_metric_get(1); --ok
+SELECT * FROM profile_metric_get(1,null); --ok
+SELECT * FROM profile_metric_get(1,1); --ok
+SELECT * FROM profile_metric_get(1,2); --ok
 SELECT * FROM profile_metric_get(1121); --err ok
 SELECT * FROM profile_metric_get(null); --err ok
 --------------------------------------------------------------------  
@@ -91,3 +93,5 @@ SELECT * FROM prototype_profile_add_metric (1, 5); --ok
 SELECT * FROM prototype_profile_metric_to_add_get (1); --ok
 --------------------------------------------------------------------
 SELECT * FROM metric_get(); --ok
+--------------------------------------------------------------------
+SELECT * FROM profile_metric_update (2,FALSE,NULL,NULL,NULL);--

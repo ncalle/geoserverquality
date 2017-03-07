@@ -22,11 +22,13 @@ import entity.ProfileMetric;
 public class ProfileMetricBean implements ProfileMetricBeanRemote {
 
     private static final String SQL_PROFILE_METRIC_LIST =
-    		"SELECT QualityModelID, QualityModelName, DimensionID, DimensionName, FactorID, FactorName, MetricID, MetricName, MetricAgrgegationFlag, MetricGranurality, MetricDescription, UnitID, UnitName, UnitDescription, MetricRangeID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue FROM profile_metric_get (?)";
+    		"SELECT QualityModelID, QualityModelName, DimensionID, DimensionName, FactorID, FactorName, MetricID, MetricName, MetricAgrgegationFlag, MetricGranurality, MetricDescription, UnitID, UnitName, UnitDescription, MetricRangeID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue FROM profile_metric_get (?, ?)";
 	private static final String SQL_PROFILE_REMOVE_METRIC =
         	"SELECT * FROM profile_remove_metric (?, ?)";
     private static final String SQL_PROFILE_ADD_METRIC =
         	"SELECT * FROM prototype_profile_add_metric(?, ?)";
+	private static final String SQL_UPDATE =
+        	"SELECT * FROM profile_metric_update (?, ?, ?, ?, ?)";
     
     private DAOFactory daoFactory;
 
@@ -41,7 +43,7 @@ public class ProfileMetricBean implements ProfileMetricBeanRemote {
         
     
     @Override
-    public List<ProfileMetric> profileMetricList(Profile profile) throws DAOException{
+    public List<ProfileMetric> profileMetricList(Profile profile, Integer unitID) throws DAOException{
         List<ProfileMetric> metricList = new ArrayList<>();
 
         Connection connection = null;
@@ -53,7 +55,13 @@ public class ProfileMetricBean implements ProfileMetricBeanRemote {
             statement = connection.prepareStatement(SQL_PROFILE_METRIC_LIST);
             
             statement.setInt(1, profile.getProfileId());
-            
+            if (unitID == null){
+            	statement.setObject(2, null);	
+            }
+            else{
+            	statement.setInt(2, unitID);	
+            }
+                        
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -67,6 +75,7 @@ public class ProfileMetricBean implements ProfileMetricBeanRemote {
     	
     }
     
+    @Override
     public void removeProfileMetric(Profile profile, ProfileMetric profileMetric) throws DAOException{
     	Connection connection = null;
     	PreparedStatement statement = null;
@@ -85,6 +94,7 @@ public class ProfileMetricBean implements ProfileMetricBeanRemote {
     	    }
     }
     
+    @Override
     public void profileAddMetric(Integer profileID, Metric metric) throws DAOException{
     	Connection connection = null;
 		PreparedStatement statement = null;
@@ -101,6 +111,28 @@ public class ProfileMetricBean implements ProfileMetricBeanRemote {
         } catch (SQLException e) {
             throw new DAOException(e);
         }    	
+    }
+    
+    @Override
+    public void update(ProfileMetric profileMetric) throws DAOException{
+    	Connection connection = null;
+		PreparedStatement statement = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE);
+
+            statement.setInt(1, profileMetric.getMetricRangeID());
+            statement.setBoolean(2, profileMetric.getBooleanAcceptanceValue());
+            statement.setInt(3, profileMetric.getPercentageAcceptanceValue());
+            statement.setInt(4, profileMetric.getIntegerAcceptanceValue());
+            statement.setString(5, profileMetric.getEnumerateAcceptanceValue());
+            
+            statement.executeQuery();
+            
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
     }
         
     private static ProfileMetric map(ResultSet resultSet) throws SQLException {

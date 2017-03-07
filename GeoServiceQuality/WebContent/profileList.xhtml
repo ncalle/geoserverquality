@@ -69,8 +69,8 @@
 					widgetVar="p"
 					editable="true">
 
-					<p:ajax event="rowEdit" listener="#{profileBeanList.onRowEdit}" update=":profileMetrics:msgs" />
-					<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelect}" update=":profileMetrics:profileMetrics "/>
+					<p:ajax event="rowEdit" listener="#{profileBeanList.onRowEditProfile}" update=":profiles:msgs" />
+					<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelect}" update=":profileMetrics "/>
 
 					<p:column selectionMode="single"
 						style="width:40px; text-align:center" />
@@ -123,7 +123,7 @@
 							value="Nuevo" outcome="profileAdd" />
 						<p:commandButton class="btn btn-default" icon="ui-icon-trash"
 							value="Eliminar" id="deleteProfileIcon"
-							actionListener="#{profileBeanList.deleteProfile}" update="profiles :profiles:msgs" />
+							actionListener="#{profileBeanList.deleteProfile}" update="profiles :profiles:msgs :profileMetrics" />
 					</div>
 				</div>
 				
@@ -134,43 +134,192 @@
 			<h:form id="profileMetrics" method="post"><p:growl id="msgs" />
 				<hr></hr>			
 				<h4 class="form-signin-heading">Lista de Metricas disponibles para el Perfil seleccionado.</h4>
-				<p:dataTable id="profileMetrics" 
-					value="#{profileBeanList.listProfileMetric}" 
-					var="pmitem" 
-					tableStyle="table-layout: auto;"
-					selection="#{profileBeanList.selectedProfileMetric}"
-					rowKey="#{pmitem.getMetricRangeID()}" 
-					style="margin-bottom:40" 
-					widgetVar="pm">
-					
-					<p:column selectionMode="single"
-						style="width:40px; text-align:center" />
+				
+				<div class="ui-g">
+				    <div class="ui-g-6">				
+						<h5 class="form-signin-heading">Metricas Booleanas.</h5>
+						<p:dataTable id="booleanProfileMetrics" 
+							value="#{profileBeanList.listBooleanProfileMetric}" 
+							var="bpmitem" 
+							tableStyle="table-layout: auto;"
+							selection="#{profileBeanList.selectedBooleanProfileMetric}"
+							rowKey="#{bpmitem.getMetricRangeID()}" 
+							style="margin-bottom:40" 
+							widgetVar="bpm"
+							editable="true">
+		
+							<p:ajax event="rowEdit" listener="#{profileBeanList.onRowEditBooleanProfileMetrics}" update=":profileMetrics:msgs" />
+							<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelectBoolean}" update=":profileMetrics "/>
+							
+							<p:column selectionMode="single"
+								style="width:40px; text-align:center" />
+		
+							<p:column headerText="Métrica" sortBy="#{bpmitem.getMetricName()}">
+								<h:outputText value="#{bpmitem.getMetricName()}" />
+							</p:column>
+							
+							<p:column headerText="Unidad" sortBy="#{bpmitem.getUnitName()}">
+								<h:outputText value="#{bpmitem.getUnitName()}" />
+							</p:column>
+		
+							<p:column headerText="Valor Booleano" sortBy="#{bpmitem.getBooleanAcceptanceValue()}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{bpmitem.getBooleanAcceptanceValue()}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="booleanValueInput" value="#{bpmitem.booleanAcceptanceValue}"
+											style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+											
+							<p:column headerText="Acciones">
+								<p:rowEditor />
+							</p:column>					
+		
+						</p:dataTable>
+						
+						<br/><br/>
+						
+						<h5 class="form-signin-heading">Metricas Enumeradas.</h5>
+						<p:dataTable id="enumeratedProfileMetrics" 
+							value="#{profileBeanList.listEnumeratedProfileMetric}" 
+							var="epmitem" 
+							tableStyle="table-layout: auto;"
+							selection="#{profileBeanList.selectedEnumeratedProfileMetric}"
+							rowKey="#{epmitem.getMetricRangeID()}" 
+							style="margin-bottom:40" 
+							widgetVar="epm"
+							editable="true">
+		
+							<p:ajax event="rowEdit" listener="#{profileBeanList.onRowEditEnumeratedProfileMetrics}" update=":profileMetrics:msgs" />
+							<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelectEnumerated}" update=":profileMetrics "/>
+							
+							<p:column selectionMode="single"
+								style="width:40px; text-align:center" />
+		
+							<p:column headerText="Métrica" sortBy="#{epmitem.getMetricName()}">
+								<h:outputText value="#{epmitem.getMetricName()}" />
+							</p:column>
+							
+							<p:column headerText="Unidad" sortBy="#{epmitem.getUnitName()}">
+								<h:outputText value="#{epmitem.getUnitName()}" />
+							</p:column>
+		
+							<p:column headerText="Valor Enumerado" sortBy="#{epmitem.getEnumerateAcceptanceValue()}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{epmitem.getEnumerateAcceptanceValue()}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="enumerateValueInput" value="#{epmitem.enumerateAcceptanceValue}"
+											style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+											
+							<p:column headerText="Acciones">
+								<p:rowEditor />
+							</p:column>					
+		
+						</p:dataTable>
+						
+					</div>
 
-					<p:column headerText="Métrica" sortBy="#{pmitem.getMetricName()}">
-						<h:outputText value="#{pmitem.getMetricName()}" />
-					</p:column>
-					
-					<p:column headerText="Unidad" sortBy="#{pmitem.getUnitName()}">
-						<h:outputText value="#{pmitem.getUnitName()}" />
-					</p:column>
+					<div class="ui-g-6">					
 
-					<p:column headerText="Valor Boleano" sortBy="#{pmitem.getBooleanAcceptanceValue()}">
-						<h:outputText value="#{pmitem.getBooleanAcceptanceValue()}" />
-					</p:column>
+						<h5 class="form-signin-heading">Metricas Enteras.</h5>				
+						<p:dataTable id="integerProfileMetrics" 
+							value="#{profileBeanList.listIntegerProfileMetric}" 
+							var="ipmitem" 
+							tableStyle="table-layout: auto;"
+							selection="#{profileBeanList.selectedIntegerProfileMetric}"
+							rowKey="#{ipmitem.getMetricRangeID()}" 
+							style="margin-bottom:40" 
+							widgetVar="ipm"
+							editable="true">
+		
+							<p:ajax event="rowEdit" listener="#{profileBeanList.onRowEditIntegerProfileMetrics}" update=":profileMetrics:msgs" />
+							<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelectInteger}" update=":profileMetrics "/>
+							
+							<p:column selectionMode="single"
+								style="width:40px; text-align:center" />
+		
+							<p:column headerText="Métrica" sortBy="#{ipmitem.getMetricName()}">
+								<h:outputText value="#{ipmitem.getMetricName()}" />
+							</p:column>
+							
+							<p:column headerText="Unidad" sortBy="#{ipmitem.getUnitName()}">
+								<h:outputText value="#{ipmitem.getUnitName()}" />
+							</p:column>
+		
+							<p:column headerText="Valor Entero" sortBy="#{ipmitem.getIntegerAcceptanceValue()}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{ipmitem.getIntegerAcceptanceValue()}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="integerValueInput" value="#{ipmitem.integerAcceptanceValue}"
+											style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+											
+							<p:column headerText="Acciones">
+								<p:rowEditor />
+							</p:column>					
+		
+						</p:dataTable>
+						
+						<br/><br/>
+						
+						<h5 class="form-signin-heading">Metricas Porcentaje.</h5>
+						<p:dataTable id="percentageProfileMetrics" 
+							value="#{profileBeanList.listPercentageProfileMetric}" 
+							var="ppmitem" 
+							tableStyle="table-layout: auto;"
+							selection="#{profileBeanList.selectedPercentageProfileMetric}"
+							rowKey="#{ppmitem.getMetricRangeID()}" 
+							style="margin-bottom:40" 
+							widgetVar="ppm"
+							editable="true">
+		
+							<p:ajax event="rowEdit" listener="#{profileBeanList.onRowEditPercentageProfileMetrics}" update=":profileMetrics:msgs" />
+							<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelectPercentage}" update=":profileMetrics "/>
+							
+							<p:column selectionMode="single"
+								style="width:40px; text-align:center" />
+		
+							<p:column headerText="Métrica" sortBy="#{ppmitem.getMetricName()}">
+								<h:outputText value="#{ppmitem.getMetricName()}" />
+							</p:column>
+							
+							<p:column headerText="Unidad" sortBy="#{ppmitem.getUnitName()}">
+								<h:outputText value="#{ppmitem.getUnitName()}" />
+							</p:column>
+		
+							<p:column headerText="Valor Porcentaje" sortBy="#{ppmitem.getPercentageAcceptanceValue()}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{ppmitem.getPercentageAcceptanceValue()}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="percentajeValueInput" value="#{ppmitem.percentageAcceptanceValue}"
+											style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+											
+							<p:column headerText="Acciones">
+								<p:rowEditor />
+							</p:column>					
+		
+						</p:dataTable>
 					
-					<p:column headerText="Valor Porcentaje" sortBy="#{pmitem.getPercentageAcceptanceValue()}">
-						<h:outputText value="#{pmitem.getPercentageAcceptanceValue()}" />
-					</p:column>
-					
-					<p:column headerText="Valor Entero" sortBy="#{pmitem.getIntegerAcceptanceValue()}">
-						<h:outputText value="#{pmitem.getIntegerAcceptanceValue()}" />
-					</p:column>
-					
-					<p:column headerText="Valor Enumerado" sortBy="#{pmitem.getEnumerateAcceptanceValue()}">
-						<h:outputText value="#{pmitem.getEnumerateAcceptanceValue()}" />
-					</p:column>					
-
-				</p:dataTable>
+					</div>
+				</div>
+				
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<p:button class="btn btn-default" icon="ui-icon-plus"
