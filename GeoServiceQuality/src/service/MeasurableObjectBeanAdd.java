@@ -21,6 +21,10 @@ public class MeasurableObjectBeanAdd {
     private String url;
     private String type;
     
+    private final String GET_CAPABILITIES = "REQUEST=GetCapabilities";
+    private final String GET_SERVICE = "SERVICE=";
+    //private final String GET_VERSION_WFS = "VERSION=1.1.0";
+    
 	@EJB
     private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
 	
@@ -62,6 +66,8 @@ public class MeasurableObjectBeanAdd {
     		return;
     	}
     	
+    	parametersRequestUrl();
+    	
     	MeasurableObject object = new MeasurableObject();
     	object.setMeasurableObjectDescription(description);
     	object.setMeasurableObjectURL(url);
@@ -84,4 +90,29 @@ public class MeasurableObjectBeanAdd {
     	} 
 
 	}
+    
+    
+    public void parametersRequestUrl() {
+   	
+    	//Se agrega el pedido de servicio
+    	if(url.indexOf(GET_SERVICE)==-1){
+    		if(url.indexOf("?")==-1){
+    			url = url + "?";
+    		} else if(!url.substring(url.length()-1, url.length()).equals("?")){
+    			url = url + "&";
+    		}
+    		url = url + GET_SERVICE + type;
+    	}
+    	
+    	//Se agrega el pedido de capabilities
+    	if(url.indexOf(GET_CAPABILITIES)==-1){
+    		if(url.indexOf("?")==-1){
+    			url = url + "?";
+    		} else if(!url.substring(url.length()-1, url.length()).equals("&")){
+    			url = url + "&";
+    		}
+    		url = url + GET_CAPABILITIES;
+    	} 
+    	
+    }
 }
