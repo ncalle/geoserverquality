@@ -260,5 +260,5 @@ public class ProfileBeanList {
         
 		FacesMessage msg = new FacesMessage("Metrica removida correctamente.");       
         FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
+    }	
 }
