@@ -110,7 +110,7 @@ public class Evaluation implements Serializable {
     @Override
     public String toString() {
         return String.format("Evaluation[EvaluationID=%d, UserID=%d, ProfileID=%d, StartDate=%s, EndDate=%s, IsEvaluationCompleted=%s, Success=%s]",
-        		getEvaluationID(), getUserID(), getProfileID(), getStartDate().toString(), getEndDate().toString(), getIsEvaluationCompleted(), getSuccess());
+        		getEvaluationID(), getUserID(), getProfileID(), getStartDate(), getEndDate(), getIsEvaluationCompleted(), getSuccess());
     }
 
 }
