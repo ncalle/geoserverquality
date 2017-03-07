@@ -168,8 +168,10 @@
 										<h:outputText value="#{bpmitem.getBooleanAcceptanceValue()}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText id="booleanValueInput" value="#{bpmitem.booleanAcceptanceValue}"
-											style="width:100%" />
+										<h:selectOneMenu value="#{bpmitem.booleanAcceptanceValue}" style="width:100%">
+											<f:selectItem itemValue="TRUE" itemLabel="true"/>
+											<f:selectItem itemValue="FALSE" itemLabel="false"/>
+										</h:selectOneMenu>
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -213,8 +215,11 @@
 										<h:outputText value="#{epmitem.getEnumerateAcceptanceValue()}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText id="enumerateValueInput" value="#{epmitem.enumerateAcceptanceValue}"
-											style="width:100%" />
+										<h:selectOneMenu value="#{epmitem.enumerateAcceptanceValue}" style="width:100%">
+											<f:selectItem itemValue="B" itemLabel="Basico"/>
+											<f:selectItem itemValue="I" itemLabel="Intermedio"/>
+											<f:selectItem itemValue="C" itemLabel="Completo"/>
+										</h:selectOneMenu>
 									</f:facet>
 								</p:cellEditor>
 							</p:column>

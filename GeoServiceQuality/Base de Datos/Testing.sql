@@ -94,4 +94,9 @@ SELECT * FROM prototype_profile_metric_to_add_get (1); --ok
 --------------------------------------------------------------------
 SELECT * FROM metric_get(); --ok
 --------------------------------------------------------------------
-SELECT * FROM profile_metric_update (2,FALSE,NULL,NULL,NULL);--
+SELECT * FROM profile_metric_update (2,FALSE,NULL,NULL,NULL); --ok
+SELECT * FROM profile_metric_get(1,null); --ok
+SELECT * FROM profile_metric_update (2,TRUE,NULL,NULL,NULL); --ok
+SELECT * FROM profile_metric_get(1,null); --ok
+SELECT * FROM profile_metric_update (2,FALSE,NULL,NULL,'I'); --err ok
+SELECT * FROM profile_metric_get(1,null); --ok
