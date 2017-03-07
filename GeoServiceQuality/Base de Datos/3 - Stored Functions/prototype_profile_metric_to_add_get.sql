@@ -47,7 +47,6 @@ BEGIN
    FROM Metric m
    LEFT JOIN MetricRange mr ON mr.MetricID = m.MetricID AND mr.ProfileID = pProfileID
    WHERE mr.MetricRangeID IS NULL
-      AND m.UnitID = 1 --Boolean
    GROUP BY m.MetricID
       , m.FactorID
       , m.Name
@@ -55,8 +54,6 @@ BEGIN
       , m.UnitID
       , m.Granurality
       , m.Description;
-         
-   --TODO: Agregar otros tipos de metricas no boleanas
 
 END;
 $$ LANGUAGE plpgsql;

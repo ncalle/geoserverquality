@@ -1,4 +1,4 @@
-﻿DROP FUNCTION measurable_object_get();
+﻿--DROP FUNCTION measurable_object_get();
 CREATE OR REPLACE FUNCTION measurable_object_get ()
 RETURNS TABLE 
    (
