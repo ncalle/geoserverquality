@@ -23,7 +23,10 @@ public class MeasurableObjectBeanAdd {
     
     private final String GET_CAPABILITIES = "REQUEST=GetCapabilities";
     private final String GET_SERVICE = "SERVICE=";
-    //private final String GET_VERSION_WFS = "VERSION=1.1.0";
+    private final String GET_VERSION = "VERSION=";
+    private final String GET_VERSION_WMS = "VERSION=1.3.0";
+    private final String GET_VERSION_WFS = "VERSION=1.1.0";
+    private final String GET_VERSION_CSW = "VERSION=3.0";
     
 	@EJB
     private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
@@ -104,11 +107,25 @@ public class MeasurableObjectBeanAdd {
     		url = url + GET_SERVICE + type;
     	}
     	
+    	//Se agrega el pedido de version
+    	if(url.indexOf(GET_VERSION)==-1){
+    		
+    		if(!url.substring(url.length()-1, url.length()).equals("&")){
+    			url = url + "&";
+    		}
+    		
+    		if(type.equals("WMS")){
+    			url = url + GET_VERSION_WMS;
+    		} else if(type.equals("WFS")){
+    			url = url + GET_VERSION_WFS;
+    		} else {
+    			url = url + GET_VERSION_CSW;
+    		}
+    	} 
+    	
     	//Se agrega el pedido de capabilities
     	if(url.indexOf(GET_CAPABILITIES)==-1){
-    		if(url.indexOf("?")==-1){
-    			url = url + "?";
-    		} else if(!url.substring(url.length()-1, url.length()).equals("&")){
+    		if(!url.substring(url.length()-1, url.length()).equals("&")){
     			url = url + "&";
     		}
     		url = url + GET_CAPABILITIES;
