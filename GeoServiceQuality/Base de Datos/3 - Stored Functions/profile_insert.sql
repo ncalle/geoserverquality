@@ -81,14 +81,151 @@ BEGIN
       RETURNING ProfileID INTO LastProfileID;
     
     -- Insert de Rangos asociados a las Metricas y Perfil
-    -- Metricas boleanas
+    
+   -- Metricas boleanas
    INSERT INTO MetricRange
-   (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue)
-   SELECT m.MetricID, LastProfileID, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL
+   (
+      MetricID
+      , ProfileID
+      , BooleanFlag
+      , BooleanAcceptanceValue
+      , PercentageFlag
+      , PercentageAcceptanceValue
+      , IntegerFlag
+      , IntegerAcceptanceValue
+      , EnumerateFlag
+      , EnumerateAcceptanceValue
+   )
+   SELECT 
+      m.MetricID
+      , LastProfileID
+      , TRUE --Boleano
+      , TRUE --Por defecto en TRUE
+      , FALSE
+      , NULL
+      , FALSE
+      , NULL
+      , FALSE
+      , NULL
    FROM Metric m
    WHERE m.MetricID IN (SELECT mb.MetricID FROM MetricKeys mb)
       AND m.UnitID = 1; --Boleano
-   --TODO: Agregar insert para el resto de los tipos de metricas, de unidad distinta a la Boleana.
+
+   -- Metricas Porcentaje
+   INSERT INTO MetricRange
+   (
+      MetricID
+      , ProfileID
+      , BooleanFlag
+      , BooleanAcceptanceValue
+      , PercentageFlag
+      , PercentageAcceptanceValue
+      , IntegerFlag
+      , IntegerAcceptanceValue
+      , EnumerateFlag
+      , EnumerateAcceptanceValue
+   )
+   SELECT 
+      m.MetricID
+      , LastProfileID
+      , FALSE
+      , NULL
+      , TRUE --Porcentaje
+      , 50 --Por defecto en 50%
+      , FALSE
+      , NULL
+      , FALSE
+      , NULL
+   FROM Metric m
+   WHERE m.MetricID IN (SELECT mb.MetricID FROM MetricKeys mb)
+      AND m.UnitID = 2; --Porcentaje
+
+   -- Metricas Milisegundos
+   INSERT INTO MetricRange
+   (
+      MetricID
+      , ProfileID
+      , BooleanFlag
+      , BooleanAcceptanceValue
+      , PercentageFlag
+      , PercentageAcceptanceValue
+      , IntegerFlag
+      , IntegerAcceptanceValue
+      , EnumerateFlag
+      , EnumerateAcceptanceValue
+   )
+   SELECT 
+      m.MetricID
+      , LastProfileID
+      , FALSE
+      , NULL
+      , FALSE
+      , NULL
+      , TRUE --Milisegundos
+      , 10000 --Por defecto en 10 segundos
+      , FALSE
+      , NULL
+   FROM Metric m
+   WHERE m.MetricID IN (SELECT mb.MetricID FROM MetricKeys mb)
+      AND m.UnitID = 3; --Milisegundos
+
+   -- Metricas Basico-Intermedio-Completo
+   INSERT INTO MetricRange
+   (
+      MetricID
+      , ProfileID
+      , BooleanFlag
+      , BooleanAcceptanceValue
+      , PercentageFlag
+      , PercentageAcceptanceValue
+      , IntegerFlag
+      , IntegerAcceptanceValue
+      , EnumerateFlag
+      , EnumerateAcceptanceValue
+   )
+   SELECT 
+      m.MetricID
+      , LastProfileID
+      , FALSE
+      , NULL
+      , FALSE
+      , NULL
+      , FALSE
+      , NULL
+      , TRUE --Basico-Intermedio-Completo
+      , 'I' -- 'B' = Basico, 'I' = Intermedio, 'C' = Completo
+   FROM Metric m
+   WHERE m.MetricID IN (SELECT mb.MetricID FROM MetricKeys mb)
+      AND m.UnitID = 4; --Basico-Intermedio-Completo
+
+   -- Metricas Entero
+   INSERT INTO MetricRange
+   (
+      MetricID
+      , ProfileID
+      , BooleanFlag
+      , BooleanAcceptanceValue
+      , PercentageFlag
+      , PercentageAcceptanceValue
+      , IntegerFlag
+      , IntegerAcceptanceValue
+      , EnumerateFlag
+      , EnumerateAcceptanceValue
+   )
+   SELECT 
+      m.MetricID
+      , LastProfileID
+      , FALSE
+      , NULL
+      , FALSE
+      , NULL
+      , TRUE --Entero
+      , 1 --Por defecto en 1
+      , FALSE
+      , NULL
+   FROM Metric m
+   WHERE m.MetricID IN (SELECT mb.MetricID FROM MetricKeys mb)
+      AND m.UnitID = 5; --Entero
 
 END;
 $$ LANGUAGE plpgsql;

@@ -29,10 +29,7 @@ BEGIN
       , m.Granurality
       , m.Description
    FROM Metric m
-   WHERE m.UnitID = 1 --Boolean
    ORDER BY m.MetricID;
-
-   --TODO: Agregar metricas no boleanas cuando se extienda el prototipo
          
 END;
 $$ LANGUAGE plpgsql;

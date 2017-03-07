@@ -40,15 +40,150 @@ BEGIN
    END IF;
          
     -- Insert de Rangos asociados a las Metricas y Perfil
-    -- Metricas boleanas
+   -- Metricas boleanas
    IF EXISTS (SELECT 1 FROM Metric m WHERE m.MetricID = pMetricID AND m.UnitID = 1) --Booleano
    THEN
       INSERT INTO MetricRange
-      (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue)
-      SELECT pMetricID, pProfileID, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL;
+      (
+         MetricID
+         , ProfileID
+         , BooleanFlag
+         , BooleanAcceptanceValue
+         , PercentageFlag
+         , PercentageAcceptanceValue
+         , IntegerFlag
+         , IntegerAcceptanceValue
+         , EnumerateFlag
+         , EnumerateAcceptanceValue
+      )
+      SELECT 
+         pMetricID
+         , pProfileID
+         , TRUE --Boleano
+         , TRUE --Por defecto en TRUE
+         , FALSE
+         , NULL
+         , FALSE
+         , NULL
+         , FALSE
+         , NULL;
    END IF;
 
-   --TODO: Agregar insert para el resto de los tipos de metricas, de unidad distinta a la Boleana.
+   -- Metricas Porcentaje
+   IF EXISTS (SELECT 1 FROM Metric m WHERE m.MetricID = pMetricID AND m.UnitID = 2) --Porcentaje
+   THEN
+      INSERT INTO MetricRange
+      (
+         MetricID
+         , ProfileID
+         , BooleanFlag
+         , BooleanAcceptanceValue
+         , PercentageFlag
+         , PercentageAcceptanceValue
+         , IntegerFlag
+         , IntegerAcceptanceValue
+         , EnumerateFlag
+         , EnumerateAcceptanceValue
+      )
+      SELECT 
+         pMetricID
+         , pProfileID
+         , FALSE
+         , NULL
+         , TRUE --Porcentaje
+         , 50 --Por defecto en 50%
+         , FALSE
+         , NULL
+         , FALSE
+         , NULL;
+   END IF;
+
+   -- Metricas Milisegundos
+   IF EXISTS (SELECT 1 FROM Metric m WHERE m.MetricID = pMetricID AND m.UnitID = 3) --Milisegundos
+   THEN
+      INSERT INTO MetricRange
+      (
+         MetricID
+         , ProfileID
+         , BooleanFlag
+         , BooleanAcceptanceValue
+         , PercentageFlag
+         , PercentageAcceptanceValue
+         , IntegerFlag
+         , IntegerAcceptanceValue
+         , EnumerateFlag
+         , EnumerateAcceptanceValue
+      )
+      SELECT 
+         pMetricID
+         , pProfileID
+         , FALSE
+         , NULL
+         , FALSE
+         , NULL
+         , TRUE --Milisegundos
+         , 10000 --Por defecto en 10 segundos
+         , FALSE
+         , NULL;
+   END IF;
+
+   -- Metricas Basico-Intermedio-Completo
+   IF EXISTS (SELECT 1 FROM Metric m WHERE m.MetricID = pMetricID AND m.UnitID = 4) --Basico-Intermedio-Completo
+   THEN
+      INSERT INTO MetricRange
+      (
+         MetricID
+         , ProfileID
+         , BooleanFlag
+         , BooleanAcceptanceValue
+         , PercentageFlag
+         , PercentageAcceptanceValue
+         , IntegerFlag
+         , IntegerAcceptanceValue
+         , EnumerateFlag
+         , EnumerateAcceptanceValue
+      )
+      SELECT 
+         pMetricID
+         , pProfileID
+         , FALSE
+         , NULL
+         , FALSE
+         , NULL
+         , FALSE
+         , NULL
+         , TRUE --Basico-Intermedio-Completo
+         , 'I'; -- 'B' = Basico, 'I' = Intermedio, 'C' = Completo
+   END IF;
+
+   -- Metricas Entero
+   IF EXISTS (SELECT 1 FROM Metric m WHERE m.MetricID = pMetricID AND m.UnitID = 5) --Entero
+   THEN
+      INSERT INTO MetricRange
+      (
+         MetricID
+         , ProfileID
+         , BooleanFlag
+         , BooleanAcceptanceValue
+         , PercentageFlag
+         , PercentageAcceptanceValue
+         , IntegerFlag
+         , IntegerAcceptanceValue
+         , EnumerateFlag
+         , EnumerateAcceptanceValue
+      )
+      SELECT 
+         pMetricID
+         , pProfileID
+         , FALSE
+         , NULL
+         , FALSE
+         , NULL
+         , TRUE --Entero
+         , 1 --Por defecto en 1
+         , FALSE
+         , NULL;
+   END IF;
 
 END;
 $$ LANGUAGE plpgsql;
