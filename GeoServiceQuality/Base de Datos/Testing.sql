@@ -18,8 +18,10 @@ SELECT * FROM user_delete (10); --ok
    SELECT * FROM user_get (NULL,'userInsert1@gmail.com','passInsert1'); --ok
 SELECT * FROM user_delete (1111); --err ok
 --------------------------------------------------------------------
-SELECT * FROM measurable_object_get (); --ok
-   SELECT * FROM prototype_measurable_objects_get (null); --ok
+SELECT * FROM measurable_object_get (1); --ok
+SELECT * FROM measurable_object_get (3); --ok
+SELECT * FROM measurable_object_get (null); --ok
+   SELECT * FROM prototype_measurable_objects_get (NULL); --ok
    SELECT * FROM prototype_measurable_objects_get (1); --ok	
    SELECT * FROM prototype_measurable_objects_get (2); --ok
    SELECT * FROM prototype_measurable_objects_get (3); --ok
@@ -33,16 +35,13 @@ SELECT * FROM prototype_user_add_measurable_object(1, 8); --err ok
 SELECT * FROM prototype_user_add_measurable_object(1, 85); --ok
 SELECT * FROM prototype_user_measurable_object_to_add_get(1); --ok
 --------------------------------------------------------------------
-SELECT * FROM measurable_objects_by_user_get (1); --ok
-SELECT * FROM measurable_objects_by_user_get (NULL); --err ok
---------------------------------------------------------------------
-SELECT * FROM user_evaluation_get (1, NULL, NULL, NULL, NULL, NULL); --ok
-SELECT * FROM user_evaluation_get (NULL, NULL, NULL, NULL, NULL, NULL); --err ok
+SELECT * FROM evaluation_get (1); --ok
+SELECT * FROM evaluation_get (NULL); --ok
 --------------------------------------------------------------------
 SELECT * FROM prototype_measurable_objects_insert (5, 'http://serviciogeografico/Nodo1.2.3/Servicio2.1.2.3', 'WMS', 'Descripcion TESTING', 'Servicio'); --ok
-   SELECT * FROM measurable_object_get (); --ok
-   SELECT * FROM measurable_objects_by_user_get (1); --ok
-   SELECT * FROM prototype_user_measurable_object_to_add_get(1); --ok
+SELECT * FROM measurable_object_get (NULL); --ok
+SELECT * FROM measurable_object_get (1); --ok
+SELECT * FROM prototype_user_measurable_object_to_add_get(1); --ok
 --------------------------------------------------------------------
 SELECT * FROM profile_insert ('TestPerfil2', 'Servicio', '1,2,3,4,5,6,7,8,9,10,11,12,43,56,14,231'); --ok
 SELECT * FROM profile_insert ('TestPerfil2', NULL, '1,2,3,4,5,6,7,8,9,10,11,12,43,56,14,231'); --err ok
@@ -64,9 +63,11 @@ SELECT * FROM institution_get(2); --ok
 SELECT * FROM quality_models_get(); --ok
 --------------------------------------------------------------------  
 SELECT * FROM prototype_measurable_objects_get (null); --ok
-SELECT * FROM prototype_measurable_objects_delete(5); --ok
+SELECT * FROM prototype_measurable_objects_delete(82); --ok
+SELECT * FROM prototype_measurable_objects_get (null); --ok
 --------------------------------------------------------------------  
-SELECT * FROM prototype_measurable_object_update(2, 'http://testing', 'CSW', 'Testing url description'); --ok
+SELECT * FROM prototype_measurable_objects_get (null); --ok
+SELECT * FROM prototype_measurable_object_update(1, 'http://testing1', 'CSW', 'Testing url description'); --ok
 SELECT * FROM prototype_measurable_objects_get (null); --ok
 --------------------------------------------------------------------  
 SELECT * FROM profile_metric_get(1,null); --ok
@@ -84,23 +85,22 @@ SELECT * FROM profile_get (); --ok
 SELECT * FROM profile_update (1, 'Cambio de Nombre', 'otra cosa'); --err ok
 SELECT * FROM profile_update (123, 'Cambio de Nombre', 'Ide'); --err ok
 --------------------------------------------------------------------
-SELECT * FROM profile_remove_metric (2, 3); --ok
-SELECT * FROM profile_remove_metric (64, 3); --ok
-SELECT * FROM profile_remove_metric (2, 34533); --ok
+SELECT * FROM profile_remove_metric (1, 2); --ok
+SELECT * FROM profile_remove_metric (1, 3); --err ok
+SELECT * FROM profile_remove_metric (64, 3); --err ok
+SELECT * FROM profile_remove_metric (1, 34533); --err ok
+SELECT * FROM profile_metric_get(1,null); --ok
 --------------------------------------------------------------------
-SELECT * FROM prototype_profile_add_metric (2, 5); --err ok
-SELECT * FROM prototype_profile_add_metric (30, 5); --err ok
 SELECT * FROM prototype_profile_add_metric (1, 5); --ok
+SELECT * FROM profile_metric_get(1,null); --ok
+SELECT * FROM prototype_profile_add_metric (2, 5); --err ok
+SELECT * FROM prototype_profile_add_metric (1, 54234); --err ok
 --------------------------------------------------------------------
 SELECT * FROM prototype_profile_metric_to_add_get (1); --ok
 --------------------------------------------------------------------
 SELECT * FROM metric_get(); --ok
 --------------------------------------------------------------------
-SELECT * FROM profile_metric_update (2,FALSE,NULL,NULL,NULL); --ok
-SELECT * FROM profile_metric_get(1,null); --ok
-SELECT * FROM profile_metric_update (2,TRUE,NULL,NULL,NULL); --ok
-SELECT * FROM profile_metric_get(1,null); --ok
-SELECT * FROM profile_metric_update (2,FALSE,NULL,NULL,'I'); --err ok
-SELECT * FROM profile_metric_get(1,null); --ok
+SELECT * FROM profile_metric_update (5,FALSE,NULL,NULL,NULL); --ok
+SELECT * FROM profile_metric_get(3,null); --ok
+SELECT * FROM profile_metric_update (223,TRUE,NULL,NULL,NULL); --err ok
 --------------------------------------------------------------------
-SELECT * FROM evaluation_get(null); --ok

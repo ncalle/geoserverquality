@@ -31,8 +31,6 @@ RETURNS TABLE
 ** 02/12/2016 - Created
 **
 *************************************************************************************************************/
-DECLARE v_canUserMeasureAble INT;
-
 BEGIN
    
    -- validacion de usuario
@@ -40,13 +38,6 @@ BEGIN
       AND NOT EXISTS (SELECT 1 FROM SystemUser su WHERE su.UserID = pUserID)
    THEN
       RAISE EXCEPTION 'Error - El Usuario no existe.';
-   END IF;
-
-   IF (pUserID IS NOT NULL)
-   THEN
-      SELECT 1 INTO v_canUserMeasureAble;
-   ELSE
-      SELECT NULL INTO v_canUserMeasureAble;
    END IF;
 
    -- Lista de objetos medibles
@@ -60,9 +51,9 @@ BEGIN
       , n.NodeID
       , n.Name AS NodeName
       , n.Description AS NodeDescription
-      , c.LayerID
-      , c.Name AS LayerName
-      , c.URL AS LayerURL
+      , l.LayerID
+      , l.Name AS LayerName
+      , l.URL AS LayerURL
       , NULL AS GeographicServicesID
       , NULL AS GeographicServicesURL
       , NULL AS GeographicServicesType
@@ -70,7 +61,7 @@ BEGIN
    FROM Ide ide
    INNER JOIN Institution ins ON ins.IdeID = ide.IdeID
    INNER JOIN Node n ON n.InstitutionID = ins.InstitutionID
-   INNER JOIN Layer c ON c.NodeID = n.NodeID
+   INNER JOIN Layer l ON l.NodeID = n.NodeID
    LEFT JOIN MeasurableObject mo ON 
       CASE
          WHEN mo.EntityType = 'Ide' THEN mo.EntityID = ide.IdeID
@@ -80,8 +71,8 @@ BEGIN
       END
    LEFT JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
    LEFT JOIN SystemUser u ON u.UserID = umo.UserID
-   WHERE u.UserID = COALESCE(pUserID, u.UserID)
-      AND umo.CanMeasureFlag = COALESCE(v_canUserMeasureAble, umo.CanMeasureFlag)
+   WHERE (CASE WHEN pUserID IS NOT NULL THEN u.UserID = pUserID ELSE TRUE END)
+      AND (CASE WHEN pUserID IS NOT NULL THEN umo.CanMeasureFlag = TRUE ELSE TRUE END)
    GROUP BY ide.IdeID
       , ide.Name
       , ide.Description
@@ -91,9 +82,9 @@ BEGIN
       , n.NodeID
       , n.Name
       , n.Description
-      , c.LayerID
-      , c.Name
-      , c.URL
+      , l.LayerID
+      , l.Name
+      , l.URL
 
    UNION
          
@@ -126,8 +117,8 @@ BEGIN
       END
    LEFT JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
    LEFT JOIN SystemUser u ON u.UserID = umo.UserID
-   WHERE u.UserID = COALESCE(pUserID, u.UserID)
-      AND umo.CanMeasureFlag = COALESCE(v_canUserMeasureAble, umo.CanMeasureFlag)
+   WHERE (CASE WHEN pUserID IS NOT NULL THEN u.UserID = pUserID ELSE TRUE END)
+      AND (CASE WHEN pUserID IS NOT NULL THEN umo.CanMeasureFlag = TRUE ELSE TRUE END)
    GROUP BY ide.IdeID
       , ide.Name
       , ide.Description

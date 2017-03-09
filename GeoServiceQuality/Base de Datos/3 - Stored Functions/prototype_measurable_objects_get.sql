@@ -61,7 +61,7 @@ BEGIN
    INNER JOIN MeasurableObject mo ON mo.EntityID = sg.GeographicServicesID AND mo.EntityType = 'Servicio'
    INNER JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
    LEFT JOIN SystemUser u ON u.UserID = umo.UserID
-   WHERE u.UserID = COALESCE(pUserID,u.UserID)
+   WHERE (CASE WHEN pUserID IS NOT NULL THEN u.UserID = pUserID ELSE TRUE END)
       AND (CASE WHEN pUserID IS NOT NULL THEN umo.CanMeasureFlag = TRUE ELSE TRUE END)
    GROUP BY mo.MeasurableObjectID
       , mo.EntityID
@@ -76,7 +76,8 @@ BEGIN
       --, l.Url
       , sg.Description
       , sg.Url
-      , sg.GeographicServicesType;
+      , sg.GeographicServicesType
+   ORDER BY mo.MeasurableObjectID;
         
 END;
 $$ LANGUAGE plpgsql;

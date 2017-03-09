@@ -33,6 +33,12 @@ BEGIN
    THEN
       RAISE EXCEPTION 'Error - La Metrica de ID: % no existe.', pMetricID;
    END IF;
+
+   -- validación de Metrica asociada al Perfil
+   IF NOT EXISTS (SELECT 1 FROM MetricRange mr WHERE mr.MetricID = pMetricID AND mr.ProfileID = pProfileID)
+   THEN
+      RAISE EXCEPTION 'Error - La Metrica de ID: % no se encuentra asociada al Perfil de ID: %.', pMetricID, pProfileID;
+   END IF;
    
    DELETE FROM MetricRange
    WHERE MetricID = pMetricID
