@@ -26,10 +26,12 @@ SELECT * FROM measurable_object_get (); --ok
 --------------------------------------------------------------------
 SELECT * FROM prototype_user_measurable_object_to_add_get(1); --ok
 SELECT * FROM prototype_user_measurable_object_to_add_get(3); --ok
-SELECT * FROM prototype_user_remove_measurable_object(1,4,'Servicio'); --ok
+SELECT * FROM prototype_user_remove_measurable_object(1,85); --ok
 SELECT * FROM prototype_user_measurable_object_to_add_get(1); --ok
 --------------------------------------------------------------------
-SELECT * FROM prototype_user_add_measurable_object(2, 1, 'Servicio'); --err ok
+SELECT * FROM prototype_user_add_measurable_object(1, 8); --err ok
+SELECT * FROM prototype_user_add_measurable_object(1, 85); --ok
+SELECT * FROM prototype_user_measurable_object_to_add_get(1); --ok
 --------------------------------------------------------------------
 SELECT * FROM measurable_objects_by_user_get (1); --ok
 SELECT * FROM measurable_objects_by_user_get (NULL); --err ok
@@ -49,9 +51,9 @@ SELECT * FROM profile_insert ('TestPerfil2', 'Servicio', NULL); --err ok
 --------------------------------------------------------------------
 SELECT * FROM profile_get (); --ok
 --------------------------------------------------------------------
-SELECT * FROM evaluation_insert (1, 1, TRUE); --ok
-   SELECT * FROM user_evaluation_get (1, NULL, NULL, NULL, NULL, NULL); --ok
-SELECT * FROM evaluation_insert (1, 2, TRUE); --err ok
+SELECT * FROM evaluation_insert (1, 1, 2, 85, TRUE); --ok
+SELECT * FROM evaluation_get (1); --ok
+SELECT * FROM evaluation_insert (1, 2, 2, 7079, TRUE); --err ok
 --------------------------------------------------------------------
 SELECT * FROM user_group_get(null); --ok
 SELECT * FROM user_group_get(2); --ok
@@ -62,9 +64,9 @@ SELECT * FROM institution_get(2); --ok
 SELECT * FROM quality_models_get(); --ok
 --------------------------------------------------------------------  
 SELECT * FROM prototype_measurable_objects_get (null); --ok
-SELECT * FROM prototype_measurable_objects_delete(5, 'Servicio'); --ok
+SELECT * FROM prototype_measurable_objects_delete(5); --ok
 --------------------------------------------------------------------  
-SELECT * FROM prototype_measurable_object_update(2, 'Servicio', 'http://testing', 'CSW', 'Testing url description'); --ok
+SELECT * FROM prototype_measurable_object_update(2, 'http://testing', 'CSW', 'Testing url description'); --ok
 SELECT * FROM prototype_measurable_objects_get (null); --ok
 --------------------------------------------------------------------  
 SELECT * FROM profile_metric_get(1,null); --ok
@@ -100,3 +102,5 @@ SELECT * FROM profile_metric_update (2,TRUE,NULL,NULL,NULL); --ok
 SELECT * FROM profile_metric_get(1,null); --ok
 SELECT * FROM profile_metric_update (2,FALSE,NULL,NULL,'I'); --err ok
 SELECT * FROM profile_metric_get(1,null); --ok
+--------------------------------------------------------------------
+SELECT * FROM evaluation_get(null); --ok

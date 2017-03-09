@@ -33,9 +33,9 @@ public class UserBean implements UserBeanRemote {
 	private static final String SQL_DELETE =
         	"SELECT * FROM user_delete (?)";
 	private static final String SQL_USER_REMOVE_MEASURABLE_OBJECT =
-        	"SELECT * FROM prototype_user_remove_measurable_object (?, ?, ?)";
+        	"SELECT * FROM prototype_user_remove_measurable_object (?, ?)";
     private static final String SQL_USER_ADD_MEASURABLE_OBJECT =
-        	"SELECT * FROM prototype_user_add_measurable_object(?, ?, ?)";	
+        	"SELECT * FROM prototype_user_add_measurable_object(?, ?)";	
     //private static final String SQL_CHANGE_PASSWORD =
             //"UPDATE SystemUser SET Password = MD5(?) WHERE UserID = ?";
     
@@ -222,7 +222,6 @@ public class UserBean implements UserBeanRemote {
 		
 		        statement.setInt(1, user.getUserId());
 		        statement.setInt(2, measurableObject.getMeasurableObjectID());
-		        statement.setString(3, measurableObject.getMeasurableObjectType());
 		    
 		        statement.executeQuery();
 		        
@@ -243,7 +242,6 @@ public class UserBean implements UserBeanRemote {
 
             statement.setInt(1, userID);
             statement.setInt(2, measurableObject.getMeasurableObjectID());
-            statement.setString(3, measurableObject.getMeasurableObjectType());
                    
             statement.executeQuery();
             

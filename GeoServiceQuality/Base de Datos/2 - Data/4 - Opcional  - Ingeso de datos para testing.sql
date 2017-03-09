@@ -7,40 +7,27 @@
 ('jrodriguez@mail.com', 'jrodriguez', 4, 'Javier', 'Rodriguez', '099332253', 7),
 ('lsimaldone@mail.com', 'lsimaldone', 4, 'Luciano', 'Simaldone', '098715432', 8);
 
---Dar permisos de evaluación sobre todos los objetos medible existentes a los usuarios ncalle y rsanchez
-INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT u.UserID, ide.IdeID, 'Ide', TRUE
-FROM Ide ide
-CROSS JOIN 
-   (
-      SELECT su.UserID
-      FROM SystemUser su
-      WHERE su.UserID IN (1,2)
-   ) u;
-
-INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT u.UserID, ins.InstitutionID, 'Institución', TRUE
-FROM Institution ins
-CROSS JOIN 
-   (
-      SELECT su.UserID
-      FROM SystemUser su
-      WHERE su.UserID IN (1,2)
-   ) u;
-
-INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT u.UserID, n.NodeID, 'Nodo', TRUE
+--Se cargan todos los objetos medibles existentes
+INSERT INTO MeasurableObject (EntityID, EntityType)
+SELECT gs.GeographicServicesID AS EntityID, 'Servicio' AS EntityType
+FROM GeographicServices gs
+UNION
+SELECT l.LayerID AS EntityID, 'Capa' AS EntityType
+FROM Layer l
+UNION
+SELECT n.NodeID AS EntityID, 'Nodo' AS EntityType
 FROM Node n
-CROSS JOIN 
-   (
-      SELECT su.UserID
-      FROM SystemUser su
-      WHERE su.UserID IN (1,2)
-   ) u;
+UNION
+SELECT i.InstitutionID AS EntityID, 'Institución' AS EntityType
+FROM Institution i
+UNION
+SELECT ide.IdeID AS EntityID, 'Ide' AS EntityType
+FROM Ide ide;
 
-INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT u.UserID, sg.GeographicServicesID, 'Servicio', TRUE
-FROM GeographicServices sg
+--Dar permisos de evaluación sobre todos los objetos medible existentes a los usuarios ncalle y rsanchez
+INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, CanMeasureFlag)
+SELECT u.UserID, mo.MeasurableObjectID, TRUE
+FROM MeasurableObject mo
 CROSS JOIN 
    (
       SELECT su.UserID
@@ -49,39 +36,9 @@ CROSS JOIN
    ) u;
 
 --Negar permisos de evaluación sobre todos los objetos medible existentes a los usuarios que no sean ncalle o rsanchez
-INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT u.UserID, ide.IdeID, 'Ide', FALSE
-FROM Ide ide
-CROSS JOIN 
-   (
-      SELECT su.UserID
-      FROM SystemUser su
-      WHERE su.UserID NOT IN (1,2)
-   ) u;
-
-INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT u.UserID, ins.InstitutionID, 'Institución', FALSE
-FROM Institution ins
-CROSS JOIN 
-   (
-      SELECT su.UserID
-      FROM SystemUser su
-      WHERE su.UserID NOT IN (1,2)
-   ) u;
-
-INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT u.UserID, n.NodeID, 'Nodo', FALSE
-FROM Node n
-CROSS JOIN 
-   (
-      SELECT su.UserID
-      FROM SystemUser su
-      WHERE su.UserID NOT IN (1,2)
-   ) u;
-
-INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, MeasurableObjectType, CanMeasureFlag)
-SELECT u.UserID, sg.GeographicServicesID, 'Servicio', FALSE
-FROM GeographicServices sg
+INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, CanMeasureFlag)
+SELECT u.UserID, mo.MeasurableObjectID, FALSE
+FROM MeasurableObject mo
 CROSS JOIN 
    (
       SELECT su.UserID

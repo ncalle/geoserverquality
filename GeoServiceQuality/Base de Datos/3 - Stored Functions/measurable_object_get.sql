@@ -1,5 +1,8 @@
-﻿--DROP FUNCTION measurable_object_get();
-CREATE OR REPLACE FUNCTION measurable_object_get ()
+﻿--DROP FUNCTION measurable_object_get(integer);
+CREATE OR REPLACE FUNCTION measurable_object_get
+(
+   pUserID INT
+)
 RETURNS TABLE 
    (
       IdeID INT
@@ -22,12 +25,29 @@ RETURNS TABLE
 /************************************************************************************************************
 ** Name: measurable_object_get
 **
-** Desc: Devuelve la lista de objetos medibles disponibles
+** Desc: Devuelve la lista de objetos medibles disponibles.
+**       Si el ID de Usuario es pasado por parametro, entonces se listan solo los Objetos Medibles que el usuario en cuestion puede medir.
 **
 ** 02/12/2016 - Created
 **
 *************************************************************************************************************/
+DECLARE v_canUserMeasureAble INT;
+
 BEGIN
+   
+   -- validacion de usuario
+   IF (pUserID IS NOT NULL)
+      AND NOT EXISTS (SELECT 1 FROM SystemUser su WHERE su.UserID = pUserID)
+   THEN
+      RAISE EXCEPTION 'Error - El Usuario no existe.';
+   END IF;
+
+   IF (pUserID IS NOT NULL)
+   THEN
+      SELECT 1 INTO v_canUserMeasureAble;
+   ELSE
+      SELECT NULL INTO v_canUserMeasureAble;
+   END IF;
 
    -- Lista de objetos medibles
    RETURN QUERY
@@ -51,7 +71,17 @@ BEGIN
    INNER JOIN Institution ins ON ins.IdeID = ide.IdeID
    INNER JOIN Node n ON n.InstitutionID = ins.InstitutionID
    INNER JOIN Layer c ON c.NodeID = n.NodeID
-   
+   LEFT JOIN MeasurableObject mo ON 
+      CASE
+         WHEN mo.EntityType = 'Ide' THEN mo.EntityID = ide.IdeID
+         WHEN mo.EntityType = 'Institución' THEN mo.EntityID = ins.InstitutionID
+         WHEN mo.EntityType = 'Nodo' THEN mo.EntityID = n.NodeID
+         WHEN mo.EntityType = 'Capa' THEN mo.EntityID = l.LayerID
+      END
+   LEFT JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
+   LEFT JOIN SystemUser u ON u.UserID = umo.UserID
+   WHERE u.UserID = COALESCE(pUserID, u.UserID)
+      AND umo.CanMeasureFlag = COALESCE(v_canUserMeasureAble, umo.CanMeasureFlag)
    GROUP BY ide.IdeID
       , ide.Name
       , ide.Description
@@ -87,6 +117,17 @@ BEGIN
    INNER JOIN Institution ins ON ins.IdeID = ide.IdeID
    INNER JOIN Node n ON n.InstitutionID = ins.InstitutionID
    INNER JOIN GeographicServices sg ON sg.NodeID = n.NodeID
+   LEFT JOIN MeasurableObject mo ON 
+      CASE
+         WHEN mo.EntityType = 'Ide' THEN mo.EntityID = ide.IdeID
+         WHEN mo.EntityType = 'Institución' THEN mo.EntityID = ins.InstitutionID
+         WHEN mo.EntityType = 'Nodo' THEN mo.EntityID = n.NodeID
+         WHEN mo.EntityType = 'Servicio' THEN mo.EntityID = sg.GeographicServicesID
+      END
+   LEFT JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
+   LEFT JOIN SystemUser u ON u.UserID = umo.UserID
+   WHERE u.UserID = COALESCE(pUserID, u.UserID)
+      AND umo.CanMeasureFlag = COALESCE(v_canUserMeasureAble, umo.CanMeasureFlag)
    GROUP BY ide.IdeID
       , ide.Name
       , ide.Description

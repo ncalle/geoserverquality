@@ -3,7 +3,6 @@ CREATE OR REPLACE FUNCTION prototype_user_add_measurable_object
 (
    pUserID INT
    , pMeasurableObjectID INT
-   , pMeasurableObjectType VARCHAR(11) --Servicio
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
@@ -18,9 +17,9 @@ RETURNS VOID AS $$
 BEGIN
 
    -- parametros requeridos
-   IF (pUserID IS NULL OR pMeasurableObjectID IS NULL OR pMeasurableObjectType IS NULL)
+   IF (pUserID IS NULL OR pMeasurableObjectID IS NULL)
    THEN
-      RAISE EXCEPTION 'Error - Los parametros ID de usuario, Measurable ObjectID y Measurable Objectype son requerido.';
+      RAISE EXCEPTION 'Error - Los parametros ID de usuario e ID de Objeto Medible son requerido.';
    END IF;
     
    -- validacion Usuario
@@ -35,7 +34,6 @@ BEGIN
          SELECT 1 
          FROM UserMeasurableObject umo 
          WHERE umo.MeasurableObjectID = pMeasurableObjectID
-            AND umo.MeasurableObjectType = pMeasurableObjectType
             AND umo.UserID = pUserID
             AND umo.CanMeasureFlag = TRUE
       )
@@ -46,7 +44,6 @@ BEGIN
    UPDATE UserMeasurableObject
    SET CanMeasureFlag = TRUE
    WHERE MeasurableObjectID = pMeasurableObjectID
-      AND MeasurableObjectType = pMeasurableObjectType
       AND UserID = pUserID
       AND CanMeasureFlag = FALSE;
          

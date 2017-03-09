@@ -125,20 +125,32 @@ CREATE TABLE SystemUser
     FOREIGN KEY (InstitutionID) REFERENCES Institution(InstitutionID)
 );
 
--- Contiene todos los objetos medibles ('Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio') que el usuario puede o no evaluar
+-- Contiene todos los objetos medibles ('Ide', 'Institución', 'Nodo', 'Capa', 'Servicio')
+DROP TABLE IF EXISTS MeasurableObject CASCADE;
+CREATE TABLE MeasurableObject
+(
+    MeasurableObjectID SERIAL NOT NULL,
+    EntityID SERIAL NOT NULL,
+    EntityType VARCHAR(11) NOT NULL, -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio'
+
+    PRIMARY KEY (MeasurableObjectID),
+    UNIQUE (EntityID, EntityType),
+    CONSTRAINT CK_EntityType_values CHECK (EntityType IN ('Ide', 'Institución', 'Nodo', 'Capa', 'Servicio')) -- en castellano, debido a que dicho dato se mostrará al usuario
+);
+
+-- Contiene los objetos medibles que el usuario puede o no evaluar
 DROP TABLE IF EXISTS UserMeasurableObject CASCADE;
 CREATE TABLE UserMeasurableObject
 (
     UserMeasurableObjectID SERIAL NOT NULL,
     UserID INT NOT NULL,
-    MeasurableObjectID INT NOT NULL, -- IdeID, InstitutionID, NodeID, LayerID, GeographicServicesID
-    MeasurableObjectType VARCHAR(11) NOT NULL, -- 'Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio'
+    MeasurableObjectID INT NOT NULL,
     CanMeasureFlag BOOLEAN NOT NULL, -- indica si el usuario puede evaluar el objeto en cuestion
 
     PRIMARY KEY (UserMeasurableObjectID),
-    UNIQUE (UserID, MeasurableObjectID, MeasurableObjectType),
+    UNIQUE (UserID, MeasurableObjectID),
     FOREIGN KEY (UserID) REFERENCES SystemUser(UserID),
-    CONSTRAINT CK_MeasurableObjectType_values CHECK (MeasurableObjectType IN ('Ide', 'Institución', 'Nodo', 'Capa', 'Servicio')) -- en castellano, debido a que dicho dato se mostrará al usuario
+	FOREIGN KEY (MeasurableObjectID) REFERENCES MeasurableObject(MeasurableObjectID)
 );
 
 -- Contiene los distintos Perfiles que se vayan creando
@@ -293,14 +305,18 @@ CREATE TABLE Evaluation
     EvaluationID SERIAL NOT NULL,
     UserID INT NOT NULL,
     ProfileID INT NOT NULL,
+    MetricID INT NOT NULL,
+    MeasurableObjectID INT NOT NULL,
     StartDate DATE NOT NULL,
     EndDate DATE NULL,
     IsEvaluationCompletedFlag BOOLEAN NOT NULL,
     SuccessFlag BOOLEAN NULL, -- indica si el resultado de la evaluacion fue exitosa
 
     PRIMARY KEY (EvaluationID),
-    FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID),
     FOREIGN KEY (UserID) REFERENCES SystemUser(UserID),
+    FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID),
+    FOREIGN KEY (MetricID) REFERENCES Metric(MetricID),
+    FOREIGN KEY (MeasurableObjectID) REFERENCES MeasurableObject(MeasurableObjectID),
     CONSTRAINT CK_IsEvaluationCompletedFlag CHECK
         (
 	    CASE WHEN IsEvaluationCompletedFlag = TRUE AND SuccessFlag IS NOT NULL THEN 1 ELSE 0 END

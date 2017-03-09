@@ -11,7 +11,8 @@ public class MeasurableObject implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer MeasurableObjectID;
-    private String MeasurableObjectType;
+    private Integer EntityID;
+    private String EntityType;
     private String MeasurableObjectName;
     private String MeasurableObjectDescription;
     private String MeasurableObjectURL;
@@ -27,13 +28,23 @@ public class MeasurableObject implements Serializable {
 		MeasurableObjectID = measurableObjectID;
 	}
 
-	public String getMeasurableObjectType() {
-		return MeasurableObjectType;
+	public Integer getEntityID() {
+		return EntityID;
 	}
 
 
-	public void setMeasurableObjectType(String measurableObjectType) {
-		MeasurableObjectType = measurableObjectType;
+	public void setEntityID(Integer entityID) {
+		EntityID = entityID;
+	}
+
+
+	public String getEntityType() {
+		return EntityType;
+	}
+
+
+	public void setEntityType(String entityType) {
+		EntityType = entityType;
 	}
 
 
@@ -82,7 +93,6 @@ public class MeasurableObject implements Serializable {
         return (other instanceof MeasurableObject) && (getMeasurableObjectID() != null)
              ? (
             		 getMeasurableObjectID().equals(((MeasurableObject) other).getMeasurableObjectID())
-            		 && getMeasurableObjectType().equals(((MeasurableObject) other).getMeasurableObjectType())
             	)
              : (other == this);
     }
@@ -91,7 +101,7 @@ public class MeasurableObject implements Serializable {
     @Override
     public int hashCode() {
         return (getMeasurableObjectID() != null) 
-             ? (this.getClass().hashCode() + getMeasurableObjectID().hashCode() + getMeasurableObjectType().hashCode()) 
+             ? (this.getClass().hashCode() + getMeasurableObjectID().hashCode()) 
              : super.hashCode();
     }
     
@@ -101,8 +111,7 @@ public class MeasurableObject implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("MeasurableObject[MeasurableObjectID=%d, MeasurableObjectType=%s, MeasurableObjectName=%s, MeasurableObjectDescription=%s, MeasurableObjectURL=%s, MeasurableObjectServicesType=%s]",
-        		getMeasurableObjectID(), getMeasurableObjectType(), getMeasurableObjectName(), getMeasurableObjectDescription(), getMeasurableObjectURL(), getMeasurableObjectServicesType());
+        return String.format("MeasurableObject[MeasurableObjectID=%d, EntityID=%d, EntitytType=%s, MeasurableObjectName=%s, MeasurableObjectDescription=%s, MeasurableObjectURL=%s, MeasurableObjectServicesType=%s]",
+        		getMeasurableObjectID(), getEntityID(), getEntityType(), getMeasurableObjectName(), getMeasurableObjectDescription(), getMeasurableObjectURL(), getMeasurableObjectServicesType());
     }
-
 }

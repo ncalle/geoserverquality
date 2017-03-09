@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,9 +18,9 @@ import entity.Evaluation;
 public class EvaluationBean implements EvaluationBeanRemote {
 
     private static final String SQL_LIST_ORDER_BY_ID =
-    		"SELECT EvaluationID, UserID, ProfileID, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag FROM evaluation_get ()";
+    		"SELECT EvaluationID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, QualityModelID, QualityModelName, MetricID, MetricName, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag FROM evaluation_get (?)";
     private static final String SQL_INSERT =
-            "SELECT * FROM evaluation_insert (?, ?, ?)";
+            "SELECT * FROM evaluation_insert (?, ?, ?, ?, ?)";
 
 
     private DAOFactory daoFactory;
@@ -45,6 +46,8 @@ public class EvaluationBean implements EvaluationBeanRemote {
             connection = daoFactory.getConnection();
             statement = connection.prepareStatement(SQL_LIST_ORDER_BY_ID);
             
+            statement.setObject(1, null); //userID
+            
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -56,17 +59,6 @@ public class EvaluationBean implements EvaluationBeanRemote {
 
         return list;
 	}
-	
-	 private static Evaluation map(ResultSet resultSet) throws SQLException {
-		Evaluation object = new Evaluation();
-		object.setEvaluationID(resultSet.getInt("EvaluationID"));
-		object.setUserID(resultSet.getInt("UserID"));
-		object.setProfileID(resultSet.getInt("ProfileID"));
-		object.setIsEvaluationCompleted(resultSet.getBoolean("IsEvaluationCompletedFlag"));
-		object.setSuccess(resultSet.getBoolean("SuccessFlag"));
-
-        return object; 
-    }
 
 	@Override
 	public void create(Evaluation evaluation) throws IllegalArgumentException, DAOException {
@@ -80,7 +72,9 @@ public class EvaluationBean implements EvaluationBeanRemote {
 
             statement.setInt(1, evaluation.getUserID());
 			statement.setInt(2, evaluation.getProfileID());
-			statement.setBoolean(3, evaluation.getSuccess()); 
+			statement.setInt(3, evaluation.getMetricID());
+			statement.setInt(4, evaluation.getMeasurableObjectID());
+			statement.setBoolean(5, evaluation.getSuccess()); 
 			
             statement.executeQuery();
 		
@@ -88,5 +82,28 @@ public class EvaluationBean implements EvaluationBeanRemote {
         	throw new DAOException(e);
         }        
 	}
+	
+	
+	private static Evaluation map(ResultSet resultSet) throws SQLException {
+		Evaluation object = new Evaluation();
+		object.setEvaluationID(resultSet.getInt("EvaluationID"));
+		object.setUserID(resultSet.getInt("UserID"));
+		object.setProfileID(resultSet.getInt("ProfileID"));
+		object.setProfileName(resultSet.getString("ProfileName"));		
+		object.setMeasurableObjectID(resultSet.getInt("MeasurableObjectID"));
+	    object.setEntityID(resultSet.getInt("EntityID"));
+	    object.setEntityType(resultSet.getString("EntityType"));
+	    object.setMeasurableObjectName(resultSet.getString("MeasurableObjectName"));
+	    object.setQualityModelID(resultSet.getInt("QualityModelID"));
+	    object.setQualityModelName(resultSet.getString("QualityModelName"));
+	    object.setMetricID(resultSet.getInt("MetricID"));
+	    object.setMetricName(resultSet.getString("MetricName"));
+	    object.setStartDate(resultSet.getDate("StartDate"));
+	    object.setEndDate(resultSet.getDate("EndDate"));    
+		object.setIsEvaluationCompleted(resultSet.getBoolean("IsEvaluationCompletedFlag"));
+		object.setSuccess(resultSet.getBoolean("SuccessFlag"));
+
+       return object;
+   }
 
 }

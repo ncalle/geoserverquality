@@ -128,10 +128,11 @@ public class EvaluationBeanList {
 	
 
 	public void evaluate() throws DAOException {
-
+		Date date = new Date(Calendar.getInstance().getTime().getTime());
+		
 		if (selectedMeasurableObject != null && selectedProfile != null) {
 			List<Integer> listMetrics = new ArrayList<>();
-			List<Boolean> listResult = new ArrayList<>();
+			//List<Boolean> listResult = new ArrayList<>();
 			
 			Iterator<ProfileMetric> iterator = listProfileMetric.iterator();
 			while (iterator.hasNext()) {
@@ -144,24 +145,26 @@ public class EvaluationBeanList {
 			try {
 
 				for (Integer metricId : listMetrics) {
-					success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getMeasurableObjectType());
-					listResult.add(success);
+					success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getEntityType());
+					//listResult.add(success);
 					System.out.println("MetricId: " + metricId + " Success: " + success);
-				}
-				
-				Evaluation e = new Evaluation();
-				e.setProfileID(selectedProfile.getProfileId());
-				e.setUserID(userId);
-				e.setSuccess(resultEvaluationProfile(listResult));
-				e.setIsEvaluationCompleted(true);
-				
-				Date date = new Date(Calendar.getInstance().getTime().getTime());
-				e.setStartDate(date);
-				e.setEndDate(date);
+					
+					Evaluation e = new Evaluation();
+					
+					e.setUserID(userId);
+					e.setProfileID(selectedProfile.getProfileId());
+					e.setMetricID(metricId);
+					e.setMeasurableObjectID(selectedMeasurableObject.getMeasurableObjectID());
+					e.setSuccess(success);
+					e.setIsEvaluationCompleted(true);
 
-				System.out.println(e.toString());
+					e.setStartDate(date);
+					e.setEndDate(date);
+					
+					System.out.println(e.toString());
 
-				evaluationDao.create(e);
+					evaluationDao.create(e);
+				}				
 
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("La evaluación se realizó correctamente"));

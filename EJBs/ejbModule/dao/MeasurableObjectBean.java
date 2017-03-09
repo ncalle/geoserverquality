@@ -20,15 +20,15 @@ import entity.MeasurableObject;
 public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
 
     private static final String SQL_LIST_ORDER_BY_ID =
-    		"SELECT MeasurableObjectID, MeasurableObjectType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_measurable_objects_get (?)";
+    		"SELECT MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_measurable_objects_get (?)";
 	private static final String SQL_INSERT =
             "SELECT * FROM prototype_measurable_objects_insert (?, ?, ?, ?, ?)";
     private static final String SQL_DELETE =
-        	"SELECT * FROM prototype_measurable_objects_delete(?, ?)";
+        	"SELECT * FROM prototype_measurable_objects_delete(?)";
     private static final String SQL_USER_MEASURABLE_OBJECT_TO_ADD_GET =
-    		"SELECT MeasurableObjectID, MeasurableObjectType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_user_measurable_object_to_add_get (?)";
+    		"SELECT MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_user_measurable_object_to_add_get (?)";
 	private static final String SQL_UPDATE =
-        	"SELECT * FROM prototype_measurable_object_update (?, ?, ?, ?, ?)";    
+        	"SELECT * FROM prototype_measurable_object_update (?, ?, ?, ?)";    
 
     private DAOFactory daoFactory;
 	
@@ -129,7 +129,6 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             statement = connection.prepareStatement(SQL_DELETE);
 
             statement.setInt(1, measurableobject.getMeasurableObjectID());
-            statement.setString(2, measurableobject.getMeasurableObjectType());
                    
             statement.executeQuery();
             
@@ -153,7 +152,7 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             connection = daoFactory.getConnection();
             statement = connection.prepareStatement(SQL_USER_MEASURABLE_OBJECT_TO_ADD_GET);
             
-			statement.setObject(1, userID);
+			statement.setInt(1, userID);
 			
             resultSet = statement.executeQuery();
 
@@ -178,10 +177,9 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             statement = connection.prepareStatement(SQL_UPDATE);
 
             statement.setInt(1, measurableObject.getMeasurableObjectID());
-            statement.setString(2, measurableObject.getMeasurableObjectType());
-            statement.setString(3, measurableObject.getMeasurableObjectURL());
-            statement.setString(4, measurableObject.getMeasurableObjectServicesType());
-            statement.setString(5, measurableObject.getMeasurableObjectDescription());
+            statement.setString(2, measurableObject.getMeasurableObjectURL());
+            statement.setString(3, measurableObject.getMeasurableObjectServicesType());
+            statement.setString(4, measurableObject.getMeasurableObjectDescription());
         
             statement.executeQuery();
             
@@ -193,7 +191,8 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
     private static MeasurableObject map(ResultSet resultSet) throws SQLException {
     	MeasurableObject measurableobject = new MeasurableObject();
     	measurableobject.setMeasurableObjectID(resultSet.getInt("MeasurableObjectID"));
-    	measurableobject.setMeasurableObjectType(resultSet.getString("MeasurableObjectType"));
+    	measurableobject.setEntityID(resultSet.getInt("EntityID"));
+    	measurableobject.setEntityType(resultSet.getString("EntityType"));
     	measurableobject.setMeasurableObjectName(resultSet.getString("MeasurableObjectName"));
     	measurableobject.setMeasurableObjectDescription(resultSet.getString("MeasurableObjectDescription"));
     	measurableobject.setMeasurableObjectURL(resultSet.getString("MeasurableObjectURL"));

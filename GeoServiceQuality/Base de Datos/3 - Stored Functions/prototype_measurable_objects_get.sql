@@ -6,7 +6,8 @@ CREATE OR REPLACE FUNCTION prototype_measurable_objects_get
 RETURNS TABLE 
    (
       MeasurableObjectID INT
-      , MeasurableObjectType VARCHAR(11)
+      , EntityID INT
+      , EntityType VARCHAR(11)
       , MeasurableObjectName VARCHAR(70)
       , MeasurableObjectDescription VARCHAR(100)
       , MeasurableObjectURL VARCHAR(1024)
@@ -25,43 +26,46 @@ BEGIN
 
    -- Lista de objetos medibles sobre los cuales el usuario puede realizar evaluaciones
    RETURN QUERY
-   SELECT umo.MeasurableObjectID
-      , umo.MeasurableObjectType
+   SELECT mo.MeasurableObjectID
+      , mo.EntityID
+      , mo.EntityType
       , CASE
-         --WHEN umo.MeasurableObjectType = 'Ide' THEN ide.Name
-         --WHEN umo.MeasurableObjectType = 'Institución' THEN ins.Name
-         --WHEN umo.MeasurableObjectType = 'Nodo' THEN n.Name
-         --WHEN umo.MeasurableObjectType = 'Capa' THEN l.Name
-         WHEN umo.MeasurableObjectType = 'Servicio' THEN NULL ::VARCHAR(70)
+         --WHEN mo.EntityType = 'Ide' THEN ide.Name
+         --WHEN mo.EntityType = 'Institución' THEN ins.Name
+         --WHEN mo.EntityType = 'Nodo' THEN n.Name
+         --WHEN mo.EntityType = 'Capa' THEN l.Name
+         WHEN mo.EntityType = 'Servicio' THEN NULL ::VARCHAR(70)
          END AS MeasurableObjectName
       , CASE
-         --WHEN umo.MeasurableObjectType = 'Ide' THEN ide.Description
-         --WHEN umo.MeasurableObjectType = 'Institución' THEN ins.Description
-         --WHEN umo.MeasurableObjectType = 'Nodo' THEN n.Description
-         --WHEN umo.MeasurableObjectType = 'Capa' THEN NULL
-         WHEN umo.MeasurableObjectType = 'Servicio' THEN sg.Description
+         --WHEN mo.EntityType = 'Ide' THEN ide.Description
+         --WHEN mo.EntityType = 'Institución' THEN ins.Description
+         --WHEN mo.EntityType = 'Nodo' THEN n.Description
+         --WHEN mo.EntityType = 'Capa' THEN NULL
+         WHEN mo.EntityType = 'Servicio' THEN sg.Description
          END AS MeasurableObjectDescription
       , CASE
-         --WHEN umo.MeasurableObjectType = 'Ide' THEN NULL
-         --WHEN umo.MeasurableObjectType = 'Institución' THEN NULL
-         --WHEN umo.MeasurableObjectType = 'Nodo' THEN NULL
-         --WHEN umo.MeasurableObjectType = 'Capa' THEN l.Url
-         WHEN umo.MeasurableObjectType = 'Servicio' THEN sg.Url
+         --WHEN mo.EntityType = 'Ide' THEN NULL
+         --WHEN mo.EntityType = 'Institución' THEN NULL
+         --WHEN mo.EntityType = 'Nodo' THEN NULL
+         --WHEN mo.EntityType = 'Capa' THEN l.Url
+         WHEN mo.EntityType = 'Servicio' THEN sg.Url
          END AS MeasurableObjectURL
       , CASE
-         --WHEN umo.MeasurableObjectType = 'Ide' THEN NULL
-         --WHEN umo.MeasurableObjectType = 'Institución' THEN NULL
-         --WHEN umo.MeasurableObjectType = 'Nodo' THEN NULL
-         --WHEN umo.MeasurableObjectType = 'Capa' THEN NULL
-         WHEN umo.MeasurableObjectType = 'Servicio' THEN sg.GeographicServicesType
+         --WHEN mo.EntityType = 'Ide' THEN NULL
+         --WHEN mo.EntityType = 'Institución' THEN NULL
+         --WHEN mo.EntityType = 'Nodo' THEN NULL
+         --WHEN mo.EntityType = 'Capa' THEN NULL
+         WHEN mo.EntityType = 'Servicio' THEN sg.GeographicServicesType
          END AS MeasurableObjectServicesType
    FROM GeographicServices sg
-   INNER JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = sg.GeographicServicesID AND umo.MeasurableObjectType = 'Servicio'
+   INNER JOIN MeasurableObject mo ON mo.EntityID = sg.GeographicServicesID AND mo.EntityType = 'Servicio'
+   INNER JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
    LEFT JOIN SystemUser u ON u.UserID = umo.UserID
    WHERE u.UserID = COALESCE(pUserID,u.UserID)
       AND (CASE WHEN pUserID IS NOT NULL THEN umo.CanMeasureFlag = TRUE ELSE TRUE END)
-   GROUP BY umo.MeasurableObjectID
-      , umo.MeasurableObjectType
+   GROUP BY mo.MeasurableObjectID
+      , mo.EntityID
+      , mo.EntityType
       --, ide.Name
       --, ins.Name
       --, n.Name

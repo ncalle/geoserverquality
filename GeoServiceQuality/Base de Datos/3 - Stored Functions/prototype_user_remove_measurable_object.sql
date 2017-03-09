@@ -3,7 +3,6 @@ CREATE OR REPLACE FUNCTION prototype_user_remove_measurable_object
 (
    pUserID INT
    , pMeasurableObjectID INT
-   , pMeasurableObjectType VARCHAR(11) --Servicio
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
@@ -14,6 +13,8 @@ RETURNS VOID AS $$
 ** 19/02/2016 Created
 **
 *************************************************************************************************************/
+DECLARE v_EntityType VARCHAR(11);
+DECLARE v_EntityID INT;
 
 BEGIN
 
@@ -28,20 +29,22 @@ BEGIN
    THEN
       RAISE EXCEPTION 'Error - El Usuario que intenta eliminar el Servicio no es correcto.';
    END IF;
+   
+   SELECT mo.EntityType, mo.EntityID FROM MeasurableObject mo WHERE mo.MeasurableObjectID = pMeasurableObjectID INTO v_EntityType, v_EntityID;
 
-   -- validacion NodoID
-   IF NOT EXISTS (SELECT 1 FROM GeographicServices sg WHERE sg.GeographicServicesID = pMeasurableObjectID)
+   -- validacion Servicio Geografico
+   IF (v_EntityType = 'Servicio')
+      AND NOT EXISTS (SELECT 1 FROM GeographicServices sg WHERE sg.GeographicServicesID = v_EntityID)
    THEN
       RAISE EXCEPTION 'Error - El Servicio Geografico que se intenta eliminar no existe.';
    END IF;
    
-      -- validacion NodoID
+   -- validacion de medicion de objeto
    IF EXISTS 
       (
          SELECT 1 
          FROM UserMeasurableObject umo 
          WHERE umo.MeasurableObjectID = pMeasurableObjectID
-            AND umo.MeasurableObjectType = pMeasurableObjectType
             AND umo.UserID = pUserID
             AND umo.CanMeasureFlag = FALSE
       )
@@ -52,7 +55,6 @@ BEGIN
    UPDATE UserMeasurableObject
    SET CanMeasureFlag = FALSE
    WHERE MeasurableObjectID = pMeasurableObjectID
-      AND MeasurableObjectType = pMeasurableObjectType
       AND UserID = pUserID
       AND CanMeasureFlag = TRUE;
          

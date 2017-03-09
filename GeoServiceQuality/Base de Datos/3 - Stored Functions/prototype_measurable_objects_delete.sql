@@ -1,8 +1,7 @@
-﻿--DROP FUNCTION prototype_measurable_objects_delete(integer, character varying);
+﻿--DROP FUNCTION prototype_measurable_objects_delete(integer);
 CREATE OR REPLACE FUNCTION prototype_measurable_objects_delete
 (
    pMeasurableObjectID INT
-   , pMeasurableObjectType VARCHAR(11)
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
@@ -13,41 +12,47 @@ RETURNS VOID AS $$
 ** 08/12/2016 Created
 **
 *************************************************************************************************************/
+DECLARE v_EntityType VARCHAR(11);
+DECLARE v_EntityID INT;
 
 BEGIN
 
    -- parametros requeridos
-   IF (pMeasurableObjectID IS NULL OR pMeasurableObjectType IS NULL)
+   IF (pMeasurableObjectID IS NULL)
    THEN
-      RAISE EXCEPTION 'Error - Los parametros Measurable ObjectID, Measurable ObjectType son requerido.';
+      RAISE EXCEPTION 'Error - El parametro ID de Objeto Medible es requerido.';
    END IF;
     
-   -- validacion Servicio Geografico
-   IF pMeasurableObjectType = 'Servicio' AND NOT EXISTS (SELECT 1 FROM GeographicServices sg WHERE sg.GeographicServicesID = pMeasurableObjectID)
-   THEN
-      RAISE EXCEPTION 'Error - El Servicio Geografico que se intenta eliminar no existe.';
-   END IF;
-   
    -- validacion de Objeto Medible
    IF NOT EXISTS 
       (
          SELECT 1 
          FROM UserMeasurableObject umo 
          WHERE MeasurableObjectID = pMeasurableObjectID
-            AND MeasurableObjectType = pMeasurableObjectType
       )
    THEN
       RAISE EXCEPTION 'Error - El Objeto Medible que se intenta eliminar no existe.';
    END IF;
+	
+   SELECT mo.EntityType, mo.EntityID FROM MeasurableObject mo WHERE mo.MeasurableObjectID = pMeasurableObjectID INTO v_EntityType, v_EntityID;
+	
+   -- validacion Servicio Geografico
+   IF (v_EntityType = 'Servicio')
+      AND NOT EXISTS (SELECT 1 FROM GeographicServices sg WHERE sg.GeographicServicesID = v_EntityID)
+   THEN
+      RAISE EXCEPTION 'Error - El Servicio Geografico que se intenta eliminar no existe.';
+   END IF;
 
    DELETE FROM UserMeasurableObject
-   WHERE MeasurableObjectID = pMeasurableObjectID
-       AND MeasurableObjectType = pMeasurableObjectType;
+   WHERE MeasurableObjectID = pMeasurableObjectID;
+
+   DELETE FROM Evaluation
+   WHERE MeasurableObjectID = pMeasurableObjectID;
    
-   IF pMeasurableObjectType = 'Servicio'
+   IF v_EntityType = 'Servicio'
    THEN
       DELETE FROM GeographicServices
-      WHERE GeographicServicesID = pMeasurableObjectID;
+      WHERE GeographicServicesID = v_EntityID;
    END IF;
          
 END;

@@ -153,8 +153,8 @@
 						<h:outputText value="#{moitem.measurableObjectDescription}" />
 					</p:column>
 					
-					<p:column headerText="Tipo" sortBy="#{moitem.measurableObjectType}">
-						<h:outputText value="#{moitem.measurableObjectType}" />
+					<p:column headerText="Tipo" sortBy="#{moitem.entityType}">
+						<h:outputText value="#{moitem.entityType}" />
 					</p:column>
 					
 					<p:column headerText="Tipo de Servicio" sortBy="#{moitem.measurableObjectServicesType}">
@@ -198,8 +198,24 @@
 						<h:outputText value="#{eitem.userID}" />
 					</p:column>
 
-					<p:column headerText="Perfil ID" sortBy="#{eitem.profileID}">
-						<h:outputText value="#{eitem.profileID}" />
+					<p:column headerText="Modelo" sortBy="#{eitem.qualityModelName}">
+						<h:outputText value="#{eitem.qualityModelName}" />
+					</p:column>
+
+					<p:column headerText="Perfil" sortBy="#{eitem.profileName}">
+						<h:outputText value="#{eitem.profileName}" />
+					</p:column>
+					
+					<p:column headerText="Metrica" sortBy="#{eitem.metricName}">
+						<h:outputText value="#{eitem.metricName}" />
+					</p:column>
+					
+					<p:column headerText="Tipo de Objeto" sortBy="#{eitem.entityType}">
+						<h:outputText value="#{eitem.entityType}" />
+					</p:column>
+
+					<p:column headerText="Objeto" sortBy="#{eitem.measurableObjectName}">
+						<h:outputText value="#{eitem.measurableObjectName}" />
 					</p:column>
 
 					<p:column headerText="Completa" sortBy="#{eitem.isEvaluationCompleted}">

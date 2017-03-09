@@ -10,12 +10,20 @@ public class Evaluation implements Serializable {
 
     private Integer EvaluationID;
     private Integer UserID;
-    private Integer ProfileID; 
+    private Integer ProfileID;
+    private String ProfileName;
+    private Integer MeasurableObjectID;
+    private Integer EntityID;
+    private String EntityType;
+    private String MeasurableObjectName;
+    private Integer QualityModelID;
+    private String QualityModelName;
+    private Integer MetricID;
+    private String MetricName;
     private Date StartDate;
     private Date EndDate; 
     private Boolean IsEvaluationCompleted;
     private Boolean Success;
-
 
 
 	public Integer getEvaluationID() {
@@ -46,7 +54,95 @@ public class Evaluation implements Serializable {
 	public void setProfileID(Integer profileID) {
 		ProfileID = profileID;
 	}
+	
+	public String getProfileName() {
+		return ProfileName;
+	}
 
+
+	public void setProfileName(String profileName) {
+		ProfileName = profileName;
+	}
+	
+	public Integer getMeasurableObjectID() {
+		return MeasurableObjectID;
+	}
+
+
+	public void setMeasurableObjectID(Integer measurableObjectID) {
+		MeasurableObjectID = measurableObjectID;
+	}
+
+
+	public Integer getEntityID() {
+		return EntityID;
+	}
+
+
+	public void setEntityID(Integer entityID) {
+		EntityID = entityID;
+	}
+
+
+	public String getEntityType() {
+		return EntityType;
+	}
+
+
+	public void setEntityType(String entityType) {
+		EntityType = entityType;
+	}
+
+
+	public String getMeasurableObjectName() {
+		return MeasurableObjectName;
+	}
+
+
+	public void setMeasurableObjectName(String measurableObjectName) {
+		MeasurableObjectName = measurableObjectName;
+	}
+
+
+	public Integer getQualityModelID() {
+		return QualityModelID;
+	}
+
+
+	public void setQualityModelID(Integer qualityModelID) {
+		QualityModelID = qualityModelID;
+	}
+
+
+	public String getQualityModelName() {
+		return QualityModelName;
+	}
+
+
+	public void setQualityModelName(String qualityModelName) {
+		QualityModelName = qualityModelName;
+	}
+
+
+	public Integer getMetricID() {
+		return MetricID;
+	}
+
+
+	public void setMetricID(Integer metricID) {
+		MetricID = metricID;
+	}
+
+
+	public String getMetricName() {
+		return MetricName;
+	}
+
+
+	public void setMetricName(String metricName) {
+		MetricName = metricName;
+	}
+	
 
 	public Date getStartDate() {
 		return StartDate;
@@ -109,8 +205,9 @@ public class Evaluation implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Evaluation[EvaluationID=%d, UserID=%d, ProfileID=%d, StartDate=%s, EndDate=%s, IsEvaluationCompleted=%s, Success=%s]",
-        		getEvaluationID(), getUserID(), getProfileID(), getStartDate(), getEndDate(), getIsEvaluationCompleted(), getSuccess());
+        return String.format("Evaluation[EvaluationID=%d, UserID=%d, ProfileID=%d, ProfileName=%s, MeasurableObjectID=%d, EntityID=%d, EntityType=%s, MeasurableObjectName=%s, "
+        		+ "QualityModelID=%d, QualityModelName=%s, MetricID=%d, MetricName=%s, StartDate=%s, EndDate=%s, IsEvaluationCompleted=%s, Success=%s]",
+        		getEvaluationID(), getUserID(), getProfileID(), getProfileName(), getMeasurableObjectID(), getEntityID(), getEntityType(), getMeasurableObjectName(), 
+        		getQualityModelID(), getQualityModelName(), getMetricID(), getMetricName(), getStartDate(), getEndDate(), getIsEvaluationCompleted(), getSuccess());
     }
-
 }

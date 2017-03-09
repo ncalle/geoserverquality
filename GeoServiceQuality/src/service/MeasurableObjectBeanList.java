@@ -64,7 +64,9 @@ public class MeasurableObjectBeanList {
        	
 	public void onRowEdit(RowEditEvent event) {    	
 		MeasurableObject mo = ((MeasurableObject) event.getObject());
-			
+
+		System.out.println("mo : " + mo);
+		
 		moDao.update(mo);
 		FacesMessage msg = new FacesMessage("Objeto Medible editado correctamente.");
         FacesContext.getCurrentInstance().addMessage(null, msg);

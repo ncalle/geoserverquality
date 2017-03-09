@@ -4,7 +4,6 @@ CREATE OR REPLACE FUNCTION profile_insert
    pName VARCHAR(40)
    , pGranurality VARCHAR(11)
    , pMetricKeys TEXT -- Lista de enteros separada por coma, que representa los IDs de las metricas
-   --por defecto para el prototipo se toman rangos boleanos, por lo que no es necesario pasar el valor de los rangos por parametro ya que son todos 1
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
@@ -31,39 +30,7 @@ BEGIN
       RAISE EXCEPTION 'Error - La lista de Metricas no puede ser vacia.';
    END IF;
 
-/*    
-   -- validacion
-   IF (
-         ((pMetricaPorcentajeKeys IS NOT NULL AND pRangoPorcentajeValues IS NULL) OR (pMetricaPorcentajeKeys IS NULL AND pRangoPorcentajeValues IS NOT NULL))
-            OR ((pMetricaEnteraKeys IS NOT NULL AND pRangoEnteroValues IS NULL) OR (pMetricaEnteraKeys IS NULL AND pRangoEnteroValues IS NOT NULL))
-            OR ((pMetricaEnumeradaKeys IS NOT NULL AND pRangoEnumeradoValues IS NULL) OR (pMetricaEnumeradaKeys IS NULL AND pRangoEnumeradoValues IS NOT NULL))
-      )
-   THEN
-      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error - Lista de IDs o Rangos relacionadas vacia. Deben de estar ambas vacias o ambas con datos.';
-        SET pError = 1;
-   END IF;     
-
-   -- validacion
-   IF (
-         (
-            (pMetricaPorcentajeKeys IS NOT NULL AND pRangoPorcentajeValues IS NOT NULL) 
-                AND (LENGTH(pMetricaPorcentajeKeys) - LENGTH(REPLACE(pMetricaPorcentajeKeys, ',', '')) <> LENGTH(pRangoPorcentajeValues) - LENGTH(REPLACE(pRangoPorcentajeValues, ',', '')))
-         )
-            OR (
-            (pMetricaEnteraKeys IS NOT NULL AND pRangoEnteroValues IS NOT NULL) 
-                AND (LENGTH(pMetricaEnteraKeys) - LENGTH(REPLACE(pMetricaEnteraKeys, ',', '')) <> LENGTH(pRangoEnteroValues) - LENGTH(REPLACE(pRangoEnteroValues, ',', '')))
-         )
-            OR (
-            (pMetricaEnumeradaKeys IS NOT NULL AND pRangoEnumeradoValues IS NOT NULL) 
-                AND (LENGTH(pMetricaEnumeradaKeys) - LENGTH(REPLACE(pMetricaEnumeradaKeys, ',', '')) <> LENGTH(pRangoEnumeradoValues) - LENGTH(REPLACE(pRangoEnumeradoValues, ',', '')))
-         )
-      )
-   THEN
-      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error - Lista de IDs y Rangos relacionados no tiene la misma cantidad de elementos.';
-        SET pError = 1;
-   END IF;
-*/
-
+   
    CREATE TEMP TABLE MetricKeys
    (
       MetricID INT
