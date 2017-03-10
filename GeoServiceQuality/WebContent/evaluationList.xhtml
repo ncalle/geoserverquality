@@ -178,11 +178,11 @@
 		</div>
 
 		<div class="container">
-			<h:form id="evaluation" method="post">
+			<h:form id="evaluation" method="post" rendered="#{evaluationBeanList.profileResult.length() > 0}">
 				<p:growl id="msgs" />
 				<hr></hr>
 				<h3 class="form-signin-heading">Resultado de la evaluación general del perfil:</h3>
-				<h:outputText rendered="#{evaluationBeanList.profileResult.length() > 0}" value="#{evaluationBeanList.profileResult}" />
+				<h:outputText class="result" value="#{evaluationBeanList.profileResult}" />
 				
 				<hr></hr>
 				<h3 class="form-signin-heading">Detalle de la evaluación realizada:</h3>
