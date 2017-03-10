@@ -52,17 +52,17 @@
 			</ul>
 		</nav>
 
-		<div class="container">
+		<div class="container" rendered="#{!evaluationBeanList.isShowResult()}">
+		
+		<h:form method="post" rendered="#{!evaluationBeanList.isShowResult()}">		
 			<h2 class="form-signin-heading">Evaluaciones</h2>
 			<hr></hr>
-		</div>
-
-		<div class="container">
+		</h:form>
 		
 		<div class="ui-g">
 		    <div class="ui-g-6">
 		    
-				<h:form id="profiles" method="post">			
+				<h:form id="profiles" method="post" rendered="#{!evaluationBeanList.isShowResult()}">			
 					<p:growl id="msgs" />
 					<h4 class="form-signin-heading">Seleccione un Perfil con el	cual realizar la evaluación.</h4>
 					<p:dataTable id="profiles" 
@@ -101,7 +101,8 @@
 		
 			<div class="ui-g-6">
 			
-				<h:form id="profileMetrics" method="post"><p:growl id="msgs" />
+				<h:form id="profileMetrics" method="post" rendered="#{!evaluationBeanList.isShowResult()}">
+				<p:growl id="msgs" />
 					<h4 class="form-signin-heading">Lista de Metricas disponibles para el Perfil seleccionado.</h4>
 					<p:dataTable id="profileMetrics" 
 						value="#{evaluationBeanList.listProfileMetric}" 
@@ -121,10 +122,12 @@
 
 		</div>
 
+		
 		<div class="container">
-			<h:form id="evobject" method="post">
+			<h:form id="evobject" method="post" rendered="#{!evaluationBeanList.isShowResult()}">
+			<hr></hr>
 				<p:growl id="msgs" />
-				<hr></hr>
+				<h4  class="space"></h4>				
 				<h4 class="form-signin-heading">Seleccione un Objeto Medible a ser evaluado.</h4>
 				<p:dataTable id="measurableObjects" 
 					value="#{evaluationBeanList.listMeasurableObjects}" 
@@ -167,18 +170,15 @@
 	
 				</p:dataTable>
 
-				<hr></hr>
+				<hr border="none" color="#ffffff"></hr>
 
 				<div class="panel panel-default">
-					<h:commandButton id="evaluate" value="Evaluar"
-						action="#{evaluationBeanList.evaluate()}"
+					<h:commandButton id="evaluate" value="Evaluar" action="#{evaluationBeanList.evaluate()}"
 						class="btn btn-lg btn-primary btn-block" />
 				</div>
 			</h:form>
-		</div>
 
-		<div class="container">
-			<h:form id="evaluation" method="post" rendered="#{evaluationBeanList.profileResult.length() > 0}">
+			<h:form id="evaluation" method="post" rendered="#{evaluationBeanList.isShowResult()}">
 				<p:growl id="msgs" />
 				<hr></hr>
 				<h3 class="form-signin-heading">Resultado de la evaluación general del perfil:</h3>
@@ -222,6 +222,12 @@
 						<h:outputText value="#{eitem.success}" />
 					</p:column>
 				</p:dataTable>
+				
+				<hr></hr>
+				<div class="panel panel-default">
+					<h:commandButton id="back" value="Volver" action="#{evaluationBeanList.setShowResult(false)}"
+						class="btn btn-lg btn-primary btn-block" />
+				</div>
 			</h:form>
 		</div>
 

@@ -44,6 +44,7 @@ public class EvaluationBeanList {
 	private List<ProfileMetric> listProfileMetric;
 	private int userId;
 	private String profileResult;
+	private boolean showResult;
 
 	@EJB
 	private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
@@ -58,6 +59,7 @@ public class EvaluationBeanList {
 			listProfile = profileDao.list();
 			listMeasurableObjects = moDao.list();
 			listEvaluation = new ArrayList<>(); //evaluationDao.list();
+			showResult = false;
 			
 			FacesContext context = FacesContext.getCurrentInstance();
 			HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -135,11 +137,20 @@ public class EvaluationBeanList {
 		return profileResult;
 	}
 	
+	public void setShowResult(boolean showResult) {
+		this.showResult = showResult;
+	}
+	
+	public boolean isShowResult() {
+		return showResult;
+	}
+	
 
 	public void evaluate() throws DAOException {
 		Date date = new Date(Calendar.getInstance().getTime().getTime());
 		
 		if (selectedMeasurableObject != null && selectedProfile != null) {
+			showResult = true;
 			List<Integer> listMetrics = new ArrayList<>();
 			List<Boolean> listResult = new ArrayList<>();
 			
