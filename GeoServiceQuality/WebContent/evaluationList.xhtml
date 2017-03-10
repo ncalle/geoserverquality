@@ -181,7 +181,11 @@
 			<h:form id="evaluation" method="post">
 				<p:growl id="msgs" />
 				<hr></hr>
-				<h3 class="form-signin-heading">Evaluaciónes realizadas hasta el momento.</h3>
+				<h3 class="form-signin-heading">Resultado de la evaluación general del perfil:</h3>
+				<h:outputText rendered="#{evaluationBeanList.profileResult.length() > 0}" value="#{evaluationBeanList.profileResult}" />
+				
+				<hr></hr>
+				<h3 class="form-signin-heading">Detalle de la evaluación realizada:</h3>
 				<p:dataTable id="evaluation"
 					value="#{evaluationBeanList.listEvaluation}" var="eitem"
 					tableStyle="table-layout: auto;"
@@ -190,24 +194,16 @@
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="10,20,50">
 
-					<p:column headerText="Evaluación ID" sortBy="#{eitem.evaluationID}">
-						<h:outputText value="#{eitem.evaluationID}" />
+					<p:column headerText="Metrica" sortBy="#{eitem.metricName}">
+						<h:outputText value="#{eitem.metricName}" />
 					</p:column>
-
-					<p:column headerText="Usuario ID" sortBy="#{eitem.userID}">
-						<h:outputText value="#{eitem.userID}" />
-					</p:column>
-
+					
 					<p:column headerText="Modelo" sortBy="#{eitem.qualityModelName}">
 						<h:outputText value="#{eitem.qualityModelName}" />
 					</p:column>
 
 					<p:column headerText="Perfil" sortBy="#{eitem.profileName}">
 						<h:outputText value="#{eitem.profileName}" />
-					</p:column>
-					
-					<p:column headerText="Metrica" sortBy="#{eitem.metricName}">
-						<h:outputText value="#{eitem.metricName}" />
 					</p:column>
 					
 					<p:column headerText="Tipo de Objeto" sortBy="#{eitem.entityType}">
