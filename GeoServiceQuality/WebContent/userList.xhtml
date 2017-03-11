@@ -50,7 +50,7 @@
 
 		<div class="container">
 
-			<h:form id="users" method="post"><p:growl id="msgs" />
+			<h:form id="users" method="post"  rendered="#{!userBeanList.isShowMore()}"><p:growl id="msgs" />
 				<h2 class="form-signin-heading">Datos de Usuarios</h2>
 				<hr></hr>
 				<p:dataTable id="users" 
@@ -175,13 +175,18 @@
 		<c:set var="selectedUserID" value="#{userBeanList.selectedUser.userId}" />
 		
 		<div class="container">
-			<h:form id="evobject" method="post"><p:growl id="msgs" />
+			<h:form id="evobject" method="post" rendered="#{!userBeanList.isShowMore()}">
+			<p:growl id="msgs" />
 				<h3 class="form-signin-heading"><h:outputLabel id="userIDOutputLabel" value="Lista de objetos medibles para el usuario de ID: #{selectedUserID}" /></h3>
 				<hr></hr>
 				<p:dataTable id="measurableObjects" 
 					value="#{userBeanList.listUserMeasurableObjects}" 
 					var="moitem" 
 					tableStyle="table-layout: auto;" 
+					rows="10"
+					paginator="true" 
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" 
 					selection="#{userBeanList.selectedUserMeasurableObject}"
 					rowKey="#{moitem.getMeasurableObjectID()}"
 					widgetVar="mo">
@@ -195,9 +200,15 @@
 				</p:dataTable>
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<p:button class="btn btn-default" icon="ui-icon-plus"
+						<!--  <p:button class="btn btn-default" icon="ui-icon-plus"
 							value="Asociar" outcome="userMeasurableObjectAdd" > 
-						</p:button>
+						</p:button>-->
+						
+						<p:commandButton class="btn btn-default" icon="ui-icon-plus"
+							value="Asociar" id="showMoreUser"
+							actionListener="#{userBeanList.showMore}" 
+							update="@all"/>
+							
 						<p:commandButton class="btn btn-default" icon="ui-icon-trash"
 							value="Remover" id="removeUserIcon"
 							actionListener="#{userBeanList.removeUserMeasurableObject}" update="evobject :evobject:msgs" >
@@ -207,13 +218,49 @@
 			</h:form>
 		</div>
 		
-		<script
-			src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-		<script src="../../assets/js/vendor/jquery.min.js"></script>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
-		<script src="../../dist/js/bootstrap.min.js"></script>
-		<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+		
+		<!-- Second Page -->
+		<div class="container">
+			<h:form id="objectUser" class="form-signin" method="post" rendered="#{userBeanList.isShowMore()}">
+				<h2 class="form-signin-heading">Asociar Objeto Medible a Usuario</h2>
+				<p:growl id="msgs" />
+				<h3 class="form-signin-heading">
+					<h:outputLabel id="userIDOutputLabel"
+						value="Lista de objetos medibles para el usuario seleccionado />
+				</h3>
+				<p:panel id="panel" class="panel panel-default">
+					<label for="inputType">URL</label>
+					<br></br>
+					<h:selectOneMenu
+						value="#{userBeanList.userMeasurableObject}"
+						converter="omnifaces.SelectItemsConverter" style="width:100%">
+						<f:selectItem itemLabel="Seleccione un objeto medible"
+							noSelectionOption="false" />
+						<f:selectItems
+							value="#{userBeanList.listUserMeasurableObjects}"
+							var="ug" itemLabel="#{ug.measurableObjectURL}" />
+					</h:selectOneMenu>
+				</p:panel>
+
+				<div class="panel panel-default">
+					<div class="panel-body">
+					
+						<p:commandButton class="btn btn-default" icon="ui-icon-disk"
+							value="Guardar" id="saveUserIcon"
+							actionListener="#{userBeanList.save}"
+							update="objectUser :objectUser:msgs">
+						</p:commandButton>
+						
+						<p:commandButton class="btn btn-default" icon="ui-icon-circle-arrow-w"
+							value="Volver" id="backUser"
+							actionListener="#{userBeanList.showLess}" 
+							update="@all"/>
+							
+					</div>
+				</div>
+				
+			</h:form>
+		</div>
 
 	</h:body>
 </f:view>
