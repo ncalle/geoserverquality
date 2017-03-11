@@ -19,12 +19,15 @@ import org.primefaces.event.SelectEvent;
 
 import EvaluationCore.App;
 import entity.Evaluation;
+import entity.EvaluationSummary;
 import entity.MeasurableObject;
 import entity.Profile;
 import entity.ProfileMetric;
 import dao.DAOException;
 import dao.EvaluationBean;
 import dao.EvaluationBeanRemote;
+import dao.EvaluationSummaryBean;
+import dao.EvaluationSummaryBeanRemote;
 import dao.MeasurableObjectBean;
 import dao.MeasurableObjectBeanRemote;
 import dao.ProfileBean;
@@ -49,6 +52,7 @@ public class EvaluationBeanList {
 	@EJB
 	private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
 	private EvaluationBeanRemote evaluationDao = new EvaluationBean();
+	private EvaluationSummaryBeanRemote evaluationSummaryDao = new EvaluationSummaryBean();
 	private ProfileBeanRemote profileDao = new ProfileBean();
 	private ProfileMetricBeanRemote pmDao = new ProfileMetricBean();
 
@@ -171,23 +175,49 @@ public class EvaluationBeanList {
 					
 					Evaluation e = new Evaluation();
 					
-					e.setUserID(userId);
-					e.setProfileID(selectedProfile.getProfileId());
 					e.setMetricID(metricId);
-					e.setMeasurableObjectID(selectedMeasurableObject.getMeasurableObjectID());
 					e.setSuccess(success);
 					e.setIsEvaluationCompleted(true);
 					e.setStartDate(date);
 					e.setEndDate(date);
 					
+					listEvaluation.add(e);
 					System.out.println(e.toString());
-
-					evaluationDao.create(e);
-				}		
+				}
 				
 				int profileResultTotal = resultEvaluationProfile(listResult);
 				profileResult = profileResultTotal + " % de aprobación";
 				//TODO: Guardar este resultado (profileResultTotal) en base 
+
+				boolean evaluationSummaryResultTotal;
+				if (profileResultTotal >= 50){
+					evaluationSummaryResultTotal = true;
+				}
+				else {
+					evaluationSummaryResultTotal = false;
+				}
+				
+				EvaluationSummary es = new EvaluationSummary();
+				
+				es.setUserID(userId);
+				es.setProfileID(selectedProfile.getProfileId());
+				es.setMeasurableObjectID(selectedMeasurableObject.getMeasurableObjectID());
+				es.setSuccess(evaluationSummaryResultTotal);
+				
+				EvaluationSummary evaluationSummaryResult = evaluationSummaryDao.create(es);
+				
+				System.out.println("getEvaluationSummaryID: " + evaluationSummaryResult.getEvaluationSummaryID());
+				
+				//cargar cada una de las evaluaciones, asociadas al ID del resumen de evaluacion
+				Iterator<Evaluation> evaluation_iterator = listEvaluation.iterator();
+				while (evaluation_iterator.hasNext()) {
+					Evaluation e = new Evaluation();
+					e = evaluation_iterator.next();
+					e.setEvaluationSummaryID(evaluationSummaryResult.getEvaluationSummaryID());
+					evaluationDao.create(e);
+					
+					System.out.println("evaluationDao.create(e): " + e);
+				}			 
 
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("La evaluación se realizó correctamente"));

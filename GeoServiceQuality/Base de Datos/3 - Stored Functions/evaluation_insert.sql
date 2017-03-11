@@ -1,9 +1,8 @@
-﻿CREATE OR REPLACE FUNCTION evaluation_insert
+﻿--DROP FUNCTION evaluation_insert (integer, integer, boolean);
+CREATE OR REPLACE FUNCTION evaluation_insert
 (
-   pUserID INT
-   , pProfileID INT
+   pEvaluationSummaryID INT
    , pMetricID INT
-   , pMeasurableObjectID INT
    , pSuccessFlag BOOLEAN
 )
 RETURNS VOID AS $$
@@ -18,40 +17,28 @@ RETURNS VOID AS $$
 BEGIN
     
    -- parametros requeridos
-   IF (pUserID IS NULL OR pProfileID IS NULL OR pMetricID IS NULL OR pMeasurableObjectID IS NULL)
+   IF (pEvaluationSummaryID IS NULL OR pMetricID IS NULL)
    THEN
-      RAISE EXCEPTION 'Error - Los parametros ID de Usuario, ID de Perfil, ID de Metrica e ID de Objeto Medible son requerido.';
+      RAISE EXCEPTION 'Error - Los parametros ID de EvaluacionSummary, ID de Metrica son requerido.';
    END IF;
-    
-   -- validacion de usuario
-   IF NOT EXISTS (SELECT 1 FROM SystemUser u WHERE u.UserID = pUserID)
-   THEN
-      RAISE EXCEPTION 'Error - El ID de Usuario no es correcto.';
-   END IF;
-    
-   -- validacion de perfil
-   IF NOT EXISTS (SELECT 1 FROM Profile p WHERE p.ProfileID = pProfileID)
-   THEN
-      RAISE EXCEPTION 'Error - El ID de Perfil no es correcto.';
-   END IF;
-      
-    -- validacion de Metrica
+          
+   -- validacion de Metrica
    IF NOT EXISTS (SELECT 1 FROM Metric m WHERE m.MetricID = pMetricID)
    THEN
       RAISE EXCEPTION 'Error - El ID de Metrica no es correcto.';
    END IF;    
    
-   -- validacion de Objeto Medible
-   IF NOT EXISTS (SELECT 1 FROM MeasurableObject mo WHERE mo.MeasurableObjectID = pMeasurableObjectID)
+   -- validacion de EvaluationSummaryID
+   IF NOT EXISTS (SELECT 1 FROM EvaluationSummary es WHERE es.EvaluationSummaryID = pEvaluationSummaryID)
    THEN
-      RAISE EXCEPTION 'Error - El ID de Objeto Medible no es correcto.';
+      RAISE EXCEPTION 'Error - El ID de EvaluationSummary no es correcto.';
    END IF; 
 
    -- Ingreso de Evaluacion
    INSERT INTO Evaluation
-   (UserID, ProfileID, MetricID, MeasurableObjectID, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag)
+   (EvaluationSummaryID, MetricID, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag)
    VALUES
-   (pUserID, pProfileID, pMetricID, pMeasurableObjectID, CURRENT_DATE, CURRENT_DATE, TRUE, pSuccessFlag);
+   (pEvaluationSummaryID, pMetricID, CURRENT_DATE, CURRENT_DATE, TRUE, pSuccessFlag);
 
 END;
 $$ LANGUAGE plpgsql;

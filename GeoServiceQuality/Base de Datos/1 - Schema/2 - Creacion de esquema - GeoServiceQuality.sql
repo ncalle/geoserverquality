@@ -298,25 +298,37 @@ CREATE TABLE Weighing
     CONSTRAINT CK_ElementType_values CHECK (ElementType IN ('D', 'F', 'M', 'R'))
 );
 
--- Contiene el resultado de las evaluaciones
+-- Contiene un resumen por perfil de cada evaluacion realizada
+DROP TABLE IF EXISTS EvaluationSummary CASCADE;
+CREATE TABLE EvaluationSummary
+(
+    EvaluationSummaryID SERIAL NOT NULL,
+    UserID INT NOT NULL,
+    ProfileID INT NOT NULL,
+    MeasurableObjectID INT NOT NULL,
+    SuccessFlag BOOLEAN NULL, -- indica si el resultado de las evaluaciones fueron exitosas
+
+    PRIMARY KEY (EvaluationSummaryID),
+    FOREIGN KEY (UserID) REFERENCES SystemUser(UserID),
+    FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID),
+    FOREIGN KEY (MeasurableObjectID) REFERENCES MeasurableObject(MeasurableObjectID)
+);
+
+-- Contiene el resultado de cada evaluacion en particular
 DROP TABLE IF EXISTS Evaluation CASCADE;
 CREATE TABLE Evaluation
 (
     EvaluationID SERIAL NOT NULL,
-    UserID INT NOT NULL,
-    ProfileID INT NOT NULL,
+	EvaluationSummaryID INT NOT NULL,
     MetricID INT NOT NULL,
-    MeasurableObjectID INT NOT NULL,
     StartDate DATE NOT NULL,
     EndDate DATE NULL,
     IsEvaluationCompletedFlag BOOLEAN NOT NULL,
     SuccessFlag BOOLEAN NULL, -- indica si el resultado de la evaluacion fue exitosa
 
     PRIMARY KEY (EvaluationID),
-    FOREIGN KEY (UserID) REFERENCES SystemUser(UserID),
-    FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID),
+    FOREIGN KEY (EvaluationSummaryID) REFERENCES EvaluationSummary(EvaluationSummaryID),
     FOREIGN KEY (MetricID) REFERENCES Metric(MetricID),
-    FOREIGN KEY (MeasurableObjectID) REFERENCES MeasurableObject(MeasurableObjectID),
     CONSTRAINT CK_IsEvaluationCompletedFlag CHECK
         (
 	    CASE WHEN IsEvaluationCompletedFlag = TRUE AND SuccessFlag IS NOT NULL THEN 1 ELSE 0 END

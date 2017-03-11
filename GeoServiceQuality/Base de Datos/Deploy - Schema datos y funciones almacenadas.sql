@@ -1,12 +1,12 @@
 ﻿/* ****************************************************************************************************** */
 /* 1 - SCHEMA TABLES                                                                                      */
-/*        Se crean 21 tablas                                                                              */
+/*        Se crean 22 tablas                                                                              */
 /* 2 - DATOS DE CASO DE ESTUDIO                                                                           */
 /*        Carga datos correspondientes al caso de estudio - IdeUy                                         */
 /* 3 - DATOS DE PRUEBA                                                                                    */
 /*        Carga datos de prueba                                                                           */
 /* 4 - STORED FUNCTIONS                                                                                   */
-/*        Se aplican 28 funciones almacenadas                                                             */
+/*        Se aplican 30 funciones almacenadas                                                             */
 /* ****************************************************************************************************** */
 /* ****************************************************************************************************** */
 /* ****************************************************************************************************** */
@@ -315,25 +315,37 @@ CREATE TABLE Weighing
     CONSTRAINT CK_ElementType_values CHECK (ElementType IN ('D', 'F', 'M', 'R'))
 );
 
--- Contiene el resultado de las evaluaciones
+-- Contiene un resumen por perfil de cada evaluacion realizada
+DROP TABLE IF EXISTS EvaluationSummary CASCADE;
+CREATE TABLE EvaluationSummary
+(
+    EvaluationSummaryID SERIAL NOT NULL,
+    UserID INT NOT NULL,
+    ProfileID INT NOT NULL,
+    MeasurableObjectID INT NOT NULL,
+    SuccessFlag BOOLEAN NULL, -- indica si el resultado de las evaluaciones fueron exitosas
+
+    PRIMARY KEY (EvaluationSummaryID),
+    FOREIGN KEY (UserID) REFERENCES SystemUser(UserID),
+    FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID),
+    FOREIGN KEY (MeasurableObjectID) REFERENCES MeasurableObject(MeasurableObjectID)
+);
+
+-- Contiene el resultado de cada evaluacion en particular
 DROP TABLE IF EXISTS Evaluation CASCADE;
 CREATE TABLE Evaluation
 (
     EvaluationID SERIAL NOT NULL,
-    UserID INT NOT NULL,
-    ProfileID INT NOT NULL,
+	EvaluationSummaryID INT NOT NULL,
     MetricID INT NOT NULL,
-    MeasurableObjectID INT NOT NULL,
     StartDate DATE NOT NULL,
     EndDate DATE NULL,
     IsEvaluationCompletedFlag BOOLEAN NOT NULL,
     SuccessFlag BOOLEAN NULL, -- indica si el resultado de la evaluacion fue exitosa
 
     PRIMARY KEY (EvaluationID),
-    FOREIGN KEY (UserID) REFERENCES SystemUser(UserID),
-    FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID),
+    FOREIGN KEY (EvaluationSummaryID) REFERENCES EvaluationSummary(EvaluationSummaryID),
     FOREIGN KEY (MetricID) REFERENCES Metric(MetricID),
-    FOREIGN KEY (MeasurableObjectID) REFERENCES MeasurableObject(MeasurableObjectID),
     CONSTRAINT CK_IsEvaluationCompletedFlag CHECK
         (
 	    CASE WHEN IsEvaluationCompletedFlag = TRUE AND SuccessFlag IS NOT NULL THEN 1 ELSE 0 END
@@ -803,8 +815,8 @@ BEGIN
 	
    RETURN QUERY
    SELECT e.EvaluationID
-      , e.UserID	  
-      , e.ProfileID
+      , es.UserID	  
+      , es.ProfileID
       , p.Name AS ProfileName
       , mo.MeasurableObjectID
       , mo.EntityID
@@ -824,13 +836,14 @@ BEGIN
       , e.EndDate
       , e.IsEvaluationCompletedFlag
       , e.SuccessFlag
-   FROM Evaluation e
-   INNER JOIN Profile p ON p.ProfileID = e.ProfileID
+   FROM EvaluationSummary es
+   INNER JOIN Evaluation e ON e.EvaluationSummaryID = es.EvaluationSummaryID
+   INNER JOIN Profile p ON p.ProfileID = es.ProfileID
    INNER JOIN Metric m ON m.MetricID = e.MetricID
    INNER JOIN Factor f ON f.FactorID = m.FactorID
    INNER JOIN Dimension d ON d.DimensionID = f.DimensionID
    INNER JOIN QualityModel q ON q.QualityModelID = d.QualityModelID
-   INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = e.MeasurableObjectID
+   INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
    LEFT JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
    LEFT JOIN GeographicServices gs ON gs.GeographicServicesID = mo.EntityID AND mo.EntityType = 'Servicio'
    LEFT JOIN Layer l ON l.LayerID = mo.EntityID AND mo.EntityType = 'Capa'
@@ -840,8 +853,8 @@ BEGIN
    WHERE umo.UserID = COALESCE(pUserID, umo.UserID)
       AND (CASE WHEN v_canUserMeasureAble = TRUE THEN umo.CanMeasureFlag = TRUE ELSE TRUE END)
    GROUP BY e.EvaluationID
-      , e.UserID	  
-      , e.ProfileID
+      , es.UserID	  
+      , es.ProfileID
       , p.Name
       , mo.MeasurableObjectID
       , mo.EntityID
@@ -865,12 +878,11 @@ END;
 $$ LANGUAGE plpgsql;
 /* ****************************************************************************************************** */ 
 /* ****************************************************************************************************** */ 
+--DROP FUNCTION evaluation_insert (integer, integer, boolean);
 CREATE OR REPLACE FUNCTION evaluation_insert
 (
-   pUserID INT
-   , pProfileID INT
+   pEvaluationSummaryID INT
    , pMetricID INT
-   , pMeasurableObjectID INT
    , pSuccessFlag BOOLEAN
 )
 RETURNS VOID AS $$
@@ -885,7 +897,157 @@ RETURNS VOID AS $$
 BEGIN
     
    -- parametros requeridos
-   IF (pUserID IS NULL OR pProfileID IS NULL OR pMetricID IS NULL OR pMeasurableObjectID IS NULL)
+   IF (pEvaluationSummaryID IS NULL OR pMetricID IS NULL)
+   THEN
+      RAISE EXCEPTION 'Error - Los parametros ID de EvaluacionSummary, ID de Metrica son requerido.';
+   END IF;
+          
+   -- validacion de Metrica
+   IF NOT EXISTS (SELECT 1 FROM Metric m WHERE m.MetricID = pMetricID)
+   THEN
+      RAISE EXCEPTION 'Error - El ID de Metrica no es correcto.';
+   END IF;    
+   
+   -- validacion de EvaluationSummaryID
+   IF NOT EXISTS (SELECT 1 FROM EvaluationSummary es WHERE es.EvaluationSummaryID = pEvaluationSummaryID)
+   THEN
+      RAISE EXCEPTION 'Error - El ID de EvaluationSummary no es correcto.';
+   END IF; 
+
+   -- Ingreso de Evaluacion
+   INSERT INTO Evaluation
+   (EvaluationSummaryID, MetricID, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag)
+   VALUES
+   (pEvaluationSummaryID, pMetricID, CURRENT_DATE, CURRENT_DATE, TRUE, pSuccessFlag);
+
+END;
+$$ LANGUAGE plpgsql;
+/* ****************************************************************************************************** */
+/* ****************************************************************************************************** */
+--DROP FUNCTION evaluation_summary_get(integer);
+CREATE OR REPLACE FUNCTION evaluation_summary_get
+(
+   pUserID INT --no requerido
+)
+RETURNS TABLE 
+(
+   EvaluationSummaryID INT
+   , UserID INT	  
+   , ProfileID INT
+   , ProfileName VARCHAR(40)
+   , MeasurableObjectID INT
+   , EntityID INT
+   , EntityType VARCHAR(11)
+   , MeasurableObjectName VARCHAR(1024)
+   , SuccessFlag BOOLEAN
+) AS $$
+/************************************************************************************************************
+** Name: evaluation_summary_get
+**
+** Desc: Devuelve el resumen de las Evaluaciones
+**       Si se le pasa el usuario, entonces se devuelven solo el resumen de las evaluaciones correspondientes a el mismo.
+**
+** 11/02/2017 Created
+**
+*************************************************************************************************************/
+DECLARE v_canUserMeasureAble BOOLEAN;
+
+BEGIN
+
+   -- validacion de usuario
+   IF (pUserID IS NOT NULL)
+      AND NOT EXISTS (SELECT 1 FROM SystemUser su WHERE su.UserID = pUserID)
+   THEN
+      RAISE EXCEPTION 'Error - El Usuario no existe.';
+   END IF;
+   
+   IF (pUserID IS NOT NULL)
+   THEN
+      SELECT TRUE INTO v_canUserMeasureAble;
+   ELSE
+      SELECT FALSE INTO v_canUserMeasureAble;
+   END IF;
+	
+   RETURN QUERY
+   SELECT es.EvaluationSummaryID
+      , es.UserID	  
+      , es.ProfileID
+      , p.Name AS ProfileName
+      , mo.MeasurableObjectID
+      , mo.EntityID
+      , mo.EntityType
+      , CASE 
+         WHEN gs.GeographicServicesID IS NOT NULL THEN gs.Url
+         WHEN l.LayerID IS NOT NULL THEN l.Url
+         WHEN n.NodeID IS NOT NULL THEN n.Name
+         WHEN i.InstitutionID IS NOT NULL THEN i.Name
+         WHEN ide.IdeID IS NOT NULL THEN ide.Name
+      END AS MeasurableObjectName
+      , es.SuccessFlag
+   FROM EvaluationSummary es
+   INNER JOIN Profile p ON p.ProfileID = es.ProfileID
+   INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
+   LEFT JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
+   LEFT JOIN GeographicServices gs ON gs.GeographicServicesID = mo.EntityID AND mo.EntityType = 'Servicio'
+   LEFT JOIN Layer l ON l.LayerID = mo.EntityID AND mo.EntityType = 'Capa'
+   LEFT JOIN Node n ON n.NodeID = mo.EntityID AND mo.EntityType = 'Nodo'
+   LEFT JOIN Institution i ON i.InstitutionID = mo.EntityID AND mo.EntityType = 'Institución'
+   LEFT JOIN Ide ide ON ide.IdeID = mo.EntityID AND mo.EntityType = 'Ide'
+   WHERE umo.UserID = COALESCE(pUserID, umo.UserID)
+      AND (CASE WHEN v_canUserMeasureAble = TRUE THEN umo.CanMeasureFlag = TRUE ELSE TRUE END)
+   GROUP BY es.EvaluationSummaryID
+      , es.UserID	  
+      , es.ProfileID
+      , p.Name
+      , mo.MeasurableObjectID
+      , mo.EntityID
+      , mo.EntityType
+      , gs.GeographicServicesID
+      , l.LayerID
+      , n.NodeID
+      , i.InstitutionID
+      , ide.IdeID
+      , es.SuccessFlag
+   ORDER BY es.EvaluationSummaryID;
+         
+END;
+$$ LANGUAGE plpgsql;
+/* ****************************************************************************************************** */
+/* ****************************************************************************************************** */
+--DROP FUNCTION evaluation_summary_insert (integer, integer, integer, boolean);
+CREATE OR REPLACE FUNCTION evaluation_summary_insert
+(
+   pUserID INT
+   , pProfileID INT
+   , pMeasurableObjectID INT
+   , pSuccessFlag BOOLEAN
+)
+RETURNS TABLE 
+(
+   EvaluationSummaryID INT
+   , UserID INT	  
+   , ProfileID INT
+   , ProfileName VARCHAR(40)
+   , MeasurableObjectID INT
+   , EntityID INT
+   , EntityType VARCHAR(11)
+   , MeasurableObjectName VARCHAR(1024)
+   , SuccessFlag BOOLEAN
+) AS $$
+/************************************************************************************************************
+** Name: evaluation_summary_insert
+**
+** Desc: Ingreso de resumen de una evaluacion. Devuelde datos del resumen ingresado.
+**
+** 10/03/2017 - Created
+**
+*************************************************************************************************************/
+DECLARE v_EvaluationSummaryID INT;
+
+BEGIN
+    
+   -- parametros requeridos
+   IF (pUserID IS NULL OR pProfileID IS NULL OR pMeasurableObjectID IS NULL)
    THEN
       RAISE EXCEPTION 'Error - Los parametros ID de Usuario, ID de Perfil, ID de Metrica e ID de Objeto Medible son requerido.';
    END IF;
@@ -900,13 +1062,7 @@ BEGIN
    IF NOT EXISTS (SELECT 1 FROM Profile p WHERE p.ProfileID = pProfileID)
    THEN
       RAISE EXCEPTION 'Error - El ID de Perfil no es correcto.';
-   END IF;
-      
-    -- validacion de Metrica
-   IF NOT EXISTS (SELECT 1 FROM Metric m WHERE m.MetricID = pMetricID)
-   THEN
-      RAISE EXCEPTION 'Error - El ID de Metrica no es correcto.';
-   END IF;    
+   END IF; 
    
    -- validacion de Objeto Medible
    IF NOT EXISTS (SELECT 1 FROM MeasurableObject mo WHERE mo.MeasurableObjectID = pMeasurableObjectID)
@@ -914,11 +1070,51 @@ BEGIN
       RAISE EXCEPTION 'Error - El ID de Objeto Medible no es correcto.';
    END IF; 
 
-   -- Ingreso de Evaluacion
-   INSERT INTO Evaluation
-   (UserID, ProfileID, MetricID, MeasurableObjectID, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag)
+   INSERT INTO EvaluationSummary AS es
+   (UserID, ProfileID, MeasurableObjectID, SuccessFlag)
    VALUES
-   (pUserID, pProfileID, pMetricID, pMeasurableObjectID, CURRENT_DATE, CURRENT_DATE, TRUE, pSuccessFlag);
+   (pUserID, pProfileID, pMeasurableObjectID, pSuccessFlag)
+      RETURNING es.EvaluationSummaryID INTO v_EvaluationSummaryID;
+
+   RETURN QUERY 
+   SELECT es.EvaluationSummaryID
+      , es.UserID	  
+      , es.ProfileID
+      , p.Name AS ProfileName
+      , mo.MeasurableObjectID
+      , mo.EntityID
+      , mo.EntityType
+      , CASE 
+         WHEN gs.GeographicServicesID IS NOT NULL THEN gs.Url
+         WHEN l.LayerID IS NOT NULL THEN l.Url
+         WHEN n.NodeID IS NOT NULL THEN n.Name
+         WHEN i.InstitutionID IS NOT NULL THEN i.Name
+         WHEN ide.IdeID IS NOT NULL THEN ide.Name
+      END AS MeasurableObjectName
+      , es.SuccessFlag
+   FROM EvaluationSummary es
+   INNER JOIN Profile p ON p.ProfileID = es.ProfileID
+   INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
+   LEFT JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
+   LEFT JOIN GeographicServices gs ON gs.GeographicServicesID = mo.EntityID AND mo.EntityType = 'Servicio'
+   LEFT JOIN Layer l ON l.LayerID = mo.EntityID AND mo.EntityType = 'Capa'
+   LEFT JOIN Node n ON n.NodeID = mo.EntityID AND mo.EntityType = 'Nodo'
+   LEFT JOIN Institution i ON i.InstitutionID = mo.EntityID AND mo.EntityType = 'Institución'
+   LEFT JOIN Ide ide ON ide.IdeID = mo.EntityID AND mo.EntityType = 'Ide'
+   WHERE es.EvaluationSummaryID = v_EvaluationSummaryID
+   GROUP BY es.EvaluationSummaryID
+      , es.UserID	  
+      , es.ProfileID
+      , p.Name
+      , mo.MeasurableObjectID
+      , mo.EntityID
+      , mo.EntityType
+      , gs.GeographicServicesID
+      , l.LayerID
+      , n.NodeID
+      , i.InstitutionID
+      , ide.IdeID
+      , es.SuccessFlag;
 
 END;
 $$ LANGUAGE plpgsql;
@@ -1166,13 +1362,20 @@ BEGIN
 
    -- Borrado de registros dependientes del Perfil
    DELETE FROM PartialEvaluation pe
-   USING Evaluation e
-   WHERE e.EvaluationID = pe.EvaluationID
-      AND e.ProfileID = pProfileID;
+   USING EvaluationSummary es
+      , Evaluation e
+   WHERE e.EvaluationSummaryID = es.EvaluationSummaryID
+      AND e.EvaluationID = pe.EvaluationID
+      AND es.ProfileID = pProfileID;
 
-   DELETE FROM Evaluation
+   DELETE FROM Evaluation e
+   USING EvaluationSummary es
+   WHERE es.EvaluationSummaryID = e.EvaluationSummaryID
+      AND ProfileID = pProfileID;
+
+   DELETE FROM EvaluationSummary
    WHERE ProfileID = pProfileID;
-
+   
    DELETE FROM Weighing
    WHERE ProfileID = pProfileID;
 
@@ -1808,11 +2011,24 @@ BEGIN
       RAISE EXCEPTION 'Error - El Servicio Geografico que se intenta eliminar no existe.';
    END IF;
 
+   -- Borrado de registros dependientes del Objeto Medible
    DELETE FROM UserMeasurableObject
    WHERE MeasurableObjectID = pMeasurableObjectID;
 
-   DELETE FROM Evaluation
-   WHERE MeasurableObjectID = pMeasurableObjectID;
+   DELETE FROM PartialEvaluation pe
+   USING EvaluationSummary es
+      , Evaluation e
+   WHERE e.EvaluationSummaryID = es.EvaluationSummaryID
+      AND e.EvaluationID = pe.EvaluationID
+      AND es.MeasurableObjectID = pMeasurableObjectID;
+
+   DELETE FROM Evaluation e
+   USING EvaluationSummary es
+   WHERE es.EvaluationSummaryID = e.EvaluationSummaryID
+      AND es.MeasurableObjectID = pMeasurableObjectID;
+
+   DELETE FROM EvaluationSummary
+   WHERE MeasurableObjectID = pMeasurableObjectID;   
    
    IF v_EntityType = 'Servicio'
    THEN
@@ -2518,6 +2734,7 @@ END;
 $$ LANGUAGE plpgsql;
 /* ****************************************************************************************************** */
 /* ****************************************************************************************************** */
+--DROP FUNCTION user_delete (integer)
 CREATE OR REPLACE FUNCTION user_delete
 (
    pUserID INT
@@ -2548,14 +2765,21 @@ BEGIN
    -- Borrado de registros dependientes del usuario  
    DELETE FROM UserMeasurableObject
    WHERE UserID = pUserID;
-    
+
    DELETE FROM PartialEvaluation pe
-   USING Evaluation e 
-   WHERE e.EvaluationID = pe.EvaluationID
-      AND e.UserID = pUserID;
-    
-   DELETE FROM Evaluation
-   WHERE UserID = pUserID;
+   USING EvaluationSummary es
+      , Evaluation e
+   WHERE e.EvaluationSummaryID = es.EvaluationSummaryID
+      AND e.EvaluationID = pe.EvaluationID
+      AND es.UserID = pUserID;
+
+   DELETE FROM Evaluation e
+   USING EvaluationSummary es
+   WHERE es.EvaluationSummaryID = e.EvaluationSummaryID
+      AND es.UserID = pUserID;
+
+   DELETE FROM EvaluationSummary
+   WHERE UserID = pUserID;   
     
    -- Borrado del usuario de la tabla Usuario
    DELETE FROM SystemUser

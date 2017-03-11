@@ -10,32 +10,32 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import entity.Evaluation;
+import entity.EvaluationSummary;
 
 @Stateless
 @LocalBean
-public class EvaluationBean implements EvaluationBeanRemote {
+public class EvaluationSummaryBean implements EvaluationSummaryBeanRemote {
 
     private static final String SQL_LIST_ORDER_BY_ID =
-    		"SELECT EvaluationID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, QualityModelID, QualityModelName, MetricID, MetricName, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag FROM evaluation_get (?)";
+    		"SELECT EvaluationSummaryID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, SuccessFlag FROM evaluation_summary_get (?)";
     private static final String SQL_INSERT =
-            "SELECT * FROM evaluation_insert (?, ?, ?)";
+            "SELECT EvaluationSummaryID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, SuccessFlag FROM evaluation_summary_insert (?, ?, ?, ?)";
 
 
     private DAOFactory daoFactory;
 	
-    public EvaluationBean() {
+    public EvaluationSummaryBean() {
     	daoFactory = DAOFactory.getInstance("geoservicequality.jdbc");
     }
 
-    EvaluationBean(DAOFactory daoFactory) {
+    EvaluationSummaryBean(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
     }
 
 	@Override
-	public List<Evaluation> list() throws DAOException {
+	public List<EvaluationSummary> list() throws DAOException {
 
-		List<Evaluation> list = new ArrayList<>();
+		List<EvaluationSummary> list = new ArrayList<>();
 
         Connection connection = null;
 		PreparedStatement statement = null;
@@ -60,30 +60,40 @@ public class EvaluationBean implements EvaluationBeanRemote {
 	}
 
 	@Override
-	public void create(Evaluation evaluation) throws IllegalArgumentException, DAOException {
+	public EvaluationSummary create(EvaluationSummary evaluationSummary) throws IllegalArgumentException, DAOException {
 		Connection connection = null;
 		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		
+		EvaluationSummary evS = null;
         
         try {
         	
         	connection = daoFactory.getConnection();
             statement = connection.prepareStatement(SQL_INSERT);
 
-            statement.setInt(1, evaluation.getEvaluationSummaryID());
-			statement.setInt(2, evaluation.getMetricID());
-			statement.setBoolean(3, evaluation.getSuccess()); 
+            statement.setInt(1, evaluationSummary.getUserID());
+			statement.setInt(2, evaluationSummary.getProfileID());
+			statement.setInt(3, evaluationSummary.getMeasurableObjectID());
+			statement.setBoolean(4, evaluationSummary.getSuccess()); 
 			
-            statement.executeQuery();
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+            	evS = map(resultSet);
+            }
 		
         } catch (SQLException e) {
         	throw new DAOException(e);
-        }        
+        }
+        
+        return evS;
 	}
 	
 	
-	private static Evaluation map(ResultSet resultSet) throws SQLException {
-		Evaluation object = new Evaluation();
-		object.setEvaluationID(resultSet.getInt("EvaluationID"));
+	private static EvaluationSummary map(ResultSet resultSet) throws SQLException {
+		EvaluationSummary object = new EvaluationSummary();
+		object.setEvaluationSummaryID(resultSet.getInt("EvaluationSummaryID"));
 		object.setUserID(resultSet.getInt("UserID"));
 		object.setProfileID(resultSet.getInt("ProfileID"));
 		object.setProfileName(resultSet.getString("ProfileName"));		
@@ -91,13 +101,6 @@ public class EvaluationBean implements EvaluationBeanRemote {
 	    object.setEntityID(resultSet.getInt("EntityID"));
 	    object.setEntityType(resultSet.getString("EntityType"));
 	    object.setMeasurableObjectName(resultSet.getString("MeasurableObjectName"));
-	    object.setQualityModelID(resultSet.getInt("QualityModelID"));
-	    object.setQualityModelName(resultSet.getString("QualityModelName"));
-	    object.setMetricID(resultSet.getInt("MetricID"));
-	    object.setMetricName(resultSet.getString("MetricName"));
-	    object.setStartDate(resultSet.getDate("StartDate"));
-	    object.setEndDate(resultSet.getDate("EndDate"));    
-		object.setIsEvaluationCompleted(resultSet.getBoolean("IsEvaluationCompletedFlag"));
 		object.setSuccess(resultSet.getBoolean("SuccessFlag"));
 
        return object;

@@ -1,4 +1,5 @@
-﻿CREATE OR REPLACE FUNCTION user_delete
+﻿--DROP FUNCTION user_delete (integer)
+CREATE OR REPLACE FUNCTION user_delete
 (
    pUserID INT
 )
@@ -28,14 +29,21 @@ BEGIN
    -- Borrado de registros dependientes del usuario  
    DELETE FROM UserMeasurableObject
    WHERE UserID = pUserID;
-    
+
    DELETE FROM PartialEvaluation pe
-   USING Evaluation e 
-   WHERE e.EvaluationID = pe.EvaluationID
-      AND e.UserID = pUserID;
-    
-   DELETE FROM Evaluation
-   WHERE UserID = pUserID;
+   USING EvaluationSummary es
+      , Evaluation e
+   WHERE e.EvaluationSummaryID = es.EvaluationSummaryID
+      AND e.EvaluationID = pe.EvaluationID
+      AND es.UserID = pUserID;
+
+   DELETE FROM Evaluation e
+   USING EvaluationSummary es
+   WHERE es.EvaluationSummaryID = e.EvaluationSummaryID
+      AND es.UserID = pUserID;
+
+   DELETE FROM EvaluationSummary
+   WHERE UserID = pUserID;   
     
    -- Borrado del usuario de la tabla Usuario
    DELETE FROM SystemUser

@@ -1,11 +1,14 @@
-﻿--DROP FUNCTION evaluation_get(integer);
-CREATE OR REPLACE FUNCTION evaluation_get
+--DROP FUNCTION evaluation_summary_insert (integer, integer, integer, boolean);
+CREATE OR REPLACE FUNCTION evaluation_summary_insert
 (
-   pUserID INT --no requerido
+   pUserID INT
+   , pProfileID INT
+   , pMeasurableObjectID INT
+   , pSuccessFlag BOOLEAN
 )
 RETURNS TABLE 
 (
-   EvaluationID INT
+   EvaluationSummaryID INT
    , UserID INT	  
    , ProfileID INT
    , ProfileName VARCHAR(40)
@@ -13,44 +16,52 @@ RETURNS TABLE
    , EntityID INT
    , EntityType VARCHAR(11)
    , MeasurableObjectName VARCHAR(1024)
-   , QualityModelID INT
-   , QualityModelName VARCHAR(40)
-   , MetricID INT
-   , MetricName VARCHAR(100)
-   , StartDate DATE
-   , EndDate DATE
-   , IsEvaluationCompletedFlag BOOLEAN
    , SuccessFlag BOOLEAN
 ) AS $$
 /************************************************************************************************************
-** Name: evaluation_get
+** Name: evaluation_summary_insert
 **
-** Desc: Devuelve la lista de Evaluaciones disponibles hasta el momento
-**       Si se le pasa el usuario, entonces se devuelven solo las evaluaciones correspondientes a el mismo.
+** Desc: Ingreso de resumen de una evaluacion. Devuelde datos del resumen ingresado.
 **
-** 11/02/2017 Created
+** 10/03/2017 - Created
 **
 *************************************************************************************************************/
-DECLARE v_canUserMeasureAble BOOLEAN;
+DECLARE v_EvaluationSummaryID INT;
 
 BEGIN
-
+    
+   -- parametros requeridos
+   IF (pUserID IS NULL OR pProfileID IS NULL OR pMeasurableObjectID IS NULL)
+   THEN
+      RAISE EXCEPTION 'Error - Los parametros ID de Usuario, ID de Perfil, ID de Metrica e ID de Objeto Medible son requerido.';
+   END IF;
+    
    -- validacion de usuario
-   IF (pUserID IS NOT NULL)
-      AND NOT EXISTS (SELECT 1 FROM SystemUser su WHERE su.UserID = pUserID)
+   IF NOT EXISTS (SELECT 1 FROM SystemUser u WHERE u.UserID = pUserID)
    THEN
-      RAISE EXCEPTION 'Error - El Usuario no existe.';
+      RAISE EXCEPTION 'Error - El ID de Usuario no es correcto.';
    END IF;
+    
+   -- validacion de perfil
+   IF NOT EXISTS (SELECT 1 FROM Profile p WHERE p.ProfileID = pProfileID)
+   THEN
+      RAISE EXCEPTION 'Error - El ID de Perfil no es correcto.';
+   END IF; 
    
-   IF (pUserID IS NOT NULL)
+   -- validacion de Objeto Medible
+   IF NOT EXISTS (SELECT 1 FROM MeasurableObject mo WHERE mo.MeasurableObjectID = pMeasurableObjectID)
    THEN
-      SELECT TRUE INTO v_canUserMeasureAble;
-   ELSE
-      SELECT FALSE INTO v_canUserMeasureAble;
-   END IF;
-	
-   RETURN QUERY
-   SELECT e.EvaluationID
+      RAISE EXCEPTION 'Error - El ID de Objeto Medible no es correcto.';
+   END IF; 
+
+   INSERT INTO EvaluationSummary AS es
+   (UserID, ProfileID, MeasurableObjectID, SuccessFlag)
+   VALUES
+   (pUserID, pProfileID, pMeasurableObjectID, pSuccessFlag)
+      RETURNING es.EvaluationSummaryID INTO v_EvaluationSummaryID;
+
+   RETURN QUERY 
+      SELECT es.EvaluationSummaryID
       , es.UserID	  
       , es.ProfileID
       , p.Name AS ProfileName
@@ -64,21 +75,9 @@ BEGIN
          WHEN i.InstitutionID IS NOT NULL THEN i.Name
          WHEN ide.IdeID IS NOT NULL THEN ide.Name
       END AS MeasurableObjectName
-      , q.QualityModelID
-      , q.Name AS QualityModelName
-      , m.MetricID
-      , m.Name AS MetricName
-      , e.StartDate
-      , e.EndDate
-      , e.IsEvaluationCompletedFlag
-      , e.SuccessFlag
+      , es.SuccessFlag
    FROM EvaluationSummary es
-   INNER JOIN Evaluation e ON e.EvaluationSummaryID = es.EvaluationSummaryID
    INNER JOIN Profile p ON p.ProfileID = es.ProfileID
-   INNER JOIN Metric m ON m.MetricID = e.MetricID
-   INNER JOIN Factor f ON f.FactorID = m.FactorID
-   INNER JOIN Dimension d ON d.DimensionID = f.DimensionID
-   INNER JOIN QualityModel q ON q.QualityModelID = d.QualityModelID
    INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
    LEFT JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
    LEFT JOIN GeographicServices gs ON gs.GeographicServicesID = mo.EntityID AND mo.EntityType = 'Servicio'
@@ -86,9 +85,8 @@ BEGIN
    LEFT JOIN Node n ON n.NodeID = mo.EntityID AND mo.EntityType = 'Nodo'
    LEFT JOIN Institution i ON i.InstitutionID = mo.EntityID AND mo.EntityType = 'Institución'
    LEFT JOIN Ide ide ON ide.IdeID = mo.EntityID AND mo.EntityType = 'Ide'
-   WHERE umo.UserID = COALESCE(pUserID, umo.UserID)
-      AND (CASE WHEN v_canUserMeasureAble = TRUE THEN umo.CanMeasureFlag = TRUE ELSE TRUE END)
-   GROUP BY e.EvaluationID
+   WHERE es.EvaluationSummaryID = v_EvaluationSummaryID
+   GROUP BY es.EvaluationSummaryID
       , es.UserID	  
       , es.ProfileID
       , p.Name
@@ -100,15 +98,7 @@ BEGIN
       , n.NodeID
       , i.InstitutionID
       , ide.IdeID
-      , q.QualityModelID
-      , q.Name
-      , m.MetricID
-      , m.Name
-      , e.StartDate
-      , e.EndDate
-      , e.IsEvaluationCompletedFlag
-      , e.SuccessFlag
-   ORDER BY e.EvaluationID;
-         
+      , es.SuccessFlag;
+
 END;
 $$ LANGUAGE plpgsql;

@@ -22,7 +22,7 @@ SELECT * FROM measurable_object_get (1); --ok
 SELECT * FROM measurable_object_get (3); --ok
 SELECT * FROM measurable_object_get (null); --ok
    SELECT * FROM prototype_measurable_objects_get (NULL); --ok
-   SELECT * FROM prototype_measurable_objects_get (1); --ok	
+   SELECT * FROM prototype_measurable_objects_get (1); --ok
    SELECT * FROM prototype_measurable_objects_get (2); --ok
    SELECT * FROM prototype_measurable_objects_get (3); --ok
 --------------------------------------------------------------------
@@ -50,10 +50,6 @@ SELECT * FROM profile_insert ('TestPerfil2', 'Servicio', NULL); --err ok
 --------------------------------------------------------------------
 SELECT * FROM profile_get (); --ok
 --------------------------------------------------------------------
-SELECT * FROM evaluation_insert (1, 1, 2, 85, TRUE); --ok
-SELECT * FROM evaluation_get (1); --ok
-SELECT * FROM evaluation_insert (1, 2, 2, 7079, TRUE); --err ok
---------------------------------------------------------------------
 SELECT * FROM user_group_get(null); --ok
 SELECT * FROM user_group_get(2); --ok
 --------------------------------------------------------------------   
@@ -73,8 +69,8 @@ SELECT * FROM prototype_measurable_objects_get (null); --ok
 SELECT * FROM profile_metric_get(1,null); --ok
 SELECT * FROM profile_metric_get(1,1); --ok
 SELECT * FROM profile_metric_get(1,2); --ok
-SELECT * FROM profile_metric_get(1121); --err ok
-SELECT * FROM profile_metric_get(null); --err ok
+SELECT * FROM profile_metric_get(1121,1); --err ok
+SELECT * FROM profile_metric_get(null,1); --err ok
 --------------------------------------------------------------------  
 SELECT * FROM profile_delete(2); --ok
 SELECT * FROM profile_delete(null); --err ok
@@ -104,6 +100,10 @@ SELECT * FROM profile_metric_update (5,FALSE,NULL,NULL,NULL); --ok
 SELECT * FROM profile_metric_get(3,null); --ok
 SELECT * FROM profile_metric_update (223,TRUE,NULL,NULL,NULL); --err ok
 --------------------------------------------------------------------
-SELECT * FROM report_geographic_services_per_institution (); --ok
-SELECT * FROM report_evaluation_success_vs_failed (); --ok
-SELECT * FROM report_evaluations_per_metric (); --ok
+SELECT * FROM evaluation_summary_insert (1, 1, 1, TRUE); --ok
+SELECT * FROM evaluation_summary_get (null); --ok
+--------------------------------------------------------------------
+SELECT * FROM evaluation_insert (1, 2, TRUE); --ok
+SELECT * FROM evaluation_get (1); --ok
+SELECT * FROM evaluation_insert (1, 7079, TRUE); --err ok
+--------------------------------------------------------------------

@@ -9,6 +9,7 @@ public class Evaluation implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer EvaluationID;
+    private Integer EvaluationSummaryID;
     private Integer UserID;
     private Integer ProfileID;
     private String ProfileName;
@@ -35,6 +36,16 @@ public class Evaluation implements Serializable {
 		EvaluationID = evaluationID;
 	}
 
+	
+	public Integer getEvaluationSummaryID() {
+		return EvaluationSummaryID;
+	}
+
+
+	public void setEvaluationSummaryID(Integer evaluationSummaryID) {
+		EvaluationSummaryID = evaluationSummaryID;
+	}
+	
 
 	public Integer getUserID() {
 		return UserID;
@@ -205,9 +216,9 @@ public class Evaluation implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Evaluation[EvaluationID=%d, UserID=%d, ProfileID=%d, ProfileName=%s, MeasurableObjectID=%d, EntityID=%d, EntityType=%s, MeasurableObjectName=%s, "
+        return String.format("Evaluation[EvaluationID=%d, EvaluationSummaryID=%d, UserID=%d, ProfileID=%d, ProfileName=%s, MeasurableObjectID=%d, EntityID=%d, EntityType=%s, MeasurableObjectName=%s, "
         		+ "QualityModelID=%d, QualityModelName=%s, MetricID=%d, MetricName=%s, StartDate=%s, EndDate=%s, IsEvaluationCompleted=%s, Success=%s]",
-        		getEvaluationID(), getUserID(), getProfileID(), getProfileName(), getMeasurableObjectID(), getEntityID(), getEntityType(), getMeasurableObjectName(), 
+        		getEvaluationID(), getEvaluationSummaryID(), getUserID(), getProfileID(), getProfileName(), getMeasurableObjectID(), getEntityID(), getEntityType(), getMeasurableObjectName(), 
         		getQualityModelID(), getQualityModelName(), getMetricID(), getMetricName(), getStartDate(), getEndDate(), getIsEvaluationCompleted(), getSuccess());
     }
 }
