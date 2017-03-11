@@ -324,6 +324,7 @@ CREATE TABLE EvaluationSummary
     ProfileID INT NOT NULL,
     MeasurableObjectID INT NOT NULL,
     SuccessFlag BOOLEAN NULL, -- indica si el resultado de las evaluaciones fueron exitosas
+    SuccessPercentage INT, -- indica que porcentaje de las evaluaciones fueron exitosas	
 
     PRIMARY KEY (EvaluationSummaryID),
     FOREIGN KEY (UserID) REFERENCES SystemUser(UserID),
@@ -940,6 +941,7 @@ RETURNS TABLE
    , EntityType VARCHAR(11)
    , MeasurableObjectName VARCHAR(1024)
    , SuccessFlag BOOLEAN
+   , SuccessPercentage INT
 ) AS $$
 /************************************************************************************************************
 ** Name: evaluation_summary_get
@@ -984,6 +986,7 @@ BEGIN
          WHEN ide.IdeID IS NOT NULL THEN ide.Name
       END AS MeasurableObjectName
       , es.SuccessFlag
+	  , es.SuccessPercentage
    FROM EvaluationSummary es
    INNER JOIN Profile p ON p.ProfileID = es.ProfileID
    INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
@@ -1008,19 +1011,21 @@ BEGIN
       , i.InstitutionID
       , ide.IdeID
       , es.SuccessFlag
+	  , es.SuccessPercentage
    ORDER BY es.EvaluationSummaryID;
          
 END;
 $$ LANGUAGE plpgsql;
 /* ****************************************************************************************************** */
 /* ****************************************************************************************************** */
---DROP FUNCTION evaluation_summary_insert (integer, integer, integer, boolean);
+--DROP FUNCTION evaluation_summary_insert (integer, integer, integer, boolean, integer);
 CREATE OR REPLACE FUNCTION evaluation_summary_insert
 (
    pUserID INT
    , pProfileID INT
    , pMeasurableObjectID INT
    , pSuccessFlag BOOLEAN
+   , pSuccessPercentage INT
 )
 RETURNS TABLE 
 (
@@ -1033,6 +1038,7 @@ RETURNS TABLE
    , EntityType VARCHAR(11)
    , MeasurableObjectName VARCHAR(1024)
    , SuccessFlag BOOLEAN
+   , SuccessPercentage INT
 ) AS $$
 /************************************************************************************************************
 ** Name: evaluation_summary_insert
@@ -1071,13 +1077,13 @@ BEGIN
    END IF; 
 
    INSERT INTO EvaluationSummary AS es
-   (UserID, ProfileID, MeasurableObjectID, SuccessFlag)
+   (UserID, ProfileID, MeasurableObjectID, SuccessFlag, SuccessPercentage)
    VALUES
-   (pUserID, pProfileID, pMeasurableObjectID, pSuccessFlag)
+   (pUserID, pProfileID, pMeasurableObjectID, pSuccessFlag, pSuccessPercentage)
       RETURNING es.EvaluationSummaryID INTO v_EvaluationSummaryID;
 
    RETURN QUERY 
-   SELECT es.EvaluationSummaryID
+      SELECT es.EvaluationSummaryID
       , es.UserID	  
       , es.ProfileID
       , p.Name AS ProfileName
@@ -1092,6 +1098,7 @@ BEGIN
          WHEN ide.IdeID IS NOT NULL THEN ide.Name
       END AS MeasurableObjectName
       , es.SuccessFlag
+      , es.SuccessPercentage
    FROM EvaluationSummary es
    INNER JOIN Profile p ON p.ProfileID = es.ProfileID
    INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
@@ -1114,7 +1121,8 @@ BEGIN
       , n.NodeID
       , i.InstitutionID
       , ide.IdeID
-      , es.SuccessFlag;
+      , es.SuccessFlag
+      , es.SuccessPercentage;
 
 END;
 $$ LANGUAGE plpgsql;

@@ -14,6 +14,7 @@ RETURNS TABLE
    , EntityType VARCHAR(11)
    , MeasurableObjectName VARCHAR(1024)
    , SuccessFlag BOOLEAN
+   , SuccessPercentage INT
 ) AS $$
 /************************************************************************************************************
 ** Name: evaluation_summary_get
@@ -58,6 +59,7 @@ BEGIN
          WHEN ide.IdeID IS NOT NULL THEN ide.Name
       END AS MeasurableObjectName
       , es.SuccessFlag
+	  , es.SuccessPercentage
    FROM EvaluationSummary es
    INNER JOIN Profile p ON p.ProfileID = es.ProfileID
    INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
@@ -82,6 +84,7 @@ BEGIN
       , i.InstitutionID
       , ide.IdeID
       , es.SuccessFlag
+	  , es.SuccessPercentage
    ORDER BY es.EvaluationSummaryID;
          
 END;

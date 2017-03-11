@@ -17,9 +17,9 @@ import entity.EvaluationSummary;
 public class EvaluationSummaryBean implements EvaluationSummaryBeanRemote {
 
     private static final String SQL_LIST_ORDER_BY_ID =
-    		"SELECT EvaluationSummaryID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, SuccessFlag FROM evaluation_summary_get (?)";
+    		"SELECT EvaluationSummaryID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, SuccessFlag, SuccessPercentage FROM evaluation_summary_get (?)";
     private static final String SQL_INSERT =
-            "SELECT EvaluationSummaryID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, SuccessFlag FROM evaluation_summary_insert (?, ?, ?, ?)";
+            "SELECT EvaluationSummaryID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, SuccessFlag, SuccessPercentage FROM evaluation_summary_insert (?, ?, ?, ?, ?)";
 
 
     private DAOFactory daoFactory;
@@ -75,7 +75,8 @@ public class EvaluationSummaryBean implements EvaluationSummaryBeanRemote {
             statement.setInt(1, evaluationSummary.getUserID());
 			statement.setInt(2, evaluationSummary.getProfileID());
 			statement.setInt(3, evaluationSummary.getMeasurableObjectID());
-			statement.setBoolean(4, evaluationSummary.getSuccess()); 
+			statement.setBoolean(4, evaluationSummary.getSuccess());
+			statement.setInt(5, evaluationSummary.getSuccessPercentage());
 			
             resultSet = statement.executeQuery();
 
@@ -102,6 +103,7 @@ public class EvaluationSummaryBean implements EvaluationSummaryBeanRemote {
 	    object.setEntityType(resultSet.getString("EntityType"));
 	    object.setMeasurableObjectName(resultSet.getString("MeasurableObjectName"));
 		object.setSuccess(resultSet.getBoolean("SuccessFlag"));
+		object.setSuccessPercentage(resultSet.getInt("SuccessPercentage"));
 
        return object;
    }

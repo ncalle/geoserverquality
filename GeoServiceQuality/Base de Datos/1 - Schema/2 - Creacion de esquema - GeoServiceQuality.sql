@@ -307,6 +307,7 @@ CREATE TABLE EvaluationSummary
     ProfileID INT NOT NULL,
     MeasurableObjectID INT NOT NULL,
     SuccessFlag BOOLEAN NULL, -- indica si el resultado de las evaluaciones fueron exitosas
+    SuccessPercentage INT, -- indica que porcentaje de las evaluaciones fueron exitosas 
 
     PRIMARY KEY (EvaluationSummaryID),
     FOREIGN KEY (UserID) REFERENCES SystemUser(UserID),

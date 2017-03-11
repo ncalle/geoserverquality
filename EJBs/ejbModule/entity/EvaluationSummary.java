@@ -16,6 +16,7 @@ public class EvaluationSummary implements Serializable {
     private String EntityType;
     private String MeasurableObjectName;
     private Boolean Success;
+    private Integer SuccessPercentage;
 
 
 	public Integer getEvaluationSummaryID() {
@@ -107,7 +108,18 @@ public class EvaluationSummary implements Serializable {
 	
 	public Boolean getSuccess() {
 		return Success;
+	}	
+
+
+	public Integer getSuccessPercentage() {
+		return SuccessPercentage;
 	}
+
+
+	public void setSuccessPercentage(Integer successPercentage) {
+		SuccessPercentage = successPercentage;
+	}
+	
 
 	@Override
     public boolean equals(Object other) {
@@ -129,7 +141,7 @@ public class EvaluationSummary implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("EvaluationSummaryID[EvaluationSummaryID=%d, UserID=%d, ProfileID=%d, ProfileName=%s, MeasurableObjectID=%d, EntityID=%d, EntityType=%s, MeasurableObjectName=%s, Success=%s]",
-        		getEvaluationSummaryID(), getUserID(), getProfileID(), getProfileName(), getMeasurableObjectID(), getEntityID(), getEntityType(), getMeasurableObjectName(), getSuccess());
+        return String.format("EvaluationSummaryID[EvaluationSummaryID=%d, UserID=%d, ProfileID=%d, ProfileName=%s, MeasurableObjectID=%d, EntityID=%d, EntityType=%s, MeasurableObjectName=%s, Success=%s, SuccessPercentage=%d]",
+        		getEvaluationSummaryID(), getUserID(), getProfileID(), getProfileName(), getMeasurableObjectID(), getEntityID(), getEntityType(), getMeasurableObjectName(), getSuccess(), getSuccessPercentage());
     }
 }

@@ -100,7 +100,7 @@ SELECT * FROM profile_metric_update (5,FALSE,NULL,NULL,NULL); --ok
 SELECT * FROM profile_metric_get(3,null); --ok
 SELECT * FROM profile_metric_update (223,TRUE,NULL,NULL,NULL); --err ok
 --------------------------------------------------------------------
-SELECT * FROM evaluation_summary_insert (1, 1, 1, TRUE); --ok
+SELECT * FROM evaluation_summary_insert (1, 1, 1, TRUE, 43); --ok
 SELECT * FROM evaluation_summary_get (null); --ok
 --------------------------------------------------------------------
 SELECT * FROM evaluation_insert (1, 2, TRUE); --ok
