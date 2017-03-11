@@ -9,12 +9,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.omnifaces.util.Faces;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 
+import entity.Metric;
 import entity.Profile;
 import entity.ProfileMetric;
 import dao.DAOException;
+import dao.MetricBean;
+import dao.MetricBeanRemote;
 import dao.ProfileBean;
 import dao.ProfileBeanRemote;
 import dao.ProfileMetricBean;
@@ -36,10 +40,16 @@ public class ProfileBeanList {
 	private ProfileMetric selectedPercentageProfileMetric;
 	private ProfileMetric selectedIntegerProfileMetric;
 	private ProfileMetric selectedEnumeratedProfileMetric;
+	private boolean showMore;
+	
+	private List<Metric> listProfileMetrics;
+	private Metric profileMetric;
+	private Integer profileID;
 	
 	@EJB
     private ProfileBeanRemote pDao = new ProfileBean();
 	private ProfileMetricBeanRemote pmDao = new ProfileMetricBean();
+	private MetricBeanRemote mDao = new MetricBean();
 	
 	
 	@PostConstruct
@@ -138,6 +148,73 @@ public class ProfileBeanList {
 	public void setSelectedEnumeratedProfileMetric(ProfileMetric selectedEnumeratedProfileMetric) {
 		this.selectedEnumeratedProfileMetric = selectedEnumeratedProfileMetric;
 	}	
+	
+	public void setShowMore(boolean showMore) {
+		this.showMore = showMore;
+	}
+	
+	public void showMore() {
+		this.showMore = true;
+		listProfileMetrics = mDao.profileMetricsToAddGet(selectedProfile.getProfileId());
+	}
+	
+	public void showLess() {
+		this.showMore = false;
+	}
+	
+	public boolean isShowMore() {
+		return showMore;
+	}
+	
+	public List<Metric> getListProfileMetrics() {
+		return listProfileMetrics;
+	}
+
+
+	public void setListProfileMetrics(List<Metric> listProfileMetrics) {
+		this.listProfileMetrics = listProfileMetrics;
+	}
+
+
+	public Metric getProfileMetric() {
+		return profileMetric;
+	}
+
+
+	public void setProfileMetric(Metric profileMetric) {
+		this.profileMetric = profileMetric;
+	}
+
+
+	public Integer getProfileID() {
+		return profileID;
+	}
+
+
+	public void setProfileID(Integer profileID) {
+		this.profileID = profileID;
+	}
+		
+	public void save() {
+    	FacesMessage msg;
+
+    	try{
+    		
+    		int selectedProfileID = selectedProfile.getProfileId();
+    		
+    		if(profileMetric!=null){
+    			pmDao.profileAddMetric(selectedProfileID, profileMetric);
+        		listProfileMetrics = mDao.profileMetricsToAddGet(selectedProfileID);
+        		
+        		msg = new FacesMessage("La Metrica fue asociado al Perfil de manera correcta.");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+    		}
+    		
+    	} catch(DAOException e) {   		
+    		msg = new FacesMessage("Error al asociar la Metrica con el Perfil.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+    	}
+	}
 			
 	public void deleteProfile() {
 		pDao.delete(selectedProfile);    	
