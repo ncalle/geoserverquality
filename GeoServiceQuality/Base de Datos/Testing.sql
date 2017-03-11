@@ -104,3 +104,6 @@ SELECT * FROM profile_metric_update (5,FALSE,NULL,NULL,NULL); --ok
 SELECT * FROM profile_metric_get(3,null); --ok
 SELECT * FROM profile_metric_update (223,TRUE,NULL,NULL,NULL); --err ok
 --------------------------------------------------------------------
+SELECT * FROM report_geographic_services_per_institution (); --ok
+SELECT * FROM report_evaluation_success_vs_failed (); --ok
+SELECT * FROM report_evaluations_per_metric (); --ok
