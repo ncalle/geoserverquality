@@ -28,13 +28,20 @@ BEGIN
 
    -- Borrado de registros dependientes del Perfil
    DELETE FROM PartialEvaluation pe
-   USING Evaluation e
-   WHERE e.EvaluationID = pe.EvaluationID
-      AND e.ProfileID = pProfileID;
+   USING EvaluationSummary es
+      , Evaluation e
+   WHERE e.EvaluationSummaryID = es.EvaluationSummaryID
+      AND e.EvaluationID = pe.EvaluationID
+      AND es.ProfileID = pProfileID;
 
-   DELETE FROM Evaluation
+   DELETE FROM Evaluation e
+   USING EvaluationSummary es
+   WHERE es.EvaluationSummaryID = e.EvaluationSummaryID
+      AND ProfileID = pProfileID;
+
+   DELETE FROM EvaluationSummary
    WHERE ProfileID = pProfileID;
-
+   
    DELETE FROM Weighing
    WHERE ProfileID = pProfileID;
 

@@ -43,11 +43,24 @@ BEGIN
       RAISE EXCEPTION 'Error - El Servicio Geografico que se intenta eliminar no existe.';
    END IF;
 
+   -- Borrado de registros dependientes del Objeto Medible
    DELETE FROM UserMeasurableObject
    WHERE MeasurableObjectID = pMeasurableObjectID;
 
-   DELETE FROM Evaluation
-   WHERE MeasurableObjectID = pMeasurableObjectID;
+   DELETE FROM PartialEvaluation pe
+   USING EvaluationSummary es
+      , Evaluation e
+   WHERE e.EvaluationSummaryID = es.EvaluationSummaryID
+      AND e.EvaluationID = pe.EvaluationID
+      AND es.MeasurableObjectID = pMeasurableObjectID;
+
+   DELETE FROM Evaluation e
+   USING EvaluationSummary es
+   WHERE es.EvaluationSummaryID = e.EvaluationSummaryID
+      AND es.MeasurableObjectID = pMeasurableObjectID;
+
+   DELETE FROM EvaluationSummary
+   WHERE MeasurableObjectID = pMeasurableObjectID;   
    
    IF v_EntityType = 'Servicio'
    THEN

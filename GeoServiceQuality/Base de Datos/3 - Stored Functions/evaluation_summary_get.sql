@@ -1,11 +1,11 @@
-﻿--DROP FUNCTION evaluation_get(integer);
-CREATE OR REPLACE FUNCTION evaluation_get
+--DROP FUNCTION evaluation_summary_get(integer);
+CREATE OR REPLACE FUNCTION evaluation_summary_get
 (
    pUserID INT --no requerido
 )
 RETURNS TABLE 
 (
-   EvaluationID INT
+   EvaluationSummaryID INT
    , UserID INT	  
    , ProfileID INT
    , ProfileName VARCHAR(40)
@@ -13,20 +13,14 @@ RETURNS TABLE
    , EntityID INT
    , EntityType VARCHAR(11)
    , MeasurableObjectName VARCHAR(1024)
-   , QualityModelID INT
-   , QualityModelName VARCHAR(40)
-   , MetricID INT
-   , MetricName VARCHAR(100)
-   , StartDate DATE
-   , EndDate DATE
-   , IsEvaluationCompletedFlag BOOLEAN
    , SuccessFlag BOOLEAN
+   , SuccessPercentage INT
 ) AS $$
 /************************************************************************************************************
-** Name: evaluation_get
+** Name: evaluation_summary_get
 **
-** Desc: Devuelve la lista de Evaluaciones disponibles hasta el momento
-**       Si se le pasa el usuario, entonces se devuelven solo las evaluaciones correspondientes a el mismo.
+** Desc: Devuelve el resumen de las Evaluaciones
+**       Si se le pasa el usuario, entonces se devuelven solo el resumen de las evaluaciones correspondientes a el mismo.
 **
 ** 11/02/2017 Created
 **
@@ -50,7 +44,7 @@ BEGIN
    END IF;
 	
    RETURN QUERY
-   SELECT e.EvaluationID
+   SELECT es.EvaluationSummaryID
       , es.UserID	  
       , es.ProfileID
       , p.Name AS ProfileName
@@ -64,21 +58,10 @@ BEGIN
          WHEN i.InstitutionID IS NOT NULL THEN i.Name
          WHEN ide.IdeID IS NOT NULL THEN ide.Name
       END AS MeasurableObjectName
-      , q.QualityModelID
-      , q.Name AS QualityModelName
-      , m.MetricID
-      , m.Name AS MetricName
-      , e.StartDate
-      , e.EndDate
-      , e.IsEvaluationCompletedFlag
-      , e.SuccessFlag
+      , es.SuccessFlag
+	  , es.SuccessPercentage
    FROM EvaluationSummary es
-   INNER JOIN Evaluation e ON e.EvaluationSummaryID = es.EvaluationSummaryID
    INNER JOIN Profile p ON p.ProfileID = es.ProfileID
-   INNER JOIN Metric m ON m.MetricID = e.MetricID
-   INNER JOIN Factor f ON f.FactorID = m.FactorID
-   INNER JOIN Dimension d ON d.DimensionID = f.DimensionID
-   INNER JOIN QualityModel q ON q.QualityModelID = d.QualityModelID
    INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
    LEFT JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
    LEFT JOIN GeographicServices gs ON gs.GeographicServicesID = mo.EntityID AND mo.EntityType = 'Servicio'
@@ -88,7 +71,7 @@ BEGIN
    LEFT JOIN Ide ide ON ide.IdeID = mo.EntityID AND mo.EntityType = 'Ide'
    WHERE umo.UserID = COALESCE(pUserID, umo.UserID)
       AND (CASE WHEN v_canUserMeasureAble = TRUE THEN umo.CanMeasureFlag = TRUE ELSE TRUE END)
-   GROUP BY e.EvaluationID
+   GROUP BY es.EvaluationSummaryID
       , es.UserID	  
       , es.ProfileID
       , p.Name
@@ -100,15 +83,9 @@ BEGIN
       , n.NodeID
       , i.InstitutionID
       , ide.IdeID
-      , q.QualityModelID
-      , q.Name
-      , m.MetricID
-      , m.Name
-      , e.StartDate
-      , e.EndDate
-      , e.IsEvaluationCompletedFlag
-      , e.SuccessFlag
-   ORDER BY e.EvaluationID;
+      , es.SuccessFlag
+	  , es.SuccessPercentage
+   ORDER BY es.EvaluationSummaryID;
          
 END;
 $$ LANGUAGE plpgsql;
