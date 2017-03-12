@@ -1,5 +1,6 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -155,8 +156,9 @@ public class ProfileBeanList {
 	
 	public void showMore() {
 		this.showMore = true;
-		listProfileMetrics = mDao.profileMetricsToAddGet(selectedProfile.getProfileId());
+		filterMetricsByGranularity();
 	}
+	
 	
 	public void showLess() {
 		this.showMore = false;
@@ -204,7 +206,8 @@ public class ProfileBeanList {
     		
     		if(profileMetric!=null){
     			pmDao.profileAddMetric(selectedProfileID, profileMetric);
-        		listProfileMetrics = mDao.profileMetricsToAddGet(selectedProfileID);
+        		
+    			filterMetricsByGranularity();
         		
         		msg = new FacesMessage("La Metrica fue asociado al Perfil de manera correcta.");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -214,6 +217,16 @@ public class ProfileBeanList {
     		msg = new FacesMessage("Error al asociar la Metrica con el Perfil.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
     	}
+	}
+	
+	public void filterMetricsByGranularity(){
+		listProfileMetrics = new ArrayList<>();
+		List<Metric> listMetrics = mDao.profileMetricsToAddGet(selectedProfile.getProfileId());
+		for(Metric m:listMetrics){
+			if(m.getGranurality().equals(selectedProfile.getGranurality())){
+				listProfileMetrics.add(m);
+			}
+		}
 	}
 			
 	public void deleteProfile() {
