@@ -3210,7 +3210,7 @@ BEGIN
       , n.Name AS NodeName
       , COUNT(es.EvaluationSummaryID) AS NodeCount
       , CASE WHEN v_TotalEvaluationSummary = 0 THEN 0 ELSE ((COUNT(es.EvaluationSummaryID) * 100.00) / v_TotalEvaluationSummary) END AS NodePercentage
-      , CASE WHEN COUNT(es.EvaluationSummaryID) = 0 THEN ((SELECT SUM(ies.SuccessPercentage) FROM EvaluationSummary ies WHERE ies.MeasurableObjectID = mo.MeasurableObjectID) / COUNT(es.EvaluationSummaryID)) END AS NodeSuccessPercentage
+      , CASE WHEN COUNT(es.EvaluationSummaryID) = 0 THEN 0 ELSE ((SELECT SUM(ies.SuccessPercentage) FROM EvaluationSummary ies WHERE ies.MeasurableObjectID = mo.MeasurableObjectID) / COUNT(es.EvaluationSummaryID)) END AS NodeSuccessPercentage
    FROM EvaluationSummary es
    INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
    INNER JOIN GeographicServices gs ON gs.GeographicServicesID = mo.EntityID AND mo.EntityType = 'Servicio'

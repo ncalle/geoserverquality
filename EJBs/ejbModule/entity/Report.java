@@ -37,6 +37,12 @@ public class Report implements Serializable {
     private Integer InstitutionPercentage;
     private Integer InstitutionSuccessPercentage;
     
+    private Integer NodeID;
+    private String NodeName;
+    private Integer NodeCount;
+    private Integer NodePercentage;
+    private Integer NodeSuccessPercentage;
+    
     public Integer getInstitutionID() {
 		return InstitutionID;
 	}
@@ -207,5 +213,45 @@ public class Report implements Serializable {
 
 	public void setInstitutionSuccessPercentage(Integer institutionSuccessPercentage) {
 		InstitutionSuccessPercentage = institutionSuccessPercentage;
+	}
+
+	public Integer getNodeID() {
+		return NodeID;
+	}
+
+	public void setNodeID(Integer nodeID) {
+		NodeID = nodeID;
+	}
+
+	public String getNodeName() {
+		return NodeName;
+	}
+
+	public void setNodeName(String nodeName) {
+		NodeName = nodeName;
+	}
+
+	public Integer getNodeCount() {
+		return NodeCount;
+	}
+
+	public void setNodeCount(Integer nodeCount) {
+		NodeCount = nodeCount;
+	}
+
+	public Integer getNodePercentage() {
+		return NodePercentage;
+	}
+
+	public void setNodePercentage(Integer nodePercentage) {
+		NodePercentage = nodePercentage;
+	}
+
+	public Integer getNodeSuccessPercentage() {
+		return NodeSuccessPercentage;
+	}
+
+	public void setNodeSuccessPercentage(Integer nodeSuccessPercentage) {
+		NodeSuccessPercentage = nodeSuccessPercentage;
 	}
 }

@@ -31,7 +31,8 @@ public class ReportBean implements ReportBeanRemote {
     private static final String SUCCESS_EVALUATIONS_PER_INSTITUTION =
             "SELECT InstitutionID, InstitutionName, InstitutionCount, InstitutionPercentage, InstitutionSuccessPercentage FROM report_success_evaluation_per_institution ()";
     private static final String SUCCESS_EVALUATIONS_PER_NODE =
-            "SELECT * FROM report_success_evaluation_per_node ()";   
+            "SELECT NodeID, NodeName, NodeCount, NodePercentage, NodeSuccessPercentage FROM report_success_evaluation_per_node ()";   
+
     
     private DAOFactory daoFactory;
 
@@ -215,6 +216,11 @@ public class ReportBean implements ReportBeanRemote {
     	report.setInstitutionCount(null);
         report.setInstitutionPercentage(null);
         report.setInstitutionSuccessPercentage(null);
+        report.setNodeID(null);
+        report.setNodeName(null);
+        report.setNodeCount(null);
+        report.setNodePercentage(null);
+        report.setNodeSuccessPercentage(null);
     	
         int numberOfColumns = rsMetaData.getColumnCount();
         for (int i = 1; i < numberOfColumns + 1; i++) {
@@ -306,6 +312,21 @@ public class ReportBean implements ReportBeanRemote {
             	report.setInstitutionSuccessPercentage(resultSet.getInt("InstitutionSuccessPercentage"));
             }
 
+            if ("NodeID".toLowerCase().equals(columnName)) {
+            	report.setNodeID(resultSet.getInt("NodeID"));
+            }            
+            if ("NodeName".toLowerCase().equals(columnName)) {
+            	report.setNodeName(resultSet.getString("NodeName"));
+            }
+            if ("NodeCount".toLowerCase().equals(columnName)) {
+            	report.setNodeCount(resultSet.getInt("NodeCount"));
+            }
+            if ("NodePercentage".toLowerCase().equals(columnName)) {
+            	report.setNodePercentage(resultSet.getInt("NodePercentage"));
+            }
+            if ("NodeSuccessPercentage".toLowerCase().equals(columnName)) {
+            	report.setNodeSuccessPercentage(resultSet.getInt("NodeSuccessPercentage"));
+            }
         }
         
         return report;
