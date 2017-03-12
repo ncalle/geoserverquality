@@ -1,63 +1,137 @@
 package service;
 
+import java.util.Iterator;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
-import java.io.Serializable;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
+
+import dao.DAOException;
+import dao.ReportBean;
+import dao.ReportBeanRemote;
+import entity.Report;
  
-@ManagedBean
-public class ReportsBean implements Serializable {
+@ManagedBean(name = "reportsBean")
+@ViewScoped
+public class ReportsBean { 
+	private List<Report> listEvaluationSuccessVsFailed;
+	private PieChartModel pieChartEvaluationSuccessVsFailed;
+    
+	private List<Report> listSuccessEvaluationPerProfile;
+	private BarChartModel barChartSuccessEvaluationPerProfile;
+	
+	private LineChartModel mediaResponseTime;
  
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-    private PieChartModel pieChartServicesPerInstitution;
-    private LineChartModel mediaResponseTime;
- 
+    @EJB
+	private ReportBeanRemote rDao = new ReportBean();
+    
     @PostConstruct
     public void init() {
-        createPieModels();
-    }
-      
-    public PieChartModel getPieChartServicesPerInstitution() {
-        return pieChartServicesPerInstitution;
-    }
-     
-    private void createPieModels() {
-        createPieChartServicesPerInstitution();
-        createAnimatedModels();
+		try {
+			setListEvaluationSuccessVsFailed(rDao.evaluationSuccessVsFailed());
+			setListSuccessEvaluationPerProfile(rDao.successEvaluationPerProfile());
+            createModels();
+    	} catch(DAOException e) {
+    		e.printStackTrace();
+    	}      
     }
     
-	public LineChartModel getMediaResponseTime() {
-		return mediaResponseTime;
+	public List<Report> getListEvaluationSuccessVsFailed() {
+		return listEvaluationSuccessVsFailed;
 	}
 
+	public void setListEvaluationSuccessVsFailed(List<Report> listEvaluationSuccessVsFailed) {
+		this.listEvaluationSuccessVsFailed= listEvaluationSuccessVsFailed;
+	}
+    	public LineChartModel getMediaResponseTime() {
+		return mediaResponseTime;
+	}
+	
 	public void setMediaResponseTime(LineChartModel mediaResponseTime) {
 		this.mediaResponseTime = mediaResponseTime;
 	}
+
+	public PieChartModel getPieChartEvaluationSuccessVsFailed() {
+		return pieChartEvaluationSuccessVsFailed;
+	}
+
+	public void setPieChartEvaluationSuccessVsFailed(PieChartModel pieChartEvaluationSuccessVsFailed) {
+		this.pieChartEvaluationSuccessVsFailed = pieChartEvaluationSuccessVsFailed;
+	}
+	
+	public List<Report> getListSuccessEvaluationPerProfile() {
+		return listSuccessEvaluationPerProfile;
+	}
+
+	public void setListSuccessEvaluationPerProfile(List<Report> listSuccessEvaluationPerProfile) {
+		this.listSuccessEvaluationPerProfile = listSuccessEvaluationPerProfile;
+	}
+
+	public BarChartModel getBarChartSuccessEvaluationPerProfile() {
+		return barChartSuccessEvaluationPerProfile;
+	}
+
+	public void setBarChartSuccessEvaluationPerProfile(BarChartModel barChartSuccessEvaluationPerProfile) {
+		this.barChartSuccessEvaluationPerProfile = barChartSuccessEvaluationPerProfile;
+	}
+
+	
+    private void createModels() {
+        createPieChartEvaluationSuccessVsFailed();
+        createBarChartSuccessEvaluationPerProfile();
+        createAnimatedModels();
+    }
      
-    private void createPieChartServicesPerInstitution() {
-    	pieChartServicesPerInstitution = new PieChartModel();
-         
-    	pieChartServicesPerInstitution.set("Brand 1", 540);
-    	pieChartServicesPerInstitution.set("Brand 2", 325);
-    	pieChartServicesPerInstitution.set("Brand 3", 702);
-    	pieChartServicesPerInstitution.set("Brand 4", 421);
-         
-    	pieChartServicesPerInstitution.setTitle("Custom Pie");
-    	pieChartServicesPerInstitution.setLegendPosition("e");
-    	pieChartServicesPerInstitution.setFill(false);
-    	pieChartServicesPerInstitution.setShowDataLabels(true);
-    	pieChartServicesPerInstitution.setDiameter(150);
+    private void createPieChartEvaluationSuccessVsFailed() {    	pieChartEvaluationSuccessVsFailed = new PieChartModel();
+    	Report report = null;
+    	    	
+		Iterator<Report> iterator = listEvaluationSuccessVsFailed.iterator();
+		if (iterator.hasNext()) {
+			report = iterator.next();			
+				
+			if (report.getTotalEvaluationCount() == 0){
+				pieChartEvaluationSuccessVsFailed.set("No existen resultados", 100);
+			}
+			else{
+				pieChartEvaluationSuccessVsFailed.set("Exitos", report.getSuccessPercentage());
+				pieChartEvaluationSuccessVsFailed.set("Fracasos", report.getFailPercentage());				
+			}				
+		}
+         		pieChartEvaluationSuccessVsFailed.setTitle("Exitos vs Fracasos");		pieChartEvaluationSuccessVsFailed.setLegendPosition("e");		pieChartEvaluationSuccessVsFailed.setFill(false);		pieChartEvaluationSuccessVsFailed.setShowDataLabels(true);		pieChartEvaluationSuccessVsFailed.setDiameter(150);
     }
     
-    private void createAnimatedModels() {
+    private void createBarChartSuccessEvaluationPerProfile() {
+    	barChartSuccessEvaluationPerProfile = new BarChartModel();
+		Report report = null;
+    	
+        ChartSeries exitos = new ChartSeries();
+        ChartSeries fracasos = new ChartSeries();
+        exitos.setLabel("Exitos");
+        fracasos.setLabel("Fracasos");
+        
+		Iterator<Report> iterator = listSuccessEvaluationPerProfile.iterator();
+		while (iterator.hasNext()) {
+			report = iterator.next();			
+			if (report.getProfileName() != null && report.getProfileSuccessPercentage() != null){
+
+				exitos.set(report.getProfileName(), report.getProfileSuccessPercentage());
+		        fracasos.set(report.getProfileName(), (100 - report.getProfileSuccessPercentage()));				
+			}
+		}
+		barChartSuccessEvaluationPerProfile.addSeries(exitos);
+		barChartSuccessEvaluationPerProfile.addSeries(fracasos);
+    }
+        private void createAnimatedModels() {
     	mediaResponseTime = initLinearModel();
     	mediaResponseTime.setTitle("Line Chart");
     	mediaResponseTime.setAnimate(true);
@@ -92,6 +166,5 @@ public class ReportsBean implements Serializable {
         model.addSeries(series2);
          
         return model;
-    }
-     
+    }   
 }

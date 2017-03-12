@@ -3001,6 +3001,228 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 /* ****************************************************************************************************** */
+/* ****************************************************************************************************** */
+--DROP FUNCTION report_geographic_services_per_institution();
+CREATE OR REPLACE FUNCTION report_geographic_services_per_institution ()
+RETURNS TABLE (InstitutionID INT, Name VARCHAR(70), GeographicServicesCount BIGINT, GeographicServicesPercentage NUMERIC) AS $$
+/************************************************************************************************************
+** Name: report_geographic_services_per_institution
+**
+** Desc: Devuelve la cantidad de servicios geograficos presentes por institucion
+**
+** 2017/03/09 - Created
+**
+*************************************************************************************************************/
+DECLARE v_TotalGeographicServices BIGINT;
+
+BEGIN
+  
+   SELECT COUNT(*) FROM GeographicServices gs INTO v_TotalGeographicServices;
+
+   RETURN QUERY
+   SELECT i.InstitutionID
+      , i.Name
+      , COUNT(gs.GeographicServicesID) AS GeographicServicesCount
+      , CASE WHEN v_TotalGeographicServices = 0 THEN 0 ELSE ((COUNT(gs.GeographicServicesID) * 100.00) / v_TotalGeographicServices) END AS GeographicServicesPercentage
+   FROM Institution i
+   INNER JOIN Node n ON n.InstitutionID = i.InstitutionID
+   INNER JOIN GeographicServices gs ON gs.NodeID = n.NodeID
+   GROUP BY i.InstitutionID
+      , i.Name
+   ORDER BY COUNT(gs.GeographicServicesID) DESC;
+               
+END;
+$$ LANGUAGE plpgsql;
+/* ****************************************************************************************************** */
+/* ****************************************************************************************************** */
+--DROP FUNCTION report_evaluation_success_vs_failed();
+CREATE OR REPLACE FUNCTION report_evaluation_success_vs_failed ()
+RETURNS TABLE (SuccessCount BIGINT, FailCount BIGINT, SuccessPercentage NUMERIC, FailPercentage NUMERIC, TotalEvaluationCount BIGINT) AS $$
+/************************************************************************************************************
+** Name: report_evaluation_success_vs_failed
+**
+** Desc: Devuelve la cantidad de exitos sobre la cantidad fracasos del total de evaluaciones.
+**
+** 2017/03/09 - Created
+**
+*************************************************************************************************************/
+DECLARE v_SuccessCount BIGINT;
+DECLARE v_FailCount BIGINT;
+DECLARE v_SuccessPercentage NUMERIC;
+DECLARE v_FailPercentage NUMERIC;
+DECLARE v_TotalEvaluationCount BIGINT;
+
+BEGIN
+  
+   SELECT COUNT(*)
+   FROM Evaluation e
+   WHERE e.SuccessFlag = TRUE
+   INTO v_SuccessCount;
+
+   SELECT COUNT(*)
+   FROM Evaluation e
+   WHERE e.SuccessFlag = FALSE
+   INTO v_FailCount;
+
+   SELECT COUNT(*)
+   FROM Evaluation e
+   INTO v_TotalEvaluationCount;
+
+   SELECT CASE WHEN v_TotalEvaluationCount = 0 THEN 0 ELSE (v_SuccessCount * 100.00 ) / v_TotalEvaluationCount END
+   INTO v_SuccessPercentage;
+
+   SELECT CASE WHEN v_TotalEvaluationCount = 0 THEN 0 ELSE (v_FailCount * 100.00) / v_TotalEvaluationCount END
+   INTO v_FailPercentage;
+
+   RETURN QUERY
+   SELECT
+      v_SuccessCount
+      , v_FailCount
+      , v_SuccessPercentage
+      , v_FailPercentage
+      , v_TotalEvaluationCount;
+END;
+$$ LANGUAGE plpgsql;
+/* ****************************************************************************************************** */
+/* ****************************************************************************************************** */
+--DROP FUNCTION report_evaluations_per_metric();
+CREATE OR REPLACE FUNCTION report_evaluations_per_metric ()
+RETURNS TABLE (MetricID INT, MetricName VARCHAR(100), EvaluationPerMetricCount BIGINT, EvaluationPerMetricPercentage NUMERIC) AS $$
+/************************************************************************************************************
+** Name: report_evaluations_per_metric
+**
+** Desc: Devuelve la cantidad de evaluaciones realizadas por metrica
+**
+** 2017/03/09 - Created
+**
+*************************************************************************************************************/
+DECLARE v_TotalEvaluationCount BIGINT;
+BEGIN
+
+   SELECT COUNT(*)
+   FROM Evaluation e
+   INTO v_TotalEvaluationCount;
+  
+   RETURN QUERY
+   SELECT e.MetricID
+      , m.Name
+      , COUNT(e.MetricID) AS EvaluationPerMetricCount
+      , CASE WHEN v_TotalEvaluationCount = 0 THEN 0 ELSE ((COUNT(e.MetricID) * 100.00) / v_TotalEvaluationCount) END AS EvaluationPerMetricPercentage
+   FROM Evaluation e
+   INNER JOIN Metric m ON m.MetricID = e.MetricID
+   GROUP BY e.MetricID
+      , m.Name
+   ORDER BY COUNT(e.MetricID) DESC;
+               
+END;
+$$ LANGUAGE plpgsql;
+/* ****************************************************************************************************** */
+/* ****************************************************************************************************** */
+--DROP FUNCTION report_success_evaluation_per_profile();
+CREATE OR REPLACE FUNCTION report_success_evaluation_per_profile ()
+RETURNS TABLE (ProfileID INT, ProfileName VARCHAR(70), ProfileCount BIGINT, ProfilePercentage NUMERIC, ProfileSuccessPercentage BIGINT) AS $$
+/************************************************************************************************************
+** Name: report_success_evaluation_per_profile
+**
+** Desc: Devuelve la cantidad y el porcentaje de exitos por perfil
+**
+** 2017/03/11 - Created
+**
+*************************************************************************************************************/
+DECLARE v_TotalEvaluationSummary BIGINT;
+
+BEGIN
+  
+   SELECT COUNT(*) FROM EvaluationSummary es INTO v_TotalEvaluationSummary;
+
+   RETURN QUERY
+   SELECT p.ProfileID
+      , p.Name AS ProfileName
+      , COUNT(es.EvaluationSummaryID) AS ProfileCount
+      , CASE WHEN v_TotalEvaluationSummary = 0 THEN 0 ELSE ((COUNT(es.EvaluationSummaryID) * 100.00) / v_TotalEvaluationSummary) END AS ProfilePercentage
+      , CASE WHEN COUNT(es.EvaluationSummaryID) = 0 THEN 0 ELSE ((SELECT SUM(ies.SuccessPercentage) FROM EvaluationSummary ies WHERE ies.ProfileID = p.ProfileID) / COUNT(es.EvaluationSummaryID)) END AS ProfileSuccessPercentage
+   FROM EvaluationSummary es
+   INNER JOIN Profile p ON es.ProfileID = p.ProfileID
+   GROUP BY p.ProfileID
+      , p.Name
+   ORDER BY COUNT (es.EvaluationSummaryID) DESC;
+               
+END;
+$$ LANGUAGE plpgsql;
+/* ****************************************************************************************************** */
+/* ****************************************************************************************************** */
+--DROP FUNCTION report_success_evaluation_per_institution();
+CREATE OR REPLACE FUNCTION report_success_evaluation_per_institution ()
+RETURNS TABLE (InstitutionID INT, InstitutionName VARCHAR(70), InstitutionCount BIGINT, InstitutionPercentage NUMERIC, InstitutionSuccessPercentage BIGINT) AS $$
+/************************************************************************************************************
+** Name: report_success_evaluation_per_institution
+**
+** Desc: Devuelve la cantidad y el porcentaje de exitos por institucion
+**
+** 2017/03/11 - Created
+**
+*************************************************************************************************************/
+DECLARE v_TotalEvaluationSummary BIGINT;
+
+BEGIN
+  
+   SELECT COUNT(*) FROM EvaluationSummary es INTO v_TotalEvaluationSummary;
+
+   RETURN QUERY
+   SELECT i.InstitutionID
+      , i.Name AS InstitutionName
+      , COUNT(es.EvaluationSummaryID) AS InstitutionCount
+      , CASE WHEN v_TotalEvaluationSummary = 0 THEN 0 ELSE ((COUNT(es.EvaluationSummaryID) * 100.00) / v_TotalEvaluationSummary) END AS InstitutionPercentage
+      , CASE WHEN COUNT(es.EvaluationSummaryID) = 0 THEN 0 ELSE ((SELECT SUM(ies.SuccessPercentage) FROM EvaluationSummary ies WHERE ies.MeasurableObjectID = mo.MeasurableObjectID) / COUNT(es.EvaluationSummaryID)) END AS InstitutionSuccessPercentage
+   FROM EvaluationSummary es
+   INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
+   INNER JOIN GeographicServices gs ON gs.GeographicServicesID = mo.EntityID AND mo.EntityType = 'Servicio'
+   INNER JOIN Node n ON n.NodeID = gs.NodeID
+   INNER JOIN Institution i ON i.InstitutionID = n.InstitutionID
+   GROUP BY i.InstitutionID
+      , i.Name
+      , mo.MeasurableObjectID
+   ORDER BY COUNT (es.EvaluationSummaryID) DESC;
+               
+END;
+$$ LANGUAGE plpgsql;
+/* ****************************************************************************************************** */
+/* ****************************************************************************************************** */
+--DROP FUNCTION report_success_evaluation_per_node();
+CREATE OR REPLACE FUNCTION report_success_evaluation_per_node ()
+RETURNS TABLE (NodeID INT, NodeName VARCHAR(70), NodeCount BIGINT, NodePercentage NUMERIC, NodeSuccessPercentage BIGINT) AS $$
+/************************************************************************************************************
+** Name: report_success_evaluation_per_node
+**
+** Desc: Devuelve la cantidad y el porcentaje de exitos por institucion
+**
+** 2017/03/11 - Created
+**
+*************************************************************************************************************/
+DECLARE v_TotalEvaluationSummary BIGINT;
+
+BEGIN
+  
+   SELECT COUNT(*) FROM EvaluationSummary es INTO v_TotalEvaluationSummary;
+
+   RETURN QUERY
+   SELECT n.NodeID
+      , n.Name AS NodeName
+      , COUNT(es.EvaluationSummaryID) AS NodeCount
+      , CASE WHEN v_TotalEvaluationSummary = 0 THEN 0 ELSE ((COUNT(es.EvaluationSummaryID) * 100.00) / v_TotalEvaluationSummary) END AS NodePercentage
+      , CASE WHEN COUNT(es.EvaluationSummaryID) = 0 THEN ((SELECT SUM(ies.SuccessPercentage) FROM EvaluationSummary ies WHERE ies.MeasurableObjectID = mo.MeasurableObjectID) / COUNT(es.EvaluationSummaryID)) END AS NodeSuccessPercentage
+   FROM EvaluationSummary es
+   INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
+   INNER JOIN GeographicServices gs ON gs.GeographicServicesID = mo.EntityID AND mo.EntityType = 'Servicio'
+   INNER JOIN Node n ON n.NodeID = gs.NodeID
+   GROUP BY n.NodeID
+      , n.Name
+      , mo.MeasurableObjectID
+   ORDER BY COUNT (es.EvaluationSummaryID) DESC;
+               
+END;
+$$ LANGUAGE plpgsql;
+/* ****************************************************************************************************** */
 /*                                   FIN - 4 - STORED FUNCTIONS                                           */
 /* ****************************************************************************************************** */ 
 /* ****************************************************************************************************** */
