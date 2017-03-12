@@ -1,6 +1,6 @@
 ﻿--DROP FUNCTION report_geographic_services_per_institution();
 CREATE OR REPLACE FUNCTION report_geographic_services_per_institution ()
-RETURNS TABLE (InstitutionID INT, Name VARCHAR(70), GeographicServicesCount BIGINT, GeographicServicesPercentage NUMERIC) AS $$
+RETURNS TABLE (InstitutionID INT, InstitutionName VARCHAR(70), GeographicServicesCount BIGINT, GeographicServicesPercentage NUMERIC) AS $$
 /************************************************************************************************************
 ** Name: report_geographic_services_per_institution
 **

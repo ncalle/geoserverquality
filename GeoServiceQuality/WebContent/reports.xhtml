@@ -52,15 +52,60 @@
 		</nav>
              
 	<div class="container">
+
+      <div class="row">
+        <div class="col-md-6">	
+		  <h:form id="evaluationsPerMetric" method="post" >
+			<h4 class="form-signin-heading">Total de evaluaciones realizadas por Métrica.</h4>
+			<p:dataTable id="evaluationsPerMetrics" 
+			  value="#{reportsBean.listEvaluationsPerMetric}" 
+			  var="epmitem" 
+			  tableStyle="table-layout: auto;"
+			  widgetVar="epm">
+					
+				<p:column headerText="Métrica" >
+			  		<h:outputText value="#{epmitem.getMetricName()}" />
+				</p:column>
+				
+				<p:column headerText="#Evaluaciónes" >
+			  		<h:outputText value="#{epmitem.getEvaluationPerMetricCount()}" />
+				</p:column>
+			</p:dataTable>
+		  </h:form>
+		</div>
+			
+		<div class="col-md-6">
+		  <h:form id="servicesPerInstitution" method="post" >	
+			<h4 class="form-signin-heading">Total de Servicios Geograficos disponibles por Institución.</h4>
+			<p:dataTable id="servicesPerInstitution" 
+			  value="#{reportsBean.listGeographicServicesPerInstitution}" 
+			  var="spiitem" 
+			  tableStyle="table-layout: auto;"
+			  widgetVar="spi">
+					
+				<p:column headerText="Institución" >
+			  		<h:outputText value="#{spiitem.getInstitutionName()}" />
+				</p:column>
+				
+				<p:column headerText="#Servicios" >
+			  		<h:outputText value="#{spiitem.getGeographicServicesCount()}" />
+				</p:column>	
+			</p:dataTable>
+		  </h:form>
+		</div>
+	  </div>
+
+	  <hr></hr>
+				
       <div class="row">
         <div class="col-md-6">
-          <h2>Exitos vs Fracasos</h2>
+          <h4 class="form-signin-heading">Exitos vs Fracasos</h4>
           <p>Muestra en cantidades porcentuales el total de evaluaciónes con resultado exitoso contra el porcentaje de evaluaciónes con resultado fallido. </p>
           <p:chart type="pie" model="#{reportsBean.pieChartEvaluationSuccessVsFailed}" />
           <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
         </div>
         <div class="col-md-6">
-          <h2>Exitos por Perfil</h2>
+          <h4 class="form-signin-heading">Exitos por Perfil</h4>
           <p>Muestra el porcentaje de exitos que se han obtenido hasta el momento, evaluando los distintos Perfiles existentes.</p>
           <p:chart type="bar" model="#{reportsBean.barChartSuccessEvaluationPerProfile}" />
           <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
@@ -69,21 +114,21 @@
      
       <hr></hr>
      
-	  <h2 style="text-align: center;">Exitos por Institución</h2>
+	  <h4 class="form-signin-heading" style="text-align: center;">Exitos por Institución</h4>
 	  <p>Muestra el porcentaje de exitos que se han obtenido hasta el momento, evaluando los Objetos Medibles pertenecientes a cada Institución.</p>
 	    <p:chart type="bar" model="#{reportsBean.barChartSuccessEvaluationPerInstitution}" />
 	  <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
 
       <hr></hr>
 
-	  <h2 style="text-align: center;">Exitos por Nodo</h2>
+	  <h4 class="form-signin-heading" style="text-align: center;">Exitos por Nodo</h4>
 	  <p>Muestra el porcentaje de exitos que se han obtenido hasta el momento, evaluando los Objetos Medibles pertenecientes a cada Nodo.</p>
 	    <p:chart type="bar" model="#{reportsBean.barChartSuccessEvaluationPerNode}" />
 	  <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
 
       <hr></hr>
       	  
-	  <h2>Tiempo medio de respuesta</h2>
+	  <h4 class="form-signin-heading">Tiempo medio de respuesta</h4>
       <p>Muestra el tiempo de respuesta medio de los últimas 100 evaluaciones realizadas para los distintos Nodos (HARCODED).</p>
       <p:chart type="line" model="#{reportsBean.mediaResponseTime}" />
       <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>

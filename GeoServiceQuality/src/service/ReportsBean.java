@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -38,8 +37,10 @@ public class ReportsBean {
 	private HorizontalBarChartModel barChartSuccessEvaluationPerNode;
     private List<Report> listSuccessEvaluationPerNode;
 	
-	//geographic_services_per_institution
-	//evaluations_per_metric
+    private List<Report> listEvaluationsPerMetric;
+    private List<Report> listGeographicServicesPerInstitution;
+    
+    
 	private LineChartModel mediaResponseTime;
  
     @EJB
@@ -52,6 +53,9 @@ public class ReportsBean {
 			setListSuccessEvaluationPerProfile(rDao.successEvaluationPerProfile());
 			setListSuccessEvaluationPerInstitution(rDao.successEvaluationPerInstitution());
 			setListSuccessEvaluationPerNode(rDao.successEvaluationPerNode());
+			setListEvaluationsPerMetric(rDao.evaluationsPerMetric());
+			setListGeographicServicesPerInstitution(rDao.geographicServicesPerInstitution());
+			
             createModels();
     	} catch(DAOException e) {
     		e.printStackTrace();
@@ -128,7 +132,22 @@ public class ReportsBean {
 	public void setListSuccessEvaluationPerNode(List<Report> listSuccessEvaluationPerNode) {
 		this.listSuccessEvaluationPerNode = listSuccessEvaluationPerNode;
 	}
+	
+	public List<Report> getListEvaluationsPerMetric() {
+		return listEvaluationsPerMetric;
+	}
 
+	public void setListEvaluationsPerMetric(List<Report> listEvaluationsPerMetric) {
+		this.listEvaluationsPerMetric = listEvaluationsPerMetric;
+	}
+	
+	public List<Report> getListGeographicServicesPerInstitution() {
+		return listGeographicServicesPerInstitution;
+	}
+
+	public void setListGeographicServicesPerInstitution(List<Report> listGeographicServicesPerInstitution) {
+		this.listGeographicServicesPerInstitution = listGeographicServicesPerInstitution;
+	}
 	
     private void createModels() {
     	createPieChartEvaluationSuccessVsFailed();
@@ -154,13 +173,13 @@ public class ReportsBean {
 				pieChartEvaluationSuccessVsFailed.set("Fracasos", report.getFailPercentage());				
 			}				
 		}
-         		pieChartEvaluationSuccessVsFailed.setTitle("Exitos vs Fracasos");		pieChartEvaluationSuccessVsFailed.setLegendPosition("e");		pieChartEvaluationSuccessVsFailed.setFill(false);		pieChartEvaluationSuccessVsFailed.setShowDataLabels(true);		pieChartEvaluationSuccessVsFailed.setDiameter(150);
+         		//pieChartEvaluationSuccessVsFailed.setTitle("Exitos vs Fracasos");		pieChartEvaluationSuccessVsFailed.setLegendPosition("e");		pieChartEvaluationSuccessVsFailed.setFill(false);		pieChartEvaluationSuccessVsFailed.setShowDataLabels(true);		pieChartEvaluationSuccessVsFailed.setDiameter(150);
     }
     
     private void createBarChartSuccessEvaluationPerProfile() { 	
     	barChartSuccessEvaluationPerProfile = new BarChartModel();
     	
-    	barChartSuccessEvaluationPerProfile.setTitle("Exitos por Perfil");
+    	//barChartSuccessEvaluationPerProfile.setTitle("Exitos por Perfil");
     	barChartSuccessEvaluationPerProfile.setAnimate(true);
     	barChartSuccessEvaluationPerProfile.setLegendPosition("ne");
         Axis yAxis = barChartSuccessEvaluationPerProfile.getAxis(AxisType.Y);
@@ -200,7 +219,7 @@ public class ReportsBean {
          
         barChartSuccessEvaluationPerInstitution.addSeries(exitos);
          
-        barChartSuccessEvaluationPerInstitution.setTitle("Exitos por Institución");
+        //barChartSuccessEvaluationPerInstitution.setTitle("Exitos por Institución");
         barChartSuccessEvaluationPerInstitution.setAnimate(true);
         barChartSuccessEvaluationPerInstitution.setLegendPosition("e");
         barChartSuccessEvaluationPerInstitution.setStacked(true);
@@ -232,7 +251,7 @@ public class ReportsBean {
          
 		barChartSuccessEvaluationPerNode.addSeries(exitos);
          
-		barChartSuccessEvaluationPerNode.setTitle("Exitos por Nodo");
+		//barChartSuccessEvaluationPerNode.setTitle("Exitos por Nodo");
 		barChartSuccessEvaluationPerNode.setAnimate(true);
 		barChartSuccessEvaluationPerNode.setLegendPosition("e");
 		barChartSuccessEvaluationPerNode.setStacked(true);
@@ -251,7 +270,7 @@ public class ReportsBean {
     private void initLinearModel() {
         mediaResponseTime = new LineChartModel();
         
-    	mediaResponseTime.setTitle("Tiempo medio de respuesta");
+    	//mediaResponseTime.setTitle("Tiempo medio de respuesta");
     	mediaResponseTime.setAnimate(true);
     	mediaResponseTime.setLegendPosition("se");
         Axis yAxis = mediaResponseTime.getAxis(AxisType.Y);
