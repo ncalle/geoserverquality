@@ -13,6 +13,7 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
@@ -31,6 +32,12 @@ public class ReportsBean {
 	private List<Report> listSuccessEvaluationPerProfile;
 	private BarChartModel barChartSuccessEvaluationPerProfile;
 	
+	private HorizontalBarChartModel barChartSuccessEvaluationPerInstitution;
+    private List<Report> listSuccessEvaluationPerInstitution;
+	
+	//success_evaluation_per_node
+	//geographic_services_per_institution
+	//evaluations_per_metric
 	private LineChartModel mediaResponseTime;
  
     @EJB
@@ -41,6 +48,7 @@ public class ReportsBean {
 		try {
 			setListEvaluationSuccessVsFailed(rDao.evaluationSuccessVsFailed());
 			setListSuccessEvaluationPerProfile(rDao.successEvaluationPerProfile());
+			setListSuccessEvaluationPerInstitution(rDao.successEvaluationPerInstitution());
             createModels();
     	} catch(DAOException e) {
     		e.printStackTrace();
@@ -85,25 +93,31 @@ public class ReportsBean {
 	public void setBarChartSuccessEvaluationPerProfile(BarChartModel barChartSuccessEvaluationPerProfile) {
 		this.barChartSuccessEvaluationPerProfile = barChartSuccessEvaluationPerProfile;
 	}
+	
+	public HorizontalBarChartModel getBarChartSuccessEvaluationPerInstitution() {
+		return barChartSuccessEvaluationPerInstitution;
+	}
+
+	public void setBarChartSuccessEvaluationPerInstitution(HorizontalBarChartModel barChartSuccessEvaluationPerInstitution) {
+		this.barChartSuccessEvaluationPerInstitution = barChartSuccessEvaluationPerInstitution;
+	}
+
+	public List<Report> getListSuccessEvaluationPerInstitution() {
+		return listSuccessEvaluationPerInstitution;
+	}
+
+	public void setListSuccessEvaluationPerInstitution(List<Report> listSuccessEvaluationPerInstitution) {
+		this.listSuccessEvaluationPerInstitution = listSuccessEvaluationPerInstitution;
+	}
 
 	
     private void createModels() {
-    	createAnimatedModels();
     	createPieChartEvaluationSuccessVsFailed();
         createBarChartSuccessEvaluationPerProfile();
+        createBarChartSuccessEvaluationPerInstitution();
+    	initLinearModel();
     }
-    
-    
-    private void createAnimatedModels() {    	
-    	mediaResponseTime = initLinearModel();
-    	mediaResponseTime.setTitle("Line Chart");
-    	mediaResponseTime.setAnimate(true);
-    	mediaResponseTime.setLegendPosition("se");
-        Axis yAxis = mediaResponseTime.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(10);
-    }
-    
+        
      
     private void createPieChartEvaluationSuccessVsFailed() {    	pieChartEvaluationSuccessVsFailed = new PieChartModel();
     	Report report = null;
@@ -142,19 +156,58 @@ public class ReportsBean {
 		while (iterator.hasNext()) {
 			report = iterator.next();			
 			if (report.getProfileName() != null && report.getProfileSuccessPercentage() != null){
-
 				exitos.set(report.getProfileName(), report.getProfileSuccessPercentage());				
 			}
 		}
 		barChartSuccessEvaluationPerProfile.addSeries(exitos);
     }
     
+    private void createBarChartSuccessEvaluationPerInstitution() {
+    	barChartSuccessEvaluationPerInstitution = new HorizontalBarChartModel();
+         
+		Report report = null;
+    	
+        ChartSeries exitos = new ChartSeries();
+        exitos.setLabel("Exitos");
+        
+		Iterator<Report> iterator = listSuccessEvaluationPerInstitution.iterator();
+		while (iterator.hasNext()) {
+			report = iterator.next();			
+			if (report.getInstitutionName() != null && report.getInstitutionSuccessPercentage() != null){
+				exitos.set(report.getInstitutionName(), report.getInstitutionSuccessPercentage());				
+			}
+		}
+         
+        barChartSuccessEvaluationPerInstitution.addSeries(exitos);
+         
+        barChartSuccessEvaluationPerInstitution.setTitle("Exitos por Institución");
+        barChartSuccessEvaluationPerInstitution.setAnimate(true);
+        barChartSuccessEvaluationPerInstitution.setLegendPosition("e");
+        barChartSuccessEvaluationPerInstitution.setStacked(true);
+         
+        Axis xAxis = barChartSuccessEvaluationPerInstitution.getAxis(AxisType.X);
+        xAxis.setLabel("%Exitos");
+        xAxis.setMin(0);
+        xAxis.setMax(100);
+         
+        Axis yAxis = barChartSuccessEvaluationPerInstitution.getAxis(AxisType.Y);
+        yAxis.setLabel("Institución");   
+    }
     
-    private LineChartModel initLinearModel() {
-        LineChartModel model = new LineChartModel();
+    
+    
+    private void initLinearModel() {
+        mediaResponseTime = new LineChartModel();
+        
+    	mediaResponseTime.setTitle("Tiempo medio de respuesta");
+    	mediaResponseTime.setAnimate(true);
+    	mediaResponseTime.setLegendPosition("se");
+        Axis yAxis = mediaResponseTime.getAxis(AxisType.Y);
+        yAxis.setMin(0);
+        yAxis.setMax(10);
  
         LineChartSeries series1 = new LineChartSeries();
-        series1.setLabel("Series 1");
+        series1.setLabel("Nodo 1");
  
         series1.set(1, 2);
         series1.set(2, 1);
@@ -163,7 +216,7 @@ public class ReportsBean {
         series1.set(5, 8);
  
         LineChartSeries series2 = new LineChartSeries();
-        series2.setLabel("Series 2");
+        series2.setLabel("Nodo 2");
  
         series2.set(1, 6);
         series2.set(2, 3);
@@ -171,9 +224,8 @@ public class ReportsBean {
         series2.set(4, 7);
         series2.set(5, 9);
  
-        model.addSeries(series1);
-        model.addSeries(series2);
+        mediaResponseTime.addSeries(series1);
+        mediaResponseTime.addSeries(series2);
          
-        return model;
-    }   
+    } 
 }

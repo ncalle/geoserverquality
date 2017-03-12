@@ -29,10 +29,9 @@ public class ReportBean implements ReportBeanRemote {
     private static final String SUCCESS_EVALUATIONS_PER_PROFILE =
             "SELECT ProfileID, ProfileName, ProfileCount, ProfilePercentage, ProfileSuccessPercentage FROM report_success_evaluation_per_profile ()";
     private static final String SUCCESS_EVALUATIONS_PER_INSTITUTION =
-            "SELECT * FROM report_success_evaluation_per_institution ()";
+            "SELECT InstitutionID, InstitutionName, InstitutionCount, InstitutionPercentage, InstitutionSuccessPercentage FROM report_success_evaluation_per_institution ()";
     private static final String SUCCESS_EVALUATIONS_PER_NODE =
-            "SELECT * FROM report_success_evaluation_per_node ()";
-    
+            "SELECT * FROM report_success_evaluation_per_node ()";   
     
     private DAOFactory daoFactory;
 
@@ -213,6 +212,9 @@ public class ReportBean implements ReportBeanRemote {
     	report.setEvaluationPerMetricPercentage(null);
     	report.setEvaluationPerMetricCount(null);
     	report.setMetricName(null);
+    	report.setInstitutionCount(null);
+        report.setInstitutionPercentage(null);
+        report.setInstitutionSuccessPercentage(null);
     	
         int numberOfColumns = rsMetaData.getColumnCount();
         for (int i = 1; i < numberOfColumns + 1; i++) {
@@ -290,7 +292,20 @@ public class ReportBean implements ReportBeanRemote {
 
             if ("ProfileSuccessPercentage".toLowerCase().equals(columnName)) {
             	report.setProfileSuccessPercentage(resultSet.getInt("ProfileSuccessPercentage"));
-            }         
+            }
+            
+            if ("InstitutionCount".toLowerCase().equals(columnName)) {
+            	report.setInstitutionCount(resultSet.getInt("InstitutionCount"));
+            }
+            
+            if ("InstitutionPercentage".toLowerCase().equals(columnName)) {
+            	report.setInstitutionPercentage(resultSet.getInt("InstitutionPercentage"));
+            }
+
+            if ("InstitutionSuccessPercentage".toLowerCase().equals(columnName)) {
+            	report.setInstitutionSuccessPercentage(resultSet.getInt("InstitutionSuccessPercentage"));
+            }
+
         }
         
         return report;
