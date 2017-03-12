@@ -133,6 +133,16 @@ public class EvaluationBeanList {
 		listProfileMetric = pmDao.profileMetricList(selectedProfile, null);
 	}
 	
+	public void onRowSelectProfile(SelectEvent event) {
+		List<MeasurableObject> list = new ArrayList<>();
+		for(MeasurableObject mo : listMeasurableObjects){
+			if(mo.getEntityType().equals(selectedProfile.getGranurality())) {
+				list.add(mo);
+			}
+		}
+		listMeasurableObjects = list;
+	}
+	
 	public void setProfileResult(String profileResult) {
 		this.profileResult = profileResult;
 	}
