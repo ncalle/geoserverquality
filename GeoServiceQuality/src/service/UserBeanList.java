@@ -40,6 +40,9 @@ public class UserBeanList {
 	private Institution institution;
 	private List<MeasurableObject> listUserMeasurableObjects;
 	private MeasurableObject selectedUserMeasurableObject;
+	private boolean showMore;
+	private MeasurableObject userMeasurableObject;
+	private Integer userID;
 	
 	@EJB
 	private UserBeanRemote uDao = new UserBean();
@@ -122,6 +125,23 @@ public class UserBeanList {
 	public void setSelectedUserMeasurableObject(MeasurableObject selectedUserMeasurableObject) {
 		this.selectedUserMeasurableObject = selectedUserMeasurableObject;
 	}	
+	
+	public void setShowMore(boolean showMore) {
+		this.showMore = showMore;
+	}
+	
+	public void showLess() {
+		this.showMore = false;
+	}
+	
+	public boolean isShowMore() {
+		return showMore;
+	}
+	
+	public void showMore() {
+		this.showMore = true;
+		listUserMeasurableObjects = moDao.userMeasurableObjectsToAddGet(selectedUser.getUserId()); 
+	}
     	
 	public void deleteUser() {   	
     	uDao.delete(selectedUser);    	
@@ -163,4 +183,38 @@ public class UserBeanList {
 		FacesMessage msg = new FacesMessage("Objeto medible removido correctamente.");       
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+	
+	public Integer getUserID() {
+		return userID;
+	}
+
+	public void setUserID(Integer userID) {
+		this.userID = userID;
+	}
+		
+	public MeasurableObject getUserMeasurableObject() {
+		return userMeasurableObject;
+	}
+
+	public void setUserMeasurableObject(MeasurableObject userMeasurableObject) {
+		this.userMeasurableObject = userMeasurableObject;
+	}
+		
+	public void save() {
+    	FacesMessage msg;
+
+    	try{
+    		if(selectedUser!=null && userMeasurableObject!=null){
+    			uDao.userAddMeasurableObject(selectedUser.getUserId(), userMeasurableObject);
+    			listUserMeasurableObjects = moDao.userMeasurableObjectsToAddGet(selectedUser.getUserId()); 
+    			
+        		msg = new FacesMessage("El objeto medible fue asociado al usuario de manera correcta.");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+    		}
+    		
+    	} catch(DAOException e) {   		
+    		msg = new FacesMessage("Error al asociar el objeto medible con el usuario.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+    	}
+	}
 }
