@@ -53,32 +53,41 @@
              
 	<div class="container">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <h2>Exitos vs Fracasos</h2>
-          <p>Muestra en cantidades porcentuales el total de evaluaciónes con resultado exitoso (celeste) contra el porcentaje de evaluaciónes con resultado fallido (naranja). </p>
+          <p>Muestra en cantidades porcentuales el total de evaluaciónes con resultado exitoso contra el porcentaje de evaluaciónes con resultado fallido. </p>
           <p:chart type="pie" model="#{reportsBean.pieChartEvaluationSuccessVsFailed}" />
           <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <h2>Exitos por Perfil</h2>
-          <p>Muestra el porcentaje de exitos (celeste) que se han obtenido hasta el momento, evaluando los distintos Perfiles.</p>
+          <p>Muestra el porcentaje de exitos que se han obtenido hasta el momento, evaluando los distintos Perfiles existentes.</p>
           <p:chart type="bar" model="#{reportsBean.barChartSuccessEvaluationPerProfile}" />
           <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
        </div>
-        <div class="col-md-4">
-          <h2>Tiempo medio de respuesta</h2>
-          <p>Muestra el tiempo de respuesta medio de los últimas 10 evaluaciones realizadas.</p>
-          <p:chart type="line" model="#{reportsBean.mediaResponseTime}" />
-          <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
-        </div>
       </div>
      
       <hr></hr>
      
 	  <h2 style="text-align: center;">Exitos por Institución</h2>
-	  <p>Muestra el porcentaje de exitos (celeste) que se han obtenido hasta el momento, evaluando los Objetos Medibles pertenecientes a cada Institución.</p>
+	  <p>Muestra el porcentaje de exitos que se han obtenido hasta el momento, evaluando los Objetos Medibles pertenecientes a cada Institución.</p>
 	    <p:chart type="bar" model="#{reportsBean.barChartSuccessEvaluationPerInstitution}" />
 	  <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
+
+      <hr></hr>
+
+	  <h2 style="text-align: center;">Exitos por Nodo</h2>
+	  <p>Muestra el porcentaje de exitos que se han obtenido hasta el momento, evaluando los Objetos Medibles pertenecientes a cada Nodo.</p>
+	    <p:chart type="bar" model="#{reportsBean.barChartSuccessEvaluationPerNode}" />
+	  <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
+
+      <hr></hr>
+      	  
+	  <h2>Tiempo medio de respuesta</h2>
+      <p>Muestra el tiempo de respuesta medio de los últimas 100 evaluaciones realizadas para los distintos Nodos (HARCODED).</p>
+      <p:chart type="line" model="#{reportsBean.mediaResponseTime}" />
+      <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
+          
      </div> <!-- /container -->
 
 		<script src="../../assets/js/vendor/jquery.min.js"></script>
