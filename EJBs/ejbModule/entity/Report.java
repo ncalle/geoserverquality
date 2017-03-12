@@ -33,6 +33,10 @@ public class Report implements Serializable {
     private Integer ProfilePercentage;
     private Integer ProfileSuccessPercentage;
     
+    private Integer InstitutionCount;
+    private Integer InstitutionPercentage;
+    private Integer InstitutionSuccessPercentage;
+    
     public Integer getInstitutionID() {
 		return InstitutionID;
 	}
@@ -179,5 +183,29 @@ public class Report implements Serializable {
 
 	public void setProfileSuccessPercentage(Integer profileSuccessPercentage) {
 		ProfileSuccessPercentage = profileSuccessPercentage;
+	}
+
+	public Integer getInstitutionCount() {
+		return InstitutionCount;
+	}
+
+	public void setInstitutionCount(Integer institutionCount) {
+		InstitutionCount = institutionCount;
+	}
+
+	public Integer getInstitutionPercentage() {
+		return InstitutionPercentage;
+	}
+
+	public void setInstitutionPercentage(Integer institutionPercentage) {
+		InstitutionPercentage = institutionPercentage;
+	}
+
+	public Integer getInstitutionSuccessPercentage() {
+		return InstitutionSuccessPercentage;
+	}
+
+	public void setInstitutionSuccessPercentage(Integer institutionSuccessPercentage) {
+		InstitutionSuccessPercentage = institutionSuccessPercentage;
 	}
 }
