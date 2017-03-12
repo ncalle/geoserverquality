@@ -9,6 +9,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 
 import org.primefaces.model.DualListModel;
 
@@ -39,7 +40,8 @@ public class ProfileBeanAdd {
 	private void init()
 	{
 		listMetrics = mDao.list();
-		dualListMetrics = new DualListModel<>(new ArrayList<>(listMetrics), new ArrayList<Metric>()); 
+		//Se inicializa con el primer elemento a mostrar
+		filter("Ide");
 	}
 	
 
@@ -95,5 +97,23 @@ public class ProfileBeanAdd {
     		msg = new FacesMessage("Error al crear el Perfil.");
             FacesContext.getCurrentInstance().addMessage(null, msg);       		
     	}
+	}
+	
+	public void selectOneMenuListener(ValueChangeEvent event) {
+	    String granularitySelected = (String) event.getNewValue();
+	    filter(granularitySelected);
+	}
+	
+	
+	public void filter(String granularitySelected) {
+		System.out.println("filter.." + granularitySelected);
+		List<Metric> list = new ArrayList<>();
+	    for(Metric m:listMetrics){
+			if(m.getGranurality().equals(granularitySelected)){
+				list.add(m);
+			}
+		}
+	    
+	    dualListMetrics = new DualListModel<>(new ArrayList<>(list), new ArrayList<Metric>());
 	}
 }
