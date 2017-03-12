@@ -10,6 +10,8 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
@@ -24,7 +26,11 @@ import entity.Report;
 public class ReportsBean { 
 	private List<Report> listEvaluationSuccessVsFailed;
 	private PieChartModel pieChartEvaluationSuccessVsFailed;
-    private LineChartModel mediaResponseTime;
+    
+	private List<Report> listSuccessEvaluationPerProfile;
+	private BarChartModel barChartSuccessEvaluationPerProfile;
+	
+	private LineChartModel mediaResponseTime;
  
     @EJB
 	private ReportBeanRemote rDao = new ReportBean();
@@ -32,8 +38,9 @@ public class ReportsBean {
     @PostConstruct
     public void init() {
 		try {
-			setListEvaluationSuccessVsFailed(rDao.evaluationSuccessVsFailed());			
-            createPieModels();
+			setListEvaluationSuccessVsFailed(rDao.evaluationSuccessVsFailed());
+			setListSuccessEvaluationPerProfile(rDao.successEvaluationPerProfile());
+            createModels();
     	} catch(DAOException e) {
     		e.printStackTrace();
     	}      
@@ -62,8 +69,26 @@ public class ReportsBean {
 		this.pieChartEvaluationSuccessVsFailed = pieChartEvaluationSuccessVsFailed;
 	}
 	
-    private void createPieModels() {
+	public List<Report> getListSuccessEvaluationPerProfile() {
+		return listSuccessEvaluationPerProfile;
+	}
+
+	public void setListSuccessEvaluationPerProfile(List<Report> listSuccessEvaluationPerProfile) {
+		this.listSuccessEvaluationPerProfile = listSuccessEvaluationPerProfile;
+	}
+
+	public BarChartModel getBarChartSuccessEvaluationPerProfile() {
+		return barChartSuccessEvaluationPerProfile;
+	}
+
+	public void setBarChartSuccessEvaluationPerProfile(BarChartModel barChartSuccessEvaluationPerProfile) {
+		this.barChartSuccessEvaluationPerProfile = barChartSuccessEvaluationPerProfile;
+	}
+
+	
+    private void createModels() {
         createPieChartEvaluationSuccessVsFailed();
+        createBarChartSuccessEvaluationPerProfile();
         createAnimatedModels();
     }
      
@@ -83,6 +108,28 @@ public class ReportsBean {
 			}				
 		}
          		pieChartEvaluationSuccessVsFailed.setTitle("Exitos vs Fracasos");		pieChartEvaluationSuccessVsFailed.setLegendPosition("e");		pieChartEvaluationSuccessVsFailed.setFill(false);		pieChartEvaluationSuccessVsFailed.setShowDataLabels(true);		pieChartEvaluationSuccessVsFailed.setDiameter(150);
+    }
+    
+    private void createBarChartSuccessEvaluationPerProfile() {
+    	barChartSuccessEvaluationPerProfile = new BarChartModel();
+		Report report = null;
+    	
+        ChartSeries exitos = new ChartSeries();
+        ChartSeries fracasos = new ChartSeries();
+        exitos.setLabel("Exitos");
+        fracasos.setLabel("Fracasos");
+        
+		Iterator<Report> iterator = listSuccessEvaluationPerProfile.iterator();
+		while (iterator.hasNext()) {
+			report = iterator.next();			
+			if (report.getProfileName() != null && report.getProfileSuccessPercentage() != null){
+
+				exitos.set(report.getProfileName(), report.getProfileSuccessPercentage());
+		        fracasos.set(report.getProfileName(), (100 - report.getProfileSuccessPercentage()));				
+			}
+		}
+		barChartSuccessEvaluationPerProfile.addSeries(exitos);
+		barChartSuccessEvaluationPerProfile.addSeries(fracasos);
     }
         private void createAnimatedModels() {
     	mediaResponseTime = initLinearModel();
@@ -119,5 +166,5 @@ public class ReportsBean {
         model.addSeries(series2);
          
         return model;
-    }     
+    }   
 }
