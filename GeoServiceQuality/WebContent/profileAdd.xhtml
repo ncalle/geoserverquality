@@ -71,12 +71,14 @@
 
 					<label for="inputType">Granularidad del perfil </label>
 					<br></br>
-					<h:selectOneMenu value="#{profileBeanAdd.granularity}">
+					<h:selectOneMenu value="#{profileBeanAdd.granularity}"
+						valueChangeListener="#{profileBeanAdd.selectOneMenuListener}">
 						<f:selectItem itemValue="Ide" itemLabel="Ide"/>
 						<f:selectItem itemValue="Institución" itemLabel="Institución"/>
 						<f:selectItem itemValue="Nodo" itemLabel="Nodo"/>
 						<f:selectItem itemValue="Capa" itemLabel="Capa"/>
 						<f:selectItem itemValue="Servicio" itemLabel="Servicio"/>
+						<p:ajax update=":profile:pickList " />
 					</h:selectOneMenu>
 					<br></br>
 					<br></br>
