@@ -76,6 +76,8 @@
 	
 						<p:ajax event="rowSelectRadio"
 							listener="#{evaluationBeanList.onRowSelect}" update=":profileMetrics:profileMetrics" />
+							
+						<p:ajax event="rowSelectRadio" listener="#{evaluationBeanList.onRowSelectProfile}" update=":evobject:measurableObjects"/>
 	
 						<p:column selectionMode="single"
 							style="width:40px; text-align:center" />
