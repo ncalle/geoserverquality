@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -87,10 +88,22 @@ public class ReportsBean {
 
 	
     private void createModels() {
-        createPieChartEvaluationSuccessVsFailed();
+    	createAnimatedModels();
+    	createPieChartEvaluationSuccessVsFailed();
         createBarChartSuccessEvaluationPerProfile();
-        createAnimatedModels();
     }
+    
+    
+    private void createAnimatedModels() {    	
+    	mediaResponseTime = initLinearModel();
+    	mediaResponseTime.setTitle("Line Chart");
+    	mediaResponseTime.setAnimate(true);
+    	mediaResponseTime.setLegendPosition("se");
+        Axis yAxis = mediaResponseTime.getAxis(AxisType.Y);
+        yAxis.setMin(0);
+        yAxis.setMax(10);
+    }
+    
      
     private void createPieChartEvaluationSuccessVsFailed() {    	pieChartEvaluationSuccessVsFailed = new PieChartModel();
     	Report report = null;
@@ -110,37 +123,33 @@ public class ReportsBean {
          		pieChartEvaluationSuccessVsFailed.setTitle("Exitos vs Fracasos");		pieChartEvaluationSuccessVsFailed.setLegendPosition("e");		pieChartEvaluationSuccessVsFailed.setFill(false);		pieChartEvaluationSuccessVsFailed.setShowDataLabels(true);		pieChartEvaluationSuccessVsFailed.setDiameter(150);
     }
     
-    private void createBarChartSuccessEvaluationPerProfile() {
+    private void createBarChartSuccessEvaluationPerProfile() { 	
     	barChartSuccessEvaluationPerProfile = new BarChartModel();
+    	
+    	barChartSuccessEvaluationPerProfile.setTitle("Exitos por Perfil");
+    	barChartSuccessEvaluationPerProfile.setAnimate(true);
+    	barChartSuccessEvaluationPerProfile.setLegendPosition("ne");
+        Axis yAxis = barChartSuccessEvaluationPerProfile.getAxis(AxisType.Y);
+        yAxis.setMin(0);
+        yAxis.setMax(100);
+        
 		Report report = null;
     	
         ChartSeries exitos = new ChartSeries();
-        ChartSeries fracasos = new ChartSeries();
         exitos.setLabel("Exitos");
-        fracasos.setLabel("Fracasos");
         
 		Iterator<Report> iterator = listSuccessEvaluationPerProfile.iterator();
 		while (iterator.hasNext()) {
 			report = iterator.next();			
 			if (report.getProfileName() != null && report.getProfileSuccessPercentage() != null){
 
-				exitos.set(report.getProfileName(), report.getProfileSuccessPercentage());
-		        fracasos.set(report.getProfileName(), (100 - report.getProfileSuccessPercentage()));				
+				exitos.set(report.getProfileName(), report.getProfileSuccessPercentage());				
 			}
 		}
 		barChartSuccessEvaluationPerProfile.addSeries(exitos);
-		barChartSuccessEvaluationPerProfile.addSeries(fracasos);
     }
-        private void createAnimatedModels() {
-    	mediaResponseTime = initLinearModel();
-    	mediaResponseTime.setTitle("Line Chart");
-    	mediaResponseTime.setAnimate(true);
-    	mediaResponseTime.setLegendPosition("se");
-        Axis yAxis = mediaResponseTime.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(10);
-    }
-          
+    
+    
     private LineChartModel initLinearModel() {
         LineChartModel model = new LineChartModel();
  
