@@ -107,3 +107,10 @@ SELECT * FROM evaluation_insert (1, 2, TRUE); --ok
 SELECT * FROM evaluation_get (1); --ok
 SELECT * FROM evaluation_insert (1, 7079, TRUE); --err ok
 --------------------------------------------------------------------
+SELECT * FROM report_geographic_services_per_institution (); --ok
+SELECT * FROM report_evaluation_success_vs_failed (); --ok
+SELECT * FROM report_evaluations_per_metric (); --ok
+SELECT * FROM report_success_evaluation_per_profile (); --ok
+SELECT * FROM report_success_evaluation_per_institution (); --ok
+SELECT * FROM report_success_evaluation_per_node (); --ok
+--------------------------------------------------------------------
