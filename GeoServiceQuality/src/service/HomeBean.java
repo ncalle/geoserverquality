@@ -1,5 +1,6 @@
 package service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -14,8 +15,9 @@ import entity.EvaluationSummary;
 
 @ManagedBean(name = "homeBean")
 @ViewScoped
-public class HomeBean {
+public class HomeBean implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private List<EvaluationSummary> listEvaluationSummary;
 
 	@EJB
