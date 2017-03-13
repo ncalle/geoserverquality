@@ -225,8 +225,6 @@ public class ReportBean implements ReportBeanRemote {
         int numberOfColumns = rsMetaData.getColumnCount();
         for (int i = 1; i < numberOfColumns + 1; i++) {
             String columnName = rsMetaData.getColumnName(i);
-            
-            System.out.println("columnName: " + columnName);
 
             if ("InstitutionID".toLowerCase().equals(columnName)) {
             	report.setInstitutionID(resultSet.getInt("InstitutionID"));

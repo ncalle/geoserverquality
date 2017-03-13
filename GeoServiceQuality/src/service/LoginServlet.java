@@ -44,8 +44,8 @@ public class LoginServlet extends HttpServlet{
 					session.setAttribute("userId", foundUser.getUserId());
 					
 				}
-	        	request.getRequestDispatcher("welcome.jsp");
-	        	response.sendRedirect(request.getContextPath() + "/welcome.jsp");
+	        	request.getRequestDispatcher("home.xhtml");
+	        	response.sendRedirect(request.getContextPath() + "/home.xhtml");
 	        }
 	        				
 			 else{  
