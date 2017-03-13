@@ -17,6 +17,7 @@
 		<link rel="stylesheet"
 			href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" />
 		<link href="./css/form_list.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 	</h:head>
 
 	<h:body>
@@ -52,6 +53,7 @@
 			</ul>
 		</nav>
 
+		
 	    <div class="jumbotron">
 	      <div class="container">
 	        <h2>Bienvenido, ${session.getAttribute("name")}</h2>
@@ -97,7 +99,7 @@
 		
 			        <f:facet name="{Exporters}"> 
 			            <h:commandLink>
-							<p:commandButton value="PDF Download" type="button"/>
+							<p:commandButton icon="fa fa-file-pdf-o" style="color:red" />
 			                <p:dataExporter type="pdf" target="evaluationSummary" fileName="listEvaluationSummary"/>
 			            </h:commandLink>
 			        </f:facet>
