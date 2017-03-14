@@ -32,8 +32,10 @@ public class ReportBean implements ReportBeanRemote {
             "SELECT InstitutionID, InstitutionName, InstitutionCount, InstitutionPercentage, InstitutionSuccessPercentage FROM report_success_evaluation_per_institution ()";
     private static final String SUCCESS_EVALUATIONS_PER_NODE =
             "SELECT NodeID, NodeName, NodeCount, NodePercentage, NodeSuccessPercentage FROM report_success_evaluation_per_node ()";   
-
+    private static final String TOP_BEST_WORST_MEASURABLE_OBJECT_GET =
+            "SELECT MeasurableObjectID, EntityID, EntityType, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType, MeasurableObjectSuccessPercentage FROM report_top_best_worst_measurable_object_get (?, ?, ?)";
     
+
     private DAOFactory daoFactory;
 
     ReportBean(DAOFactory daoFactory) {
@@ -190,6 +192,34 @@ public class ReportBean implements ReportBeanRemote {
         return report;
     }
     
+    @Override
+    public List<Report> topBestWorstMeasurableObjectGet(Integer Top, Boolean SuccessFlagAsc, Boolean SuccessFlagDesc) throws DAOException {
+        List<Report> report = new ArrayList<>();
+
+        Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(TOP_BEST_WORST_MEASURABLE_OBJECT_GET);
+            
+            statement.setInt(1, Top);
+            statement.setBoolean(2, SuccessFlagAsc);
+            statement.setBoolean(3, SuccessFlagDesc);
+            
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+            	report.add(map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+
+        return report;
+    }    
+    
         
     private static Report map(ResultSet resultSet) throws SQLException {
         Report report = new Report();
@@ -221,6 +251,13 @@ public class ReportBean implements ReportBeanRemote {
         report.setNodeCount(null);
         report.setNodePercentage(null);
         report.setNodeSuccessPercentage(null);
+        report.setMeasurableObjectID(null);
+        report.setEntityID(null);
+        report.setEntityType(null);
+        report.setMeasurableObjectDescription(null);
+        report.setMeasurableObjectURL(null);
+        report.setMeasurableObjectServicesType(null);
+        report.setMeasurableObjectSuccessPercentage(null);
     	
         int numberOfColumns = rsMetaData.getColumnCount();
         for (int i = 1; i < numberOfColumns + 1; i++) {
@@ -312,19 +349,52 @@ public class ReportBean implements ReportBeanRemote {
 
             if ("NodeID".toLowerCase().equals(columnName)) {
             	report.setNodeID(resultSet.getInt("NodeID"));
-            }            
+            }
+            
             if ("NodeName".toLowerCase().equals(columnName)) {
             	report.setNodeName(resultSet.getString("NodeName"));
             }
+            
             if ("NodeCount".toLowerCase().equals(columnName)) {
             	report.setNodeCount(resultSet.getInt("NodeCount"));
             }
+            
             if ("NodePercentage".toLowerCase().equals(columnName)) {
             	report.setNodePercentage(resultSet.getInt("NodePercentage"));
             }
+            
             if ("NodeSuccessPercentage".toLowerCase().equals(columnName)) {
             	report.setNodeSuccessPercentage(resultSet.getInt("NodeSuccessPercentage"));
             }
+            
+            
+            if ("MeasurableObjectID".toLowerCase().equals(columnName)) {
+            	report.setMeasurableObjectID(resultSet.getInt("MeasurableObjectID"));
+            }
+
+            if ("EntityID".toLowerCase().equals(columnName)) {
+            	report.setEntityID(resultSet.getInt("EntityID"));
+            }
+
+            if ("EntityType".toLowerCase().equals(columnName)) {
+            	report.setEntityType(resultSet.getString("EntityType"));
+            }
+
+            if ("MeasurableObjectDescription".toLowerCase().equals(columnName)) {
+            	report.setMeasurableObjectDescription(resultSet.getString("MeasurableObjectDescription"));
+            }
+
+            if ("MeasurableObjectURL".toLowerCase().equals(columnName)) {
+            	report.setMeasurableObjectURL(resultSet.getString("MeasurableObjectURL"));
+            }
+
+            if ("MeasurableObjectServicesType".toLowerCase().equals(columnName)) {
+            	report.setMeasurableObjectServicesType(resultSet.getString("MeasurableObjectServicesType"));
+            }
+            
+            if ("MeasurableObjectSuccessPercentage".toLowerCase().equals(columnName)) {
+            	report.setMeasurableObjectSuccessPercentage(resultSet.getInt("MeasurableObjectSuccessPercentage"));
+            }            
         }
         
         return report;

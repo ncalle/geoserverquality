@@ -20,5 +20,6 @@ public interface ReportBeanRemote {
     public List<Report> successEvaluationPerInstitution() throws DAOException;
     
     public List<Report> successEvaluationPerNode() throws DAOException;
-
+    
+    public List<Report> topBestWorstMeasurableObjectGet(Integer Top, Boolean SuccessFlagAsc, Boolean SuccessFlagDesc) throws DAOException;
 }

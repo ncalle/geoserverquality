@@ -114,3 +114,5 @@ SELECT * FROM report_success_evaluation_per_profile (); --ok
 SELECT * FROM report_success_evaluation_per_institution (); --ok
 SELECT * FROM report_success_evaluation_per_node (); --ok
 --------------------------------------------------------------------
+SELECT * FROM report_top_best_worst_measurable_object_get (3, TRUE, FALSE); --ok
+SELECT * FROM report_top_best_worst_measurable_object_get (3, FALSE, TRUE); --ok
