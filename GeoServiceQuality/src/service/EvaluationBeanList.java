@@ -62,7 +62,7 @@ public class EvaluationBeanList {
 		try {
 			listProfile = profileDao.list();
 			listMeasurableObjects = moDao.list();
-			listEvaluation = new ArrayList<>(); //evaluationDao.list();
+			listEvaluation = new ArrayList<>();
 			showResult = false;
 			
 			FacesContext context = FacesContext.getCurrentInstance();
@@ -178,6 +178,9 @@ public class EvaluationBeanList {
 			boolean success = false;
 			try {
 
+				//se limpia el contenido anterior de la lista, ya que luego las evaluaciónes serán agregadas a la BD
+				listEvaluation = new ArrayList<>();
+				
 				for (Integer metricId : listMetrics) {
 					success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getEntityType());
 					listResult.add(success);
@@ -214,7 +217,7 @@ public class EvaluationBeanList {
 				es.setSuccessPercentage(profileResultTotal);
 				
 				EvaluationSummary evaluationSummaryResult = evaluationSummaryDao.create(es);
-				
+							
 				//cargar cada una de las evaluaciones, asociadas al ID del resumen de evaluacion
 				Iterator<Evaluation> evaluation_iterator = listEvaluation.iterator();
 				while (evaluation_iterator.hasNext()) {

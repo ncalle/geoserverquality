@@ -70,7 +70,10 @@ public class UserBean implements UserBeanRemote {
 			
 			if (resultSet.next()) {
                 user = map(resultSet);
-            }                
+            }
+			
+            connection.close();
+            
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
@@ -99,7 +102,10 @@ public class UserBean implements UserBeanRemote {
 			
 			if (resultSet.next()) {
                 user = map(resultSet);
-            }                
+            }
+			
+            connection.close();
+            
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
@@ -129,6 +135,9 @@ public class UserBean implements UserBeanRemote {
             while (resultSet.next()) {
                 users.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -159,6 +168,8 @@ public class UserBean implements UserBeanRemote {
 			statement.setInt(7, user.getInstitutionID());
 
             statement.executeQuery();
+            
+            connection.close();
 
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -185,6 +196,8 @@ public class UserBean implements UserBeanRemote {
         
             statement.executeQuery();
             
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -206,6 +219,8 @@ public class UserBean implements UserBeanRemote {
 
             user.setUserId(null);
             
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -225,6 +240,8 @@ public class UserBean implements UserBeanRemote {
 		    
 		        statement.executeQuery();
 		        
+	            connection.close();
+	            
 		    } catch (SQLException e) {
 		        throw new DAOException(e);
 		    }
@@ -244,6 +261,8 @@ public class UserBean implements UserBeanRemote {
             statement.setInt(2, measurableObject.getMeasurableObjectID());
                    
             statement.executeQuery();
+            
+            connection.close();
             
         } catch (SQLException e) {
             throw new DAOException(e);

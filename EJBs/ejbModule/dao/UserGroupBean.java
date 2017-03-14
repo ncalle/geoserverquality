@@ -54,6 +54,9 @@ public class UserGroupBean implements UserGroupBeanRemote {
             while (resultSet.next()) {
             	userGroups.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -79,7 +82,10 @@ public class UserGroupBean implements UserGroupBeanRemote {
 			
 			if (resultSet.next()) {
                 userGroup = map(resultSet);
-            }                
+            }
+			
+            connection.close();
+            
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}

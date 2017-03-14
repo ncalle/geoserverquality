@@ -50,6 +50,9 @@ public class QualityModelBean implements QualityModelBeanRemote {
             while (resultSet.next()) {
             	qualityModels.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }

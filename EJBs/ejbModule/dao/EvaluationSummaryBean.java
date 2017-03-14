@@ -52,6 +52,9 @@ public class EvaluationSummaryBean implements EvaluationSummaryBeanRemote {
             while (resultSet.next()) {
             	list.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -83,6 +86,8 @@ public class EvaluationSummaryBean implements EvaluationSummaryBeanRemote {
             while (resultSet.next()) {
             	evS = map(resultSet);
             }
+            
+            connection.close();
 		
         } catch (SQLException e) {
         	throw new DAOException(e);

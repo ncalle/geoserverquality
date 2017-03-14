@@ -65,6 +65,9 @@ public class ReportBean implements ReportBeanRemote {
             while (resultSet.next()) {
             	report.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -89,6 +92,9 @@ public class ReportBean implements ReportBeanRemote {
             while (resultSet.next()) {
             	report.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -113,6 +119,9 @@ public class ReportBean implements ReportBeanRemote {
             while (resultSet.next()) {
             	report.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -137,6 +146,9 @@ public class ReportBean implements ReportBeanRemote {
             while (resultSet.next()) {
             	report.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -161,6 +173,9 @@ public class ReportBean implements ReportBeanRemote {
             while (resultSet.next()) {
             	report.add(map(resultSet));
             }
+
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -185,6 +200,9 @@ public class ReportBean implements ReportBeanRemote {
             while (resultSet.next()) {
             	report.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -213,6 +231,9 @@ public class ReportBean implements ReportBeanRemote {
             while (resultSet.next()) {
             	report.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
