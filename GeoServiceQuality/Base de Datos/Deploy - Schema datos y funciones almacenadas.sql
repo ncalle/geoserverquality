@@ -244,6 +244,7 @@ CREATE TABLE Metric
     UnitID INT NOT NULL,
     Granurality VARCHAR(11) NOT NULL, -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio', 'Método'
     Description VARCHAR(100) NULL,
+	IsManual BOOLEAN NULL, -- 'true' si es de evaluacion manual
 
     PRIMARY KEY (MetricID),
     UNIQUE (Name),
@@ -451,20 +452,20 @@ INSERT INTO Unit (Name, Description) VALUES
 ('Basico-Intermedio-Completo',''),
 ('Entero','');
 
-INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality) VALUES
-(2, 'Informacion en excepciones', FALSE, 1, 'Servicio'),
-(7, 'Excepciones en formato OGC', FALSE, 1, 'Servicio'),
-(8, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 2, 'Servicio'),
-(10, 'Formato PNG', FALSE, 1, 'Método'),
-(10, 'Formato KML', FALSE, 1, 'Método'),
-(10, 'Formato text/html metodo getFeatureInfo', FALSE, 1, 'Método'),
-(10, 'Formato Excepcion application/vnd.ogc.se_inimage', FALSE, 1, 'Método'),
-(10, 'Formato Excepcion application/vnd.ogc.se_blank', FALSE, 1, 'Método'),
-(10, 'Cantidad de formatos soportados', FALSE, 5, 'Servicio'),
-(10, 'Cantidad de formatos de excepciones soportadas', FALSE, 5, 'Servicio'),
-(13, 'Leyenda de la Capa', FALSE, 2, 'Servicio'),
-(13, 'Especifica Rango Util', FALSE, 1, 'Capa');
---(14, 'Errores descriptivos', FALSE, 1, 'Servicio');
+INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality, IsManual) VALUES
+(2, 'Informacion en excepciones', FALSE, 1, 'Servicio', FALSE),
+(7, 'Excepciones en formato OGC', FALSE, 1, 'Servicio', FALSE),
+(8, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 2, 'Servicio', FALSE),
+(10, 'Formato PNG', FALSE, 1, 'Método', FALSE),
+(10, 'Formato KML', FALSE, 1, 'Método', FALSE),
+(10, 'Formato text/html metodo getFeatureInfo', FALSE, 1, 'Método', FALSE),
+(10, 'Formato Excepcion application/vnd.ogc.se_inimage', FALSE, 1, 'Método', FALSE),
+(10, 'Formato Excepcion application/vnd.ogc.se_blank', FALSE, 1, 'Método', FALSE),
+(10, 'Cantidad de formatos soportados', FALSE, 5, 'Servicio', FALSE),
+(10, 'Cantidad de formatos de excepciones soportadas', FALSE, 5, 'Servicio', FALSE),
+(13, 'Leyenda de la Capa', FALSE, 2, 'Servicio', FALSE),
+(13, 'Especifica Rango Util', FALSE, 1, 'Capa', FALSE),
+(14, 'Errores descriptivos', FALSE, 1, 'Servicio', TRUE);
 --(3, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio'),
 --(4, 'Tolerancia a parametros nulos', FALSE, 1, 'Método'),
 --(4, 'Tolerancia a parametros largos', FALSE, 1, 'Método'),
@@ -1314,6 +1315,7 @@ RETURNS TABLE
       , MetricUnitID INT
       , MetricGranurality VARCHAR(11)
       , MetricDescription VARCHAR(100)
+	  , MetricManual BOOLEAN
    ) AS $$
 /************************************************************************************************************
 ** Name: metric_get
@@ -1333,6 +1335,7 @@ BEGIN
       , m.UnitID
       , m.Granurality
       , m.Description
+	  , m.IsManual
    FROM Metric m
    ORDER BY m.MetricID;
          
@@ -1648,6 +1651,7 @@ RETURNS TABLE
       , MetricAgrgegationFlag BOOLEAN
       , MetricGranurality VARCHAR(11)
       , MetricDescription VARCHAR(100)
+	  , MetricManual BOOLEAN
       , UnitID INT
       , UnitName VARCHAR(40)
       , UnitDescription VARCHAR(100)
@@ -1713,6 +1717,7 @@ BEGIN
       , m.AgrgegationFlag
       , m.Granurality
       , m.Description
+	  , m.IsManual
       , u.UnitID
       , u.Name
       , u.Description
@@ -1745,6 +1750,7 @@ BEGIN
       , m.AgrgegationFlag
       , m.Granurality
       , m.Description
+	  , m.IsManual
       , u.UnitID
       , u.Name
       , u.Description
@@ -2408,6 +2414,7 @@ RETURNS TABLE (
    , MetricUnitID INT
    , MetricGranurality VARCHAR(11)
    , MetricDescription VARCHAR(100)
+   , MetricManual BOOLEAN
 ) AS $$
 /************************************************************************************************************
 ** Name: prototype_profile_metric_to_add_get
@@ -2441,6 +2448,7 @@ BEGIN
       , m.UnitID
       , m.Granurality
       , m.Description
+	  , m.IsManual
    FROM Metric m
    LEFT JOIN MetricRange mr ON mr.MetricID = m.MetricID AND mr.ProfileID = pProfileID
    WHERE mr.MetricRangeID IS NULL

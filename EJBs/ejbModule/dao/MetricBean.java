@@ -17,9 +17,9 @@ import entity.Metric;
 public class MetricBean implements MetricBeanRemote {
 
     private static final String SQL_LIST_ORDER_BY_ID =
-    		"SELECT MetricID, MetricFactorID, MetricName, MetricAgrgegationFlag, MetricUnitID, MetricGranurality, MetricDescription FROM metric_get ()";
+    		"SELECT MetricID, MetricFactorID, MetricName, MetricAgrgegationFlag, MetricUnitID, MetricGranurality, MetricDescription, MetricManual FROM metric_get ()";
     private static final String SQL_PROFILE_METRIC_TO_ADD_GET =
-    		"SELECT MetricID, MetricFactorID, MetricName, MetricAgrgegationFlag, MetricUnitID, MetricGranurality, MetricDescription FROM prototype_profile_metric_to_add_get (?)";
+    		"SELECT MetricID, MetricFactorID, MetricName, MetricAgrgegationFlag, MetricUnitID, MetricGranurality, MetricDescription, MetricManual FROM prototype_profile_metric_to_add_get (?)";
 
     private DAOFactory daoFactory;
 	
@@ -94,7 +94,8 @@ public class MetricBean implements MetricBeanRemote {
 		metric.setUnitID(resultSet.getInt("MetricUnitID"));
 		metric.setAgrgegationFlag(resultSet.getBoolean("MetricAgrgegationFlag"));
 		metric.setDescription(resultSet.getString("MetricDescription"));
-
+		metric.setManual(resultSet.getBoolean("MetricManual"));
+		
         return metric; 
     }
 

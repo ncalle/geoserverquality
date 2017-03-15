@@ -22,7 +22,7 @@ import entity.ProfileMetric;
 public class ProfileMetricBean implements ProfileMetricBeanRemote {
 
     private static final String SQL_PROFILE_METRIC_LIST =
-    		"SELECT QualityModelID, QualityModelName, DimensionID, DimensionName, FactorID, FactorName, MetricID, MetricName, MetricAgrgegationFlag, MetricGranurality, MetricDescription, UnitID, UnitName, UnitDescription, MetricRangeID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue FROM profile_metric_get (?, ?)";
+    		"SELECT QualityModelID, QualityModelName, DimensionID, DimensionName, FactorID, FactorName, MetricID, MetricName, MetricAgrgegationFlag, MetricGranurality, MetricDescription, MetricManual, UnitID, UnitName, UnitDescription, MetricRangeID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue FROM profile_metric_get (?, ?)";
 	private static final String SQL_PROFILE_REMOVE_METRIC =
         	"SELECT * FROM profile_remove_metric (?, ?)";
     private static final String SQL_PROFILE_ADD_METRIC =
@@ -148,6 +148,7 @@ public class ProfileMetricBean implements ProfileMetricBeanRemote {
     	profileMetric.setMetricAgrgegationFlag(resultSet.getBoolean("MetricAgrgegationFlag"));
     	profileMetric.setMetricGranurality(resultSet.getString("MetricGranurality"));
     	profileMetric.setMetricDescription(resultSet.getString("MetricDescription"));
+    	profileMetric.setMetricManual(resultSet.getBoolean("MetricManual"));
     	profileMetric.setUnitID(resultSet.getInt("UnitID"));
     	profileMetric.setUnitName(resultSet.getString("UnitName"));
     	profileMetric.setUnitDescription(resultSet.getString("UnitDescription"));

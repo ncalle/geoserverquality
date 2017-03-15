@@ -21,6 +21,7 @@ public class ProfileMetric implements Serializable {
     private Boolean MetricAgrgegationFlag;
     private String MetricGranurality;
     private String MetricDescription;
+    private Boolean MetricManual;
     private Integer UnitID;
     private String UnitName;
     private String UnitDescription;
@@ -220,6 +221,14 @@ public class ProfileMetric implements Serializable {
 		EnumerateAcceptanceValue = enumerateAcceptanceValue;
 	}
 	
+	public Boolean getMetricManual() {
+		return MetricManual;
+	}
+	
+	public void setMetricManual(Boolean metricManual) {
+		MetricManual = metricManual;
+	}
+	
 	@Override
     public boolean equals(Object other) {
         return (other instanceof ProfileMetric) && (QualityModelID != null) && (DimensionID != null) && (FactorID != null) && (MetricID != null) && (MetricRangeID != null)
@@ -249,8 +258,8 @@ public class ProfileMetric implements Serializable {
     
     @Override
     public String toString() {
-        return String.format("ProfileMetric[%d, %s, %d, %s, %d, %s, %d, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s, %s, %d, %s, %d, %s, %s]",
+        return String.format("ProfileMetric[%d, %s, %d, %s, %d, %s, %d, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s, %s, %d, %s, %d, %s, %s, %s]",
         		QualityModelID, QualityModelName, DimensionID, DimensionName, FactorID, FactorName, MetricID, MetricName, MetricAgrgegationFlag, MetricGranurality, MetricDescription, UnitID, UnitName, UnitDescription, 
-        		MetricRangeID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue);
+        		MetricRangeID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue, MetricManual);
     }
 }

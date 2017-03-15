@@ -13,6 +13,7 @@ public class Metric implements Serializable {
     private Integer UnitID;
     private String Description; 
     private String Granurality; //'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio'
+    private Boolean Manual;
 
 
 	public Integer getMetricID() {
@@ -83,6 +84,14 @@ public class Metric implements Serializable {
 	public void setGranurality(String granurality) {
 		Granurality = granurality;
 	}
+	
+	public void setManual(Boolean manual) {
+		Manual = manual;
+	}
+	
+	public Boolean getManual() {
+		return Manual;
+	}
 
 	
 	@Override
@@ -103,8 +112,8 @@ public class Metric implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Metric[MetricID=%d, Name=%s, Granularity=%s, Description=%s, FactorID=%d, UnitID=%d, AgrgegationFlag=%s]",
-        		MetricID, Name, Granurality, Description, FactorID, UnitID, AgrgegationFlag);
+        return String.format("Metric[MetricID=%d, Name=%s, Granularity=%s, Description=%s, FactorID=%d, UnitID=%d, AgrgegationFlag=%s,Manual=%s]",
+        		MetricID, Name, Granurality, Description, FactorID, UnitID, AgrgegationFlag, Manual);
     }
 
 }

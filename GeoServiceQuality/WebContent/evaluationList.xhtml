@@ -175,10 +175,24 @@
 				<hr border="none" color="#ffffff"></hr>
 
 				<div class="panel panel-default">
-					<h:commandButton id="evaluate" value="Evaluar" action="#{evaluationBeanList.evaluate()}"
-						class="btn btn-lg btn-primary btn-block" />
+					<h:commandButton id="evaluate" value="Evaluar" action="#{evaluationBeanList.evaluate()}" class="btn btn-lg btn-primary btn-block" />
 				</div>
+				
+				
+				
+				<!-- Evaluacion manual -->
+				<p:dialog id="dialogID" widgetVar="myDialogVar" header="Atención" modal="true" visible="true" 
+					 rendered="#{evaluationBeanList.isShowConfirm()}"	>
+				    <h:outputText value="La evaluación requiere que el usuario responda la siguiente pregunta"/> <br></br>
+				    <h:outputText value="¿Considera que el servicio cuenta con errores descriptivos?" /> <br></br>
+				    <p:commandButton value="Si" actionListener="#{evaluationBeanList.confirmationPositive()}" update="@all" />
+    				<p:commandButton value="No" actionListener="#{evaluationBeanList.confirmationNegative()}" update="@all" />
+				</p:dialog>
+				
 			</h:form>
+			
+			
+			
 
 			<h:form id="evaluation" method="post" rendered="#{evaluationBeanList.isShowResult()}">
 				<p:growl id="msgs" />
@@ -232,13 +246,8 @@
 				</div>
 			</h:form>
 		</div>
-
-		<script src="../../assets/js/vendor/jquery.min.js"></script>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
-		<script src="../../dist/js/bootstrap.min.js"></script>
-		<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-
+		
+		
 	</h:body>
 </f:view>
 </html>

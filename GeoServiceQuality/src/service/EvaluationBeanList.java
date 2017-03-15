@@ -47,7 +47,8 @@ public class EvaluationBeanList {
 	private List<ProfileMetric> listProfileMetric;
 	private int userId;
 	private String profileResult;
-	private boolean showResult;
+	private boolean showResult, showConfirm;
+	List<Boolean> resultManualEvaluation;
 
 	@EJB
 	private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
@@ -62,18 +63,37 @@ public class EvaluationBeanList {
 		try {
 			listProfile = profileDao.list();
 			listMeasurableObjects = moDao.list();
-			listEvaluation = new ArrayList<>(); //evaluationDao.list();
+			listEvaluation = new ArrayList<>(); 
 			showResult = false;
+			resultManualEvaluation = new ArrayList<>();
 			
 			FacesContext context = FacesContext.getCurrentInstance();
 			HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 			HttpSession appsession = request.getSession(true);
 			userId = (Integer) appsession.getAttribute("userId");
+			
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
 	}
+	 
+	public void confirmationNegative() {
+        showConfirm = false;
+        resultManualEvaluation.add(false);
+        evaluate();
+    }
 	
+	public void confirmationPositive() {
+        showConfirm = false;
+        resultManualEvaluation.add(true);
+        evaluate();
+    }
+	
+	 public void addMessage(String summary, String detail) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+	 
 	public Profile getSelectedProfile() {
 		return selectedProfile;
 	}
@@ -159,27 +179,53 @@ public class EvaluationBeanList {
 		return showResult;
 	}
 	
+	public boolean isShowConfirm() {
+		return showConfirm;
+	}
+	
+	public void setShowConfirm(boolean show) {
+		this.showConfirm = show;
+	}
+	
 
 	public void evaluate() throws DAOException {
-		Date date = new Date(Calendar.getInstance().getTime().getTime());
 		
 		if (selectedMeasurableObject != null && selectedProfile != null) {
-			showResult = true;
-			List<Integer> listMetrics = new ArrayList<>();
+		
+			Date date = new Date(Calendar.getInstance().getTime().getTime());
 			List<Boolean> listResult = new ArrayList<>();
-			
+			listEvaluation = new ArrayList<>();
+			int manualEvaluation=0;
 			Iterator<ProfileMetric> iterator = listProfileMetric.iterator();
+			
 			while (iterator.hasNext()) {
-				listMetrics.add(iterator.next().getMetricID());
+				ProfileMetric pm = (ProfileMetric) iterator.next();
+				
+				if(pm.getMetricManual()){
+					manualEvaluation++;
+				}
 			}
 			
-			System.out.println("Metricas incluidas en listMetrics: " + listMetrics);
+			System.out.println("manualEvaluation: " + manualEvaluation);
+			System.out.println("resultManualEvaluation: " + resultManualEvaluation.size());
+			
+			if(manualEvaluation>resultManualEvaluation.size()){
+				showConfirm = true;
+				return;
+			}
+		
 
 			boolean success = false;
 			try {
-
-				for (Integer metricId : listMetrics) {
-					success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getEntityType());
+				
+				for (ProfileMetric metric : listProfileMetric) {
+					int metricId = metric.getMetricID();
+					
+					if(metric.getMetricManual()) {
+						success = resultManualEvaluation.get(0);
+					} else {
+						success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getEntityType());
+					}
 					listResult.add(success);
 					System.out.println("MetricId: " + metricId + " Success: " + success);
 					
@@ -200,8 +246,7 @@ public class EvaluationBeanList {
 				boolean evaluationSummaryResultTotal;
 				if (profileResultTotal >= 50){
 					evaluationSummaryResultTotal = true;
-				}
-				else {
+				} else {
 					evaluationSummaryResultTotal = false;
 				}
 				
@@ -222,14 +267,15 @@ public class EvaluationBeanList {
 					e = evaluation_iterator.next();
 					e.setEvaluationSummaryID(evaluationSummaryResult.getEvaluationSummaryID());
 					evaluationDao.create(e);
-				}			 
-
+				}
+				
+				showResult = true;
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("La evaluación se realizó correctamente"));
 				
-				// Se actualiza el listado de evaluaciones
 				listEvaluation = evaluationDao.list();
-
+				resultManualEvaluation = new ArrayList<>();
+				
 			} catch (DAOException ex) {
 
 				FacesContext context = FacesContext.getCurrentInstance();
@@ -244,6 +290,7 @@ public class EvaluationBeanList {
 		}
 
 	}
+	
 	
 	
 	public int resultEvaluationProfile(List<Boolean> listResult) {
