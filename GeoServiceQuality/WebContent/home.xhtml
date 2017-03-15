@@ -63,9 +63,61 @@
 	      </div>
 	    </div>
 	
-	    <div class="container">
-	      <!-- Example row of columns -->
+	    <div class="container">     
+	      <h3 class="form-signin-heading" style="text-align: center;">Servicios destacados</h3>
 	      <div class="row">
+	        <div class="col-md-6">	
+			  <h:form id="best_services" method="post" >
+				<h4 class="form-signin-heading">Mejor tiempo de respuesta.</h4>
+				<p:dataTable id="dtbest_services" 
+				  value="#{reportsBean.listBestServices}" 
+				  var="bsitem" 
+				  tableStyle="table-layout: auto;"
+				  widgetVar="bs">
+				        					
+					<p:column headerText="Métrica" >
+				  		<h:outputText value="#{bsitem.measurableObjectDescription}" />
+					</p:column>
+					
+					<p:column headerText="Tipo" >
+				  		<h:outputText value="#{bsitem.measurableObjectServicesType}" />
+					</p:column>
+					
+					<p:column headerText="Disponibilidad">
+						<p:progressBar value="#{bsitem.measurableObjectSuccessPercentage}" labelTemplate="#{bsitem.measurableObjectSuccessPercentage}%" displayOnly="true"/>
+					</p:column>
+				</p:dataTable>
+			  </h:form>
+			</div>
+				
+	        <div class="col-md-6">	
+			  <h:form id="worst_services" method="post" >
+				<h4 class="form-signin-heading">Peor tiempo de respuesta.</h4>
+				<p:dataTable id="dtworst_services" 
+				  value="#{reportsBean.listWorstServices}" 
+				  var="wsitem" 
+				  tableStyle="table-layout: auto;"
+				  widgetVar="ws">
+				        					
+					<p:column headerText="Métrica" >
+				  		<h:outputText value="#{wsitem.measurableObjectDescription}" />
+					</p:column>
+	
+					<p:column headerText="Tipo" >
+				  		<h:outputText value="#{wsitem.measurableObjectServicesType}" />
+					</p:column>
+					
+					<p:column headerText="Disponibilidad">
+						<p:progressBar value="#{wsitem.measurableObjectSuccessPercentage}" labelTemplate="#{wsitem.measurableObjectSuccessPercentage}%" displayOnly="true"/>
+					</p:column>
+				</p:dataTable>
+			  </h:form>
+			</div>
+		  </div>
+		  
+		  <hr></hr>
+	  
+	  	   <div class="row">
 	        <div class="col-md-4">
 	          <h4 class="form-signin-heading">Exitos vs Fracasos</h4>
 	          <p>Muestra en cantidades porcentuales el total de evaluaciónes con resultado exitoso contra el porcentaje de evaluaciónes con resultado fallido. </p>
@@ -89,20 +141,13 @@
 	      
 	      <h:form>
 		      <h3 class="form-signin-heading">Resumen de Evaluaciónes:</h3>
-				<p:dataTable id="evaluationSummary"
+				<p:dataTable id="dtevaluationSummary"
 					value="#{homeBean.listEvaluationSummary}" var="hitem"
 					tableStyle="table-layout: auto;"
 					rowKey="#{hitem.getEvaluationSummaryID()}" widgetVar="evs" rows="5"
 					paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,25">
-		
-			        <f:facet name="{Exporters}"> 
-			            <h:commandLink>
-							<p:commandButton icon="fa fa-file-pdf-o" style="color:red" />
-			                <p:dataExporter type="pdf" target="evaluationSummary" fileName="Resumen_de_Evaluaciones"/>
-			            </h:commandLink>
-			        </f:facet>
 			        	
 					<p:column headerText="Perfil" sortBy="#{hitem.profileName}">
 						<h:outputText value="#{hitem.profileName}" />
@@ -125,6 +170,16 @@
 					</p:column>
 					
 				</p:dataTable>
+				
+				<div class="panel panel-default">
+					<div class="panel-body">
+		        	  	<h:commandLink>
+	       					<p:commandButton class="btn btn-default" icon="fa fa-file-pdf-o red" value="Download" />
+	       					<p:dataExporter type="pdf" target="dtevaluationSummary" fileName="Resumen_de_Evaluaciones"/>
+	   					</h:commandLink>
+   					</div>
+   				</div>
+   			
 			</h:form>
 	
 	    </div> <!-- /container -->

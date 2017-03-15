@@ -26,7 +26,8 @@ public class HomeBean implements Serializable {
 	@PostConstruct
 	private void init() {
 		try {
-			setListEvaluationSummary(evaluationSummaryDao.list());			
+			setListEvaluationSummary(evaluationSummaryDao.list());
+			
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
@@ -38,6 +39,5 @@ public class HomeBean implements Serializable {
 
 	public void setListEvaluationSummary(List<EvaluationSummary> listEvaluationSummary) {
 		this.listEvaluationSummary = listEvaluationSummary;
-	}
-	
+	}	
 }

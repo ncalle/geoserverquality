@@ -59,6 +59,9 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             while (resultSet.next()) {
             	measurableobject.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -85,6 +88,9 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             while (resultSet.next()) {
             	measurableobject.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -111,7 +117,9 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             statement.setString(4, measurableobject.getMeasurableObjectDescription());
             statement.setString(5, "Servicio"); //TODO: parametrizar cuando se amplíe el prototipo
 		
-            statement.executeQuery();            
+            statement.executeQuery();
+            
+            connection.close();
             
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -133,6 +141,8 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             statement.executeQuery();
             
             measurableobject.setMeasurableObjectID(null);
+            
+            connection.close();
             
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -159,6 +169,9 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             while (resultSet.next()) {
             	measurableobject.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -182,6 +195,8 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             statement.setString(4, measurableObject.getMeasurableObjectDescription());
         
             statement.executeQuery();
+            
+            connection.close();
             
         } catch (SQLException e) {
             throw new DAOException(e);

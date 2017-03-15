@@ -52,6 +52,9 @@ public class EvaluationBean implements EvaluationBeanRemote {
             while (resultSet.next()) {
             	list.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -74,6 +77,8 @@ public class EvaluationBean implements EvaluationBeanRemote {
 			statement.setBoolean(3, evaluation.getSuccess()); 
 			
             statement.executeQuery();
+            
+            connection.close();
 		
         } catch (SQLException e) {
         	throw new DAOException(e);

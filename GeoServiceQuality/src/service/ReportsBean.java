@@ -40,6 +40,9 @@ public class ReportsBean {
     private List<Report> listEvaluationsPerMetric;
     private List<Report> listGeographicServicesPerInstitution;
     
+    private List<Report> listBestServices;
+    private List<Report> listWorstServices;
+    
     
 	private LineChartModel mediaResponseTime;
  
@@ -48,15 +51,18 @@ public class ReportsBean {
     
     @PostConstruct
     public void init() {
-		try {
+    	try {
 			setListEvaluationSuccessVsFailed(rDao.evaluationSuccessVsFailed());
 			setListSuccessEvaluationPerProfile(rDao.successEvaluationPerProfile());
 			setListSuccessEvaluationPerInstitution(rDao.successEvaluationPerInstitution());
 			setListSuccessEvaluationPerNode(rDao.successEvaluationPerNode());
 			setListEvaluationsPerMetric(rDao.evaluationsPerMetric());
 			setListGeographicServicesPerInstitution(rDao.geographicServicesPerInstitution());
+			setListBestServices(rDao.topBestWorstMeasurableObjectGet(5,true,false));
+			setListWorstServices(rDao.topBestWorstMeasurableObjectGet(5,false,true));
 			
             createModels();
+            
     	} catch(DAOException e) {
     		e.printStackTrace();
     	}      
@@ -147,6 +153,22 @@ public class ReportsBean {
 
 	public void setListGeographicServicesPerInstitution(List<Report> listGeographicServicesPerInstitution) {
 		this.listGeographicServicesPerInstitution = listGeographicServicesPerInstitution;
+	}
+	
+	public List<Report> getListBestServices() {
+		return listBestServices;
+	}
+
+	public void setListBestServices(List<Report> listBestServices) {
+		this.listBestServices = listBestServices;
+	}
+
+	public List<Report> getListWorstServices() {
+		return listWorstServices;
+	}
+
+	public void setListWorstServices(List<Report> listWorstServices) {
+		this.listWorstServices = listWorstServices;
 	}
 	
     private void createModels() {

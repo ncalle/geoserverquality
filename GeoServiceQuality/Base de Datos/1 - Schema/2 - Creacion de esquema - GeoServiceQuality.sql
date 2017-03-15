@@ -320,7 +320,7 @@ DROP TABLE IF EXISTS Evaluation CASCADE;
 CREATE TABLE Evaluation
 (
     EvaluationID SERIAL NOT NULL,
-	EvaluationSummaryID INT NOT NULL,
+    EvaluationSummaryID INT NOT NULL,
     MetricID INT NOT NULL,
     StartDate DATE NOT NULL,
     EndDate DATE NULL,

@@ -50,6 +50,9 @@ public class MetricBean implements MetricBeanRemote {
             while (resultSet.next()) {
             	metrics.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -78,6 +81,9 @@ public class MetricBean implements MetricBeanRemote {
             while (resultSet.next()) {
             	metric.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }

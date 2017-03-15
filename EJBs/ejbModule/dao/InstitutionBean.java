@@ -54,6 +54,9 @@ public class InstitutionBean implements InstitutionBeanRemote {
             while (resultSet.next()) {
             	institutions.add(map(resultSet));
             }
+            
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -79,7 +82,10 @@ public class InstitutionBean implements InstitutionBeanRemote {
 			
 			if (resultSet.next()) {
 				institution = map(resultSet);
-            }                
+            }
+			
+            connection.close();
+            
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}

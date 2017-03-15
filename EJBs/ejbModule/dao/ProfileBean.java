@@ -55,6 +55,9 @@ public class ProfileBean implements ProfileBeanRemote {
 	            while (resultSet.next()) {
 	            	list.add(map(resultSet));
 	            }
+	            
+	            connection.close();
+	            
 	        } catch (SQLException e) {
 	            throw new DAOException(e);
 	        }
@@ -97,6 +100,8 @@ public class ProfileBean implements ProfileBeanRemote {
 			statement.setString(3, metricIDs); 
 			
             statement.executeQuery();
+            
+            connection.close();
 
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -119,6 +124,8 @@ public class ProfileBean implements ProfileBeanRemote {
 
             profile.setProfileId(null);
             
+            connection.close();
+            
         } catch (SQLException e) {
             throw new DAOException(e);
         }		
@@ -138,6 +145,8 @@ public class ProfileBean implements ProfileBeanRemote {
             statement.setString(3, profile.getGranurality());
         
             statement.executeQuery();
+            
+            connection.close();
             
         } catch (SQLException e) {
             throw new DAOException(e);

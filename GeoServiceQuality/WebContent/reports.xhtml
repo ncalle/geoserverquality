@@ -15,8 +15,8 @@
 
 		<link rel="stylesheet"
 			href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" />
-		<link href="./css/form_list.css" rel="stylesheet" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<link href="./css/form_list.css" rel="stylesheet" />
 	</h:head>
 
 	<h:body>
@@ -58,20 +58,11 @@
         <div class="col-md-6">	
 		  <h:form id="evaluationsPerMetric" method="post" >
 			<h4 class="form-signin-heading">Total de evaluaciones realizadas por Métrica.</h4>
-			<p:dataTable id="evaluationsPerMetrics" 
+			<p:dataTable id="dtevaluationsPerMetrics" 
 			  value="#{reportsBean.listEvaluationsPerMetric}" 
 			  var="epmitem" 
 			  tableStyle="table-layout: auto;"
-			  widgetVar="epm"
-			  paginator="true"
-			  paginatorTemplate="{Exporters}">
-
-		        <f:facet name="{Exporters}"> 
-		            <h:commandLink>
-						<p:commandButton icon="fa fa-file-pdf-o" style="color:red" />
-		                <p:dataExporter type="pdf" target="evaluationsPerMetrics" fileName="Total_de_evaluaciones_realizadas_por_Metrica"/>
-		            </h:commandLink>
-		        </f:facet>
+			  widgetVar="epm">
 			        					
 				<p:column headerText="Métrica" >
 			  		<h:outputText value="#{epmitem.getMetricName()}" />
@@ -81,26 +72,27 @@
 			  		<h:outputText value="#{epmitem.getEvaluationPerMetricCount()}" />
 				</p:column>
 			</p:dataTable>
+			
+			<div class="panel panel-default">
+				<div class="panel-body">
+	        	  	<h:commandLink>
+       					<p:commandButton class="btn btn-default" icon="fa fa-file-pdf-o red" value="Download" />
+       					<p:dataExporter type="pdf" target="dtevaluationsPerMetrics" fileName="Total_de_evaluaciones_realizadas_por_Metrica"/>
+   					</h:commandLink>
+   				</div>
+   			</div>
+			
 		  </h:form>
 		</div>
 			
 		<div class="col-md-6">
 		  <h:form id="servicesPerInstitution" method="post" >	
 			<h4 class="form-signin-heading">Total de Servicios Geograficos disponibles por Institución.</h4>
-			<p:dataTable id="servicesPerInstitution" 
+			<p:dataTable id="dtservicesPerInstitution" 
 			  value="#{reportsBean.listGeographicServicesPerInstitution}" 
 			  var="spiitem" 
 			  tableStyle="table-layout: auto;"
-			  widgetVar="spi"
-			  paginator="true"
-			  paginatorTemplate="{Exporters}">
-
-		        <f:facet name="{Exporters}"> 
-		            <h:commandLink>
-						<p:commandButton icon="fa fa-file-pdf-o" style="color:red" />
-		                <p:dataExporter type="pdf" target="servicesPerInstitution" fileName="Total_de_Servicios_Geograficos_disponibles_por_Institucion"/>
-		            </h:commandLink>
-		        </f:facet>
+			  widgetVar="spi">
 		        					
 				<p:column headerText="Institución" >
 			  		<h:outputText value="#{spiitem.getInstitutionName()}" />
@@ -110,6 +102,16 @@
 			  		<h:outputText value="#{spiitem.getGeographicServicesCount()}" />
 				</p:column>	
 			</p:dataTable>
+			
+			<div class="panel panel-default">
+				<div class="panel-body">
+	        	  	<h:commandLink>
+       					<p:commandButton class="btn btn-default" icon="fa fa-file-pdf-o red" value="Download" />
+       					<p:dataExporter type="pdf" target="dtservicesPerInstitution" fileName="Total_de_Servicios_Geograficos_disponibles_por_Institucion" pageOnly="true" />
+   					</h:commandLink>
+   				</div>
+   			</div>
+   					        
 		  </h:form>
 		</div>
 	  </div>

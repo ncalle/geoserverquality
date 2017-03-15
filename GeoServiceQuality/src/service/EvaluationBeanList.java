@@ -206,9 +206,6 @@ public class EvaluationBeanList {
 				}
 			}
 			
-			System.out.println("manualEvaluation: " + manualEvaluation);
-			System.out.println("resultManualEvaluation: " + resultManualEvaluation.size());
-			
 			if(manualEvaluation>resultManualEvaluation.size()){
 				showConfirm = true;
 				return;

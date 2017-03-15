@@ -43,6 +43,14 @@ public class Report implements Serializable {
     private Integer NodePercentage;
     private Integer NodeSuccessPercentage;
     
+    private Integer MeasurableObjectID;
+    private Integer EntityID;
+    private String EntityType;
+    private String MeasurableObjectDescription;
+    private String MeasurableObjectURL;
+    private String MeasurableObjectServicesType;
+    private Integer MeasurableObjectSuccessPercentage;
+    
     public Integer getInstitutionID() {
 		return InstitutionID;
 	}
@@ -253,5 +261,61 @@ public class Report implements Serializable {
 
 	public void setNodeSuccessPercentage(Integer nodeSuccessPercentage) {
 		NodeSuccessPercentage = nodeSuccessPercentage;
+	}
+
+	public Integer getMeasurableObjectID() {
+		return MeasurableObjectID;
+	}
+
+	public void setMeasurableObjectID(Integer measurableObjectID) {
+		MeasurableObjectID = measurableObjectID;
+	}
+
+	public Integer getEntityID() {
+		return EntityID;
+	}
+
+	public void setEntityID(Integer entityID) {
+		EntityID = entityID;
+	}
+
+	public String getEntityType() {
+		return EntityType;
+	}
+
+	public void setEntityType(String entityType) {
+		EntityType = entityType;
+	}
+
+	public String getMeasurableObjectDescription() {
+		return MeasurableObjectDescription;
+	}
+
+	public void setMeasurableObjectDescription(String measurableObjectDescription) {
+		MeasurableObjectDescription = measurableObjectDescription;
+	}
+
+	public String getMeasurableObjectURL() {
+		return MeasurableObjectURL;
+	}
+
+	public void setMeasurableObjectURL(String measurableObjectURL) {
+		MeasurableObjectURL = measurableObjectURL;
+	}
+
+	public String getMeasurableObjectServicesType() {
+		return MeasurableObjectServicesType;
+	}
+
+	public void setMeasurableObjectServicesType(String measurableObjectServicesType) {
+		MeasurableObjectServicesType = measurableObjectServicesType;
+	}
+
+	public Integer getMeasurableObjectSuccessPercentage() {
+		return MeasurableObjectSuccessPercentage;
+	}
+
+	public void setMeasurableObjectSuccessPercentage(Integer measurableObjectSuccessPercentage) {
+		MeasurableObjectSuccessPercentage = measurableObjectSuccessPercentage;
 	}
 }
