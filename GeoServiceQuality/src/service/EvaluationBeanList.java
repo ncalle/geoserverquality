@@ -3,8 +3,10 @@ package service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -45,10 +47,10 @@ public class EvaluationBeanList {
 	private List<MeasurableObject> listMeasurableObjects;
 	private MeasurableObject selectedMeasurableObject;
 	private List<ProfileMetric> listProfileMetric;
-	private int userId;
+	private int userId, manualMetricID;
 	private String profileResult;
 	private boolean showResult, showConfirm;
-	List<Boolean> resultManualEvaluation;
+	Map<Integer, Boolean> resultMap = new HashMap<>();
 
 	@EJB
 	private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
@@ -65,7 +67,7 @@ public class EvaluationBeanList {
 			listMeasurableObjects = moDao.list();
 			listEvaluation = new ArrayList<>(); 
 			showResult = false;
-			resultManualEvaluation = new ArrayList<>();
+			resultMap =  new HashMap<Integer, Boolean>();
 			
 			FacesContext context = FacesContext.getCurrentInstance();
 			HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -79,13 +81,13 @@ public class EvaluationBeanList {
 	 
 	public void confirmationNegative() {
         showConfirm = false;
-        resultManualEvaluation.add(false);
+        resultMap.put(manualMetricID, false);
         evaluate();
     }
 	
 	public void confirmationPositive() {
         showConfirm = false;
-        resultManualEvaluation.add(true);
+        resultMap.put(manualMetricID, true);
         evaluate();
     }
 	
@@ -203,10 +205,15 @@ public class EvaluationBeanList {
 				
 				if(pm.getMetricManual()){
 					manualEvaluation++;
+					
+					if(manualEvaluation > resultMap.size()){
+						manualMetricID = pm.getMetricID();
+						break;
+					}
 				}
 			}
 			
-			if(manualEvaluation>resultManualEvaluation.size()){
+			if(manualEvaluation > resultMap.size()){
 				showConfirm = true;
 				return;
 			}
@@ -219,7 +226,7 @@ public class EvaluationBeanList {
 					int metricId = metric.getMetricID();
 					
 					if(metric.getMetricManual()) {
-						success = resultManualEvaluation.get(0);
+						success = resultMap.get(metric.getMetricID());
 					} else {
 						success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getEntityType());
 					}
@@ -271,7 +278,7 @@ public class EvaluationBeanList {
 				context.addMessage(null, new FacesMessage("La evaluación se realizó correctamente"));
 				
 				listEvaluation = evaluationDao.list();
-				resultManualEvaluation = new ArrayList<>();
+				resultMap =  new HashMap<Integer, Boolean>();
 				
 			} catch (DAOException ex) {
 

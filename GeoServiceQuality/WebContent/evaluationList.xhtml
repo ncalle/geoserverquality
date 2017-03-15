@@ -184,9 +184,11 @@
 				<p:dialog id="dialogID" widgetVar="myDialogVar" header="Atención" modal="true" visible="true" 
 					 rendered="#{evaluationBeanList.isShowConfirm()}"	>
 				    <h:outputText value="La evaluación requiere que el usuario responda la siguiente pregunta"/> <br></br>
-				    <h:outputText value="¿Considera que el servicio cuenta con errores descriptivos?" /> <br></br>
-				    <p:commandButton value="Si" actionListener="#{evaluationBeanList.confirmationPositive()}" update="@all" />
-    				<p:commandButton value="No" actionListener="#{evaluationBeanList.confirmationNegative()}" update="@all" />
+				    <h:outputText value="¿Considera que el servicio cuenta con errores descriptivos?" /> <br></br><br></br>
+				    <div align="center">
+				    	<p:commandButton value="Si" actionListener="#{evaluationBeanList.confirmationPositive()}" update="@all" />
+    					<p:commandButton value="No" actionListener="#{evaluationBeanList.confirmationNegative()}" update="@all" />
+    				</div>
 				</p:dialog>
 				
 			</h:form>
