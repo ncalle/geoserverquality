@@ -19,7 +19,7 @@ public class EvaluationSummaryBean implements EvaluationSummaryBeanRemote {
     private static final String SQL_LIST_ORDER_BY_ID =
     		"SELECT EvaluationSummaryID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, MeasurableObjectDescription, SuccessFlag, SuccessPercentage FROM evaluation_summary_get (?)";
     private static final String SQL_INSERT =
-            "SELECT EvaluationSummaryID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, SuccessFlag, SuccessPercentage FROM evaluation_summary_insert (?, ?, ?, ?, ?)";
+            "SELECT EvaluationSummaryID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, MeasurableObjectDescription, SuccessFlag, SuccessPercentage FROM evaluation_summary_insert (?, ?, ?, ?, ?)";
 
 
     private DAOFactory daoFactory;

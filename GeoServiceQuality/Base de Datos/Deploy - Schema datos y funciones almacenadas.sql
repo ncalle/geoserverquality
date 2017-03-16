@@ -1027,7 +1027,7 @@ END;
 $$ LANGUAGE plpgsql;
 /* ****************************************************************************************************** */
 /* ****************************************************************************************************** */
---DROP FUNCTION evaluation_summary_insert (integer, integer, integer, boolean, integer);
+--DROP FUNCTION evaluation_summary_insert(integer,integer,integer,boolean,integer);
 CREATE OR REPLACE FUNCTION evaluation_summary_insert
 (
    pUserID INT
@@ -1046,6 +1046,7 @@ RETURNS TABLE
    , EntityID INT
    , EntityType VARCHAR(11)
    , MeasurableObjectName VARCHAR(1024)
+   , MeasurableObjectDescription VARCHAR(100)
    , SuccessFlag BOOLEAN
    , SuccessPercentage INT
 ) AS $$
@@ -1106,6 +1107,9 @@ BEGIN
          WHEN i.InstitutionID IS NOT NULL THEN i.Name
          WHEN ide.IdeID IS NOT NULL THEN ide.Name
       END AS MeasurableObjectName
+      , CASE 
+         WHEN gs.GeographicServicesID IS NOT NULL THEN gs.Description
+      END AS MeasurableObjectDescription
       , es.SuccessFlag
       , es.SuccessPercentage
    FROM EvaluationSummary es

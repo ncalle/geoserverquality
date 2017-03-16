@@ -114,6 +114,10 @@
 							
 						<p:column headerText="Métrica" sortBy="#{pmitem.getMetricName()}">
 							<h:outputText value="#{pmitem.getMetricName()}" />
+						</p:column>
+						
+						<p:column headerText="Unidad" sortBy="#{pmitem.getUnitName()}">
+							<h:outputText value="#{pmitem.getUnitName()}" />
 						</p:column>		
 					</p:dataTable>
 				</h:form>
