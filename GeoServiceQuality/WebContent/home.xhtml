@@ -80,11 +80,11 @@
 			        </p:column>
 			        
 					<p:column headerText="Descripción" >
-				  		<h5><h:outputText value="#{bsitem.measurableObjectDescription}" /></h5>
+				  		<h:outputText value="#{bsitem.measurableObjectDescription}" />
 					</p:column>
 					
 					<p:column headerText="Tipo" >
-				  		<h5><h:outputText value="#{bsitem.measurableObjectServicesType}" /></h5>
+				  		<h:outputText value="#{bsitem.measurableObjectServicesType}" />
 					</p:column>
 					
 					<p:column headerText="Disponibilidad">
@@ -113,11 +113,11 @@
 			        </p:column>
 				        					
 					<p:column headerText="Descripción" >
-				  		<h5><h:outputText value="#{wsitem.measurableObjectDescription}" /></h5>
+				  		<h:outputText value="#{wsitem.measurableObjectDescription}" />
 					</p:column>
 	
 					<p:column headerText="Tipo" >
-				  		<h5><h:outputText value="#{wsitem.measurableObjectServicesType}" /></h5>
+				  		<h:outputText value="#{wsitem.measurableObjectServicesType}" />
 					</p:column>
 					
 					<p:column headerText="Disponibilidad">
@@ -167,29 +167,33 @@
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,25">
 			        	
+					<p:column style="width:16px">
+			            <p:rowToggler />
+			        </p:column>
+
 					<p:column headerText="Perfil" sortBy="#{hitem.profileName}">
-						<h5><h:outputText value="#{hitem.profileName}" /></h5>
+						<h:outputText value="#{hitem.profileName}" />
 					</p:column>
 					
 					<p:column headerText="Tipo de Objeto" sortBy="#{hitem.entityType}">
-						<h5><h:outputText value="#{hitem.entityType}" /></h5>
+						<h:outputText value="#{hitem.entityType}" />
+					</p:column>
+					
+					<p:column headerText="Descripción" sortBy="#{hitem.measurableObjectDescription}">
+						<h:outputText value="#{hitem.measurableObjectDescription}" />
 					</p:column>
 
-					<p:column headerText="Descripción" sortBy="#{hitem.measurableObjectDescription}">
-						<h5><h:outputText value="#{hitem.measurableObjectDescription}" /></h5>
-					</p:column>
-		
-					<p:column headerText="Objeto" sortBy="#{hitem.measurableObjectName}">
-						<h5><h:outputText value="#{hitem.measurableObjectName}" /></h5>
-					</p:column>
-		
 					<p:column headerText="Resultado" sortBy="#{hitem.success}">
-						<h5><h:outputText value="#{hitem.success}" /></h5>
+						<h:outputText value="#{hitem.success}" />
 					</p:column>
 					
 					<p:column headerText="Porcentaje de exito" sortBy="#{hitem.successPercentage}">
-						<h5><h:outputText value="#{hitem.successPercentage}" /></h5>
+						<h:outputText value="#{hitem.successPercentage}" />
 					</p:column>
+
+			        <p:rowExpansion>
+			        	<a href="#{hitem.measurableObjectName}">Link al Servicio</a> 
+			        </p:rowExpansion>
 					
 				</p:dataTable>
 				
