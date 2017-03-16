@@ -207,10 +207,7 @@
 				<p:dataTable id="evaluation"
 					value="#{evaluationBeanList.listEvaluation}" var="eitem"
 					tableStyle="table-layout: auto;"
-					rowKey="#{eitem.getEvaluationID()}" widgetVar="ev" rows="10"
-					paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="10,20,50">
+					widgetVar="ev" rows="10">
 
 					<p:column headerText="Metrica" sortBy="#{eitem.metricName}">
 						<h:outputText value="#{eitem.metricName}" />
@@ -224,12 +221,12 @@
 						<h:outputText value="#{eitem.profileName}" />
 					</p:column>
 					
-					<p:column headerText="Tipo de Objeto" sortBy="#{eitem.entityType}">
-						<h:outputText value="#{eitem.entityType}" />
+					<p:column headerText="Fecha comienzo" sortBy="#{eitem.startDate}">
+						<h:outputText value="#{eitem.startDate}" />
 					</p:column>
-
-					<p:column headerText="Objeto" sortBy="#{eitem.measurableObjectName}">
-						<h:outputText value="#{eitem.measurableObjectName}" />
+					
+					<p:column headerText="Fecha fin" sortBy="#{eitem.endDate}">
+						<h:outputText value="#{eitem.endDate}" />
 					</p:column>
 
 					<p:column headerText="Completa" sortBy="#{eitem.isEvaluationCompleted}">

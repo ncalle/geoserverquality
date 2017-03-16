@@ -189,6 +189,7 @@ public class EvaluationBeanList {
 		this.showConfirm = show;
 	}
 	
+	
 
 	public void evaluate() throws DAOException {
 		
@@ -240,9 +241,12 @@ public class EvaluationBeanList {
 					e.setIsEvaluationCompleted(true);
 					e.setStartDate(date);
 					e.setEndDate(date);
-					
+					e.setMetricName(metric.getMetricName());
+					e.setQualityModelName(metric.getQualityModelName());
+					e.setProfileName(selectedProfile.getName());
 					listEvaluation.add(e);
 				}
+				
 				
 				int profileResultTotal = resultEvaluationProfile(listResult);
 				profileResult = profileResultTotal + " % de aprobación";
@@ -266,8 +270,8 @@ public class EvaluationBeanList {
 				
 				//cargar cada una de las evaluaciones, asociadas al ID del resumen de evaluacion
 				Iterator<Evaluation> evaluation_iterator = listEvaluation.iterator();
+				Evaluation e;
 				while (evaluation_iterator.hasNext()) {
-					Evaluation e = new Evaluation();
 					e = evaluation_iterator.next();
 					e.setEvaluationSummaryID(evaluationSummaryResult.getEvaluationSummaryID());
 					evaluationDao.create(e);
@@ -277,7 +281,6 @@ public class EvaluationBeanList {
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("La evaluación se realizó correctamente"));
 				
-				listEvaluation = evaluationDao.list();
 				resultMap =  new HashMap<Integer, Boolean>();
 				
 			} catch (DAOException ex) {
@@ -294,8 +297,6 @@ public class EvaluationBeanList {
 		}
 
 	}
-	
-	
 	
 	public int resultEvaluationProfile(List<Boolean> listResult) {
 		int count = 0;
