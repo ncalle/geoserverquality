@@ -75,7 +75,11 @@
 				  tableStyle="table-layout: auto;"
 				  widgetVar="bs">
 				        					
-					<p:column headerText="Métrica" >
+					<p:column style="width:16px">
+			            <p:rowToggler />
+			        </p:column>
+			        
+					<p:column headerText="Descripción" >
 				  		<h:outputText value="#{bsitem.measurableObjectDescription}" />
 					</p:column>
 					
@@ -86,6 +90,11 @@
 					<p:column headerText="Disponibilidad">
 						<p:progressBar value="#{bsitem.measurableObjectSuccessPercentage}" labelTemplate="#{bsitem.measurableObjectSuccessPercentage}%" displayOnly="true"/>
 					</p:column>
+								 
+			        <p:rowExpansion>
+			        	<a href="#{bsitem.measurableObjectURL}">Link al Servicio</a> 
+			        </p:rowExpansion>
+					
 				</p:dataTable>
 			  </h:form>
 			</div>
@@ -98,8 +107,12 @@
 				  var="wsitem" 
 				  tableStyle="table-layout: auto;"
 				  widgetVar="ws">
+				  
+				  	<p:column style="width:16px">
+			            <p:rowToggler />
+			        </p:column>
 				        					
-					<p:column headerText="Métrica" >
+					<p:column headerText="Descripción" >
 				  		<h:outputText value="#{wsitem.measurableObjectDescription}" />
 					</p:column>
 	
@@ -110,6 +123,11 @@
 					<p:column headerText="Disponibilidad">
 						<p:progressBar value="#{wsitem.measurableObjectSuccessPercentage}" labelTemplate="#{wsitem.measurableObjectSuccessPercentage}%" displayOnly="true"/>
 					</p:column>
+					
+					<p:rowExpansion>
+			        	<a href="#{wsitem.measurableObjectURL}">Link al Servicio</a> 
+			        </p:rowExpansion>
+			        
 				</p:dataTable>
 			  </h:form>
 			</div>
