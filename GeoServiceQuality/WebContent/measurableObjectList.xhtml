@@ -118,7 +118,7 @@
 					<p:column headerText="URL" sortBy="#{moitem.measurableObjectURL}">
 						<p:cellEditor>
 							<f:facet name="output">
-								<h:outputText value="#{moitem.measurableObjectURL}" />
+								<a href="#{moitem.measurableObjectURL}">Link al Servicio</a>
 							</f:facet>
 							<f:facet name="input">
 								<p:inputText id="URLInput" value="#{moitem.measurableObjectURL}" style="width:100%" />

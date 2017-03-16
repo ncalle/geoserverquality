@@ -162,6 +162,20 @@ public class ProfileBeanList {
 	
 	public void showLess() {
 		this.showMore = false;
+
+		//limpiar las selecciones
+		this.selectedProfile = null;
+		this.selectedProfileMetric = null;
+		this.selectedBooleanProfileMetric = null;
+		this.selectedPercentageProfileMetric = null;
+		this.selectedIntegerProfileMetric = null;
+		this.selectedEnumeratedProfileMetric = null;
+		
+    	//limpiar las listas de metricas de perfil
+    	listBooleanProfileMetric = null;
+    	listPercentageProfileMetric = null;
+    	listIntegerProfileMetric = null;
+    	listEnumeratedProfileMetric = null;
 	}
 	
 	public boolean isShowMore() {
