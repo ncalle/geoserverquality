@@ -80,11 +80,11 @@
 			        </p:column>
 			        
 					<p:column headerText="Descripción" >
-				  		<h:outputText value="#{bsitem.measurableObjectDescription}" />
+				  		<h5><h:outputText value="#{bsitem.measurableObjectDescription}" /></h5>
 					</p:column>
 					
 					<p:column headerText="Tipo" >
-				  		<h:outputText value="#{bsitem.measurableObjectServicesType}" />
+				  		<h5><h:outputText value="#{bsitem.measurableObjectServicesType}" /></h5>
 					</p:column>
 					
 					<p:column headerText="Disponibilidad">
@@ -113,11 +113,11 @@
 			        </p:column>
 				        					
 					<p:column headerText="Descripción" >
-				  		<h:outputText value="#{wsitem.measurableObjectDescription}" />
+				  		<h5><h:outputText value="#{wsitem.measurableObjectDescription}" /></h5>
 					</p:column>
 	
 					<p:column headerText="Tipo" >
-				  		<h:outputText value="#{wsitem.measurableObjectServicesType}" />
+				  		<h5><h:outputText value="#{wsitem.measurableObjectServicesType}" /></h5>
 					</p:column>
 					
 					<p:column headerText="Disponibilidad">
@@ -168,23 +168,27 @@
 					rowsPerPageTemplate="5,10,25">
 			        	
 					<p:column headerText="Perfil" sortBy="#{hitem.profileName}">
-						<h:outputText value="#{hitem.profileName}" />
+						<h5><h:outputText value="#{hitem.profileName}" /></h5>
 					</p:column>
 					
 					<p:column headerText="Tipo de Objeto" sortBy="#{hitem.entityType}">
-						<h:outputText value="#{hitem.entityType}" />
+						<h5><h:outputText value="#{hitem.entityType}" /></h5>
+					</p:column>
+
+					<p:column headerText="Descripción" sortBy="#{hitem.measurableObjectDescription}">
+						<h5><h:outputText value="#{hitem.measurableObjectDescription}" /></h5>
 					</p:column>
 		
 					<p:column headerText="Objeto" sortBy="#{hitem.measurableObjectName}">
-						<h:outputText value="#{hitem.measurableObjectName}" />
+						<h5><h:outputText value="#{hitem.measurableObjectName}" /></h5>
 					</p:column>
 		
 					<p:column headerText="Resultado" sortBy="#{hitem.success}">
-						<h:outputText value="#{hitem.success}" />
+						<h5><h:outputText value="#{hitem.success}" /></h5>
 					</p:column>
 					
 					<p:column headerText="Porcentaje de exito" sortBy="#{hitem.successPercentage}">
-						<h:outputText value="#{hitem.successPercentage}" />
+						<h5><h:outputText value="#{hitem.successPercentage}" /></h5>
 					</p:column>
 					
 				</p:dataTable>

@@ -1,4 +1,4 @@
---DROP FUNCTION evaluation_summary_get(integer);
+﻿--DROP FUNCTION evaluation_summary_get(integer);
 CREATE OR REPLACE FUNCTION evaluation_summary_get
 (
    pUserID INT --no requerido
@@ -13,6 +13,7 @@ RETURNS TABLE
    , EntityID INT
    , EntityType VARCHAR(11)
    , MeasurableObjectName VARCHAR(1024)
+   , MeasurableObjectDescription VARCHAR(100)
    , SuccessFlag BOOLEAN
    , SuccessPercentage INT
 ) AS $$
@@ -58,8 +59,15 @@ BEGIN
          WHEN i.InstitutionID IS NOT NULL THEN i.Name
          WHEN ide.IdeID IS NOT NULL THEN ide.Name
       END AS MeasurableObjectName
+      , CASE 
+         WHEN gs.GeographicServicesID IS NOT NULL THEN gs.Description
+         WHEN l.LayerID IS NOT NULL THEN l.Url
+         WHEN n.NodeID IS NOT NULL THEN n.Name
+         WHEN i.InstitutionID IS NOT NULL THEN i.Name
+         WHEN ide.IdeID IS NOT NULL THEN ide.Name
+      END AS MeasurableObjectDescription
       , es.SuccessFlag
-	  , es.SuccessPercentage
+      , es.SuccessPercentage
    FROM EvaluationSummary es
    INNER JOIN Profile p ON p.ProfileID = es.ProfileID
    INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
@@ -84,7 +92,7 @@ BEGIN
       , i.InstitutionID
       , ide.IdeID
       , es.SuccessFlag
-	  , es.SuccessPercentage
+      , es.SuccessPercentage
    ORDER BY es.EvaluationSummaryID;
          
 END;

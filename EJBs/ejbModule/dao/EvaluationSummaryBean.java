@@ -17,7 +17,7 @@ import entity.EvaluationSummary;
 public class EvaluationSummaryBean implements EvaluationSummaryBeanRemote {
 
     private static final String SQL_LIST_ORDER_BY_ID =
-    		"SELECT EvaluationSummaryID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, SuccessFlag, SuccessPercentage FROM evaluation_summary_get (?)";
+    		"SELECT EvaluationSummaryID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, MeasurableObjectDescription, SuccessFlag, SuccessPercentage FROM evaluation_summary_get (?)";
     private static final String SQL_INSERT =
             "SELECT EvaluationSummaryID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, SuccessFlag, SuccessPercentage FROM evaluation_summary_insert (?, ?, ?, ?, ?)";
 
@@ -107,6 +107,7 @@ public class EvaluationSummaryBean implements EvaluationSummaryBeanRemote {
 	    object.setEntityID(resultSet.getInt("EntityID"));
 	    object.setEntityType(resultSet.getString("EntityType"));
 	    object.setMeasurableObjectName(resultSet.getString("MeasurableObjectName"));
+	    object.setMeasurableObjectDescription(resultSet.getString("MeasurableObjectDescription"));
 		object.setSuccess(resultSet.getBoolean("SuccessFlag"));
 		object.setSuccessPercentage(resultSet.getInt("SuccessPercentage"));
 

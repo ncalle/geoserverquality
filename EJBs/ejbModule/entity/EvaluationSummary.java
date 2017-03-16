@@ -15,6 +15,7 @@ public class EvaluationSummary implements Serializable {
     private Integer EntityID;
     private String EntityType;
     private String MeasurableObjectName;
+    private String MeasurableObjectDescription;
     private Boolean Success;
     private Integer SuccessPercentage;
 
@@ -95,6 +96,15 @@ public class EvaluationSummary implements Serializable {
 	public void setMeasurableObjectName(String measurableObjectName) {
 		MeasurableObjectName = measurableObjectName;
 	}
+	
+	public String getMeasurableObjectDescription() {
+		return MeasurableObjectDescription;
+	}
+
+
+	public void setMeasurableObjectDescription(String measurableObjectDescription) {
+		MeasurableObjectDescription = measurableObjectDescription;
+	}
 
 	
 	public static long getSerialversionuid() {
@@ -141,7 +151,7 @@ public class EvaluationSummary implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("EvaluationSummaryID[EvaluationSummaryID=%d, UserID=%d, ProfileID=%d, ProfileName=%s, MeasurableObjectID=%d, EntityID=%d, EntityType=%s, MeasurableObjectName=%s, Success=%s, SuccessPercentage=%d]",
-        		getEvaluationSummaryID(), getUserID(), getProfileID(), getProfileName(), getMeasurableObjectID(), getEntityID(), getEntityType(), getMeasurableObjectName(), getSuccess(), getSuccessPercentage());
+        return String.format("EvaluationSummaryID[EvaluationSummaryID=%d, UserID=%d, ProfileID=%d, ProfileName=%s, MeasurableObjectID=%d, EntityID=%d, EntityType=%s, MeasurableObjectName=%s, MeasurableObjectDescription=%s, Success=%s, SuccessPercentage=%d]",
+        		getEvaluationSummaryID(), getUserID(), getProfileID(), getProfileName(), getMeasurableObjectID(), getEntityID(), getEntityType(), getMeasurableObjectName(), getMeasurableObjectDescription(), getSuccess(), getSuccessPercentage());
     }
 }
