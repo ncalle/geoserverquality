@@ -72,7 +72,8 @@
 						selection="#{evaluationBeanList.selectedProfile}"
 						rowKey="#{pitem.getProfileId()}" 
 						style="margin-bottom:40"
-						widgetVar="p">
+						widgetVar="p"
+						emptyMessage="No existen perfiles.">
 	
 						<p:ajax event="rowSelectRadio"
 							listener="#{evaluationBeanList.onRowSelect}" update=":profileMetrics:profileMetrics" />
@@ -110,7 +111,8 @@
 						value="#{evaluationBeanList.listProfileMetric}" 
 						var="pmitem" 
 						tableStyle="table-layout: auto;"
-						widgetVar="pm">
+						widgetVar="pm"
+						emptyMessage="El perfil seleccionado no tiene métricas asociadas.">
 							
 						<p:column headerText="Métrica" sortBy="#{pmitem.getMetricName()}">
 							<h:outputText value="#{pmitem.getMetricName()}" />
@@ -146,7 +148,8 @@
 					paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="10,25,50"					
-					widgetVar="mo">
+					widgetVar="mo"
+					emptyMessage="No existen objetos medibles.">
 
 					<p:ajax event="rowSelectRadio"
 						listener="#{evaluationBeanList.onRowSelect}" />
@@ -211,7 +214,8 @@
 				<p:dataTable id="evaluation"
 					value="#{evaluationBeanList.listEvaluation}" var="eitem"
 					tableStyle="table-layout: auto;"
-					widgetVar="ev" rows="10">
+					widgetVar="ev" rows="10"
+					emptyMessage="No existen resultados.">
 
 					<p:column headerText="Metrica" sortBy="#{eitem.metricName}">
 						<h:outputText value="#{eitem.metricName}" />

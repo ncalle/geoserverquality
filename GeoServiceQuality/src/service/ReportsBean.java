@@ -188,7 +188,7 @@ public class ReportsBean {
 			report = iterator.next();			
 				
 			if (report.getTotalEvaluationCount() == 0){
-				pieChartEvaluationSuccessVsFailed.set("No existen resultados", 100);
+				pieChartEvaluationSuccessVsFailed.set("No existen resultados", 0);
 			}
 			else{
 				pieChartEvaluationSuccessVsFailed.set("Exitos", report.getSuccessPercentage());
@@ -214,11 +214,16 @@ public class ReportsBean {
         exitos.setLabel("Exitos");
         
 		Iterator<Report> iterator = listSuccessEvaluationPerProfile.iterator();
-		while (iterator.hasNext()) {
-			report = iterator.next();			
-			if (report.getProfileName() != null && report.getProfileSuccessPercentage() != null){
-				exitos.set(report.getProfileName(), report.getProfileSuccessPercentage());				
-			}
+		if (iterator.hasNext()){
+			while (iterator.hasNext()) {
+				report = iterator.next();			
+				if (report.getProfileName() != null && report.getProfileSuccessPercentage() != null){
+					exitos.set(report.getProfileName(), report.getProfileSuccessPercentage());				
+				}
+			}			
+		}
+		else {
+			exitos.set("No existen resultados", 0);
 		}
 		barChartSuccessEvaluationPerProfile.addSeries(exitos);
     }
@@ -232,11 +237,16 @@ public class ReportsBean {
         exitos.setLabel("Exitos");
         
 		Iterator<Report> iterator = listSuccessEvaluationPerInstitution.iterator();
-		while (iterator.hasNext()) {
-			report = iterator.next();			
-			if (report.getInstitutionName() != null && report.getInstitutionSuccessPercentage() != null){
-				exitos.set(report.getInstitutionName(), report.getInstitutionSuccessPercentage());				
-			}
+		if (iterator.hasNext()){
+			while (iterator.hasNext()) {
+				report = iterator.next();			
+				if (report.getInstitutionName() != null && report.getInstitutionSuccessPercentage() != null){
+					exitos.set(report.getInstitutionName(), report.getInstitutionSuccessPercentage());				
+				}
+			}			
+		}
+		else {
+			exitos.set("No existen resultados", 0);
 		}
          
         barChartSuccessEvaluationPerInstitution.addSeries(exitos);
@@ -264,11 +274,16 @@ public class ReportsBean {
         exitos.setLabel("Exitos");
         
 		Iterator<Report> iterator = listSuccessEvaluationPerNode.iterator();
-		while (iterator.hasNext()) {
-			report = iterator.next();			
-			if (report.getNodeName() != null && report.getNodeSuccessPercentage() != null){
-				exitos.set(report.getNodeName(), report.getNodeSuccessPercentage());				
-			}
+		if (iterator.hasNext()){
+			while (iterator.hasNext()) {
+				report = iterator.next();			
+				if (report.getNodeName() != null && report.getNodeSuccessPercentage() != null){
+					exitos.set(report.getNodeName(), report.getNodeSuccessPercentage());				
+				}
+			}	
+		}
+		else {
+			exitos.set("No existen resultados", 0);
 		}
          
 		barChartSuccessEvaluationPerNode.addSeries(exitos);

@@ -67,7 +67,8 @@
 					rowKey="#{pitem.getProfileId()}" 
 					style="margin-bottom:40"
 					widgetVar="p"
-					editable="true">
+					editable="true"
+					emptyMessage="No existen perfiles">
 
 					<p:ajax event="rowEdit" listener="#{profileBeanList.onRowEditProfile}" update=":profiles:msgs" />
 					<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelect}" update=":profileMetrics "/>
@@ -147,7 +148,8 @@
 							rowKey="#{bpmitem.getMetricRangeID()}" 
 							style="margin-bottom:40" 
 							widgetVar="bpm"
-							editable="true">
+							editable="true"
+							emptyMessage="No hay métricas de tipo booleanas asociadas al perfil seleccionado.">
 		
 							<p:ajax event="rowEdit" listener="#{profileBeanList.onRowEditBooleanProfileMetrics}" update=":profileMetrics:msgs" />
 							<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelectBoolean}" update=":profileMetrics "/>
@@ -194,7 +196,8 @@
 							rowKey="#{epmitem.getMetricRangeID()}" 
 							style="margin-bottom:40" 
 							widgetVar="epm"
-							editable="true">
+							editable="true"
+							emptyMessage="No hay métricas de tipo enumeradas asociadas al perfil seleccionado.">
 		
 							<p:ajax event="rowEdit" listener="#{profileBeanList.onRowEditEnumeratedProfileMetrics}" update=":profileMetrics:msgs" />
 							<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelectEnumerated}" update=":profileMetrics "/>
@@ -244,7 +247,8 @@
 							rowKey="#{ipmitem.getMetricRangeID()}" 
 							style="margin-bottom:40" 
 							widgetVar="ipm"
-							editable="true">
+							editable="true"
+							emptyMessage="No hay métricas de tipo enteras asociadas al perfil seleccionado.">
 		
 							<p:ajax event="rowEdit" listener="#{profileBeanList.onRowEditIntegerProfileMetrics}" update=":profileMetrics:msgs" />
 							<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelectInteger}" update=":profileMetrics "/>
@@ -289,7 +293,8 @@
 							rowKey="#{ppmitem.getMetricRangeID()}" 
 							style="margin-bottom:40" 
 							widgetVar="ppm"
-							editable="true">
+							editable="true"
+							emptyMessage="No hay métricas de tipo porcentaje asociadas al perfil seleccionado.">
 		
 							<p:ajax event="rowEdit" listener="#{profileBeanList.onRowEditPercentageProfileMetrics}" update=":profileMetrics:msgs" />
 							<p:ajax event="rowSelectRadio" listener="#{profileBeanList.onRowSelectPercentage}" update=":profileMetrics "/>

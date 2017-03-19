@@ -65,7 +65,8 @@
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" 
 					widgetVar="u" 
-					editable="true">
+					editable="true"
+					emptyMessage="No existen usuarios.">
 
        				<p:ajax event="rowEdit" listener="#{userBeanList.onRowEdit}" update=":users:msgs" />
        				<p:ajax event="rowSelectRadio" listener="#{userBeanList.onRowSelect}" update=":evobject:measurableObjects :evobject:userIDOutputLabel" />
@@ -189,7 +190,8 @@
 					rowsPerPageTemplate="5,10,15" 
 					selection="#{userBeanList.selectedUserMeasurableObject}"
 					rowKey="#{moitem.getMeasurableObjectID()}"
-					widgetVar="mo">
+					widgetVar="mo"
+					emptyMessage="No hay objetos medibles asociados al usuario seleccionado.">
 					
 					<p:column selectionMode="single"
 						style="width:40px; text-align:center" />

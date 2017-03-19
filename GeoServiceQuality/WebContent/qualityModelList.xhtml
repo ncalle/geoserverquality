@@ -58,7 +58,8 @@
 					value="#{qualityModelBeanList.listQualityModels}" 
 					var="qmitem" 
 					tableStyle="table-layout: auto;" 
-					widgetVar="qm">
+					widgetVar="qm"
+					emptyMessage="No existen datos de modelos.">
 
 					<p:column headerText="Modelo de Calidad" sortBy="#{qmitem.qualityModelName}">
 						<h:outputText value="#{qmitem.qualityModelName}" />

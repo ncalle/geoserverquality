@@ -62,7 +62,8 @@
 			  value="#{reportsBean.listEvaluationsPerMetric}" 
 			  var="epmitem" 
 			  tableStyle="table-layout: auto;"
-			  widgetVar="epm">
+			  widgetVar="epm"
+			  emptyMessage="No existen resultados.">
 			        					
 				<p:column headerText="Métrica" >
 			  		<h:outputText value="#{epmitem.getMetricName()}" />
@@ -92,7 +93,8 @@
 			  value="#{reportsBean.listGeographicServicesPerInstitution}" 
 			  var="spiitem" 
 			  tableStyle="table-layout: auto;"
-			  widgetVar="spi">
+			  widgetVar="spi"
+			  emptyMessage="No existen resultados.">
 		        					
 				<p:column headerText="Institución" >
 			  		<h:outputText value="#{spiitem.getInstitutionName()}" />
