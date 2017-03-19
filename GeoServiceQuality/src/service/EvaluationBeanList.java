@@ -229,7 +229,8 @@ public class EvaluationBeanList {
 					if(metric.getMetricManual()) {
 						success = resultMap.get(metric.getMetricID());
 					} else {
-						success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getEntityType());
+						//System.out.println("getIntegerAcceptanceValue: " + metric.getIntegerAcceptanceValue());
+						success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getEntityType(), metric.getIntegerAcceptanceValue());
 					}
 					listResult.add(success);
 					System.out.println("MetricId: " + metricId + " Success: " + success);
