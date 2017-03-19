@@ -162,20 +162,6 @@ public class ProfileBeanList {
 	
 	public void showLess() {
 		this.showMore = false;
-
-		//limpiar las selecciones
-		this.selectedProfile = null;
-		this.selectedProfileMetric = null;
-		this.selectedBooleanProfileMetric = null;
-		this.selectedPercentageProfileMetric = null;
-		this.selectedIntegerProfileMetric = null;
-		this.selectedEnumeratedProfileMetric = null;
-		
-    	//limpiar las listas de metricas de perfil
-    	listBooleanProfileMetric = null;
-    	listPercentageProfileMetric = null;
-    	listIntegerProfileMetric = null;
-    	listEnumeratedProfileMetric = null;
 	}
 	
 	public boolean isShowMore() {
@@ -220,8 +206,37 @@ public class ProfileBeanList {
     		
     		if(profileMetric!=null){
     			pmDao.profileAddMetric(selectedProfileID, profileMetric);
-        		
     			filterMetricsByGranularity();
+    			    			
+    	    	 switch (profileMetric.getUnitID()) { //Boleano, Porcentaje, Milisegundos, Basico-Intermedio-Completo, Entero
+    				case 1: //Boleano
+    					listBooleanProfileMetric = pmDao.profileMetricList(selectedProfile, 1); //UnitID = Booleano
+    					break;
+    				case 2: //Porcentaje
+    					listPercentageProfileMetric = pmDao.profileMetricList(selectedProfile, 2); //UnitID = Porcentaje
+    					break;
+    				case 3: //Milisegundos
+    					listIntegerProfileMetric = pmDao.profileMetricList(selectedProfile, 3); //UnitID = Milisegundos
+    					break;
+    				case 4: //Basico-Intermedio-Completo
+    					listEnumeratedProfileMetric = pmDao.profileMetricList(selectedProfile, 4); //UnitID = Basico-Intermedio-Completo
+    					break;
+    				case 5: //Entero
+    					listIntegerProfileMetric.addAll(pmDao.profileMetricList(selectedProfile, 5)); //UnitID = Entero
+    					break;    		
+    				default:
+    					listBooleanProfileMetric = null;
+    					listPercentageProfileMetric = null;
+    					listIntegerProfileMetric = null;
+    					listEnumeratedProfileMetric = null;
+    					listIntegerProfileMetric = null;
+    					selectedProfileMetric = null;
+    					selectedBooleanProfileMetric = null;
+    					selectedPercentageProfileMetric = null;
+    					selectedIntegerProfileMetric = null;
+    					selectedEnumeratedProfileMetric = null;
+    					break;
+    				}
         		
         		msg = new FacesMessage("La Metrica fue asociado al Perfil de manera correcta.");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
