@@ -40,9 +40,9 @@ public class UserBeanList {
 	private Institution institution;
 	private List<MeasurableObject> listUserMeasurableObjects;
 	private MeasurableObject selectedUserMeasurableObject;
+	private List<MeasurableObject> listUserMeasurableObjectsToAdd;
 	private boolean showMore;
 	private MeasurableObject userMeasurableObject;
-	private Integer userID;
 	
 	@EJB
 	private UserBeanRemote uDao = new UserBean();
@@ -124,7 +124,15 @@ public class UserBeanList {
 
 	public void setSelectedUserMeasurableObject(MeasurableObject selectedUserMeasurableObject) {
 		this.selectedUserMeasurableObject = selectedUserMeasurableObject;
-	}	
+	}
+	
+	public List<MeasurableObject> getListUserMeasurableObjectsToAdd() {
+		return listUserMeasurableObjectsToAdd;
+	}
+
+	public void setListUserMeasurableObjectsToAdd(List<MeasurableObject> listUserMeasurableObjectsToAdd) {
+		this.listUserMeasurableObjectsToAdd = listUserMeasurableObjectsToAdd;
+	}
 	
 	public void setShowMore(boolean showMore) {
 		this.showMore = showMore;
@@ -140,7 +148,7 @@ public class UserBeanList {
 	
 	public void showMore() {
 		this.showMore = true;
-		listUserMeasurableObjects = moDao.userMeasurableObjectsToAddGet(selectedUser.getUserId()); 
+		listUserMeasurableObjectsToAdd = moDao.userMeasurableObjectsToAddGet(selectedUser.getUserId()); 
 	}
     	
 	public void deleteUser() {   	
@@ -184,14 +192,6 @@ public class UserBeanList {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 	
-	public Integer getUserID() {
-		return userID;
-	}
-
-	public void setUserID(Integer userID) {
-		this.userID = userID;
-	}
-		
 	public MeasurableObject getUserMeasurableObject() {
 		return userMeasurableObject;
 	}
@@ -206,7 +206,8 @@ public class UserBeanList {
     	try{
     		if(selectedUser!=null && userMeasurableObject!=null){
     			uDao.userAddMeasurableObject(selectedUser.getUserId(), userMeasurableObject);
-    			listUserMeasurableObjects = moDao.userMeasurableObjectsToAddGet(selectedUser.getUserId()); 
+    			listUserMeasurableObjects.add(userMeasurableObject); //= moDao.userMeasurableObjectsToAddGet(selectedUser.getUserId()); 
+    			listUserMeasurableObjectsToAdd.remove(userMeasurableObject);
     			
         		msg = new FacesMessage("El objeto medible fue asociado al usuario de manera correcta.");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -217,4 +218,5 @@ public class UserBeanList {
             FacesContext.getCurrentInstance().addMessage(null, msg);
     	}
 	}
+
 }
