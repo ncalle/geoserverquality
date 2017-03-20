@@ -28,7 +28,9 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
     private static final String SQL_USER_MEASURABLE_OBJECT_TO_ADD_GET =
     		"SELECT MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_user_measurable_object_to_add_get (?)";
 	private static final String SQL_UPDATE =
-        	"SELECT * FROM prototype_measurable_object_update (?, ?, ?, ?)";    
+        	"SELECT * FROM prototype_measurable_object_update (?, ?, ?, ?)";
+    private static final String SQL_SERVICES_AND_LAYER_GET =
+    		"SELECT MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM services_and_layers_get (?, ?, ?)";	
 
     private DAOFactory daoFactory;
 	
@@ -202,6 +204,38 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             throw new DAOException(e);
         }
     }
+    
+    @Override
+    public List<MeasurableObject> servicesAndLayerGet(Integer userID, String EntityName, String EntityType) throws DAOException {
+        List<MeasurableObject> measurableobject = new ArrayList<>();
+
+        Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_SERVICES_AND_LAYER_GET);
+            
+			statement.setObject(1, null); //userID
+			statement.setString(2, EntityName);
+			statement.setString(3, EntityType);
+			
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+            	measurableobject.add(map(resultSet));
+            }
+            
+            connection.close();
+            
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+
+        return measurableobject;
+    }
+
 
     private static MeasurableObject map(ResultSet resultSet) throws SQLException {
     	MeasurableObject measurableobject = new MeasurableObject();

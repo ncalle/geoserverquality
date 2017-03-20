@@ -2,6 +2,8 @@
 CREATE OR REPLACE FUNCTION prototype_measurable_objects_get
 (
    pUserID INT
+   , pEntityName VARCHAR(70)
+   , pEntityType VARCHAR(11) -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio'
 )
 RETURNS TABLE 
    (

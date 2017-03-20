@@ -20,4 +20,6 @@ public interface MeasurableObjectBeanRemote {
     
     public void update(MeasurableObject measurableObject) throws DAOException;
     
+    public List<MeasurableObject> servicesAndLayerGet(Integer userID, String EntityName, String EntityType) throws DAOException;
+    
 }

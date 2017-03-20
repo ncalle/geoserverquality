@@ -116,3 +116,10 @@ SELECT * FROM report_success_evaluation_per_node (); --ok
 --------------------------------------------------------------------
 SELECT * FROM report_top_best_worst_measurable_object_get (3, TRUE, FALSE); --ok
 SELECT * FROM report_top_best_worst_measurable_object_get (3, FALSE, TRUE); --ok
+--------------------------------------------------------------------
+SELECT * FROM ide_tree_structure_get(null); --ok //UserID
+SELECT * FROM ide_tree_structure_get(2); --ok //UserID
+SELECT * FROM ide_tree_structure_get(5); --ok //UserID
+--------------------------------------------------------------------
+SELECT * FROM measurable_object_get (null); --ok
+SELECT * FROM services_and_layers_get (null, 'UNASEV', 'Nodo'); --ok

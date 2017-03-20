@@ -51,10 +51,30 @@
 		</nav>
 
 		<div class="container">
+		
+			<h:form>
+				<p:growl id="msgs" showDetail="true" escape="false"/>
+			
+			    <h3 style="margin-top:0">Árbol de objetos medibles</h3>
+			    <p:tree value="#{measurableObjectBeanList.root}" 
+			    	var="node" 
+			    	orientation="horizontal"
+			    	selectionMode="single"
+                	selection="#{measurableObjectBeanList.selectedNode}">
+                	
+                	<p:ajax event="select" listener="#{measurableObjectBeanList.onNodeSelect}" update=":measurableObjects" />
+			        
+			        <p:treeNode>
+			            <h:outputText value="#{node}" />
+			        </p:treeNode>
+			        
+			    </p:tree>
+
+			</h:form>
 
 			<h:form id="measurableObjects" method="post">
 				<p:growl id="msgs" />
-				<h2 class="form-signin-heading">Objetos Medibles</h2>
+				<h2 class="form-signin-heading">Servicios/Capas</h2>
 				<hr></hr>
 				<p:dataTable id="measurableObjects"
 					value="#{measurableObjectBeanList.listObjects}" 
@@ -69,7 +89,7 @@
 					rowsPerPageTemplate="10,25,50" 
 					widgetVar="mo" 
 					editable="true"
-					emptyMessage="No existen objetos medibles.">
+					emptyMessage="No existen servicios/capas para el objeto medible seleccionado.">
 					
 					<p:ajax event="rowEdit" listener="#{measurableObjectBeanList.onRowEdit}" update=":measurableObjects:msgs" />
        				<p:ajax event="rowSelectRadio" listener="#{measurableObjectBeanList.onRowSelect}" />
@@ -143,8 +163,7 @@
 			</h:form>
 		</div>
 
-		<script
-			src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
 		<script src="../../assets/js/vendor/jquery.min.js"></script>
 		<script
 			src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
