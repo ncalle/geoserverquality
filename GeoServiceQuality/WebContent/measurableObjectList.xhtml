@@ -52,115 +52,125 @@
 
 		<div class="container">
 		
-			<h:form>
-				<p:growl id="msgs" showDetail="true" escape="false"/>
-			
-			    <h3 style="margin-top:0">Árbol de objetos medibles</h3>
-			    <p:tree value="#{measurableObjectBeanList.root}" 
-			    	var="node" 
-			    	orientation="horizontal"
-			    	selectionMode="single"
-                	selection="#{measurableObjectBeanList.selectedNode}">
-                	
-                	<p:ajax event="select" listener="#{measurableObjectBeanList.onNodeSelect}" update=":measurableObjects" />
-			        
-			        <p:treeNode>
-			            <h:outputText value="#{node}" />
-			        </p:treeNode>
-			        
-			    </p:tree>
+			<div class="ui-g">
+	    		<div class="ui-g-4">
+	    			<h:form>
+						<p:growl id="msgs" showDetail="true" escape="false"/>
+						
+					    <h2 class="form-signin-heading">Árbol de objetos medibles</h2>
 
-			</h:form>
-
-			<h:form id="measurableObjects" method="post">
-				<p:growl id="msgs" />
-				<h2 class="form-signin-heading">Servicios/Capas</h2>
-				<hr></hr>
-				<p:dataTable id="measurableObjects"
-					value="#{measurableObjectBeanList.listObjects}" 
-					var="moitem"
-					tableStyle="table-layout: auto;" 
-					selection="#{measurableObjectBeanList.selectedMeasurableObject}"
-					rowKey="#{moitem.getMeasurableObjectID()}" 
-					style="margin-bottom:40" 					
-					rows="10" 
-					paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="10,25,50" 
-					widgetVar="mo" 
-					editable="true"
-					emptyMessage="No existen servicios/capas para el objeto medible seleccionado.">
-					
-					<p:ajax event="rowEdit" listener="#{measurableObjectBeanList.onRowEdit}" update=":measurableObjects:msgs" />
-       				<p:ajax event="rowSelectRadio" listener="#{measurableObjectBeanList.onRowSelect}" />
-
-					<p:column selectionMode="single"
-						style="width:40px; text-align:center" />
-
-					<p:column headerText="ID" sortBy="#{moitem.measurableObjectID}">
-						<h:outputText value="#{moitem.measurableObjectID}" />
-					</p:column>
-					<p:column headerText="Descripción" sortBy="#{moitem.measurableObjectDescription}">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{moitem.measurableObjectDescription}" />
-							</f:facet>
-							<f:facet name="input">
-								<p:inputText id="DescriptionInput" value="#{moitem.measurableObjectDescription}" style="width:100%" />
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
-					<p:column headerText="Tipo" sortBy="#{moitem.entityType}">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{moitem.entityType}" />
-							</f:facet>
-							<f:facet name="input">
-								<h:selectOneMenu value="#{moitem.entityType}" style="width:100%">
-									<f:selectItem itemValue="Servicio" itemLabel="Servicio"/>
-								</h:selectOneMenu>
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
-					<p:column headerText="Tipo de Servicio" sortBy="#{moitem.measurableObjectServicesType}">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{moitem.measurableObjectServicesType}" />
-							</f:facet>
-							<f:facet name="input">
-								<h:selectOneMenu value="#{moitem.measurableObjectServicesType}" style="width:100%">
-									<f:selectItem itemValue="WMS" itemLabel="WMS"/>
-									<f:selectItem itemValue="WFS" itemLabel="WFS"/>
-									<f:selectItem itemValue="CSW" itemLabel="CSW"/>
-								</h:selectOneMenu>
-							</f:facet>
-						</p:cellEditor>					
-					</p:column>
-					<p:column headerText="URL" sortBy="#{moitem.measurableObjectURL}">
-						<p:cellEditor>
-							<f:facet name="output">
-								<a href="#{moitem.measurableObjectURL}">Link al Servicio</a>
-							</f:facet>
-							<f:facet name="input">
-								<p:inputText id="URLInput" value="#{moitem.measurableObjectURL}" style="width:100%" />
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
-					<p:column headerText="Acciones">
-						<p:rowEditor />
-					</p:column>
-				</p:dataTable>
-
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<p:button class="btn btn-default" icon="ui-icon-plus"
-							value="Nuevo" outcome="measurableObjectAdd" />
-						<p:commandButton class="btn btn-default" icon="ui-icon-trash"
-							value="Eliminar" id="deleteMeasurableObjectIcon"
-							actionListener="#{measurableObjectBeanList.deleteMeasurableObject}" update="measurableObjects :measurableObjects:msgs" />							
-					</div>
+   						<hr></hr>
+					    						
+					    <p:tree value="#{measurableObjectBeanList.root}" 
+					    	var="node" 
+					    	selectionMode="single"
+		                	selection="#{measurableObjectBeanList.selectedNode}">
+		                	
+		                	<p:ajax event="select" listener="#{measurableObjectBeanList.onNodeSelect}" update=":measurableObjects" />
+					        
+					        <p:treeNode>
+					            <h:outputText value="#{node}" />
+					        </p:treeNode>
+					        
+					    </p:tree>
+		
+					</h:form>
+	    		
 				</div>
-			</h:form>
+	    		<div class="ui-g-8">
+	    		
+	    			<h:form id="measurableObjects" method="post">
+						<p:growl id="msgs" />
+						<h2 class="form-signin-heading">Servicios/Capas</h2>
+						<hr></hr>
+						<p:dataTable id="measurableObjects"
+							value="#{measurableObjectBeanList.listObjects}" 
+							var="moitem"
+							tableStyle="table-layout: auto;" 
+							selection="#{measurableObjectBeanList.selectedMeasurableObject}"
+							rowKey="#{moitem.getMeasurableObjectID()}" 
+							style="margin-bottom:40" 					
+							rows="10" 
+							paginator="true"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="10,25,50" 
+							widgetVar="mo" 
+							editable="true"
+							emptyMessage="No existen servicios/capas para el objeto medible seleccionado.">
+							
+							<p:ajax event="rowEdit" listener="#{measurableObjectBeanList.onRowEdit}" update=":measurableObjects:msgs" />
+		       				<p:ajax event="rowSelectRadio" listener="#{measurableObjectBeanList.onRowSelect}" />
+		
+							<p:column selectionMode="single"
+								style="width:40px; text-align:center" />
+		
+							<p:column headerText="ID" sortBy="#{moitem.measurableObjectID}">
+								<h:outputText value="#{moitem.measurableObjectID}" />
+							</p:column>
+							<p:column headerText="Descripción" sortBy="#{moitem.measurableObjectDescription}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{moitem.measurableObjectDescription}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="DescriptionInput" value="#{moitem.measurableObjectDescription}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="Tipo" sortBy="#{moitem.entityType}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{moitem.entityType}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:selectOneMenu value="#{moitem.entityType}" style="width:100%">
+											<f:selectItem itemValue="Servicio" itemLabel="Servicio"/>
+										</h:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="Tipo de Servicio" sortBy="#{moitem.measurableObjectServicesType}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{moitem.measurableObjectServicesType}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:selectOneMenu value="#{moitem.measurableObjectServicesType}" style="width:100%">
+											<f:selectItem itemValue="WMS" itemLabel="WMS"/>
+											<f:selectItem itemValue="WFS" itemLabel="WFS"/>
+											<f:selectItem itemValue="CSW" itemLabel="CSW"/>
+										</h:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>					
+							</p:column>
+							<p:column headerText="URL" sortBy="#{moitem.measurableObjectURL}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<a href="#{moitem.measurableObjectURL}">Link al Servicio</a>
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="URLInput" value="#{moitem.measurableObjectURL}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="Acciones">
+								<p:rowEditor />
+							</p:column>
+						</p:dataTable>
+		
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<p:button class="btn btn-default" icon="ui-icon-plus"
+									value="Nuevo" outcome="measurableObjectAdd" />
+								<p:commandButton class="btn btn-default" icon="ui-icon-trash"
+									value="Eliminar" id="deleteMeasurableObjectIcon"
+									actionListener="#{measurableObjectBeanList.deleteMeasurableObject}" update="measurableObjects :measurableObjects:msgs" />							
+							</div>
+						</div>
+					</h:form>
+	    		
+	    		</div>
+			</div>
 		</div>
 
 

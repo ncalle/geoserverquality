@@ -47,8 +47,8 @@ BEGIN
       , n.Name AS NodeName
       , n.Description AS NodeDescription
    FROM Ide ide
-   INNER JOIN Institution ins ON ins.IdeID = ide.IdeID
-   INNER JOIN Node n ON n.InstitutionID = ins.InstitutionID
+   LEFT JOIN Institution ins ON ins.IdeID = ide.IdeID
+   LEFT JOIN Node n ON n.InstitutionID = ins.InstitutionID
    LEFT JOIN MeasurableObject mo ON 
       CASE
          WHEN mo.EntityType = 'Ide' THEN mo.EntityID = ide.IdeID

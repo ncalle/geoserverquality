@@ -45,7 +45,7 @@ public class MeasurableObjectBeanList {
 	private void init()	{
 		try {
 			Integer userID = null;
-			listIdeStructure = ideTreeDao.list(userID); //TODO: pasar el UserID cuando se quiera soportar lista de objetos medible del usuario.
+			listIdeStructure = ideTreeDao.list(userID);
 
             createTree();
             
@@ -69,6 +69,18 @@ public class MeasurableObjectBeanList {
 	public void setSelectedMeasurableObject(MeasurableObject selectedMeasurableObject) {
 		this.selectedMeasurableObject = selectedMeasurableObject;
 	}
+	
+    public TreeNode getSelectedNode() {
+        return selectedNode;
+    }
+ 
+    public void setSelectedNode(TreeNode selectedNode) {
+        this.selectedNode = selectedNode;
+    }
+	
+    public TreeNode getRoot() {
+        return root;
+    }
 	
     public void onRowSelect(SelectEvent event) {
     	//agregar codigo de ser necesario
@@ -127,28 +139,26 @@ public class MeasurableObjectBeanList {
 			}
         }
 	}
-	
-    public TreeNode getSelectedNode() {
-        return selectedNode;
-    }
- 
-    public void setSelectedNode(TreeNode selectedNode) {
-        this.selectedNode = selectedNode;
-    }
-	
-    public TreeNode getRoot() {
-        return root;
-    }
-    
-    public void displaySelectedSingle() {
-        if(selectedNode != null) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", selectedNode.getData().toString());
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
-    }
-    
-    public void onNodeSelect(NodeSelectEvent event) {    	
-    	listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Nodo");
+        
+    public void onNodeSelect(NodeSelectEvent event) {    	   	
+    	if (selectedNode != null && selectedNode.getRowKey() != null) {
+        	String rowKey = selectedNode.getRowKey();
+        	Integer numberOfUnderscore = rowKey.length() - rowKey.replace("_", "").length();
+        	
+    		switch (numberOfUnderscore) {
+			case 0:
+				listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Ide");
+				break;
+			case 1:
+				listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Institución");
+				break;
+			case 2:
+				listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Nodo");
+				break;
+			default:
+				break;
+			}
+    	}    	    	
     }
 
 	public List<IdeTreeStructure> getListIdeStructure() {

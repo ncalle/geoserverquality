@@ -123,3 +123,8 @@ SELECT * FROM ide_tree_structure_get(5); --ok //UserID
 --------------------------------------------------------------------
 SELECT * FROM measurable_object_get (null); --ok
 SELECT * FROM services_and_layers_get (null, 'UNASEV', 'Nodo'); --ok
+SELECT * FROM services_and_layers_get (null, 'Ministerio de Defensa Nacional', 'Institución'); --ok
+SELECT * FROM services_and_layers_get (null, 'ide.uy', 'Ide'); --ok
+SELECT * FROM services_and_layers_get (1, 'ide.uy', 'Ide'); --ok
+SELECT * FROM services_and_layers_get (10, 'ide.uy', 'Ide'); --ok
+--------------------------------------------------------------------
