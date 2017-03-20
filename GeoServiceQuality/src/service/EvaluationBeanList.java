@@ -229,10 +229,10 @@ public class EvaluationBeanList {
 					if(metric.getMetricManual()) {
 						success = resultMap.get(metric.getMetricID());
 					} else {
-						success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getEntityType());
+						success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getEntityType(), metric.getIntegerAcceptanceValue());
 					}
 					listResult.add(success);
-					System.out.println("MetricId: " + metricId + " Success: " + success);
+					System.out.println("MetricId: " + metricId + " Success: " + success + " MO:" + selectedMeasurableObject.getMeasurableObjectURL());
 					
 					Evaluation e = new Evaluation();
 					

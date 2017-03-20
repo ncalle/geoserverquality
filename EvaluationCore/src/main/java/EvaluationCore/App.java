@@ -36,7 +36,7 @@ public final class App {
     }
     
     
-    public static boolean ejecuteMetric(Integer metricId, String url, String serviceType){
+    public static boolean ejecuteMetric(Integer metricId, String url, String serviceType, int integerAcceptanceValue){
     	 boolean res = false;
     	 
     	 switch (metricId) {
@@ -65,10 +65,10 @@ public final class App {
 				res = metricFormatException(url, serviceType, "BLANK");
 				break;
 			case 8:
-				res = metricCountMapFormat(url, serviceType) > 3;
+				res = metricCountMapFormat(url, serviceType) >= integerAcceptanceValue;
 				break;
 			case 9:
-				res = metricCountFormatException(url, serviceType) > 3;
+				res = metricCountFormatException(url, serviceType) >= integerAcceptanceValue;
 				break;
 			case 10:
 				res = metricGetLegendGraphic(url, serviceType);

@@ -455,7 +455,7 @@ INSERT INTO Unit (Name, Description) VALUES
 INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality, IsManual) VALUES
 (2, 'Informacion en excepciones', FALSE, 1, 'Servicio', FALSE),
 (7, 'Excepciones en formato OGC', FALSE, 1, 'Servicio', FALSE),
-(8, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 2, 'Servicio', FALSE),
+(8, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 1, 'Servicio', FALSE),
 (10, 'Formato PNG', FALSE, 1, 'Método', FALSE),
 (10, 'Formato KML', FALSE, 1, 'Método', FALSE),
 (10, 'Formato text/html metodo getFeatureInfo', FALSE, 1, 'Método', FALSE),
@@ -463,7 +463,7 @@ INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality, IsManu
 (10, 'Formato Excepcion application/vnd.ogc.se_blank', FALSE, 1, 'Método', FALSE),
 (10, 'Cantidad de formatos soportados', FALSE, 5, 'Servicio', FALSE),
 (10, 'Cantidad de formatos de excepciones soportadas', FALSE, 5, 'Servicio', FALSE),
-(13, 'Leyenda de la Capa', FALSE, 2, 'Servicio', FALSE),
+(13, 'Leyenda de la Capa', FALSE, 1, 'Servicio', FALSE),
 (13, 'Especifica Rango Util', FALSE, 1, 'Capa', FALSE),
 (14, 'Errores descriptivos', FALSE, 1, 'Servicio', TRUE);
 --(3, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio'),
@@ -523,10 +523,13 @@ INSERT INTO Profile (Name, Granurality, IsWeightedFlag) VALUES
 ('Perfil Avanzado', 'Servicio', FALSE);
 
 INSERT INTO MetricRange (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue) VALUES
-(1, 1, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
+(1, 1, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL), -- perfil servicio basico
 (2, 1, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
-(4, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
-(5, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL);
+(1, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL), -- perfil servicio avanzado
+(2, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
+(3, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
+(9, 2, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL),
+(10, 2, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL);
 
 --INSERT INTO Layer (NodeID, Name, Url) VALUES
 --(1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),
