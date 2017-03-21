@@ -221,17 +221,21 @@ public final class App {
        			} 
        		} 
        		
-       		/*else if(serviceType.equals("WFS")){
+       		else if(serviceType.equals("WFS")){
        			Unmarshaller unmarshaller = getUnmarshallerWFS_1_1_0();
        			
-       			JAXBElement<WFSCapabilitiesType> wmsCapabilitiesElement = unmarshaller
-       			        .unmarshal(new StreamSource(url), WFSCapabilitiesType.class);
+       			JAXBElement<WFSCapabilitiesType> capabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url+"&exceptions=text/xml"), WFSCapabilitiesType.class);
        			
-       			WFSCapabilitiesType wmsCapabilities = wmsCapabilitiesElement.getValue();
-       			FilterCapabilities c = wmsCapabilities.getFilterCapabilities();
+       			WFSCapabilitiesType wfsCapabilities = capabilitiesElement.getValue();
+       			//FilterCapabilities c = wfsCapabilities.getFilterCapabilities();
+       			
+       			//if(wfsCapabilities.getOperationsMetadata().get){
+       				
+       			//}
        			
        			return false;
-       		}*/
+       		}
    			
    		} catch (JAXBException e) {
    			e.printStackTrace();
@@ -515,7 +519,6 @@ public final class App {
    	
    	/* --------------------------------------------------------------------------
      * Indica si el servicio implementa el método GetLegendGraphic.
-     * Esta operacion esta solamente para versiones menores o iguales a v_1_1_1 del wms
      * --------------------------------------------------------------------------*/
     
     @SuppressWarnings("restriction")
@@ -523,7 +526,8 @@ public final class App {
     	boolean res = false;
        	try {
        		
-       		Unmarshaller unmarshaller = getUnmarshaller_1_1_1();
+       		/*Para versiones menores a 1.3.0
+       		 * Unmarshaller unmarshaller = getUnmarshaller_1_1_1();
   			 
        		if(serviceType.equals("WMS")) {
        			JAXBElement<net.opengis.wms.v_1_1_1.WMTMSCapabilities> wmsCapabilitiesElement = unmarshaller
@@ -537,7 +541,30 @@ public final class App {
 	       			return true;
 	       		}
 				
-       		}
+       		}*/
+       		
+       		
+ 			 
+       		if(serviceType.equals("WMS")) {
+       			Unmarshaller unmarshaller = getUnmarshaller();
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			
+       			if(wmsCapabilities.getCapability()==null || wmsCapabilities.getCapability().getLayer()==null 
+       					|| wmsCapabilities.getCapability().getLayer().getLayer().size()==0){
+       				return false;
+       			}
+       			
+       			for (Layer layer : wmsCapabilities.getCapability().getLayer().getLayer()) {
+       				for (Style style : layer.getStyle()) {
+       					if(style.isSetLegendURL()){
+       						return true;
+       					}
+       				}
+    			}
+       		} 
        		
        		
    		} catch (Exception e) {
