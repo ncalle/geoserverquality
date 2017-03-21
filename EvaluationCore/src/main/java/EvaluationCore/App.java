@@ -27,11 +27,38 @@ import net.opengis.wfs.v_1_1_0.WFSCapabilitiesType;
 
 public final class App {
 
-	//static String URL = "http://www2.demis.nl/wms/wms.asp?REQUEST=GetCapabilities&VERSION=1.3.0&wms=WorldMap";
-	static String URL = "http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/wms?service=WMS&version=1.3.0&request=GetCapabilities";
+	//static String URL = "http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/wms?service=WMS&version=1.3.0&request=GetCapabilities";
+	static String URL = "http://geoservicios.mtop.gub.uy/geoserver/mb_pap/wms?service=WMS&version=1.3.0&request=GetCapabilities";
+	
 	
     public static void main( String[] args ) {
         System.out.println( "Evaluation Core Test --------------------" );
+        
+        String serviceType = "WMS";
+        
+        ejecuteMetric(1, URL, serviceType, 0);
+        
+        ejecuteMetric(2, URL, serviceType, 0);
+        
+        ejecuteMetric(3, URL, serviceType, 0);
+        
+        ejecuteMetric(4, URL, serviceType, 0);
+        
+        ejecuteMetric(5, URL, serviceType, 0);
+        
+        ejecuteMetric(6, URL, serviceType, 0);
+        
+        ejecuteMetric(7, URL, serviceType, 0);
+        
+        ejecuteMetric(8, URL, serviceType, 0);
+        
+        ejecuteMetric(9, URL, serviceType, 1);
+        
+        ejecuteMetric(10, URL, serviceType, 1);
+        
+        ejecuteMetric(11, URL, serviceType, 0);
+        
+        ejecuteMetric(12, URL, serviceType, 0);
         
     }
     
@@ -40,41 +67,53 @@ public final class App {
     	 boolean res = false;
     	 
     	 switch (metricId) {
-			case 0:
-				res = metricInformationException(url, serviceType);
-				break;
 			case 1:
-				res = metricOGCFormatException(url, serviceType);
+				res = metricInformationException(url, serviceType);
+				System.out.println( "metricInformation --------------------" + res);
 				break;
 			case 2:
-				res = metricCRSInLayer(url, serviceType);
+				res = metricOGCFormatException(url, serviceType);
+				System.out.println( "metricOGCFormat --------------------" + res);
 				break;
 			case 3:
-				res = metricGetMapFormat(url, serviceType, "PNG");
+				res = metricCRSInLayer(url, serviceType);
+				System.out.println( "metricCRSInLayer --------------------" + res);
 				break;
 			case 4:
-				res = metricGetMapFormat(url, serviceType, "KML");
+				res = metricGetMapFormat(url, serviceType, "image/png");
+				System.out.println( "metricGetMapFormat --------------------" + res);
 				break;
 			case 5:
-				res = metricGetFeatureInfoFormat(url, serviceType, "text/html");
+				res = metricGetMapFormat(url, serviceType, "application/vnd.google-earth.kml+xml");
+				System.out.println( "metricGetMapFormat --------------------" + res);
 				break;
 			case 6:
-				res = metricFormatException(url, serviceType, "INIMAGE");
+				res = metricGetFeatureInfoFormat(url, serviceType, "text/html");
+				System.out.println( "metricGetFeatureInfoFormat --------------------" + res);
 				break;
 			case 7:
-				res = metricFormatException(url, serviceType, "BLANK");
+				res = metricFormatException(url, serviceType, "INIMAGE");
+				System.out.println( "metricFormat --------------------" + res);
 				break;
 			case 8:
-				res = metricCountMapFormat(url, serviceType) >= integerAcceptanceValue;
+				res = metricFormatException(url, serviceType, "BLANK");
+				System.out.println( "metricFormat --------------------" + res);
 				break;
 			case 9:
-				res = metricCountFormatException(url, serviceType) >= integerAcceptanceValue;
+				res = metricCountMapFormat(url, serviceType) >= integerAcceptanceValue;
+				System.out.println( "metricCountMapFormat --------------------" + res);
 				break;
 			case 10:
-				res = metricGetLegendGraphic(url, serviceType);
+				res = metricCountFormatException(url, serviceType) >= integerAcceptanceValue;
+				System.out.println( "metricCountFormat --------------------" + res);
 				break;
 			case 11:
+				res = metricGetLegendGraphic(url, serviceType);
+				System.out.println( "metricGetLegendGraphic --------------------" + res);
+				break;
+			case 12:
 				res = metricScaleHint(url, serviceType);
+				System.out.println( "metricScaleHint --------------------" + res);
 				break;
 	
 			default:
@@ -174,11 +213,12 @@ public final class App {
        			if(c.isSetException()){
        				List<String> list = c.getException().getFormat();
        				for (int i = 0; i < list.size(); i++) {
+       					
 						if(list.get(i).equals("INIMAGE") || list.get(i).equals("BLANK")){
 							return true;
 						}
 					}
-       			}
+       			} 
        		} 
        		
        		/*else if(serviceType.equals("WFS")){
@@ -398,16 +438,25 @@ public final class App {
        			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
        			
        			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			
+       			if(wmsCapabilities.getCapability()==null || wmsCapabilities.getCapability().getLayer()==null 
+       					|| wmsCapabilities.getCapability().getLayer().getLayer().size()==0){
+       				return false;
+       			}
+       			
        			for (Layer layer : wmsCapabilities.getCapability().getLayer().getLayer()) {
        				if(!metricCRSInLayer(layer)){
        					return false;
        				}
     			}
+       		} else {
+       			res = false;
        		}
        		
        		
    		} catch (Exception e) {
    			e.printStackTrace();
+   			return false;
    		}
        	return res;
     }
@@ -492,7 +541,7 @@ public final class App {
        		
        		
    		} catch (Exception e) {
-   			e.printStackTrace();
+   			return false;
    		}
        	return res;
     }
@@ -529,8 +578,8 @@ public final class App {
 				
        		}
    			
-   		} catch (JAXBException e) {
-   			e.printStackTrace();
+   		} catch (Exception e) {
+   			return false;
    		}
        	return res;
     }
