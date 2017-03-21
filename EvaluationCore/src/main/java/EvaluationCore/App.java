@@ -36,34 +36,34 @@ public final class App {
         
         String serviceType = "WMS";
         
-        ejecuteMetric(1, URL, serviceType, 0);
+        ejecuteMetric(1, URL, serviceType, 0, "");
         
-        ejecuteMetric(2, URL, serviceType, 0);
+        ejecuteMetric(2, URL, serviceType, 0, "");
         
-        ejecuteMetric(3, URL, serviceType, 0);
+        ejecuteMetric(3, URL, serviceType, 0, "");
         
-        ejecuteMetric(4, URL, serviceType, 0);
+        ejecuteMetric(4, URL, serviceType, 0, "");
         
-        ejecuteMetric(5, URL, serviceType, 0);
+        ejecuteMetric(5, URL, serviceType, 0, "");
         
-        ejecuteMetric(6, URL, serviceType, 0);
+        ejecuteMetric(6, URL, serviceType, 0, "");
         
-        ejecuteMetric(7, URL, serviceType, 0);
+        ejecuteMetric(7, URL, serviceType, 0, "");
         
-        ejecuteMetric(8, URL, serviceType, 0);
+        ejecuteMetric(8, URL, serviceType, 0, "");
         
-        ejecuteMetric(9, URL, serviceType, 1);
+        ejecuteMetric(9, URL, serviceType, 1, "");
         
-        ejecuteMetric(10, URL, serviceType, 1);
+        ejecuteMetric(10, URL, serviceType, 1, "");
         
-        ejecuteMetric(11, URL, serviceType, 0);
+        ejecuteMetric(11, URL, serviceType, 0, "");
         
-        ejecuteMetric(12, URL, serviceType, 0);
+        ejecuteMetric(12, URL, serviceType, 0, "Puerto_Aguas_Prof_Pyramid");
         
     }
     
     
-    public static boolean ejecuteMetric(Integer metricId, String url, String serviceType, int integerAcceptanceValue){
+    public static boolean ejecuteMetric(Integer metricId, String url, String serviceType, int integerAcceptanceValue, String layerName){
     	 boolean res = false;
     	 
     	 switch (metricId) {
@@ -112,7 +112,7 @@ public final class App {
 				System.out.println( "metricGetLegendGraphic --------------------" + res);
 				break;
 			case 12:
-				res = metricScaleHint(url, serviceType);
+				res = metricScaleHint(url, serviceType, layerName);
 				System.out.println( "metricScaleHint --------------------" + res);
 				break;
 	
@@ -221,21 +221,18 @@ public final class App {
        			} 
        		} 
        		
-       		else if(serviceType.equals("WFS")){
+       		/*else if(serviceType.equals("WFS")){
        			Unmarshaller unmarshaller = getUnmarshallerWFS_1_1_0();
        			
        			JAXBElement<WFSCapabilitiesType> capabilitiesElement = unmarshaller
        			        .unmarshal(new StreamSource(url+"&exceptions=text/xml"), WFSCapabilitiesType.class);
        			
        			WFSCapabilitiesType wfsCapabilities = capabilitiesElement.getValue();
-       			//FilterCapabilities c = wfsCapabilities.getFilterCapabilities();
-       			
-       			//if(wfsCapabilities.getOperationsMetadata().get){
-       				
-       			//}
+       			if(wfsCapabilities.getOperationsMetadata().get){
+       			}
        			
        			return false;
-       		}
+       		}*/
    			
    		} catch (JAXBException e) {
    			e.printStackTrace();
@@ -568,7 +565,7 @@ public final class App {
        		
        		
    		} catch (Exception e) {
-   			return false;
+   			e.printStackTrace();
    		}
        	return res;
     }
@@ -579,17 +576,16 @@ public final class App {
      * Indica si la capa tiene definido el parámetro <ScaleHint>. 
      * Dicho dato es el que sugiere cuál es la escala mínima y máxima en que es 
      * apropiado mostrar la capa.
-     * Esta operacion esta solamente para versiones menores o iguales a v_1_1_0 del wms
      * --------------------------------------------------------------------------*/
     
     @SuppressWarnings("restriction")
-   	public static boolean metricScaleHint(String url, String serviceType){
+   	public static boolean metricScaleHint(String url, String serviceType, String layerName){
     	boolean res = false;
        	try {
        		
-       		Unmarshaller unmarshaller = getUnmarshaller_1_1_0();
-   			 
+       		/*
        		if(serviceType.equals("WMS")) {
+       			Unmarshaller unmarshaller = getUnmarshaller_1_1_0();
        			JAXBElement<net.opengis.wms.v_1_1_0.WMTMSCapabilities> wmsCapabilitiesElement = unmarshaller
        			        .unmarshal(new StreamSource(url), net.opengis.wms.v_1_1_0.WMTMSCapabilities.class);
        			
@@ -603,10 +599,33 @@ public final class App {
     				}
     			}
 				
-       		}
+       		}*/
+       		
+       		if(serviceType.equals("WMS")) {
+       			Unmarshaller unmarshaller = getUnmarshaller();
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			
+       			if(wmsCapabilities.getCapability()==null || wmsCapabilities.getCapability().getLayer()==null 
+       					|| wmsCapabilities.getCapability().getLayer().getLayer().size()==0){
+       				return false;
+       			}
+       			
+       			for (Layer layer : wmsCapabilities.getCapability().getLayer().getLayer()) {
+       				if(layer.getName().equals(layerName)){
+       					if(layer.isSetMaxScaleDenominator() && layer.isSetMinScaleDenominator()) {
+          					return true;
+       					} else {
+           					return false;
+           				}
+       				} 
+    			}
+       		} 
    			
    		} catch (Exception e) {
-   			return false;
+   			e.printStackTrace();
    		}
        	return res;
     }
