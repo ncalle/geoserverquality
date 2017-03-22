@@ -4,7 +4,9 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
 
 <f:view contentType="text/html">
 	<h:head>
@@ -57,29 +59,214 @@
 				<p:growl id="msgs" />
 				<h2 class="form-signin-heading">Agregar Objeto Medible</h2>
 				<p:panel id="panel" class="panel panel-default">
-
-					<label for="inputDescription" class="sr-only">Descripción</label>
-					<h:inputText id="descrip"
-						value="#{measurableObjectBean.description}" class="form-control"
-						a:placeholder="Descripción" required="required" />
+				
+					<label for="inputEntityType">Tipo de entidad </label>
 					<br></br>
-
-					<label for="inputUrl" class="sr-only">Url del servicio</label>
-					<h:inputText id="url" value="#{measurableObjectBean.url}"
-						class="form-control" a:placeholder="Url del servicio"
-						required="required" validatorMessage="Url inválida">
-						<f:validateRegex for="site" pattern="^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$"/>    
-					</h:inputText>
-					<br></br>
-
-					<label for="inputType">Tipo de servicio </label>
-					<br></br>
-					<h:selectOneMenu value="#{measurableObjectBean.type}">
-						<f:selectItem itemValue="WMS" itemLabel="WMS" />
-						<f:selectItem itemValue="WFS" itemLabel="WFS" />
-						<f:selectItem itemValue="CSW" itemLabel="CSW" />
+					<h:selectOneMenu value="#{measurableObjectBean.entityType}">
+						<f:selectItem itemValue="Selecione un tipo de entidad" itemLabel="Selecione un tipo de entidad" />
+						<f:selectItem itemValue="Ide" itemLabel="Ide" />
+						<f:selectItem itemValue="Institución" itemLabel="Institución" />
+						<f:selectItem itemValue="Nodo" itemLabel="Nodo" />
+						<f:selectItem itemValue="Capa" itemLabel="Capa" />
+						<f:selectItem itemValue="Servicio" itemLabel="Servicio" />
+						<f:ajax render="@form" />
 					</h:selectOneMenu>
-				</p:panel>
+					
+					<br></br>
+					<br></br>
+					
+					<h:panelGroup id="ide" rendered="#{measurableObjectBean.entityType == 'Ide'}" >
+					
+						<label for="inputIdeName" class="sr-only">Nombre</label>
+						<h:inputText id="ideN"
+							value="#{measurableObjectBean.ideName}" 
+							class="form-control"
+							a:placeholder="Nombre" 
+							required="required" />
+						
+						<br></br>
+					
+						<h:panelGroup id="ideDescription">
+							<label for="inputIdeDescription" class="sr-only">Descripción</label>
+							<h:inputText id="ideD"
+								value="#{measurableObjectBean.ideDescription}" 
+								class="form-control"
+								a:placeholder="Descripción" 
+								required="required"/>
+						</h:panelGroup>
+								
+					</h:panelGroup>	
+					
+					
+					<h:panelGroup id="institution" rendered="#{measurableObjectBean.entityType == 'Institución'}">
+						
+						<label for="inputIdes">Ide al cual pertenece la institución</label>			    		
+				    	<h:selectOneMenu
+							value="#{measurableObjectBean.institutionIde}"
+							converter="omnifaces.SelectItemsConverter" style="width:100%">
+							<f:selectItem itemLabel="Seleccione un Ide"
+								noSelectionOption="false" />
+							<f:selectItems
+								value="#{measurableObjectBean.listIdes}"
+								var="li" itemLabel="#{li.ideName}" />
+						</h:selectOneMenu>
+						
+						<br></br>
+						<br></br>
+						
+						<label for="inputInstitutionName" class="sr-only">Nombre</label>
+						<h:inputText id="institutionN"
+							value="#{measurableObjectBean.institutionName}" 
+							class="form-control"
+							a:placeholder="Nombre" 
+							required="required" />
+						
+						<br></br>
+					
+						<h:panelGroup id="institutionDescription">
+							<label for="inputInstitutionDescription" class="sr-only">Descripción</label>
+							<h:inputText id="institutionD"
+								value="#{measurableObjectBean.institutionDescription}" 
+								class="form-control"
+								a:placeholder="Descripción" 
+								required="required"/>
+						</h:panelGroup>
+						
+					</h:panelGroup>
+					
+					<h:panelGroup id="node" rendered="#{measurableObjectBean.entityType == 'Nodo'}">
+
+						<label for="inputInstitutions">Institución al cual pertenece el nodo</label>
+						<br></br>
+				    	<h:selectOneMenu
+							value="#{measurableObjectBean.nodeInstitution}"
+							converter="omnifaces.SelectItemsConverter" style="width:100%">
+							<f:selectItem itemLabel="Seleccione una institución"
+								noSelectionOption="false" />
+							<f:selectItems
+								value="#{measurableObjectBean.listInstitutions}"
+								var="lin" itemLabel="#{lin.institutionName}" />
+						</h:selectOneMenu>
+						
+						<br></br>
+						<br></br>
+						
+						<label for="inputNodeName" class="sr-only">Nombre</label>
+						<h:inputText id="nodeN"
+							value="#{measurableObjectBean.nodeName}" 
+							class="form-control"
+							a:placeholder="Nombre" 
+							required="required" />
+						
+						<br></br>
+					
+						<h:panelGroup id="nodeDescription">
+							<label for="inputNodeDescription" class="sr-only">Descripción</label>
+							<h:inputText id="nodeD"
+								value="#{measurableObjectBean.nodeDescription}" 
+								class="form-control"
+								a:placeholder="Descripción" 
+								required="required"/>
+						</h:panelGroup>
+						
+					</h:panelGroup>	
+					
+					<h:panelGroup id="layer" rendered="#{measurableObjectBean.entityType == 'Capa'}">
+
+						<label for="inputNodes">Nodo al cual pertenece la capa</label>
+						<br></br>
+				    	<h:selectOneMenu
+							value="#{measurableObjectBean.layerNode}"
+							converter="omnifaces.SelectItemsConverter" style="width:100%">
+							<f:selectItem itemLabel="Seleccione un nodo"
+								noSelectionOption="false" />
+							<f:selectItems
+								value="#{measurableObjectBean.listNodes}"
+								var="lnl" itemLabel="#{lnl.nodeName}" />
+						</h:selectOneMenu>
+						
+						<br></br>
+						<br></br>
+						
+						<label for="inputLayerName" class="sr-only">Nombre</label>
+						<h:inputText id="layerN"
+							value="#{measurableObjectBean.layerName}" 
+							class="form-control"
+							a:placeholder="Nombre" 
+							required="required" />
+						
+						<br></br>
+					
+						<h:panelGroup id="layerDescription">
+							<label for="inputLayerDescription" class="sr-only">Descripción</label>
+							<h:inputText id="layerD"
+								value="#{measurableObjectBean.layerDescription}" 
+								class="form-control"
+								a:placeholder="Descripción" 
+								required="required"/>
+						</h:panelGroup>
+						
+						<br></br>
+						
+						<label for="inputLayerUrl" class="sr-only">URL</label>
+						<h:inputText id="layerURL" value="#{measurableObjectBean.layerURL}"
+							class="form-control" a:placeholder="URL"
+							required="required" validatorMessage="URL inválida">
+							<f:validateRegex for="site" pattern="^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$"/>    
+						</h:inputText>
+						
+					</h:panelGroup>												
+													
+
+					<h:panelGroup id="service" rendered="#{measurableObjectBean.entityType == 'Servicio'}">
+
+						<label for="inputNodes">Nodo al cual pertenece el servicio</label>
+						<br></br>
+				    	<h:selectOneMenu
+							value="#{measurableObjectBean.serviceNode}"
+							converter="omnifaces.SelectItemsConverter" style="width:100%">
+							<f:selectItem itemLabel="Seleccione un nodo"
+								noSelectionOption="false" />
+							<f:selectItems
+								value="#{measurableObjectBean.listNodes}"
+								var="lns" itemLabel="#{lns.nodeName}" />
+						</h:selectOneMenu>
+						
+						<br></br>
+						<br></br>
+						
+						<label for="inputServiceType">Tipo de servicio </label>
+						<br></br>
+						<h:selectOneMenu value="#{measurableObjectBean.serviceType}">
+								<f:selectItem itemValue="WMS" itemLabel="WMS" />
+								<f:selectItem itemValue="WFS" itemLabel="WFS" />
+								<f:selectItem itemValue="CSW" itemLabel="CSW" />
+						</h:selectOneMenu>
+						
+						<br></br>
+						<br></br>						
+											
+						<h:panelGroup id="serviceDescription">
+							<label for="inputServiceDescription" class="sr-only">Descripción</label>
+							<h:inputText id="serviceD"
+								value="#{measurableObjectBean.serviceDescription}" 
+								class="form-control"
+								a:placeholder="Descripción" 
+								required="required"/>
+						</h:panelGroup>
+						
+						<br></br>
+						
+						<label for="inputServiceUrl" class="sr-only">URL</label>
+						<h:inputText id="serviceURL" value="#{measurableObjectBean.serviceURL}"
+							class="form-control" a:placeholder="URL"
+							required="required" validatorMessage="URL inválida">
+							<f:validateRegex for="site" pattern="^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$"/>    
+						</h:inputText>
+						
+					</h:panelGroup>	
+					
+				</p:panel>	
 
 				<div class="panel panel-default">
 					<div class="panel-body">
