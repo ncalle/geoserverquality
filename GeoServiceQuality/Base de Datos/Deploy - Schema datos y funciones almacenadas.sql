@@ -455,7 +455,8 @@ INSERT INTO Unit (Name, Description) VALUES
 INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality, IsManual) VALUES
 (2, 'Informacion en excepciones', FALSE, 1, 'Servicio', FALSE),
 (7, 'Excepciones en formato OGC', FALSE, 1, 'Servicio', FALSE),
-(8, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 1, 'Servicio', FALSE),
+(8, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 2, 'Servicio', FALSE),
+(8, 'Capa con CRS Adecuado (IDEuy)', FALSE, 1, 'Capa', FALSE),
 (10, 'Formato PNG', FALSE, 1, 'Método', FALSE),
 (10, 'Formato KML', FALSE, 1, 'Método', FALSE),
 (10, 'Formato text/html metodo getFeatureInfo', FALSE, 1, 'Método', FALSE),
@@ -527,9 +528,9 @@ INSERT INTO MetricRange (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValu
 (2, 1, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
 (1, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL), -- perfil servicio avanzado
 (2, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
-(3, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
-(9, 2, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL),
-(10, 2, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL);
+(3, 2, FALSE, NULL, TRUE, 20, FALSE, NULL, FALSE, NULL),
+(10, 2, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL),
+(11, 2, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL);
 
 --INSERT INTO Layer (NodeID, Name, Url) VALUES
 --(1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),

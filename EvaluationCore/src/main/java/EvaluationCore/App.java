@@ -52,13 +52,15 @@ public final class App {
         
         ejecuteMetric(8, URL, serviceType, 0, "");
         
-        ejecuteMetric(9, URL, serviceType, 1, "");
+        ejecuteMetric(9, URL, serviceType, 0, "");
         
         ejecuteMetric(10, URL, serviceType, 1, "");
         
-        ejecuteMetric(11, URL, serviceType, 0, "");
+        ejecuteMetric(11, URL, serviceType, 1, "");
         
-        ejecuteMetric(12, URL, serviceType, 0, "Puerto_Aguas_Prof_Pyramid");
+        ejecuteMetric(12, URL, serviceType, 0, "");
+        
+        ejecuteMetric(13, URL, serviceType, 0, "Puerto_Aguas_Prof_Pyramid");
         
     }
     
@@ -76,46 +78,50 @@ public final class App {
 				System.out.println( "metricOGCFormat --------------------" + res);
 				break;
 			case 3:
-				res = metricCRSInLayer(url, serviceType);
-				System.out.println( "metricCRSInLayer --------------------" + res);
+				res = metricCRSInLayers(url, serviceType) >= integerAcceptanceValue;
+				System.out.println( "metricCRSInLayers --------------------" + res);
 				break;
 			case 4:
+				res = metricCRSInLayer(url, serviceType, layerName);
+				System.out.println( "metricCRSInLayer --------------------" + res);
+				break;
+			case 5:
 				res = metricGetMapFormat(url, serviceType, "image/png");
 				System.out.println( "metricGetMapFormat --------------------" + res);
 				break;
-			case 5:
+			case 6:
 				res = metricGetMapFormat(url, serviceType, "application/vnd.google-earth.kml+xml");
 				System.out.println( "metricGetMapFormat --------------------" + res);
 				break;
-			case 6:
+			case 7:
 				res = metricGetFeatureInfoFormat(url, serviceType, "text/html");
 				System.out.println( "metricGetFeatureInfoFormat --------------------" + res);
 				break;
-			case 7:
+			case 8:
 				res = metricFormatException(url, serviceType, "INIMAGE");
 				System.out.println( "metricFormat --------------------" + res);
 				break;
-			case 8:
+			case 9:
 				res = metricFormatException(url, serviceType, "BLANK");
 				System.out.println( "metricFormat --------------------" + res);
 				break;
-			case 9:
+			case 10:
 				res = metricCountMapFormat(url, serviceType) >= integerAcceptanceValue;
 				System.out.println( "metricCountMapFormat --------------------" + res);
 				break;
-			case 10:
+			case 11:
 				res = metricCountFormatException(url, serviceType) >= integerAcceptanceValue;
 				System.out.println( "metricCountFormat --------------------" + res);
 				break;
-			case 11:
+			case 12:
 				res = metricGetLegendGraphic(url, serviceType);
 				System.out.println( "metricGetLegendGraphic --------------------" + res);
 				break;
-			case 12:
+			case 13:
 				res = metricScaleHint(url, serviceType, layerName);
 				System.out.println( "metricScaleHint --------------------" + res);
 				break;
-	
+			
 			default:
 				break;
 			}
@@ -425,12 +431,12 @@ public final class App {
        	return res;
     }
     
-    /* --------------------------------------------------------------------------
-     * Indica si las capas del servicio cumplen con el CRS adecuado.
-     * --------------------------------------------------------------------------*/
+    /* -------------------------------------------------------------------------------------------
+     * Indica el grado del total de capas publicadas por el servicio que están en el CRS adecuado.
+     * ------------------------------------------------------------------------------------------*/
     @SuppressWarnings("restriction")
-   	public static boolean metricCRSInLayer(String url, String serviceType){
-    	boolean res = true;
+   	public static int metricCRSInLayers(String url, String serviceType){
+    	int res = 0, count = 0;
        	try {
        		Unmarshaller unmarshaller = getUnmarshaller();
   			 
@@ -440,24 +446,21 @@ public final class App {
        			
        			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
        			
-       			if(wmsCapabilities.getCapability()==null || wmsCapabilities.getCapability().getLayer()==null 
-       					|| wmsCapabilities.getCapability().getLayer().getLayer().size()==0){
-       				return false;
-       			}
+       			if(wmsCapabilities.getCapability()!=null && wmsCapabilities.getCapability().getLayer()!=null 
+       					&& wmsCapabilities.getCapability().getLayer().getLayer().size()>0){
        			
-       			for (Layer layer : wmsCapabilities.getCapability().getLayer().getLayer()) {
-       				if(!metricCRSInLayer(layer)){
-       					return false;
-       				}
-    			}
-       		} else {
-       			res = false;
+	       			for (Layer layer : wmsCapabilities.getCapability().getLayer().getLayer()) {
+	       				if(metricCRSInLayer(layer)){
+	       					count++;
+	       				}
+	    			}
+	       			
+	       			res = (100 * count) / wmsCapabilities.getCapability().getLayer().getLayer().size();
+	       		}
        		}
-       		
        		
    		} catch (Exception e) {
    			e.printStackTrace();
-   			return false;
    		}
        	return res;
     }
@@ -620,6 +623,39 @@ public final class App {
        					} else {
            					return false;
            				}
+       				} 
+    			}
+       		} 
+   			
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   		}
+       	return res;
+    }
+    
+    /* --------------------------------------------------------------------------
+     * Indica si la capa cumple con el CRS adecuado.
+     * --------------------------------------------------------------------------*/
+    @SuppressWarnings("restriction")
+   	public static boolean metricCRSInLayer(String url, String serviceType, String layerName){
+    	boolean res = false;
+       	try {
+       		
+       		if(serviceType.equals("WMS")) {
+       			Unmarshaller unmarshaller = getUnmarshaller();
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			
+       			if(wmsCapabilities.getCapability()==null || wmsCapabilities.getCapability().getLayer()==null 
+       					|| wmsCapabilities.getCapability().getLayer().getLayer().size()==0){
+       				return false;
+       			}
+       			
+       			for (Layer layer : wmsCapabilities.getCapability().getLayer().getLayer()) {
+       				if(layer.getName().equals(layerName)){
+       					return metricCRSInLayer(layer);
        				} 
     			}
        		} 
