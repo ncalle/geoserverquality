@@ -55,14 +55,14 @@
 
 		<div class="container">
 
-			<h:form id="evobject" class="form-signin" method="post">
+			<h:form id="moObject" class="form-signin" method="post">
 				<p:growl id="msgs" />
 				<h2 class="form-signin-heading">Agregar Objeto Medible</h2>
 				<p:panel id="panel" class="panel panel-default">
 				
 					<label for="inputEntityType">Tipo de entidad </label>
 					<br></br>
-					<h:selectOneMenu value="#{measurableObjectBean.entityType}">
+					<h:selectOneMenu value="#{measurableObjectBeanAdd.entityType}">
 						<f:selectItem itemValue="Selecione un tipo de entidad" itemLabel="Selecione un tipo de entidad" />
 						<f:selectItem itemValue="Ide" itemLabel="Ide" />
 						<f:selectItem itemValue="Institución" itemLabel="Institución" />
@@ -75,11 +75,11 @@
 					<br></br>
 					<br></br>
 					
-					<h:panelGroup id="ide" rendered="#{measurableObjectBean.entityType == 'Ide'}" >
+					<h:panelGroup id="ide" rendered="#{measurableObjectBeanAdd.entityType == 'Ide'}" >
 					
 						<label for="inputIdeName" class="sr-only">Nombre</label>
 						<h:inputText id="ideN"
-							value="#{measurableObjectBean.ideName}" 
+							value="#{measurableObjectBeanAdd.ideName}" 
 							class="form-control"
 							a:placeholder="Nombre" 
 							required="required" />
@@ -89,7 +89,7 @@
 						<h:panelGroup id="ideDescription">
 							<label for="inputIdeDescription" class="sr-only">Descripción</label>
 							<h:inputText id="ideD"
-								value="#{measurableObjectBean.ideDescription}" 
+								value="#{measurableObjectBeanAdd.ideDescription}" 
 								class="form-control"
 								a:placeholder="Descripción" 
 								required="required"/>
@@ -98,16 +98,16 @@
 					</h:panelGroup>	
 					
 					
-					<h:panelGroup id="institution" rendered="#{measurableObjectBean.entityType == 'Institución'}">
+					<h:panelGroup id="institution" rendered="#{measurableObjectBeanAdd.entityType == 'Institución'}">
 						
 						<label for="inputIdes">Ide al cual pertenece la institución</label>			    		
 				    	<h:selectOneMenu
-							value="#{measurableObjectBean.institutionIde}"
+							value="#{measurableObjectBeanAdd.institutionIde}"
 							converter="omnifaces.SelectItemsConverter" style="width:100%">
 							<f:selectItem itemLabel="Seleccione un Ide"
 								noSelectionOption="false" />
 							<f:selectItems
-								value="#{measurableObjectBean.listIdes}"
+								value="#{measurableObjectBeanAdd.listIdes}"
 								var="li" itemLabel="#{li.ideName}" />
 						</h:selectOneMenu>
 						
@@ -116,7 +116,7 @@
 						
 						<label for="inputInstitutionName" class="sr-only">Nombre</label>
 						<h:inputText id="institutionN"
-							value="#{measurableObjectBean.institutionName}" 
+							value="#{measurableObjectBeanAdd.institutionName}" 
 							class="form-control"
 							a:placeholder="Nombre" 
 							required="required" />
@@ -126,7 +126,7 @@
 						<h:panelGroup id="institutionDescription">
 							<label for="inputInstitutionDescription" class="sr-only">Descripción</label>
 							<h:inputText id="institutionD"
-								value="#{measurableObjectBean.institutionDescription}" 
+								value="#{measurableObjectBeanAdd.institutionDescription}" 
 								class="form-control"
 								a:placeholder="Descripción" 
 								required="required"/>
@@ -134,17 +134,17 @@
 						
 					</h:panelGroup>
 					
-					<h:panelGroup id="node" rendered="#{measurableObjectBean.entityType == 'Nodo'}">
+					<h:panelGroup id="node" rendered="#{measurableObjectBeanAdd.entityType == 'Nodo'}">
 
 						<label for="inputInstitutions">Institución al cual pertenece el nodo</label>
 						<br></br>
 				    	<h:selectOneMenu
-							value="#{measurableObjectBean.nodeInstitution}"
+							value="#{measurableObjectBeanAdd.nodeInstitution}"
 							converter="omnifaces.SelectItemsConverter" style="width:100%">
 							<f:selectItem itemLabel="Seleccione una institución"
 								noSelectionOption="false" />
 							<f:selectItems
-								value="#{measurableObjectBean.listInstitutions}"
+								value="#{measurableObjectBeanAdd.listInstitutions}"
 								var="lin" itemLabel="#{lin.institutionName}" />
 						</h:selectOneMenu>
 						
@@ -153,7 +153,7 @@
 						
 						<label for="inputNodeName" class="sr-only">Nombre</label>
 						<h:inputText id="nodeN"
-							value="#{measurableObjectBean.nodeName}" 
+							value="#{measurableObjectBeanAdd.nodeName}" 
 							class="form-control"
 							a:placeholder="Nombre" 
 							required="required" />
@@ -163,7 +163,7 @@
 						<h:panelGroup id="nodeDescription">
 							<label for="inputNodeDescription" class="sr-only">Descripción</label>
 							<h:inputText id="nodeD"
-								value="#{measurableObjectBean.nodeDescription}" 
+								value="#{measurableObjectBeanAdd.nodeDescription}" 
 								class="form-control"
 								a:placeholder="Descripción" 
 								required="required"/>
@@ -171,17 +171,17 @@
 						
 					</h:panelGroup>	
 					
-					<h:panelGroup id="layer" rendered="#{measurableObjectBean.entityType == 'Capa'}">
+					<h:panelGroup id="layer" rendered="#{measurableObjectBeanAdd.entityType == 'Capa'}">
 
 						<label for="inputNodes">Nodo al cual pertenece la capa</label>
 						<br></br>
 				    	<h:selectOneMenu
-							value="#{measurableObjectBean.layerNode}"
+							value="#{measurableObjectBeanAdd.layerNode}"
 							converter="omnifaces.SelectItemsConverter" style="width:100%">
 							<f:selectItem itemLabel="Seleccione un nodo"
 								noSelectionOption="false" />
 							<f:selectItems
-								value="#{measurableObjectBean.listNodes}"
+								value="#{measurableObjectBeanAdd.listNodes}"
 								var="lnl" itemLabel="#{lnl.nodeName}" />
 						</h:selectOneMenu>
 						
@@ -190,7 +190,7 @@
 						
 						<label for="inputLayerName" class="sr-only">Nombre</label>
 						<h:inputText id="layerN"
-							value="#{measurableObjectBean.layerName}" 
+							value="#{measurableObjectBeanAdd.layerName}" 
 							class="form-control"
 							a:placeholder="Nombre" 
 							required="required" />
@@ -200,7 +200,7 @@
 						<h:panelGroup id="layerDescription">
 							<label for="inputLayerDescription" class="sr-only">Descripción</label>
 							<h:inputText id="layerD"
-								value="#{measurableObjectBean.layerDescription}" 
+								value="#{measurableObjectBeanAdd.layerDescription}" 
 								class="form-control"
 								a:placeholder="Descripción" 
 								required="required"/>
@@ -209,7 +209,7 @@
 						<br></br>
 						
 						<label for="inputLayerUrl" class="sr-only">URL</label>
-						<h:inputText id="layerURL" value="#{measurableObjectBean.layerURL}"
+						<h:inputText id="layerURL" value="#{measurableObjectBeanAdd.layerURL}"
 							class="form-control" a:placeholder="URL"
 							required="required" validatorMessage="URL inválida">
 							<f:validateRegex for="site" pattern="^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$"/>    
@@ -218,17 +218,17 @@
 					</h:panelGroup>												
 													
 
-					<h:panelGroup id="service" rendered="#{measurableObjectBean.entityType == 'Servicio'}">
+					<h:panelGroup id="service" rendered="#{measurableObjectBeanAdd.entityType == 'Servicio'}">
 
 						<label for="inputNodes">Nodo al cual pertenece el servicio</label>
 						<br></br>
 				    	<h:selectOneMenu
-							value="#{measurableObjectBean.serviceNode}"
+							value="#{measurableObjectBeanAdd.serviceNode}"
 							converter="omnifaces.SelectItemsConverter" style="width:100%">
 							<f:selectItem itemLabel="Seleccione un nodo"
 								noSelectionOption="false" />
 							<f:selectItems
-								value="#{measurableObjectBean.listNodes}"
+								value="#{measurableObjectBeanAdd.listNodes}"
 								var="lns" itemLabel="#{lns.nodeName}" />
 						</h:selectOneMenu>
 						
@@ -237,7 +237,7 @@
 						
 						<label for="inputServiceType">Tipo de servicio </label>
 						<br></br>
-						<h:selectOneMenu value="#{measurableObjectBean.serviceType}">
+						<h:selectOneMenu value="#{measurableObjectBeanAdd.serviceType}">
 								<f:selectItem itemValue="WMS" itemLabel="WMS" />
 								<f:selectItem itemValue="WFS" itemLabel="WFS" />
 								<f:selectItem itemValue="CSW" itemLabel="CSW" />
@@ -249,7 +249,7 @@
 						<h:panelGroup id="serviceDescription">
 							<label for="inputServiceDescription" class="sr-only">Descripción</label>
 							<h:inputText id="serviceD"
-								value="#{measurableObjectBean.serviceDescription}" 
+								value="#{measurableObjectBeanAdd.serviceDescription}" 
 								class="form-control"
 								a:placeholder="Descripción" 
 								required="required"/>
@@ -258,7 +258,7 @@
 						<br></br>
 						
 						<label for="inputServiceUrl" class="sr-only">URL</label>
-						<h:inputText id="serviceURL" value="#{measurableObjectBean.serviceURL}"
+						<h:inputText id="serviceURL" value="#{measurableObjectBeanAdd.serviceURL}"
 							class="form-control" a:placeholder="URL"
 							required="required" validatorMessage="URL inválida">
 							<f:validateRegex for="site" pattern="^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$"/>    
@@ -272,14 +272,14 @@
 					<div class="panel-body">
 						<p:commandButton class="btn btn-default" icon="ui-icon-disk"
 							value="Guardar" id="save"
-							actionListener="#{measurableObjectBean.save()}"
-							update="evobject :evobject:msgs">
+							actionListener="#{measurableObjectBeanAdd.save()}"
+							update="moObject :moObject:msgs">
 						</p:commandButton>
 						<p:button class="btn btn-default" icon="ui-icon-circle-arrow-w"
 							value="Volver" outcome="measurableObjectList" />
 						<p:commandButton class="btn btn-default" icon="ui-icon-refresh"
-							value="Reset" update="evobject" process="@this">
-							<p:resetInput target="evobject" />
+							value="Reset" update="moObject" process="@this">
+							<p:resetInput target="moObject" />
 						</p:commandButton>
 					</div>
 				</div>
@@ -288,9 +288,6 @@
 
 		</div>
 
-
-		<script
-			src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 		<script src="../../assets/js/vendor/jquery.min.js"></script>
 		<script
 			src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>

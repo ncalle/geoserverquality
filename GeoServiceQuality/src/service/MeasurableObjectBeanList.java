@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.NodeSelectEvent;
@@ -27,7 +28,7 @@ import dao.MeasurableObjectBeanRemote;
 
 
 @ManagedBean(name="measurableObjectBeanList")
-@RequestScoped
+@ViewScoped
 public class MeasurableObjectBeanList {
 	
 	private List<IdeTreeStructure> listIdeStructure;
@@ -98,7 +99,7 @@ public class MeasurableObjectBeanList {
 	
 	public void deleteMeasurableObject() {
 		moDao.delete(selectedMeasurableObject);    	
-    	listObjects = moDao.list();
+    	listObjects.remove(selectedMeasurableObject);
         selectedMeasurableObject = null;
         
 		FacesMessage msg = new FacesMessage("El Objecto Medible fue eliminado correctamente.");       

@@ -13,6 +13,8 @@ public class MeasurableObject implements Serializable {
     private Integer MeasurableObjectID;
     private Integer EntityID;
     private String EntityType;
+    private Integer FatherEntityID;
+    private String FatherEntityType;
     private String MeasurableObjectName;
     private String MeasurableObjectDescription;
     private String MeasurableObjectURL;
@@ -45,6 +47,25 @@ public class MeasurableObject implements Serializable {
 
 	public void setEntityType(String entityType) {
 		EntityType = entityType;
+	}
+	
+	public Integer getFatherEntityID() {
+		return FatherEntityID;
+	}
+
+
+	public void setFatherEntityID(Integer fatherEntityID) {
+		FatherEntityID = fatherEntityID;
+	}
+
+
+	public String getFatherEntityType() {
+		return FatherEntityType;
+	}
+
+
+	public void setFatherEntityType(String fatherEntityType) {
+		FatherEntityType = fatherEntityType;
 	}
 
 
@@ -111,7 +132,7 @@ public class MeasurableObject implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("MeasurableObject[MeasurableObjectID=%d, EntityID=%d, EntitytType=%s, MeasurableObjectName=%s, MeasurableObjectDescription=%s, MeasurableObjectURL=%s, MeasurableObjectServicesType=%s]",
-        		getMeasurableObjectID(), getEntityID(), getEntityType(), getMeasurableObjectName(), getMeasurableObjectDescription(), getMeasurableObjectURL(), getMeasurableObjectServicesType());
+        return String.format("MeasurableObject[MeasurableObjectID=%d, EntityID=%d, EntitytType=%s, FatherEntityID=%d, FatherEntitytType=%s, MeasurableObjectName=%s, MeasurableObjectDescription=%s, MeasurableObjectURL=%s, MeasurableObjectServicesType=%s]",
+        		getMeasurableObjectID(), getEntityID(), getEntityType(), getFatherEntityID(), getFatherEntityType(), getMeasurableObjectName(), getMeasurableObjectDescription(), getMeasurableObjectURL(), getMeasurableObjectServicesType());
     }
 }

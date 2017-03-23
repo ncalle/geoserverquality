@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import entity.IdeTreeStructure;
@@ -19,8 +19,8 @@ import dao.MeasurableObjectBean;
 import dao.MeasurableObjectBeanRemote;
 
 
-@ManagedBean(name="measurableObjectBean")
-@RequestScoped
+@ManagedBean(name="measurableObjectBeanAdd")
+@ViewScoped
 public class MeasurableObjectBeanAdd {
 	
 	private List<IdeTreeStructure> listIdeStructure;
@@ -274,32 +274,89 @@ public class MeasurableObjectBeanAdd {
     }
     
     public void save() {
-    	
-    	if(serviceURL.length()==0){
-    		FacesContext context = FacesContext.getCurrentInstance();
-    		context.addMessage(null, new FacesMessage("Debe ingresar una url"));
-    		return;
+
+    	if(entityType == "Servicio") {
+    		if (serviceURL.length()==0){
+        		FacesContext context = FacesContext.getCurrentInstance();
+        		context.addMessage(null, new FacesMessage("Debe ingresar una url"));
+        		return;
+        	}
+    		parametersRequestUrl();	
     	}
     	
-    	parametersRequestUrl();
+    	if(entityType == "Capa") {
+    		if (layerURL.length()==0){
+        		FacesContext context = FacesContext.getCurrentInstance();
+        		context.addMessage(null, new FacesMessage("Debe ingresar una url"));
+        		return;
+        	}
+    		//parametersRequestUrl();	
+    	}    	
     	
     	MeasurableObject object = new MeasurableObject();
-    	object.setMeasurableObjectDescription(serviceDescription);
-    	object.setMeasurableObjectURL(serviceURL);
-    	object.setMeasurableObjectServicesType(serviceType);
     	
+    	switch(entityType){
+	    	case "Ide":
+	    		object.setEntityType(entityType);
+	    		object.setFatherEntityID(null);
+	    		object.setFatherEntityType(null);
+	    		object.setMeasurableObjectName(ideName);
+	    		object.setMeasurableObjectDescription(ideDescription);
+	        	object.setMeasurableObjectURL(null);
+	        	object.setMeasurableObjectServicesType(null);
+	        	break;
+	    	case "Institución":
+	    		object.setEntityType(entityType);
+	    		object.setFatherEntityID(institutionIde.getIdeID());
+	    		object.setFatherEntityType("Ide");
+	    		object.setMeasurableObjectName(institutionName);
+	    		object.setMeasurableObjectDescription(institutionDescription);
+	        	object.setMeasurableObjectURL(null);
+	        	object.setMeasurableObjectServicesType(null);
+	        	break;
+	    	case "Nodo":
+	    		object.setEntityType(entityType);
+	    		object.setFatherEntityID(nodeInstitution.getInstitutionID());
+	    		object.setFatherEntityType("Institución");
+	    		object.setMeasurableObjectName(nodeName);
+	    		object.setMeasurableObjectDescription(nodeDescription);
+	        	object.setMeasurableObjectURL(null);
+	        	object.setMeasurableObjectServicesType(null);
+	        	break;	
+	    	case "Capa":
+	    		object.setEntityType(entityType);
+	    		object.setFatherEntityID(layerNode.getNodeID());
+	    		object.setFatherEntityType("Nodo");
+	    		object.setMeasurableObjectName(layerName);
+	    		object.setMeasurableObjectDescription(layerDescription);
+	        	object.setMeasurableObjectURL(layerURL);
+	        	object.setMeasurableObjectServicesType(null);
+	        	break;
+	    	case "Servicio":
+	    		object.setEntityType(entityType);
+	    		object.setFatherEntityID(serviceNode.getNodeID());
+	    		object.setFatherEntityType("Nodo");
+	    		object.setMeasurableObjectName(null);
+	    		object.setMeasurableObjectDescription(serviceDescription);
+	        	object.setMeasurableObjectURL(serviceURL);
+	        	object.setMeasurableObjectServicesType(serviceType);
+	        	break;
+			default:
+				break;	
+    	}
+    	    	    	
     	System.out.println("save.. " + object);
     	
     	try{
-            moDao.create(object, 1); //TODO: parametrizar NodeID, cuando se amplíe el prototipo
+            moDao.create(object, entityType);
             
             FacesContext context = FacesContext.getCurrentInstance();
-        	context.addMessage(null, new FacesMessage("El objeto de evaluación fue guardado correctamente"));
+        	context.addMessage(null, new FacesMessage("El objeto medible fue guardado correctamente."));
         		
     	} catch(DAOException e) {
     		
     		FacesContext context = FacesContext.getCurrentInstance();
-    		context.addMessage(null, new FacesMessage("Error al guardar el objeto de evaluación"));
+    		context.addMessage(null, new FacesMessage("Error al guardar el objeto medible."));
     		
     		e.printStackTrace();
     	} 

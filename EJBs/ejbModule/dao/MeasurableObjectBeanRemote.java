@@ -12,7 +12,7 @@ public interface MeasurableObjectBeanRemote {
     
     public List<MeasurableObject> list(Integer userID) throws DAOException;
 
-    public void create(MeasurableObject measurableobject, Integer nodeID) throws IllegalArgumentException, DAOException;
+    public void create(MeasurableObject measurableobject, String entityType) throws IllegalArgumentException, DAOException;
 
     public void delete(MeasurableObject measurableobject) throws DAOException;
     

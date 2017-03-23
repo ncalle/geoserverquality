@@ -22,7 +22,7 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
     private static final String SQL_LIST_ORDER_BY_ID =
     		"SELECT MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_measurable_objects_get (?)";
 	private static final String SQL_INSERT =
-            "SELECT * FROM prototype_measurable_objects_insert (?, ?, ?, ?, ?)";
+            "SELECT * FROM measurable_objects_insert (?, ?, ?, ?, ?, ?)";
     private static final String SQL_DELETE =
         	"SELECT * FROM prototype_measurable_objects_delete(?)";
     private static final String SQL_USER_MEASURABLE_OBJECT_TO_ADD_GET =
@@ -101,24 +101,53 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
     }    
 
     @Override
-    public void create(MeasurableObject measurableobject, Integer nodeID) throws IllegalArgumentException, DAOException {
-        if (measurableobject.getMeasurableObjectID() != null) {
-            throw new IllegalArgumentException("El objeto medible ya existe. Error.");
-        }
-
+    public void create(MeasurableObject measurableobject, String entityType) throws IllegalArgumentException, DAOException {
         Connection connection = null;
 		PreparedStatement statement = null;
         
+		System.out.println(measurableobject);
+		
         try {
             connection = daoFactory.getConnection();
             statement = connection.prepareStatement(SQL_INSERT);
-
-            statement.setInt(1, nodeID); //TODO: parametrizar cuando se amplíe el prototipo
-            statement.setString(2, measurableobject.getMeasurableObjectURL());
-            statement.setString(3, measurableobject.getMeasurableObjectServicesType());
-            statement.setString(4, measurableobject.getMeasurableObjectDescription());
-            statement.setString(5, "Servicio"); //TODO: parametrizar cuando se amplíe el prototipo
-		
+            
+            statement.setString(1, entityType);
+            
+            if (measurableobject.getFatherEntityID() == null){
+            	statement.setObject(2, null);
+            }
+            else{
+            	statement.setInt(2, measurableobject.getFatherEntityID());	
+            }
+            
+            if (measurableobject.getMeasurableObjectName() == null){
+            	statement.setObject(3, null);
+            }
+            else{
+            	statement.setString(3, measurableobject.getMeasurableObjectName());	
+            }
+            
+            if (measurableobject.getMeasurableObjectDescription() == null){
+            	statement.setObject(4, null);
+            }
+            else{
+            	statement.setString(4, measurableobject.getMeasurableObjectDescription());	
+            }
+            
+            if (measurableobject.getMeasurableObjectURL() == null){
+            	statement.setObject(5, null);
+            }
+            else{
+            	statement.setString(5, measurableobject.getMeasurableObjectURL());
+            }
+            
+            if (measurableobject.getMeasurableObjectServicesType() == null){
+            	statement.setObject(6, null);
+            }
+            else{
+            	statement.setString(6, measurableobject.getMeasurableObjectServicesType());	
+            }
+            
             statement.executeQuery();
             
             connection.close();

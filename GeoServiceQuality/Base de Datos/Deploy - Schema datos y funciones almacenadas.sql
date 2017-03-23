@@ -2154,25 +2154,26 @@ END;
 $$ LANGUAGE plpgsql;
 /* ****************************************************************************************************** */
 /* ****************************************************************************************************** */
---DROP FUNCTION prototype_measurable_objects_insert(integer,character varying,character varying, character varying, character varying);
-CREATE OR REPLACE FUNCTION prototype_measurable_objects_insert
+--DROP FUNCTION measurable_objects_insert(character varying,integer,character varying,character varying, character varying, character varying);
+CREATE OR REPLACE FUNCTION measurable_objects_insert
 (
-   pNodeID INT
-   , pUrl VARCHAR(1024)
-   , pGeographicServicesType VARCHAR(3)
+   pEntityType VARCHAR(11) -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio'
+   , pFatherEntityID INT
+   , pMeasurableObjectName VARCHAR(70)
    , pMeasurableObjectDescription VARCHAR(100)
-   , pEntityType VARCHAR(11) -- 'Ide', 'Institucion', 'Nodo', 'Capa', 'Servicio'
+   , pMeasurableObjectURL VARCHAR(1024)
+   , pMeasurableObjectServicesType VARCHAR(3)
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
-** Name: prototype_measurable_objects_insert
+** Name: measurable_objects_insert
 **
-** Desc: Agrega un servicios geograficos disponibles al sistema y lo asocia al usuario que lo da de alta
+** Desc: Agrega un objeto medible al sistema
 **
-** 08/12/2016 Created
+** 22/03/2017 Created
 **
 *************************************************************************************************************/
-DECLARE SGID INT;
+DECLARE EntityID INT;
 DECLARE MOID INT;
 
 BEGIN
@@ -2182,22 +2183,70 @@ BEGIN
       RAISE EXCEPTION 'Error - El ID de Entidad es requerido.';
    END IF;
    
-   -- parametros requeridos
-   IF (pEntityType = 'Servicio'
-	  AND (
-	     pNodeID IS NULL
-		 OR pUrl IS NULL
-		 OR pGeographicServicesType IS NULL
-	  )
-   )
-   THEN
-      RAISE EXCEPTION 'Error - Alguno de los siguientes parametros: ID de Nodo, URL o Tipo de servicio no fueron dados.';
-   END IF;
-
    -- validacion NodoID
-   IF pEntityType = 'Servicio' AND NOT EXISTS (SELECT 1 FROM Node n WHERE n.NodeID = pNodeID)
+   IF pEntityType = 'Servicio' AND NOT EXISTS (SELECT 1 FROM Node n WHERE n.NodeID = pFatherEntityID)
    THEN
       RAISE EXCEPTION 'Error - El Nodo que se intenta asociar al Servicio no existe.';
+   END IF;
+
+   IF pEntityType = 'Ide'
+   THEN
+      INSERT INTO Ide
+      (Name, Description)
+      VALUES
+      (pMeasurableObjectName, pMeasurableObjectDescription)
+         RETURNING IdeID INTO EntityID;
+
+      INSERT INTO MeasurableObject
+      (EntityID, EntityType)
+      VALUES
+      (EntityID, pEntityType)
+         RETURNING MeasurableObjectID INTO MOID;
+   END IF;
+
+   IF pEntityType = 'Institución'
+   THEN
+      INSERT INTO Institution
+      (IdeID, Name, Description)
+      VALUES
+      (pFatherEntityID, pMeasurableObjectName, pMeasurableObjectDescription)
+         RETURNING InstitutionID INTO EntityID;
+
+      INSERT INTO MeasurableObject
+      (EntityID, EntityType)
+      VALUES
+      (EntityID, pEntityType)
+         RETURNING MeasurableObjectID INTO MOID;
+   END IF;
+
+   IF pEntityType = 'Nodo'
+   THEN
+      INSERT INTO Node
+      (InstitutionID, Name, Description)
+      VALUES
+      (pFatherEntityID, pMeasurableObjectName, pMeasurableObjectDescription)
+         RETURNING NodeID INTO EntityID;
+
+      INSERT INTO MeasurableObject
+      (EntityID, EntityType)
+      VALUES
+      (EntityID, pEntityType)
+         RETURNING MeasurableObjectID INTO MOID;
+   END IF;
+
+   IF pEntityType = 'Capa'
+   THEN
+      INSERT INTO Layer
+      (NodeID, Name, Url, Description)
+      VALUES
+      (pFatherEntityID, pMeasurableObjectName, pMeasurableObjectURL, pMeasurableObjectDescription)
+         RETURNING LayerID INTO EntityID;
+
+      INSERT INTO MeasurableObject
+      (EntityID, EntityType)
+      VALUES
+      (EntityID, pEntityType)
+         RETURNING MeasurableObjectID INTO MOID;
    END IF;
 
    IF pEntityType = 'Servicio'
@@ -2205,13 +2254,13 @@ BEGIN
       INSERT INTO GeographicServices
       (NodeID, Url, GeographicServicesType, Description)
       VALUES
-      (pNodeID, pUrl, pGeographicServicesType, pMeasurableObjectDescription)
-         RETURNING GeographicServicesID INTO SGID;
+      (pFatherEntityID, pMeasurableObjectURL, pMeasurableObjectServicesType, pMeasurableObjectDescription)
+         RETURNING GeographicServicesID INTO EntityID;
 
       INSERT INTO MeasurableObject
       (EntityID, EntityType)
       VALUES
-      (SGID, pEntityType)
+      (EntityID, pEntityType)
          RETURNING MeasurableObjectID INTO MOID;
    END IF;
    
