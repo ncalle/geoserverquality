@@ -135,11 +135,11 @@
 			<h:form id="profileMetrics" method="post" rendered="#{!profileBeanList.isShowMore()}">
 			<p:growl id="msgs" />
 				<hr></hr>			
-				<h4 class="form-signin-heading">Lista de Metricas disponibles para el Perfil seleccionado.</h4>
+				<h4 class="form-signin-heading">Lista de Métricas disponibles para el Perfil seleccionado.</h4>
 				
 				<div class="ui-g">
 				    <div class="ui-g-6">				
-						<h5 class="form-signin-heading">Metricas Booleanas.</h5>
+						<h5 class="form-signin-heading">Métricas Booleanas.</h5>
 						<p:dataTable id="booleanProfileMetrics" 
 							value="#{profileBeanList.listBooleanProfileMetric}" 
 							var="bpmitem" 
@@ -187,7 +187,7 @@
 						
 						<br/><br/>
 						
-						<h5 class="form-signin-heading">Metricas Enumeradas.</h5>
+						<h5 class="form-signin-heading">Métricas Enumeradas.</h5>
 						<p:dataTable id="enumeratedProfileMetrics" 
 							value="#{profileBeanList.listEnumeratedProfileMetric}" 
 							var="epmitem" 
@@ -238,7 +238,7 @@
 
 					<div class="ui-g-6">					
 
-						<h5 class="form-signin-heading">Metricas Enteras.</h5>				
+						<h5 class="form-signin-heading">Métricas Enteras.</h5>				
 						<p:dataTable id="integerProfileMetrics" 
 							value="#{profileBeanList.listIntegerProfileMetric}" 
 							var="ipmitem" 
@@ -284,7 +284,7 @@
 						
 						<br/><br/>
 						
-						<h5 class="form-signin-heading">Metricas Porcentaje.</h5>
+						<h5 class="form-signin-heading">Métricas Porcentaje.</h5>
 						<p:dataTable id="percentageProfileMetrics" 
 							value="#{profileBeanList.listPercentageProfileMetric}" 
 							var="ppmitem" 
@@ -357,17 +357,17 @@
 		<div class="container">
 			<h:form id="profileMetric" class="form-signin" method="post" rendered="#{profileBeanList.isShowMore()}">
 				<p:growl id="msgs" />
-				<h2 class="form-signin-heading">Asociar Metrica a Perfil</h2>
+				<h2 class="form-signin-heading">Asociar Métrica a Perfil</h2>
 				<h3 class="form-signin-heading">
-					<h:outputLabel id="userIDOutputLabel" value="Lista de Metricas a asociar para el Perfil seleccionado:" />
+					<h:outputLabel id="userIDOutputLabel" value="Lista de Métricas a asociar para el Perfil seleccionado:" />
 				</h3>
 				
 				<p:panel id="panel" class="panel panel-default">
-					<label for="inputType">Metrica</label>
+					<label for="inputType">Métrica</label>
 					<br></br>
 					 <h:selectOneMenu value="#{profileBeanList.profileMetric}"
 					 	converter="omnifaces.SelectItemsConverter" style="width:100%">
-						<f:selectItem itemLabel="Seleccione una Metrica" noSelectionOption="false" />
+						<f:selectItem itemLabel="Seleccione una Métrica" noSelectionOption="false" />
 						<f:selectItems value="#{profileBeanList.listProfileMetrics}" var="pm" itemLabel="#{pm.name}" />
 					</h:selectOneMenu> 
 				</p:panel>

@@ -57,7 +57,7 @@
 	    <div class="jumbotron">
 	      <div class="container">
 	        <h2>Bienvenido, ${session.getAttribute("name")}</h2>
-	        <p>Aquí podrá realizar mediciones sobre los servicios web geograficos que la IdeUy dispone, evaluar el estado general de los mismos así como agregar y/o modificar los mecanismos de medición de calidad existentes dentro de la plataforma.</p>
+	        <p>Aquí podrá realizar mediciones sobre los servicios web geográficos que la IdeUy dispone, evaluar el estado general de los mismos así como agregar y/o modificar los mecanismos de medición de calidad existentes dentro de la plataforma.</p>
 	        <p>Para mayor información ver: 
 	        	<a class="btn btn-secondary" href="${request.contextPath}/about.xhtml" >Acerca</a></p>
 	      </div>
@@ -151,7 +151,7 @@
 	       </div>
 	        <div class="col-md-4">
 			  <h4 class="form-signin-heading">Tiempo medio de respuesta</h4>
-		      <p>Muestra el tiempo de respuesta medio de los últimas 100 evaluaciones realizadas para los distintos Nodos (HARCODED).</p>
+		      <p>Muestra el tiempo de respuesta medio de las últimas 100 evaluaciones realizadas para los distintos Nodos (HARCODED).</p>
 		      <p:chart type="line" model="#{reportsBean.mediaResponseTime}" />
 		      <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
 	        </div>
@@ -160,7 +160,7 @@
 	      <hr></hr>
 	      
 	      <h:form>
-		      <h3 class="form-signin-heading">Resumen de Evaluaciónes:</h3>
+		      <h3 class="form-signin-heading">Resumen de Evaluaciones:</h3>
 				<p:dataTable id="dtevaluationSummary"
 					value="#{homeBean.listEvaluationSummary}" var="hitem"
 					tableStyle="table-layout: auto;"
