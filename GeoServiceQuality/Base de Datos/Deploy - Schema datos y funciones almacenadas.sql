@@ -425,22 +425,22 @@ INSERT INTO Dimension (QualityModelID, Name) VALUES
 (1, 'Confiabilidad'),
 (1, 'Rendimiento'),
 (1, 'Interoperabilidad'),
-(1, 'Publicacion de Datos'),
+(1, 'Publicación de Datos'),
 (1, 'Metadatos'),
 (1, 'Usabilidad');
 
 INSERT INTO Factor (DimensionID, Name) VALUES
 (1, 'Ingegridad'),
-(1, 'Proteccion'),
+(1, 'Protección'),
 (2, 'Disponibilidad'),
 (2, 'Robustez'),
 (3, 'Tiempo de respuesta'),
 (3, 'Capacidad'),
-(4, 'Soporte de estandares'),
+(4, 'Soporte de estándares'),
 (4, 'Sistema de referencias'),
-(5, 'Representacion Grafica'),
+(5, 'Representación Gráfica'),
 (5, 'Formatos soportados'),
-(6, 'Publicacion Catalogo'),
+(6, 'Publicación Catálogo'),
 (6, 'Metadatos Capa'),
 (6, 'Metadatos Servicio'),
 (7, 'Facilidad de aprendizaje');
@@ -453,7 +453,7 @@ INSERT INTO Unit (Name, Description) VALUES
 ('Entero','');
 
 INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality, IsManual) VALUES
-(2, 'Informacion en excepciones', FALSE, 1, 'Servicio', FALSE),
+(2, 'Información en excepciones', FALSE, 1, 'Servicio', FALSE),
 (7, 'Excepciones en formato OGC', FALSE, 1, 'Servicio', FALSE),
 (8, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 2, 'Servicio', FALSE),
 (8, 'Capa con CRS Adecuado (IDEuy)', FALSE, 1, 'Capa', FALSE),
@@ -465,7 +465,7 @@ INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality, IsManu
 (10, 'Cantidad de formatos soportados', FALSE, 5, 'Servicio', FALSE),
 (10, 'Cantidad de formatos de excepciones soportadas', FALSE, 5, 'Servicio', FALSE),
 (13, 'Leyenda de la Capa', FALSE, 1, 'Servicio', FALSE),
-(13, 'Especifica Rango Util', FALSE, 1, 'Capa', FALSE),
+(13, 'Específica Rango Util', FALSE, 1, 'Capa', FALSE),
 (14, 'Errores descriptivos', FALSE, 1, 'Servicio', TRUE);
 --(3, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio'),
 --(4, 'Tolerancia a parametros nulos', FALSE, 1, 'Método'),
@@ -520,7 +520,7 @@ INSERT INTO Node (InstitutionID, Name, Description) VALUES
 
 
 INSERT INTO Profile (Name, Granurality, IsWeightedFlag) VALUES
-('Perfil Basico', 'Servicio', FALSE),
+('Perfil Básico', 'Servicio', FALSE),
 ('Perfil Avanzado', 'Servicio', FALSE);
 
 INSERT INTO MetricRange (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue) VALUES
