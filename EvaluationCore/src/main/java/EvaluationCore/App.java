@@ -1,5 +1,8 @@
 package EvaluationCore;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.KeyStore.Entry.Attribute;
 import java.util.List;
 
@@ -29,6 +32,8 @@ public final class App {
 
 	//static String URL = "http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/wms?service=WMS&version=1.3.0&request=GetCapabilities";
 	static String URL = "http://geoservicios.mtop.gub.uy/geoserver/mb_pap/wms?service=WMS&version=1.3.0&request=GetCapabilities";
+	
+	static int TIMEOUT_SERVICE = 18000;
 	
 	
     public static void main( String[] args ) {
@@ -121,12 +126,32 @@ public final class App {
 				res = metricScaleHint(url, serviceType, layerName);
 				System.out.println( "metricScaleHint --------------------" + res);
 				break;
+			case 15:
+				res = metricServiceAvailable(url, TIMEOUT_SERVICE);
+				System.out.println( "metricServiceAvailable --------------------" + res);
+				break;
 			
 			default:
 				break;
 			}
     	 
     	 return res;
+    }
+    
+    public static boolean metricServiceAvailable(String url, int timeout) {
+        url = url.replaceFirst("^https", "http"); 
+
+        try {
+        	URL u = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) u.openConnection();
+            connection.setConnectTimeout(timeout);
+            connection.setReadTimeout(timeout);
+            connection.setRequestMethod("HEAD");
+            int responseCode = connection.getResponseCode();
+            return (200 <= responseCode && responseCode <= 399);
+        } catch (IOException exception) {
+            return false;
+        }
     }
     
     @SuppressWarnings("restriction")

@@ -466,8 +466,8 @@ INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality, IsManu
 (10, 'Cantidad de formatos de excepciones soportadas', FALSE, 5, 'Servicio', FALSE),
 (13, 'Leyenda de la Capa', FALSE, 1, 'Servicio', FALSE),
 (13, 'Específica Rango Util', FALSE, 1, 'Capa', FALSE),
-(14, 'Errores descriptivos', FALSE, 1, 'Servicio', TRUE);
---(3, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio'),
+(14, 'Errores descriptivos', FALSE, 1, 'Servicio', TRUE),
+(3, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio', FALSE);
 --(4, 'Tolerancia a parametros nulos', FALSE, 1, 'Método'),
 --(4, 'Tolerancia a parametros largos', FALSE, 1, 'Método'),
 --(5, 'Promedio tiempo de respuesta diario', FALSE, 3, 'Método'),
@@ -530,7 +530,8 @@ INSERT INTO MetricRange (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValu
 (2, 2, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
 (3, 2, FALSE, NULL, TRUE, 20, FALSE, NULL, FALSE, NULL),
 (10, 2, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL),
-(11, 2, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL);
+(11, 2, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL),
+(15, 2, FALSE, NULL, TRUE, 50, FALSE, NULL, FALSE, NULL);
 
 --INSERT INTO Layer (NodeID, Name, Url) VALUES
 --(1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),
