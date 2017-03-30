@@ -139,19 +139,19 @@
 	  
 	  	   <div class="row">
 	        <div class="col-md-4">
-	          <h4 class="form-signin-heading">Exitos vs Fracasos</h4>
-	          <p>Muestra en cantidades porcentuales el total de evaluaciónes con resultado exitoso contra el porcentaje de evaluaciónes con resultado fallido. </p>
+	          <h4 class="form-signin-heading">Éxitos vs Fracasos</h4>
+	          <p>Muestra en cantidades porcentuales el total de evaluaciones con resultado exitoso contra el porcentaje de evaluaciónes con resultado fallido. </p>
 	          <p:chart type="pie" model="#{reportsBean.pieChartEvaluationSuccessVsFailed}" />
 	        </div>
 	        <div class="col-md-4">
-	          <h4 class="form-signin-heading">Exitos por Perfil</h4>
-	          <p>Muestra el porcentaje de exitos que se han obtenido hasta el momento, evaluando los distintos Perfiles existentes.</p>
+	          <h4 class="form-signin-heading">Éxitos por Perfil</h4>
+	          <p>Muestra el porcentaje de éxitos que se han obtenido hasta el momento, evaluando los distintos Perfiles existentes.</p>
 	          <p:chart type="bar" model="#{reportsBean.barChartSuccessEvaluationPerProfile}" />
 	          <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
 	       </div>
 	        <div class="col-md-4">
 			  <h4 class="form-signin-heading">Tiempo medio de respuesta</h4>
-		      <p>Muestra el tiempo de respuesta medio de las últimas 100 evaluaciones realizadas para los distintos Nodos (HARCODED).</p>
+		      <p>Muestra el tiempo de respuesta medio de las últimas 100 evaluaciones realizadas para los distintos Nodos.</p>
 		      <p:chart type="line" model="#{reportsBean.mediaResponseTime}" />
 		      <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
 	        </div>

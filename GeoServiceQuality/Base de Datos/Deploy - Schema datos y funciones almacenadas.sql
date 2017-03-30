@@ -1472,7 +1472,7 @@ BEGIN
    -- parametros requeridos
    IF (pName IS NULL OR pGranurality IS NULL)
    THEN
-      RAISE EXCEPTION 'Error - Los parametros nombre de perfil y granuralidad son requeridos.';
+      RAISE EXCEPTION 'Error - Los parametros nombre de perfil y granularidad son requeridos.';
    END IF;
     
    -- validacion
