@@ -25,7 +25,25 @@ public class Evaluation implements Serializable {
     private Date EndDate; 
     private Boolean IsEvaluationCompleted;
     private Boolean Success;
+    private Integer EvaluationCount;
+    private Integer EvaluationApprovedValue;
 
+    
+    public Integer getEvaluationApprovedValue() {
+		return EvaluationApprovedValue;
+	}
+    
+    public void setEvaluationApprovedValue(Integer evaluationApprovedValue) {
+		EvaluationApprovedValue = evaluationApprovedValue;
+	}
+    
+    public Integer getEvaluationCount() {
+		return EvaluationCount;
+	}
+    
+    public void setEvaluationCount(Integer evaluationCount) {
+		EvaluationCount = evaluationCount;
+	}
 
 	public Integer getEvaluationID() {
 		return EvaluationID;

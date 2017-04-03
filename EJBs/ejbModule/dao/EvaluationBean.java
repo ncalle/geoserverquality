@@ -17,9 +17,9 @@ import entity.Evaluation;
 public class EvaluationBean implements EvaluationBeanRemote {
 
     private static final String SQL_LIST_ORDER_BY_ID =
-    		"SELECT EvaluationID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, QualityModelID, QualityModelName, MetricID, MetricName, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag FROM evaluation_get (?)";
+    		"SELECT EvaluationID, UserID, ProfileID, ProfileName, MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, QualityModelID, QualityModelName, MetricID, MetricName, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag, EvaluationCount, EvaluationApprovedValues FROM evaluation_get (?)";
     private static final String SQL_INSERT =
-            "SELECT * FROM evaluation_insert (?, ?, ?)";
+            "SELECT * FROM evaluation_insert (?, ?, ?, ?, ?, ?)";
 
 
     private DAOFactory daoFactory;
@@ -75,6 +75,9 @@ public class EvaluationBean implements EvaluationBeanRemote {
             statement.setInt(1, evaluation.getEvaluationSummaryID());
 			statement.setInt(2, evaluation.getMetricID());
 			statement.setBoolean(3, evaluation.getSuccess()); 
+			statement.setBoolean(4, evaluation.getIsEvaluationCompleted()); 
+			statement.setInt(5, evaluation.getEvaluationCount());
+			statement.setInt(6, evaluation.getEvaluationApprovedValue());
 			
             statement.executeQuery();
             
@@ -104,6 +107,8 @@ public class EvaluationBean implements EvaluationBeanRemote {
 	    object.setEndDate(resultSet.getDate("EndDate"));    
 		object.setIsEvaluationCompleted(resultSet.getBoolean("IsEvaluationCompletedFlag"));
 		object.setSuccess(resultSet.getBoolean("SuccessFlag"));
+		object.setEvaluationCount(resultSet.getInt("EvaluationCount"));
+		object.setEvaluationApprovedValue(resultSet.getInt("EvaluationApprovedValues"));
 
        return object;
    }

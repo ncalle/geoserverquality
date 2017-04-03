@@ -241,6 +241,8 @@ public class EvaluationBeanList {
 					e.setMetricID(metricId);
 					e.setSuccess(success);
 					e.setIsEvaluationCompleted(true);
+					e.setEvaluationCount(1);
+					e.setEvaluationApprovedValue(success?1:0);
 					e.setStartDate(date);
 					e.setEndDate(date);
 					e.setMetricName(metric.getMetricName());

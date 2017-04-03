@@ -344,6 +344,8 @@ CREATE TABLE Evaluation
     EndDate DATE NULL,
     IsEvaluationCompletedFlag BOOLEAN NOT NULL,
     SuccessFlag BOOLEAN NULL, -- indica si el resultado de la evaluacion fue exitosa
+	EvaluationCount INT,      -- indica la cantidaad de evaluaciones realizadas hasta el momento
+	EvaluationApprovedValues INT,
 
     PRIMARY KEY (EvaluationID),
     FOREIGN KEY (EvaluationSummaryID) REFERENCES EvaluationSummary(EvaluationSummaryID),
@@ -792,6 +794,8 @@ RETURNS TABLE
    , EndDate DATE
    , IsEvaluationCompletedFlag BOOLEAN
    , SuccessFlag BOOLEAN
+   , EvaluationCount INT
+   , EvaluationApprovedValues INT
 ) AS $$
 /************************************************************************************************************
 ** Name: evaluation_get
@@ -843,6 +847,8 @@ BEGIN
       , e.EndDate
       , e.IsEvaluationCompletedFlag
       , e.SuccessFlag
+	  , e.EvaluationCount
+	  , e.EvaluationApprovedValues
    FROM EvaluationSummary es
    INNER JOIN Evaluation e ON e.EvaluationSummaryID = es.EvaluationSummaryID
    INNER JOIN Profile p ON p.ProfileID = es.ProfileID
@@ -891,6 +897,9 @@ CREATE OR REPLACE FUNCTION evaluation_insert
    pEvaluationSummaryID INT
    , pMetricID INT
    , pSuccessFlag BOOLEAN
+   , pIsEvaluationCompletedFlag BOOLEAN
+   , pEvaluationCount INT
+   , pEvaluationApprovedValues INT
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
@@ -923,9 +932,9 @@ BEGIN
 
    -- Ingreso de Evaluacion
    INSERT INTO Evaluation
-   (EvaluationSummaryID, MetricID, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag)
+   (EvaluationSummaryID, MetricID, StartDate, EndDate, IsEvaluationCompletedFlag, SuccessFlag, EvaluationCount, EvaluationApprovedValues)
    VALUES
-   (pEvaluationSummaryID, pMetricID, CURRENT_DATE, CURRENT_DATE, TRUE, pSuccessFlag);
+   (pEvaluationSummaryID, pMetricID, CURRENT_DATE, CURRENT_DATE, pIsEvaluationCompletedFlag, pSuccessFlag, pEvaluationCount, pEvaluationApprovedValues);
 
 END;
 $$ LANGUAGE plpgsql;
