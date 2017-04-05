@@ -2974,6 +2974,7 @@ RETURNS VOID AS $$
 ** 02/12/2016 Created
 **
 *************************************************************************************************************/
+DECLARE v_UserID INT;
 BEGIN
     
    -- parametros requeridos
@@ -2990,7 +2991,13 @@ BEGIN
    INSERT INTO SystemUser
    (Email, Password, UserGroupID, FirstName, LastName, PhoneNumber, InstitutionID)
    VALUES
-   (pEmail, pPassword, pUserGroupID, pFirstName, pLastName, pPhoneNumber, pInstitutionID);
+   (pEmail, pPassword, pUserGroupID, pFirstName, pLastName, pPhoneNumber, pInstitutionID)
+      RETURNING UserID INTO v_UserID;
+
+   --Negar permisos de evaluación sobre todos los objetos medible existentes a los usuarios que no sean ncalle o rsanchez
+   INSERT INTO UserMeasurableObject (UserID, MeasurableObjectID, CanMeasureFlag)
+   SELECT v_UserID, mo.MeasurableObjectID, FALSE
+   FROM MeasurableObject mo;
     
 END;
 $$ LANGUAGE plpgsql;
