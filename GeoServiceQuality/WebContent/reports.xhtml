@@ -125,13 +125,11 @@
           <h4 class="form-signin-heading">Éxitos vs Fracasos</h4>
           <p>Muestra en cantidades porcentuales el total de evaluaciones con resultado exitoso contra el porcentaje de evaluaciones con resultado fallido. </p>
           <p:chart type="pie" model="#{reportsBean.pieChartEvaluationSuccessVsFailed}" />
-          <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
         </div>
         <div class="col-md-6">
           <h4 class="form-signin-heading">Éxitos por Perfil</h4>
           <p>Muestra el porcentaje de éxitos que se han obtenido hasta el momento, evaluando los distintos Perfiles existentes.</p>
           <p:chart type="bar" model="#{reportsBean.barChartSuccessEvaluationPerProfile}" />
-          <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
        </div>
       </div>
      
@@ -140,21 +138,18 @@
 	  <h4 class="form-signin-heading" style="text-align: center;">Éxitos por Institución</h4>
 	  <p>Muestra el porcentaje de éxitos que se han obtenido hasta el momento, evaluando los Objetos Medibles pertenecientes a cada Institución.</p>
 	    <p:chart type="bar" model="#{reportsBean.barChartSuccessEvaluationPerInstitution}" />
-	  <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
 
       <hr></hr>
 
 	  <h4 class="form-signin-heading" style="text-align: center;">Éxitos por Nodo</h4>
 	  <p>Muestra el porcentaje de éxitos que se han obtenido hasta el momento, evaluando los Objetos Medibles pertenecientes a cada Nodo.</p>
 	    <p:chart type="bar" model="#{reportsBean.barChartSuccessEvaluationPerNode}" />
-	  <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
 
       <hr></hr>
       	  
 	  <h4 class="form-signin-heading">Tiempo medio de respuesta</h4>
-      <p>Muestra el tiempo de respuesta medio de los últimas 100 evaluaciones realizadas para los distintos Nodos (HARCODED).</p>
+      <p>Muestra el tiempo de respuesta medio de las últimas 100 evaluaciones realizadas hasta el momento, para los distintos Nodos.</p>
       <p:chart type="line" model="#{reportsBean.mediaResponseTime}" />
-      <p><a class="btn btn-secondary" href="#" role="button">View details</a></p>
           
      </div> <!-- /container -->
 

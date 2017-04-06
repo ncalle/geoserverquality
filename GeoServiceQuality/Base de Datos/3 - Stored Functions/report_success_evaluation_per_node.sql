@@ -10,25 +10,46 @@ RETURNS TABLE (NodeID INT, NodeName VARCHAR(70), NodeCount BIGINT, NodePercentag
 **
 *************************************************************************************************************/
 DECLARE v_TotalEvaluationSummary BIGINT;
+DECLARE v_NodesCount INT;
 
 BEGIN
   
    SELECT COUNT(*) FROM EvaluationSummary es INTO v_TotalEvaluationSummary;
 
-   RETURN QUERY
+   CREATE TEMP TABLE NodesAux
+   (
+      NodeID INT
+      , NodeName VARCHAR(70)
+      , SummaryNodeSuccessPercentage BIGINT
+   );
+
+   INSERT INTO NodesAux
+   (NodeID, NodeName, SummaryNodeSuccessPercentage)
    SELECT n.NodeID
       , n.Name AS NodeName
-      , COUNT(es.EvaluationSummaryID) AS NodeCount
-      , CASE WHEN v_TotalEvaluationSummary = 0 THEN 0 ELSE ((COUNT(es.EvaluationSummaryID) * 100.00) / v_TotalEvaluationSummary) END AS NodePercentage
-      , CASE WHEN COUNT(es.EvaluationSummaryID) = 0 THEN 0 ELSE ((SELECT SUM(ies.SuccessPercentage) FROM EvaluationSummary ies WHERE ies.MeasurableObjectID = mo.MeasurableObjectID) / COUNT(es.EvaluationSummaryID)) END AS NodeSuccessPercentage
+      , CASE WHEN COUNT(es.EvaluationSummaryID) = 0 THEN 0 ELSE ((SELECT SUM(ies.SuccessPercentage) FROM EvaluationSummary ies WHERE ies.MeasurableObjectID = mo.MeasurableObjectID) / COUNT(n.NodeID)) END AS SummaryNodeSuccessPercentage
    FROM EvaluationSummary es
    INNER JOIN MeasurableObject mo ON mo.MeasurableObjectID = es.MeasurableObjectID
    INNER JOIN GeographicServices gs ON gs.GeographicServicesID = mo.EntityID AND mo.EntityType = 'Servicio'
    INNER JOIN Node n ON n.NodeID = gs.NodeID
    GROUP BY n.NodeID
       , n.Name
-      , mo.MeasurableObjectID
-   ORDER BY COUNT (es.EvaluationSummaryID) DESC;
+      , mo.MeasurableObjectID;
+
+   SELECT COUNT(DISTINCT na.NodeID) FROM NodesAux na INTO v_NodesCount;
+
+   RETURN QUERY
+   SELECT na.NodeID
+      , na.NodeName
+      , COUNT(na.NodeID) AS NodeCount
+      , COUNT(na.NodeID) / (v_NodesCount) :: NUMERIC AS NodePercentage
+      , CASE WHEN COUNT(na.SummaryNodeSuccessPercentage) = 0 THEN 0 ELSE (SELECT SUM(na.SummaryNodeSuccessPercentage) / (COUNT(na.NodeID))) END :: BIGINT AS NodeSuccessPercentage
+   FROM NodesAux na
+   GROUP BY na.NodeID
+      , na.NodeName
+   ORDER BY na.NodeName DESC;
+
+   DROP TABLE NodesAux;
                
 END;
 $$ LANGUAGE plpgsql;
