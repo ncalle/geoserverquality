@@ -490,14 +490,8 @@ INSERT INTO Institution (IdeID, Name, Description) VALUES
 (1, 'Ministerio de Ganadería, Agricultura y Pesca', 'Ministerio de Ganadería, Agricultura y Pesca'),
 (1, 'MIEM', 'Ministerio de Industria, Energía y Minería'),
 (1, 'MTOP', 'Ministerio de Transporte y Obras Públicas'),
-(1, 'Ministerio de Turismo', 'Ministerio de Turismo'),
 (1, 'Ministerio de Vivienda, Ordenamiento Territorial y Medio Ambiente', 'Ministerio de Vivienda, Ordenamiento Territorial y Medio Ambiente'),
-(1, 'ANEP', 'Administración Nacional de Educación Pública'),
-(1, 'Correo Uruguayo', 'Administración Nacional de Correos'),
-(1, 'INIA', 'Instituto Nacional de Investigación Agropecuaria'),
-(1, 'Maldonado', 'Intendencia de Maldonado'),
-(1, 'Montevideo', 'Intendencia de Montevideo'),
-(1, 'Rivera', 'Intendencia de Rivera');
+(1, 'Montevideo', 'Intendencia de Montevideo');
 
 INSERT INTO Node (InstitutionID, Name, Description) VALUES
 (1, 'INE', 'Instituto Nacional de Estadística'),
@@ -510,15 +504,9 @@ INSERT INTO Node (InstitutionID, Name, Description) VALUES
 (6, 'RENARE', 'Dirección Nacional de Recursos Renovables'),
 (7, 'Dirección Nacional de Minería y Geología', 'Dirección Nacional de Minería y Geología'),
 (8, 'Dirección Nacional de Topografía', 'Direción Nacional de Topografía'),
-(9, 'Ministerio de Turismo', 'Ministerio de Turismo'),
-(10, 'DINAMA', 'Dirección Nacional de Medio Ambiente'),
-(10, 'DINOT', 'Dirección Nacional de Ordenamiento Territorial'),
-(11, 'ANEP', 'Administración Nacional de Educación Pública'),
-(12, 'Unidad de Geomáica', 'Unidad de Geomáica'),
-(13, 'GRAS', 'GRAS'),
-(14, 'Unidad del Sistema de Información Geográfica', 'Unidad del Sistema de Información Geográfica'),
-(15, 'Servicio de Geomática', 'Servicio de Geomática'),
-(16, 'Rivera', 'Intendencia de Rivera');
+(9, 'DINAMA', 'Dirección Nacional de Medio Ambiente'),
+(9, 'DINOT', 'Dirección Nacional de Ordenamiento Territorial'),
+(10, 'Servicio de Geomática', 'Servicio de Geomática'); 
 
 
 INSERT INTO Profile (Name, Granurality, IsWeightedFlag) VALUES
@@ -678,30 +666,28 @@ INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description
 --ide.uy/Ministerio de Vivienda, Ordenamiento Territorial y Medio Ambiente/Dirección Nacional de Medio Ambiente
    --https://www.dinama.gub.uy/geoservicios/
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
-(12,'https://www.dinama.gub.uy/geoserver/u19600217/wms?service=WMS&version=1.3.0&REQUEST=GetCapabilities','WMS', 'Informacion sobre DINAMA');
+(11,'https://www.dinama.gub.uy/geoserver/u19600217/wms?service=WMS&version=1.3.0&REQUEST=GetCapabilities','WMS', 'Informacion sobre DINAMA');
 
 
 --ide.uy/Ministerio de Vivienda, Ordenamiento Territorial y Medio Ambiente/Dirección Nacional de Ordenamiento Territorial
    --http://sit.mvotma.gub.uy/serviciosOGC.htm
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
-(13,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/instrumentosOT/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'NORMATIVA DE ORDENAMIENTO TERRITORIAL'),
-(13,'http://sit.mvotma.gub.uy/arcgis/services/SIT/instrumentosOT/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'NORMATIVA DE ORDENAMIENTO TERRITORIAL'),
-(13,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/instrumentos_elaboracion/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'INSTRUMENTOS DE O.T EN ELABORACIÓN'),
-(13,'http://sit.mvotma.gub.uy/arcgis/services/SIT/instrumentos_elaboracion/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'INSTRUMENTOS DE O.T EN ELABORACIÓN'),
-(13,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/chs/MapServer/WMSServer?','WMS', 'CONJUNTOS HABITACIONALES DE PROMOCIÓN PÚBLICA'),
-(13,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/chs/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'CONJUNTOS HABITACIONALES DE PROMOCIÓN PÚBLICA'),
-(13,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/asentamientos/MapServer/WMSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WMS', 'ASENTAMIENTOS'),
-(13,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/asentamientos/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'ASENTAMIENTOS'),
-(13,'http://sit.mvotma.gub.uy/ArcGIS/services/OGC/OGC_cobertura/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'COBERTURA DEL SUELO'),
-(13,'http://sit.mvotma.gub.uy/ArcGIS/services/OGC/OGC_cobertura/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'COBERTURA DEL SUELO');
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/instrumentosOT/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'NORMATIVA DE ORDENAMIENTO TERRITORIAL'),
+(12,'http://sit.mvotma.gub.uy/arcgis/services/SIT/instrumentosOT/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'NORMATIVA DE ORDENAMIENTO TERRITORIAL'),
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/instrumentos_elaboracion/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'INSTRUMENTOS DE O.T EN ELABORACIÓN'),
+(12,'http://sit.mvotma.gub.uy/arcgis/services/SIT/instrumentos_elaboracion/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'INSTRUMENTOS DE O.T EN ELABORACIÓN'),
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/chs/MapServer/WMSServer?','WMS', 'CONJUNTOS HABITACIONALES DE PROMOCIÓN PÚBLICA'),
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/chs/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'CONJUNTOS HABITACIONALES DE PROMOCIÓN PÚBLICA'),
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/asentamientos/MapServer/WMSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WMS', 'ASENTAMIENTOS'),
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/asentamientos/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'ASENTAMIENTOS'),
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/OGC/OGC_cobertura/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'COBERTURA DEL SUELO'),
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/OGC/OGC_cobertura/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'COBERTURA DEL SUELO');
 
 --ide.uy/Intendencia de Montevideo/Servicio de Geomática
    --http://sig.montevideo.gub.uy/content/geoservicios-web
-   --TODO: Ver como cargar los WS de la IM
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
-(18,'http://geoweb.montevideo.gub.uy/geonetwork/srv/es/csw','CSW', 'ACCESO A SERVICIOS CSW');
---(18,'http://geoweb.montevideo.gub.uy/geonetwork/srv/es/main.home','', 'PORTAL BÚSQUEDA DE METADATOS'),
---(18,'http://geoweb.montevideo.gub.uy/geoserver/ide/ows','', 'ACCESO A SERVICIOS WMS _ WFS');
+(13,'http://geoweb.montevideo.gub.uy/geonetwork/srv/es/csw','CSW', 'ACCESO A SERVICIOS CSW');
+
 
 INSERT INTO SystemUser (Email, Password, UserGroupID, FirstName, LastName, PhoneNumber, InstitutionID) VALUES 
 ('ncalle@mail.com', 'ncalle', 1, 'Natalia', 'Calle', '098765432', 1),
