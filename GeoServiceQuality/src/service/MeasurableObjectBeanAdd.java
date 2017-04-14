@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import EvaluationCore.App;
 import entity.IdeTreeStructure;
 import entity.MeasurableObject;
 import dao.DAOException;
@@ -284,14 +285,14 @@ public class MeasurableObjectBeanAdd {
     		parametersRequestUrl();	
     	}
     	
-    	if(entityType == "Capa") {
+    	/*if(entityType == "Capa") {
     		if (layerURL.length()==0){
         		FacesContext context = FacesContext.getCurrentInstance();
         		context.addMessage(null, new FacesMessage("Debe ingresar una url"));
         		return;
         	}
     		//parametersRequestUrl();	
-    	}    	
+    	} */   	
     	
     	MeasurableObject object = new MeasurableObject();
     	
@@ -323,7 +324,7 @@ public class MeasurableObjectBeanAdd {
 	        	object.setMeasurableObjectURL(null);
 	        	object.setMeasurableObjectServicesType(null);
 	        	break;	
-	    	case "Capa":
+	    	/*case "Capa":
 	    		object.setEntityType(entityType);
 	    		object.setFatherEntityID(layerNode.getNodeID());
 	    		object.setFatherEntityType("Nodo");
@@ -331,7 +332,7 @@ public class MeasurableObjectBeanAdd {
 	    		object.setMeasurableObjectDescription(layerDescription);
 	        	object.setMeasurableObjectURL(layerURL);
 	        	object.setMeasurableObjectServicesType(null);
-	        	break;
+	        	break;*/
 	    	case "Servicio":
 	    		object.setEntityType(entityType);
 	    		object.setFatherEntityID(serviceNode.getNodeID());
@@ -340,6 +341,12 @@ public class MeasurableObjectBeanAdd {
 	    		object.setMeasurableObjectDescription(serviceDescription);
 	        	object.setMeasurableObjectURL(serviceURL);
 	        	object.setMeasurableObjectServicesType(serviceType);
+	        	
+	        	//Se agregan las capas del servicio
+	        	List<String> layersNames =  App.getLayers(serviceURL, serviceType);
+	        	for (String name : layersNames) {
+	        		saveLayers(name);
+				}
 	        	break;
 			default:
 				break;	
@@ -363,6 +370,29 @@ public class MeasurableObjectBeanAdd {
 
 	}
     
+    
+    public void saveLayers(String layerName) {
+
+    	MeasurableObject object = new MeasurableObject();
+    	
+		object.setEntityType("Capa");
+		object.setFatherEntityID(serviceNode.getNodeID());
+		object.setFatherEntityType("Nodo");
+		object.setMeasurableObjectName(layerName);
+		object.setMeasurableObjectDescription("");
+    	object.setMeasurableObjectURL(null);
+    	object.setMeasurableObjectServicesType(serviceType);
+    	    	    	
+    	System.out.println("saveLayers.. " + object);
+    	
+    	try{
+            moDao.create(object, "Capa");
+            
+    	} catch(DAOException e) {
+    		e.printStackTrace();
+    	} 
+
+	}
     
     public void parametersRequestUrl() {
    	

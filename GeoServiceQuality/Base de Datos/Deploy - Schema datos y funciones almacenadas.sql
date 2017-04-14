@@ -98,11 +98,11 @@ CREATE TABLE Layer
     LayerID SERIAL NOT NULL,
     NodeID INT NOT NULL,
     Name VARCHAR(70) NOT NULL,
-    Url VARCHAR(1024) NOT NULL,
+    Url VARCHAR(1024) NULL,
     Description VARCHAR(100) NULL,
 
     PRIMARY KEY (LayerID),
-    UNIQUE (Url),
+    UNIQUE (Name),
     FOREIGN KEY (NodeID) REFERENCES Node(NodeID)
 );
 
@@ -2085,7 +2085,7 @@ RETURNS TABLE
 ** Name: prototype_measurable_objects_get
 **
 ** Desc: Devuelve la lista de objetos medibles disponibles. Si se pasa el usuario, entonces se filtra por el mismo
-** Se debe ampliar a otros objetos medibles. Para el prototipo solo se devuelven servicios.
+** Se debe ampliar a otros objetos medibles.
 **
 ** 02/12/2016 - Created
 **
@@ -2101,31 +2101,31 @@ BEGIN
          --WHEN mo.EntityType = 'Ide' THEN ide.Name
          --WHEN mo.EntityType = 'Institución' THEN ins.Name
          --WHEN mo.EntityType = 'Nodo' THEN n.Name
-         --WHEN mo.EntityType = 'Capa' THEN l.Name
+         WHEN mo.EntityType = 'Capa' THEN l.Name
          WHEN mo.EntityType = 'Servicio' THEN NULL ::VARCHAR(70)
          END AS MeasurableObjectName
       , CASE
          --WHEN mo.EntityType = 'Ide' THEN ide.Description
          --WHEN mo.EntityType = 'Institución' THEN ins.Description
          --WHEN mo.EntityType = 'Nodo' THEN n.Description
-         --WHEN mo.EntityType = 'Capa' THEN NULL
+         WHEN mo.EntityType = 'Capa' THEN NULL
          WHEN mo.EntityType = 'Servicio' THEN sg.Description
          END AS MeasurableObjectDescription
       , CASE
          --WHEN mo.EntityType = 'Ide' THEN NULL
          --WHEN mo.EntityType = 'Institución' THEN NULL
          --WHEN mo.EntityType = 'Nodo' THEN NULL
-         --WHEN mo.EntityType = 'Capa' THEN l.Url
+         WHEN mo.EntityType = 'Capa' THEN l.Url
          WHEN mo.EntityType = 'Servicio' THEN sg.Url
          END AS MeasurableObjectURL
       , CASE
          --WHEN mo.EntityType = 'Ide' THEN NULL
          --WHEN mo.EntityType = 'Institución' THEN NULL
          --WHEN mo.EntityType = 'Nodo' THEN NULL
-         --WHEN mo.EntityType = 'Capa' THEN NULL
+         WHEN mo.EntityType = 'Capa' THEN NULL
          WHEN mo.EntityType = 'Servicio' THEN sg.GeographicServicesType
          END AS MeasurableObjectServicesType
-   FROM GeographicServices sg
+   FROM GeographicServices sg, Layer l
    INNER JOIN MeasurableObject mo ON mo.EntityID = sg.GeographicServicesID AND mo.EntityType = 'Servicio'
    INNER JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
    LEFT JOIN SystemUser u ON u.UserID = umo.UserID

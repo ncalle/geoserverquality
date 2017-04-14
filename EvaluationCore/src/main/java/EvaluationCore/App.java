@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyStore.Entry.Attribute;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -692,4 +693,35 @@ public final class App {
     }
     
     
+    /* --------------------------------------------------------------------------
+     * Devuelve las capas del servicio
+     * --------------------------------------------------------------------------*/
+    @SuppressWarnings("restriction")
+   	public static List<String> getLayers(String url, String serviceType){
+    	List<String> list = new ArrayList<String>();
+       	try {
+       		
+       		if(serviceType.equals("WMS")) {
+       			Unmarshaller unmarshaller = getUnmarshaller();
+       			JAXBElement<WMSCapabilities> wmsCapabilitiesElement = unmarshaller
+       			        .unmarshal(new StreamSource(url), WMSCapabilities.class);
+       			
+       			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
+       			
+       			if(wmsCapabilities.getCapability()==null || wmsCapabilities.getCapability().getLayer()==null 
+       					|| wmsCapabilities.getCapability().getLayer().getLayer().size()==0){
+       				return list;
+       			}
+       			
+       			for (Layer layer : wmsCapabilities.getCapability().getLayer().getLayer()) {
+       				list.add(layer.getName());
+    			}
+       		} 
+   			
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			return list;
+   		}
+       	return list;
+    }
 }
