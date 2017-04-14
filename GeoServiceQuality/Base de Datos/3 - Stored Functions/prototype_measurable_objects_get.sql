@@ -1,9 +1,6 @@
-﻿--DROP FUNCTION prototype_measurable_objects_get(integer);
-CREATE OR REPLACE FUNCTION prototype_measurable_objects_get
+﻿CREATE OR REPLACE FUNCTION prototype_measurable_objects_get
 (
    pUserID INT
-   , pEntityName VARCHAR(70)
-   , pEntityType VARCHAR(11) -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio'
 )
 RETURNS TABLE 
    (
@@ -19,7 +16,7 @@ RETURNS TABLE
 ** Name: prototype_measurable_objects_get
 **
 ** Desc: Devuelve la lista de objetos medibles disponibles. Si se pasa el usuario, entonces se filtra por el mismo
-** Se debe ampliar a otros objetos medibles. Para el prototipo solo se devuelven servicios.
+** Se debe ampliar a otros objetos medibles.
 **
 ** 02/12/2016 - Created
 **
@@ -35,47 +32,50 @@ BEGIN
          --WHEN mo.EntityType = 'Ide' THEN ide.Name
          --WHEN mo.EntityType = 'Institución' THEN ins.Name
          --WHEN mo.EntityType = 'Nodo' THEN n.Name
-         --WHEN mo.EntityType = 'Capa' THEN l.Name
+         WHEN mo.EntityType = 'Capa' THEN l.Name
          WHEN mo.EntityType = 'Servicio' THEN NULL ::VARCHAR(70)
          END AS MeasurableObjectName
       , CASE
          --WHEN mo.EntityType = 'Ide' THEN ide.Description
          --WHEN mo.EntityType = 'Institución' THEN ins.Description
          --WHEN mo.EntityType = 'Nodo' THEN n.Description
-         --WHEN mo.EntityType = 'Capa' THEN NULL
+         WHEN mo.EntityType = 'Capa' THEN l.Description
          WHEN mo.EntityType = 'Servicio' THEN sg.Description
          END AS MeasurableObjectDescription
       , CASE
          --WHEN mo.EntityType = 'Ide' THEN NULL
          --WHEN mo.EntityType = 'Institución' THEN NULL
          --WHEN mo.EntityType = 'Nodo' THEN NULL
-         --WHEN mo.EntityType = 'Capa' THEN l.Url
+         WHEN mo.EntityType = 'Capa' THEN l.Url
          WHEN mo.EntityType = 'Servicio' THEN sg.Url
          END AS MeasurableObjectURL
       , CASE
          --WHEN mo.EntityType = 'Ide' THEN NULL
          --WHEN mo.EntityType = 'Institución' THEN NULL
          --WHEN mo.EntityType = 'Nodo' THEN NULL
-         --WHEN mo.EntityType = 'Capa' THEN NULL
+         WHEN mo.EntityType = 'Capa' THEN NULL
          WHEN mo.EntityType = 'Servicio' THEN sg.GeographicServicesType
          END AS MeasurableObjectServicesType
-   FROM GeographicServices sg
-   INNER JOIN MeasurableObject mo ON mo.EntityID = sg.GeographicServicesID AND mo.EntityType = 'Servicio'
+   FROM MeasurableObject mo
    INNER JOIN UserMeasurableObject umo ON umo.MeasurableObjectID = mo.MeasurableObjectID
+   LEFT JOIN GeographicServices sg ON mo.EntityID = sg.GeographicServicesID AND mo.EntityType = 'Servicio'
+   LEFT JOIN Layer l ON mo.EntityID = l.LayerID AND mo.EntityType = 'Capa'
    LEFT JOIN SystemUser u ON u.UserID = umo.UserID
    WHERE (CASE WHEN pUserID IS NOT NULL THEN u.UserID = pUserID ELSE TRUE END)
       AND (CASE WHEN pUserID IS NOT NULL THEN umo.CanMeasureFlag = TRUE ELSE TRUE END)
+      AND (mo.EntityType = 'Servicio' OR mo.EntityType = 'Capa')
    GROUP BY mo.MeasurableObjectID
       , mo.EntityID
       , mo.EntityType
       --, ide.Name
       --, ins.Name
       --, n.Name
-      --, l.Name
+      , l.Name
+      , l.Description
+      , l.Url
       --, ide.Description
       --, ins.Description
       --, n.Description
-      --, l.Url
       , sg.Description
       , sg.Url
       , sg.GeographicServicesType

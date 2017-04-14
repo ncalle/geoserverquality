@@ -45,6 +45,7 @@ public class EvaluationBeanList {
 	private List<Profile> listProfile;
 	private Profile selectedProfile;
 	private List<MeasurableObject> listMeasurableObjects;
+	private List<MeasurableObject> listMeasurableObjectsToShow;
 	private MeasurableObject selectedMeasurableObject;
 	private List<ProfileMetric> listProfileMetric;
 	private int userId, manualMetricID;
@@ -65,6 +66,7 @@ public class EvaluationBeanList {
 		try {
 			listProfile = profileDao.list();
 			listMeasurableObjects = moDao.list();
+			listMeasurableObjectsToShow = listMeasurableObjects; //guarda una copia de la lista de objetos medibles original
 			listEvaluation = new ArrayList<>(); 
 			showResult = false;
 			resultMap =  new HashMap<Integer, Boolean>();
@@ -129,7 +131,14 @@ public class EvaluationBeanList {
 	public void setListMeasurableObjects(List<MeasurableObject> listMeasurableObjects) {
 		this.listMeasurableObjects = listMeasurableObjects;
 	}
+	
+	public List<MeasurableObject> getListMeasurableObjectsToShow() {
+		return listMeasurableObjectsToShow;
+	}
 
+	public void setListMeasurableObjectsToShow(List<MeasurableObject> listMeasurableObjectsToShow) {
+		this.listMeasurableObjectsToShow = listMeasurableObjectsToShow;
+	}
 
 	public MeasurableObject getSelectedMeasurableObject() {
 		return selectedMeasurableObject;
@@ -157,12 +166,13 @@ public class EvaluationBeanList {
 	
 	public void onRowSelectProfile(SelectEvent event) {
 		List<MeasurableObject> list = new ArrayList<>();
+		
 		for(MeasurableObject mo : listMeasurableObjects){
 			if(mo.getEntityType().equals(selectedProfile.getGranurality())) {
 				list.add(mo);
 			}
 		}
-		listMeasurableObjects = list;
+		listMeasurableObjectsToShow = list;
 	}
 	
 	public void setProfileResult(String profileResult) {
