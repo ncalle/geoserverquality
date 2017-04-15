@@ -4,6 +4,7 @@ CREATE OR REPLACE FUNCTION prototype_measurable_object_update
    pMeasurableObjectID INT
    , pUrl VARCHAR(1024)
    , pGeographicServicesType CHAR(3) -- WMS, WFS, CSW
+   , pName VARCHAR(70)
    , pDescription VARCHAR(100)
 )
 RETURNS VOID AS $$
@@ -42,7 +43,37 @@ BEGIN
          , GeographicServicesType = pGeographicServicesType
          , Description = pDescription
       WHERE GeographicServicesID = v_EntityID;
+
+   ELSIF (v_EntityType = 'Capa')
+   THEN
+      UPDATE Layer
+      SET Url = pUrl
+         , Name = pName
+         , Description = pDescription
+      WHERE LayerID = v_EntityID;
+
+   ELSIF (v_EntityType = 'Nodo')
+   THEN
+      UPDATE Node
+      SET Name = pName
+         , Description = pDescription
+      WHERE NodeID = v_EntityID;   
+   
+   ELSIF (v_EntityType = 'Institución')
+   THEN
+      UPDATE Institution
+      SET Name = pName
+         , Description = pDescription
+      WHERE InstitutionID = v_EntityID;
+      
+   ELSIF (v_EntityType = 'Ide')
+   THEN
+      UPDATE Ide
+      SET Name = pName
+         , Description = pDescription
+      WHERE IdeID = v_EntityID;   
    END IF;
+   
     
 END;
 $$ LANGUAGE plpgsql;

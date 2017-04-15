@@ -55,7 +55,6 @@
 			<div class="ui-g">
 	    		<div class="ui-g-4">
 	    			<h:form id="idesTreeStructure">
-						<p:growl id="msgs" showDetail="true" escape="false"/>
 						
 					    <h2 class="form-signin-heading">Árbol de objetos medibles</h2>
 
@@ -91,6 +90,8 @@
 							widgetVar="stnw" 
 							editable="true"
 							emptyMessage="No existe objecto medible o no ha sido seleccionado aun.">
+		
+							<p:ajax event="rowEdit" listener="#{measurableObjectBeanList.onTreeRowEdit}" update=":idesTreeStructure :treeStructureSelectedObject:msgs" />		
 		
 							<p:column headerText="ID" sortBy="#{stn.getMeasurableObjectID()}">
 								<h:outputText value="#{stn.getMeasurableObjectID()}" />

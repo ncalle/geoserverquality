@@ -28,7 +28,7 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
     private static final String SQL_USER_MEASURABLE_OBJECT_TO_ADD_GET =
     		"SELECT MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM prototype_user_measurable_object_to_add_get (?)";
 	private static final String SQL_UPDATE =
-        	"SELECT * FROM prototype_measurable_object_update (?, ?, ?, ?)";
+        	"SELECT * FROM prototype_measurable_object_update (?, ?, ?, ?, ?)";
     private static final String SQL_SERVICES_AND_LAYER_GET =
     		"SELECT MeasurableObjectID, EntityID, EntityType, MeasurableObjectName, MeasurableObjectDescription, MeasurableObjectURL, MeasurableObjectServicesType FROM services_and_layers_get (?, ?, ?)";	
 
@@ -223,7 +223,8 @@ public class MeasurableObjectBean implements MeasurableObjectBeanRemote {
             statement.setInt(1, measurableObject.getMeasurableObjectID());
             statement.setString(2, measurableObject.getMeasurableObjectURL());
             statement.setString(3, measurableObject.getMeasurableObjectServicesType());
-            statement.setString(4, measurableObject.getMeasurableObjectDescription());
+            statement.setString(4, measurableObject.getMeasurableObjectName());
+            statement.setString(5, measurableObject.getMeasurableObjectDescription());
         
             statement.executeQuery();
             
