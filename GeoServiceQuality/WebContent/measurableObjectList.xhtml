@@ -118,16 +118,7 @@
 								</p:cellEditor>
 							</p:column>
 							<p:column headerText="Tipo" sortBy="#{moitem.entityType}">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{moitem.entityType}" />
-									</f:facet>
-									<f:facet name="input">
-										<h:selectOneMenu value="#{moitem.entityType}" style="width:100%">
-											<f:selectItem itemValue="Servicio" itemLabel="Servicio"/>
-										</h:selectOneMenu>
-									</f:facet>
-								</p:cellEditor>
+								<h:outputText value="#{moitem.entityType}" />
 							</p:column>
 							<p:column headerText="Tipo de Servicio" sortBy="#{moitem.measurableObjectServicesType}">
 								<p:cellEditor>
