@@ -241,10 +241,10 @@ public class EvaluationBeanList {
 						success = resultMap.get(metric.getMetricID());
 					} else {
 						acceptanceValue = metric.getUnitID()==2? metric.getPercentageAcceptanceValue(): metric.getIntegerAcceptanceValue();
-						success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getMeasurableObjectServicesType(), acceptanceValue, "");
+						success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getMeasurableObjectServicesType(), acceptanceValue, selectedMeasurableObject.getMeasurableObjectName());
 					}
 					listResult.add(success);
-					System.out.println("MetricId: " + metricId + " Success: " + success + " ServiceType: " + selectedMeasurableObject.getMeasurableObjectServicesType() + " MO:" + selectedMeasurableObject.getMeasurableObjectURL());
+					System.out.println("MetricId: " + metricId + " Success: " + success + " ServiceType: " + selectedMeasurableObject.getMeasurableObjectServicesType() + " MO:" + selectedMeasurableObject.getMeasurableObjectURL() + " Name:" + selectedMeasurableObject.getMeasurableObjectName());
 					
 					Evaluation e = new Evaluation();
 					

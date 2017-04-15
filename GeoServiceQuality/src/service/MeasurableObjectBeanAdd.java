@@ -380,7 +380,7 @@ public class MeasurableObjectBeanAdd {
 		object.setFatherEntityType("Nodo");
 		object.setMeasurableObjectName(layerName);
 		object.setMeasurableObjectDescription("");
-    	object.setMeasurableObjectURL(null);
+    	object.setMeasurableObjectURL(serviceURL);
     	object.setMeasurableObjectServicesType(serviceType);
     	    	    	
     	System.out.println("saveLayers.. " + object);

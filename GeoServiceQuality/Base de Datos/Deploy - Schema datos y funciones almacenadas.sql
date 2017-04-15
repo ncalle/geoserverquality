@@ -102,7 +102,7 @@ CREATE TABLE Layer
     Description VARCHAR(100) NULL,
 
     PRIMARY KEY (LayerID),
-    UNIQUE (Name),
+--    UNIQUE (Name),
     FOREIGN KEY (NodeID) REFERENCES Node(NodeID)
 );
 
@@ -510,8 +510,9 @@ INSERT INTO Node (InstitutionID, Name, Description) VALUES
 
 
 INSERT INTO Profile (Name, Granurality, IsWeightedFlag) VALUES
-('Perfil Básico', 'Servicio', FALSE),
-('Perfil Avanzado', 'Servicio', FALSE);
+('Perfil Servicio Básico', 'Servicio', FALSE),
+('Perfil Servicio Avanzado', 'Servicio', FALSE),
+('Perfil Capa Basico', 'Capa', FALSE);
 
 INSERT INTO MetricRange (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue) VALUES
 (1, 1, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL), -- perfil servicio basico
@@ -521,7 +522,9 @@ INSERT INTO MetricRange (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValu
 (3, 2, FALSE, NULL, TRUE, 20, FALSE, NULL, FALSE, NULL),
 (10, 2, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL),
 (11, 2, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL),
-(15, 2, FALSE, NULL, TRUE, 50, FALSE, NULL, FALSE, NULL);
+(15, 2, FALSE, NULL, TRUE, 50, FALSE, NULL, FALSE, NULL),
+(4, 3, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL), -- perfil capa basico
+(13, 3, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL);
 
 --INSERT INTO Layer (NodeID, Name, Url) VALUES
 --(1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),
@@ -2121,7 +2124,7 @@ BEGIN
          --WHEN mo.EntityType = 'Ide' THEN NULL
          --WHEN mo.EntityType = 'Institución' THEN NULL
          --WHEN mo.EntityType = 'Nodo' THEN NULL
-         WHEN mo.EntityType = 'Capa' THEN NULL
+         WHEN mo.EntityType = 'Capa' THEN 'WMS'
          WHEN mo.EntityType = 'Servicio' THEN sg.GeographicServicesType
          END AS MeasurableObjectServicesType
    FROM MeasurableObject mo
