@@ -166,7 +166,8 @@
 							</p:column>
 		
 							<p:column headerText="Valor Booleano" sortBy="#{bpmitem.getBooleanAcceptanceValue()}">
-								<p:cellEditor>
+								<h:outputText value="#{bpmitem.getBooleanAcceptanceValue()}" />
+								<!--<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{bpmitem.getBooleanAcceptanceValue()}" />
 									</f:facet>
@@ -176,7 +177,7 @@
 											<f:selectItem itemValue="FALSE" itemLabel="false"/>
 										</h:selectOneMenu>
 									</f:facet>
-								</p:cellEditor>
+								</p:cellEditor>-->
 							</p:column>
 											
 							<p:column headerText="Acciones">
