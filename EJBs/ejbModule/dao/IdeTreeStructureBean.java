@@ -20,7 +20,7 @@ import entity.IdeTreeStructure;
 public class IdeTreeStructureBean implements IdeTreeStructureBeanRemote {
 
     private static final String SQL_IDE_TREE_STRUCTURE_LIST_ORDER_BY_ID =
-    		"SELECT MeasurableObjectID, IdeID, IdeName, IdeDescription, InstitutionID, InstitutionName, InstitutionDescription, NodeID, NodeName, NodeDescription FROM ide_tree_structure_get(?)";
+    		"SELECT IdeMeasurableObjectID, IdeID, IdeName, IdeDescription, InstitutionMeasurableObjectID, InstitutionID, InstitutionName, InstitutionDescription, NodeMeasurableObjectID, NodeID, NodeName, NodeDescription FROM ide_tree_structure_get(?)";
     
     private DAOFactory daoFactory;
 
@@ -71,13 +71,15 @@ public class IdeTreeStructureBean implements IdeTreeStructureBeanRemote {
     private static IdeTreeStructure map(ResultSet resultSet) throws SQLException {
     	IdeTreeStructure ideTreeStructure = new IdeTreeStructure();
     	
-    	ideTreeStructure.setMeasurableObjectID(resultSet.getInt("MeasurableObjectID"));
+    	ideTreeStructure.setIdeMeasurableObjectID(resultSet.getInt("IdeMeasurableObjectID"));
     	ideTreeStructure.setIdeID(resultSet.getInt("IdeID"));
     	ideTreeStructure.setIdeName(resultSet.getString("IdeName"));
-    	ideTreeStructure.setIdeDescription(resultSet.getString("IdeDescription"));    	
+    	ideTreeStructure.setIdeDescription(resultSet.getString("IdeDescription"));
+    	ideTreeStructure.setInstitutionMeasurableObjectID(resultSet.getInt("InstitutionMeasurableObjectID"));
     	ideTreeStructure.setInstitutionID(resultSet.getInt("InstitutionID"));
     	ideTreeStructure.setInstitutionName(resultSet.getString("InstitutionName"));    	
     	ideTreeStructure.setInstitutionDescription(resultSet.getString("InstitutionDescription"));
+    	ideTreeStructure.setNodeMeasurableObjectID(resultSet.getInt("NodeMeasurableObjectID"));
     	ideTreeStructure.setNodeID(resultSet.getInt("NodeID"));
     	ideTreeStructure.setNodeName(resultSet.getString("NodeName"));
     	ideTreeStructure.setNodeDescription(resultSet.getString("NodeDescription"));

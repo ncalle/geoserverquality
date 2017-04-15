@@ -3491,13 +3491,15 @@ CREATE OR REPLACE FUNCTION ide_tree_structure_get
 )
 RETURNS TABLE 
    (
-      MeasurableObjectID INT
+      IdeMeasurableObjectID INT
       , IdeID INT
       , IdeName VARCHAR(40)
       , IdeDescription VARCHAR(100)
+      , InstitutionMeasurableObjectID INT
       , InstitutionID INT
       , InstitutionName VARCHAR(70)
       , InstitutionDescription VARCHAR(100)
+      , NodeMeasurableObjectID INT
       , NodeID INT
       , NodeName VARCHAR(70)
       , NodeDescription VARCHAR(100)
@@ -3522,13 +3524,15 @@ BEGIN
    -- Lista de objetos medibles
    RETURN QUERY
    SELECT 
-      mo.MeasurableObjectID
+      (SELECT moo.MeasurableObjectID FROM MeasurableObject moo WHERE moo.EntityType = 'Ide' AND moo.EntityID = ide.IdeID) AS IdeMeasurableObjectID
       , ide.IdeID
       , ide.Name AS IdeName
       , ide.Description AS IdeDescription
+      , (SELECT moo.MeasurableObjectID FROM MeasurableObject moo WHERE moo.EntityType = 'Institución' AND moo.EntityID = ins.InstitutionID) AS InstitutionMeasurableObjectID
       , ins.InstitutionID
       , ins.Name AS InstitutionName
       , ins.Description AS InstitutionDescription
+      , (SELECT moo.MeasurableObjectID FROM MeasurableObject moo WHERE moo.EntityType = 'Nodo' AND moo.EntityID = n.NodeID) AS NodeMeasurableObjectID      
       , n.NodeID
       , n.Name AS NodeName
       , n.Description AS NodeDescription

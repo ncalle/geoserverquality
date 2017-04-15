@@ -10,23 +10,25 @@ public class IdeTreeStructure implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer MeasurableObjectID;
+    private Integer IdeMeasurableObjectID;
     private Integer IdeID;
     private String IdeName;
     private String IdeDescription;
+    private Integer InstitutionMeasurableObjectID;
     private Integer InstitutionID;
     private String InstitutionName;
     private String InstitutionDescription;
+    private Integer NodeMeasurableObjectID;
     private Integer NodeID;
     private String NodeName;
     private String NodeDescription;
    
-	public Integer getMeasurableObjectID() {
-		return MeasurableObjectID;
+	public Integer getIdeMeasurableObjectID() {
+		return IdeMeasurableObjectID;
 	}
 
-	public void setMeasurableObjectID(Integer measurableObjectID) {
-		MeasurableObjectID = measurableObjectID;
+	public void setIdeMeasurableObjectID(Integer ideMeasurableObjectID) {
+		IdeMeasurableObjectID = ideMeasurableObjectID;
 	}
     
     public Integer getIdeID() {
@@ -52,6 +54,14 @@ public class IdeTreeStructure implements Serializable {
 	public void setIdeDescription(String ideDescription) {
 		IdeDescription = ideDescription;
 	}
+	
+	public Integer getInstitutionMeasurableObjectID() {
+		return InstitutionMeasurableObjectID;
+	}
+
+	public void setInstitutionMeasurableObjectID(Integer institutionMeasurableObjectID) {
+		InstitutionMeasurableObjectID = institutionMeasurableObjectID;
+	}
 
 	public Integer getInstitutionID() {
 		return InstitutionID;
@@ -75,6 +85,14 @@ public class IdeTreeStructure implements Serializable {
 
 	public void setInstitutionDescription(String institutionDescription) {
 		InstitutionDescription = institutionDescription;
+	}
+	
+	public Integer getNodeMeasurableObjectID() {
+		return NodeMeasurableObjectID;
+	}
+
+	public void setNodeMeasurableObjectID(Integer nodeMeasurableObjectID) {
+		NodeMeasurableObjectID = nodeMeasurableObjectID;
 	}
 
 	public Integer getNodeID() {
@@ -107,26 +125,30 @@ public class IdeTreeStructure implements Serializable {
 
 	@Override
     public boolean equals(Object other) {
-        return (other instanceof IdeTreeStructure) && (MeasurableObjectID != null)
+        return (other instanceof IdeTreeStructure) && (IdeMeasurableObjectID != null) && (InstitutionMeasurableObjectID != null) && (NodeMeasurableObjectID != null)
              ? (
-            		 MeasurableObjectID.equals(((IdeTreeStructure) other).MeasurableObjectID)
+            		 IdeMeasurableObjectID.equals(((IdeTreeStructure) other).IdeMeasurableObjectID)
+            		 && InstitutionMeasurableObjectID.equals(((IdeTreeStructure) other).InstitutionMeasurableObjectID)
+            		 && NodeMeasurableObjectID.equals(((IdeTreeStructure) other).NodeMeasurableObjectID)
             	)
              : (other == this);
     }
 
     @Override
     public int hashCode() {
-        return (MeasurableObjectID != null) 
+        return (IdeMeasurableObjectID != null) && (InstitutionMeasurableObjectID != null) && (NodeMeasurableObjectID != null)
              ? (
             		 this.getClass().hashCode() 
-            		 + MeasurableObjectID.hashCode()
+            		 + IdeMeasurableObjectID.hashCode()
+            		 + InstitutionMeasurableObjectID.hashCode()
+            		 + NodeMeasurableObjectID.hashCode()
             	) 
              : super.hashCode();
     }
     
     @Override
     public String toString() {
-        return String.format("QualityModel[%d, %d, %s, %s, %d, %s, %s, %d, %s, %s]",
-        MeasurableObjectID, IdeID, IdeName, IdeDescription, InstitutionID, InstitutionName, InstitutionDescription, NodeID, NodeName, NodeDescription);
+        return String.format("QualityModel[%d, %d, %s, %s, %d, %d, %s, %s, %d, %d, %s, %s]",
+        		IdeMeasurableObjectID, IdeID, IdeName, IdeDescription, InstitutionMeasurableObjectID, InstitutionID, InstitutionName, InstitutionDescription, NodeMeasurableObjectID, NodeID, NodeName, NodeDescription);
     }
 }

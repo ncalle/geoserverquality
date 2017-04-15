@@ -54,7 +54,7 @@
 		
 			<div class="ui-g">
 	    		<div class="ui-g-4">
-	    			<h:form>
+	    			<h:form id="idesTreeStructure">
 						<p:growl id="msgs" showDetail="true" escape="false"/>
 						
 					    <h2 class="form-signin-heading">Árbol de objetos medibles</h2>
@@ -66,7 +66,7 @@
 					    	selectionMode="single"
 		                	selection="#{measurableObjectBeanList.selectedNode}">
 		                	
-		                	<p:ajax event="select" listener="#{measurableObjectBeanList.onNodeSelect}" update=":measurableObjects" />
+		                	<p:ajax event="select" listener="#{measurableObjectBeanList.onNodeSelect}" update=":measurableObjects :treeStructureSelectedObject" />
 					        
 					        <p:treeNode>
 					            <h:outputText value="#{node}" />
@@ -78,6 +78,54 @@
 	    		
 				</div>
 	    		<div class="ui-g-8">
+
+	    			<h:form id="treeStructureSelectedObject" method="post">
+						<p:growl id="msgs" />
+						<h2 class="form-signin-heading">Objeto seleccionado</h2>
+						<hr></hr>
+						<p:dataTable id="stnDataTable"
+							value="#{measurableObjectBeanList.selectedTreeNode}" 
+							var="stn"
+							tableStyle="table-layout: auto;" 
+							rowKey="#{stn.getMeasurableObjectID()}" 
+							widgetVar="stnw" 
+							editable="true"
+							emptyMessage="No existe objecto medible o no ha sido seleccionado aun.">
+		
+							<p:column headerText="ID" sortBy="#{stn.getMeasurableObjectID()}">
+								<h:outputText value="#{stn.getMeasurableObjectID()}" />
+							</p:column>
+
+							<p:column headerText="Nombre" sortBy="#{stn.measurableObjectName}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{stn.measurableObjectName}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="NameInput" value="#{stn.measurableObjectName}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Descripción" sortBy="#{stn.measurableObjectDescription}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{stn.measurableObjectDescription}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="DescriptionInput" value="#{stn.measurableObjectDescription}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Acciones">
+								<p:rowEditor />
+							</p:column>
+
+						</p:dataTable>
+					</h:form>
+
+					<br></br>
 	    		
 	    			<h:form id="measurableObjects" method="post">
 						<p:growl id="msgs" />
@@ -118,16 +166,7 @@
 								</p:cellEditor>
 							</p:column>
 							<p:column headerText="Tipo" sortBy="#{moitem.entityType}">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{moitem.entityType}" />
-									</f:facet>
-									<f:facet name="input">
-										<h:selectOneMenu value="#{moitem.entityType}" style="width:100%">
-											<f:selectItem itemValue="Servicio" itemLabel="Servicio"/>
-										</h:selectOneMenu>
-									</f:facet>
-								</p:cellEditor>
+								<h:outputText value="#{moitem.entityType}" />
 							</p:column>
 							<p:column headerText="Tipo de Servicio" sortBy="#{moitem.measurableObjectServicesType}">
 								<p:cellEditor>

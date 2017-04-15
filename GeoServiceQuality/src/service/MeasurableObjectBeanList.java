@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -37,7 +36,12 @@ public class MeasurableObjectBeanList {
     
 	private TreeNode root;
 	private TreeNode selectedNode;
+	private MeasurableObject selectedTreeNode;
 	
+	private List <MeasurableObject> listIdeMO;
+	private List <MeasurableObject> listInstitutionMO;
+	private List <MeasurableObject> listNodeMO;
+
 	@EJB
     private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
 	private IdeTreeStructureBeanRemote ideTreeDao = new IdeTreeStructureBean();
@@ -82,6 +86,46 @@ public class MeasurableObjectBeanList {
     public TreeNode getRoot() {
         return root;
     }
+    
+	public MeasurableObject getSelectedTreeNode() {
+		return selectedTreeNode;
+	}
+
+	public void setSelectedTreeNode(MeasurableObject selectedTreeNode) {
+		this.selectedTreeNode = selectedTreeNode;
+	}
+	
+	public List<MeasurableObject> getListIdeMO() {
+		return listIdeMO;
+	}
+
+	public void setListIdeMO(List<MeasurableObject> listIdeMO) {
+		this.listIdeMO = listIdeMO;
+	}
+	
+	public List<IdeTreeStructure> getListIdeStructure() {
+		return listIdeStructure;
+	}
+
+	public void setListIdeStructure(List<IdeTreeStructure> listIdeStructure) {
+		this.listIdeStructure = listIdeStructure;
+	}
+
+	public List <MeasurableObject> getListInstitutionMO() {
+		return listInstitutionMO;
+	}
+
+	public void setListInstitutionMO(List <MeasurableObject> listInstitutionMO) {
+		this.listInstitutionMO = listInstitutionMO;
+	}
+
+	public List <MeasurableObject> getListNodeMO() {
+		return listNodeMO;
+	}
+
+	public void setListNodeMO(List <MeasurableObject> listNodeMO) {
+		this.listNodeMO = listNodeMO;
+	}
 	
     public void onRowSelect(SelectEvent event) {
     	//agregar codigo de ser necesario
@@ -113,25 +157,56 @@ public class MeasurableObjectBeanList {
         List <Integer> listInstitution = new ArrayList<>();
         List <Integer> listNode = new ArrayList<>();
         
+        listIdeMO = new ArrayList<>();
+        listInstitutionMO = new ArrayList<>();
+        listNodeMO = new ArrayList<>();
+        
         if (listIdeStructure != null){
         	System.out.println("TREE: " + listIdeStructure);
         				
-			for (IdeTreeStructure ides : listIdeStructure) {
-				if ((!listIde.contains(ides.getIdeID()))){
-					listIde.add(ides.getIdeID());
-					TreeNode ide = new DefaultTreeNode(ides.getIdeName(), root);
+			for (IdeTreeStructure ide : listIdeStructure) {
+				if ((!listIde.contains(ide.getIdeID()))){
+					listIde.add(ide.getIdeID());
 					
-					for (IdeTreeStructure institutions : listIdeStructure) {
-						if ((!listInstitution.contains(institutions.getInstitutionID()))
-								&& ides.getIdeID() == institutions.getIdeID()) {
-							listInstitution.add(institutions.getInstitutionID());
-							TreeNode institution = new DefaultTreeNode(institutions.getInstitutionName(), ide);
+					MeasurableObject ideMO = new MeasurableObject();
+					ideMO.setEntityType("Ide");
+					ideMO.setEntityID(ide.getIdeID());
+					ideMO.setMeasurableObjectID(ide.getIdeMeasurableObjectID());
+					ideMO.setMeasurableObjectName(ide.getIdeName());
+					ideMO.setMeasurableObjectDescription(ide.getIdeDescription());
+					listIdeMO.add(ideMO);
+					
+					TreeNode tIde = new DefaultTreeNode(ide.getIdeName(), root);
+					
+					for (IdeTreeStructure institution : listIdeStructure) {
+						if ((!listInstitution.contains(institution.getInstitutionID()))
+								&& ide.getIdeID() == institution.getIdeID()) {
+							listInstitution.add(institution.getInstitutionID());
 							
-							for (IdeTreeStructure nodes : listIdeStructure) {
-								if ((!listNode.contains(nodes.getNodeID()))
-										&& institutions.getInstitutionID() == nodes.getInstitutionID()) {
-									listNode.add(nodes.getNodeID());
-									TreeNode node = new DefaultTreeNode(nodes.getNodeName(), institution);
+							MeasurableObject institutionMO = new MeasurableObject();
+							institutionMO.setEntityType("Institución");
+							institutionMO.setEntityID(institution.getInstitutionID());
+							institutionMO.setMeasurableObjectID(institution.getInstitutionMeasurableObjectID());
+							institutionMO.setMeasurableObjectName(institution.getInstitutionName());
+							institutionMO.setMeasurableObjectDescription(institution.getInstitutionDescription());
+							listInstitutionMO.add(institutionMO);
+							
+							TreeNode tInstitution = new DefaultTreeNode(institution.getInstitutionName(), tIde);
+							
+							for (IdeTreeStructure node : listIdeStructure) {
+								if ((!listNode.contains(node.getNodeID()))
+										&& institution.getInstitutionID() == node.getInstitutionID()) {
+									listNode.add(node.getNodeID());
+									
+									MeasurableObject nodeMO = new MeasurableObject();
+									nodeMO.setEntityType("Nodo");
+									nodeMO.setEntityID(node.getNodeID());
+									nodeMO.setMeasurableObjectID(node.getNodeMeasurableObjectID());
+									nodeMO.setMeasurableObjectName(node.getNodeName());
+									nodeMO.setMeasurableObjectDescription(node.getNodeDescription());
+									listNodeMO.add(nodeMO);
+									
+									TreeNode tNode = new DefaultTreeNode(node.getNodeName(), tInstitution);
 								}
 							}
 						}
@@ -145,28 +220,47 @@ public class MeasurableObjectBeanList {
     	if (selectedNode != null && selectedNode.getRowKey() != null) {
         	String rowKey = selectedNode.getRowKey();
         	Integer numberOfUnderscore = rowKey.length() - rowKey.replace("_", "").length();
+        	MeasurableObject element;
         	
     		switch (numberOfUnderscore) {
 			case 0:
 				listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Ide");
+
+				Iterator<MeasurableObject> ideItr = listIdeMO.iterator();
+				while(ideItr.hasNext()) {
+					element = ideItr.next();
+					if (element.getMeasurableObjectName().equals(selectedNode.getData())){
+						selectedTreeNode = element;						
+					}
+				}
 				break;
 			case 1:
 				listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Institución");
+				
+				Iterator<MeasurableObject> instItr = listInstitutionMO.iterator();
+
+				while(instItr.hasNext()) {
+					element = instItr.next();
+					if (element.getMeasurableObjectName().equals(selectedNode.getData())){
+						selectedTreeNode = element;						
+					}
+				}
 				break;
-			case 2:
+			case 2:			
 				listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Nodo");
+				
+				Iterator<MeasurableObject> nodeItr = listNodeMO.iterator();
+
+				while(nodeItr.hasNext()) {
+					element = nodeItr.next();
+					if (element.getMeasurableObjectName().equals(selectedNode.getData())){
+						selectedTreeNode = element;						
+					}
+				}
 				break;
 			default:
 				break;
 			}
     	}    	    	
     }
-
-	public List<IdeTreeStructure> getListIdeStructure() {
-		return listIdeStructure;
-	}
-
-	public void setListIdeStructure(List<IdeTreeStructure> listIdeStructure) {
-		this.listIdeStructure = listIdeStructure;
-	}
 }
