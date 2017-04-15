@@ -526,9 +526,41 @@ INSERT INTO MetricRange (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValu
 (4, 3, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL), -- perfil capa basico
 (13, 3, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL);
 
---INSERT INTO Layer (NodeID, Name, Url) VALUES
---(1, 'Capa de calles', 'http://CapaCalles1.1.1.1'),
---(2, 'Capa edificios', 'http://CapaEdificios1.1.1.2');
+INSERT INTO Layer (NodeID, Name, Url, Description) VALUES
+--UNASEV
+(3, '0', 'http://gissrv.unasev.gub.uy/arcgis/services/UNASEV/srvUNASEVWFS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''), 
+--Servicio G. Militar
+(4, 'ESTACIONAMIENTO_AQ140-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'ISLA_ISLOTE_BA030-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'LAGUNA_LAGO_BH080-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'PLACA_GIRATORIA_AN075-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''), 
+(4, 'PLAZA_AL170-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''), 
+(4, 'PRADERA-CHILCAL_EB015-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'PUENTE_A-AQ040-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''), 
+(4, 'REPRESA_A-BI020-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'PLANTA_PROCESAMIENTO-AC000-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''), 
+(4, 'RIO_ARROYO_A-BH140_PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'SILO-AM020_PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''), 
+(4, 'VEGETACION_MIXTA_EE000-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'CONSTRUCCION_AL015-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''), 
+(4, 'CANTERO_AL117-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'CANAL_L-BH020-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'CERCO_ALAMBRADA_AL070-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''), 
+(4, 'HUELLA_SENDA_AP010-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'BARRANCA_DB010-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''), 
+(4, 'VIAFERREA_AN010-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'PASO_BH070-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''), 
+(4, 'RIO_ARROYO_L-BH140-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'TERRAPLEN-DB090-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'ALCANTARILLA_L-AQ065-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''), 
+(4, 'CAMINOS_AP030-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(4, 'CURVA_NIVEL_CA010-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+--RENARE;
+(8, '0', 'http://web.renare.gub.uy/arcgis/services/SUELOS/MOSAICO_FOTOPLANOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(8, '0', 'http://web.renare.gub.uy/arcgis/services/TEMATICOS/IntConeat/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(8, '0', 'http://web.renare.gub.uy/arcgis/services/SUELOS/SUELOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', 'Departamentos'),
+(8, '1', 'http://web.renare.gub.uy/arcgis/services/SUELOS/SUELOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', 'Relieve'),
+(8, '2', 'http://web.renare.gub.uy/arcgis/services/SUELOS/SUELOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', 'Carta de Suelos 1 millon');
 
 --ide.uy/Presidencia de la República/Unidad de Seguridad Vial
    --http://aplicaciones.unasev.gub.uy/mapas/Descarga/Descarga
