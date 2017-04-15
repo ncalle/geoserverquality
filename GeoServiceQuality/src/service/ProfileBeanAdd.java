@@ -107,9 +107,15 @@ public class ProfileBeanAdd {
 	
 	public void filter(String granularitySelected) {
 		System.out.println("filter.." + granularitySelected);
+		
+		String granularityFilter = "Servicio";
+		if(granularitySelected.equalsIgnoreCase("Capa")){
+			granularityFilter = "Capa";
+		} 
+		
 		List<Metric> list = new ArrayList<>();
 	    for(Metric m:listMetrics){
-			if(m.getGranurality().equals(granularitySelected)){
+			if(m.getGranurality().equals(granularityFilter)){
 				list.add(m);
 			}
 		}
