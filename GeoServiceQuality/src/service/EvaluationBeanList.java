@@ -17,11 +17,15 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 
 import EvaluationCore.App;
 import entity.Evaluation;
 import entity.EvaluationSummary;
+import entity.IdeTreeStructure;
 import entity.MeasurableObject;
 import entity.Profile;
 import entity.ProfileMetric;
@@ -30,12 +34,15 @@ import dao.EvaluationBean;
 import dao.EvaluationBeanRemote;
 import dao.EvaluationSummaryBean;
 import dao.EvaluationSummaryBeanRemote;
+import dao.IdeTreeStructureBean;
+import dao.IdeTreeStructureBeanRemote;
 import dao.MeasurableObjectBean;
 import dao.MeasurableObjectBeanRemote;
 import dao.ProfileBean;
 import dao.ProfileBeanRemote;
 import dao.ProfileMetricBean;
 import dao.ProfileMetricBeanRemote;
+
 
 @ManagedBean(name = "evaluationBeanList")
 @ViewScoped
@@ -44,7 +51,6 @@ public class EvaluationBeanList {
 	private List<Evaluation> listEvaluation;
 	private List<Profile> listProfile;
 	private Profile selectedProfile;
-	private List<MeasurableObject> listMeasurableObjects;
 	private List<MeasurableObject> listMeasurableObjectsToShow;
 	private MeasurableObject selectedMeasurableObject;
 	private List<ProfileMetric> listProfileMetric;
@@ -52,6 +58,17 @@ public class EvaluationBeanList {
 	private String profileResult;
 	private boolean showResult, showConfirm;
 	Map<Integer, Boolean> resultMap = new HashMap<>();
+	
+	private List<IdeTreeStructure> listIdeStructure;
+	private List<MeasurableObject> listObjects;
+	
+	private TreeNode root;
+	private TreeNode selectedNode;
+	private MeasurableObject selectedTreeNode;
+	
+	private List <MeasurableObject> listIdeMO;
+	private List <MeasurableObject> listInstitutionMO;
+	private List <MeasurableObject> listNodeMO;
 
 	@EJB
 	private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
@@ -59,14 +76,13 @@ public class EvaluationBeanList {
 	private EvaluationSummaryBeanRemote evaluationSummaryDao = new EvaluationSummaryBean();
 	private ProfileBeanRemote profileDao = new ProfileBean();
 	private ProfileMetricBeanRemote pmDao = new ProfileMetricBean();
-
+	private IdeTreeStructureBeanRemote ideTreeDao = new IdeTreeStructureBean();
 	
 	@PostConstruct
 	private void init() {
 		try {
-			listProfile = profileDao.list();
-			listMeasurableObjects = moDao.list();
-			listMeasurableObjectsToShow = listMeasurableObjects; //guarda una copia de la lista de objetos medibles original
+			listProfile = profileDao.list();		
+			
 			listEvaluation = new ArrayList<>(); 
 			showResult = false;
 			resultMap =  new HashMap<Integer, Boolean>();
@@ -75,6 +91,9 @@ public class EvaluationBeanList {
 			HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 			HttpSession appsession = request.getSession(true);
 			userId = (Integer) appsession.getAttribute("userId");
+
+			listIdeStructure = ideTreeDao.list(userId);
+            createTree();	
 			
 		} catch (DAOException e) {
 			e.printStackTrace();
@@ -121,16 +140,6 @@ public class EvaluationBeanList {
 	public void setListEvaluation(List<Evaluation> listEvaluation) {
 		this.listEvaluation = listEvaluation;
 	}
-
-
-	public List<MeasurableObject> getListMeasurableObjects() {
-		return listMeasurableObjects;
-	}
-
-
-	public void setListMeasurableObjects(List<MeasurableObject> listMeasurableObjects) {
-		this.listMeasurableObjects = listMeasurableObjects;
-	}
 	
 	public List<MeasurableObject> getListMeasurableObjectsToShow() {
 		return listMeasurableObjectsToShow;
@@ -159,17 +168,32 @@ public class EvaluationBeanList {
 		this.listProfileMetric = listProfileMetric;
 	}
 	
+	public MeasurableObject getSelectedTreeNode() {
+		return selectedTreeNode;
+	}
 
-	public void onRowSelect(SelectEvent event) {
-		listProfileMetric = pmDao.profileMetricList(selectedProfile, null);
+	public void setSelectedTreeNode(MeasurableObject selectedTreeNode) {
+		this.selectedTreeNode = selectedTreeNode;
+	}	
+	
+	public List<MeasurableObject> getListObjects() {
+		return listObjects;
+	}
+	
+	public void setListObjects(List<MeasurableObject> listObjects) {
+		this.listObjects = listObjects;
 	}
 	
 	public void onRowSelectProfile(SelectEvent event) {
 		List<MeasurableObject> list = new ArrayList<>();
 		
-		for(MeasurableObject mo : listMeasurableObjects){
-			if(mo.getEntityType().equals(selectedProfile.getGranurality())) {
-				list.add(mo);
+		listProfileMetric = pmDao.profileMetricList(selectedProfile, null);
+		
+		if (listObjects != null){
+			for(MeasurableObject mo : listObjects){
+				if(mo.getEntityType().equals(selectedProfile.getGranurality())) {
+					list.add(mo);
+				}
 			}
 		}
 		listMeasurableObjectsToShow = list;
@@ -199,7 +223,176 @@ public class EvaluationBeanList {
 		this.showConfirm = show;
 	}
 	
+    public TreeNode getRoot() {
+        return root;
+    }
+    
+	public List<MeasurableObject> getListIdeMO() {
+		return listIdeMO;
+	}
+
+	public void setListIdeMO(List<MeasurableObject> listIdeMO) {
+		this.listIdeMO = listIdeMO;
+	}
 	
+	public List<IdeTreeStructure> getListIdeStructure() {
+		return listIdeStructure;
+	}
+
+	public void setListIdeStructure(List<IdeTreeStructure> listIdeStructure) {
+		this.listIdeStructure = listIdeStructure;
+	}
+
+	public List <MeasurableObject> getListInstitutionMO() {
+		return listInstitutionMO;
+	}
+
+	public void setListInstitutionMO(List <MeasurableObject> listInstitutionMO) {
+		this.listInstitutionMO = listInstitutionMO;
+	}
+
+	public List <MeasurableObject> getListNodeMO() {
+		return listNodeMO;
+	}
+
+	public void setListNodeMO(List <MeasurableObject> listNodeMO) {
+		this.listNodeMO = listNodeMO;
+	}
+	
+    public TreeNode getSelectedNode() {
+        return selectedNode;
+    }
+ 
+    public void setSelectedNode(TreeNode selectedNode) {
+        this.selectedNode = selectedNode;
+    }
+    
+	public void createTree(){
+        root = new DefaultTreeNode("Ides", null);
+        List <Integer> listIde = new ArrayList<>();
+        List <Integer> listInstitution = new ArrayList<>();
+        List <Integer> listNode = new ArrayList<>();
+        
+        listIdeMO = new ArrayList<>();
+        listInstitutionMO = new ArrayList<>();
+        listNodeMO = new ArrayList<>();
+        
+        if (listIdeStructure != null){
+        	System.out.println("TREE: " + listIdeStructure);
+        				
+			for (IdeTreeStructure ide : listIdeStructure) {
+				if ((!listIde.contains(ide.getIdeID()))){
+					listIde.add(ide.getIdeID());
+					
+					MeasurableObject ideMO = new MeasurableObject();
+					ideMO.setEntityType("Ide");
+					ideMO.setEntityID(ide.getIdeID());
+					ideMO.setMeasurableObjectID(ide.getIdeMeasurableObjectID());
+					ideMO.setMeasurableObjectName(ide.getIdeName());
+					ideMO.setMeasurableObjectDescription(ide.getIdeDescription());
+					listIdeMO.add(ideMO);
+					
+					TreeNode tIde = new DefaultTreeNode(ide.getIdeName(), root);
+					
+					for (IdeTreeStructure institution : listIdeStructure) {
+						if ((!listInstitution.contains(institution.getInstitutionID()))
+								&& ide.getIdeID() == institution.getIdeID()) {
+							listInstitution.add(institution.getInstitutionID());
+							
+							MeasurableObject institutionMO = new MeasurableObject();
+							institutionMO.setEntityType("Institución");
+							institutionMO.setEntityID(institution.getInstitutionID());
+							institutionMO.setMeasurableObjectID(institution.getInstitutionMeasurableObjectID());
+							institutionMO.setMeasurableObjectName(institution.getInstitutionName());
+							institutionMO.setMeasurableObjectDescription(institution.getInstitutionDescription());
+							listInstitutionMO.add(institutionMO);
+							
+							TreeNode tInstitution = new DefaultTreeNode(institution.getInstitutionName(), tIde);
+							
+							for (IdeTreeStructure node : listIdeStructure) {
+								if ((!listNode.contains(node.getNodeID()))
+										&& institution.getInstitutionID() == node.getInstitutionID()) {
+									listNode.add(node.getNodeID());
+									
+									MeasurableObject nodeMO = new MeasurableObject();
+									nodeMO.setEntityType("Nodo");
+									nodeMO.setEntityID(node.getNodeID());
+									nodeMO.setMeasurableObjectID(node.getNodeMeasurableObjectID());
+									nodeMO.setMeasurableObjectName(node.getNodeName());
+									nodeMO.setMeasurableObjectDescription(node.getNodeDescription());
+									listNodeMO.add(nodeMO);
+									
+									TreeNode tNode = new DefaultTreeNode(node.getNodeName(), tInstitution);
+								}
+							}
+						}
+					}						
+				}
+			}
+        }
+	}
+	
+    public void onNodeSelect(NodeSelectEvent event) {
+    	selectedMeasurableObject = null;
+    	
+    	if (selectedProfile != null){
+        	if (selectedNode != null && selectedNode.getRowKey() != null) {
+            	String rowKey = selectedNode.getRowKey();
+            	Integer numberOfUnderscore = rowKey.length() - rowKey.replace("_", "").length();
+            	MeasurableObject element;
+            	
+        		switch (numberOfUnderscore) {
+    			case 0:
+    				listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Ide");
+
+    				Iterator<MeasurableObject> ideItr = listIdeMO.iterator();
+    				while(ideItr.hasNext()) {
+    					element = ideItr.next();
+    					if (element.getMeasurableObjectName().equals(selectedNode.getData())){
+    						selectedTreeNode = element;						
+    					}
+    				}
+    				break;
+    			case 1:
+    				listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Institución");
+    				
+    				Iterator<MeasurableObject> instItr = listInstitutionMO.iterator();
+
+    				while(instItr.hasNext()) {
+    					element = instItr.next();
+    					if (element.getMeasurableObjectName().equals(selectedNode.getData())){
+    						selectedTreeNode = element;						
+    					}
+    				}
+    				break;
+    			case 2:			
+    				listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Nodo");
+    				
+    				Iterator<MeasurableObject> nodeItr = listNodeMO.iterator();
+
+    				while(nodeItr.hasNext()) {
+    					element = nodeItr.next();
+    					if (element.getMeasurableObjectName().equals(selectedNode.getData())){
+    						selectedTreeNode = element;						
+    					}
+    				}
+    				break;
+    			default:
+    				break;
+    			}
+        		
+        		List<MeasurableObject> list = new ArrayList<>();
+        		
+        		for(MeasurableObject mo : listObjects){
+        			if(mo.getEntityType().equals(selectedProfile.getGranurality())) {
+        				list.add(mo);
+        			}
+        		}
+        		listMeasurableObjectsToShow = list;
+        	}
+    	}    	    	
+    }
+
 
 	public void evaluate() throws DAOException {
 		
