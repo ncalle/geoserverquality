@@ -75,7 +75,7 @@
 							widgetVar="p"
 							emptyMessage="No existen perfiles.">
 									
-							<p:ajax event="rowSelectRadio" listener="#{evaluationBeanList.onRowSelectProfile}" update=":profileMetrics:profileMetrics :evobject:measurableObjects"/>
+							<p:ajax event="rowSelectRadio" listener="#{evaluationBeanList.onRowSelectProfile}" update=":profileMetrics:profileMetrics :evobject:measurableObjects :treeStructureSelectedObject:stnDataTable :evobject:measurableObjects"/>
 		
 							<p:column selectionMode="single"
 								style="width:40px; text-align:center" />
@@ -157,13 +157,16 @@
 	    			<h:form id="treeStructureSelectedObject" method="post" rendered="#{!evaluationBeanList.isShowResult()}">
 						<p:growl id="msgs" />
 						<h4 class="form-signin-heading">IDE/Institución/Nodo</h4>
-						<p:dataTable id="stnDataTable"
+						<p:dataTable id="stnDataTable" 
 							value="#{evaluationBeanList.selectedTreeNode}" 
 							var="stn"
 							tableStyle="table-layout: auto;" 
 							rowKey="#{stn.getMeasurableObjectID()}" 
 							widgetVar="stnw" 
-							emptyMessage="No existe objecto medible o no ha seleccionado un perfil y/o un objeto del árbol.">		
+							emptyMessage="No existe objecto medible o no ha seleccionado un perfil y/o un objeto del árbol.">	
+		
+							<p:column selectionMode="single"
+								style="width:40px; text-align:center" rendered="#{evaluationBeanList.profileGranularity=='High'}" />	
 		
 							<p:column headerText="ID" sortBy="#{stn.getMeasurableObjectID()}">
 								<h:outputText value="#{stn.getMeasurableObjectID()}" />
@@ -179,7 +182,7 @@
 
 						</p:dataTable>
 						<br></br>
-					</h:form>	
+					</h:form>
 		
 					<h:form id="evobject" method="post" rendered="#{!evaluationBeanList.isShowResult()}">
 						<p:growl id="msgs" />
@@ -198,11 +201,9 @@
 							rowsPerPageTemplate="10,25,50"					
 							widgetVar="mo"
 							emptyMessage="No existe objecto medible o no ha seleccionado un perfil y/o un objeto del árbol.">
-							
-		       				<p:ajax event="rowSelectRadio" listener="#{evaluationBeanList.onRowSelect}" />
-		
+						    		
 							<p:column selectionMode="single"
-								style="width:40px; text-align:center" />
+								style="width:40px; text-align:center" rendered="#{evaluationBeanList.profileGranularity=='Low'}" />
 		
 							<p:column headerText="ID" sortBy="#{moitem.measurableObjectID}">
 								<h:outputText value="#{moitem.measurableObjectID}" />

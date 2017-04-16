@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -65,6 +66,7 @@ public class EvaluationBeanList {
 	private TreeNode root;
 	private TreeNode selectedNode;
 	private MeasurableObject selectedTreeNode;
+	private String profileGranularity;
 	
 	private List <MeasurableObject> listIdeMO;
 	private List <MeasurableObject> listInstitutionMO;
@@ -184,6 +186,14 @@ public class EvaluationBeanList {
 		this.listObjects = listObjects;
 	}
 	
+	public String getProfileGranularity() {
+		return profileGranularity;
+	}
+
+	public void setProfileGranularity(String profileGranularity) {
+		this.profileGranularity = profileGranularity;
+	}
+	
 	public void onRowSelectProfile(SelectEvent event) {
 		List<MeasurableObject> list = new ArrayList<>();
 		
@@ -197,6 +207,14 @@ public class EvaluationBeanList {
 			}
 		}
 		listMeasurableObjectsToShow = list;
+		
+		if (selectedProfile.getGranurality().equals("Servicio") || selectedProfile.getGranurality().equals("Capa")){
+			profileGranularity = "Low";
+		}
+		else{
+			profileGranularity = "High";
+		}
+		System.out.println("profileGranularity: " + profileGranularity);
 	}
 	
 	public void setProfileResult(String profileResult) {
