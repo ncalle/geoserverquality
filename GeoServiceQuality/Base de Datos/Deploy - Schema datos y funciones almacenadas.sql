@@ -3661,7 +3661,7 @@ BEGIN
       , l.Name AS MeasurableObjectName
       , l.Description AS MeasurableObjectDescription
       , l.Url AS MeasurableObjectURL
-      , NULL ::CHAR(3) AS MeasurableObjectServicesType
+      , 'WMS' ::CHAR(3) AS MeasurableObjectServicesType
    FROM Ide ide
    INNER JOIN Institution i ON i.IdeID = ide.IdeID
    INNER JOIN Node n ON n.InstitutionID = i.InstitutionID
