@@ -17,7 +17,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -159,7 +158,6 @@ public class EvaluationBeanList {
 	public void setSelectedMeasurableObject(MeasurableObject selectedMeasurableObject) {
 		this.selectedMeasurableObject = selectedMeasurableObject;
 	}
-
 
 	public List<ProfileMetric> getListProfileMetric() {
 		return listProfileMetric;
@@ -414,8 +412,8 @@ public class EvaluationBeanList {
 
 	public void evaluate() throws DAOException {
 		
-		if (selectedMeasurableObject != null && selectedProfile != null) {
-		
+		if ((selectedMeasurableObject != null || selectedTreeNode != null) && selectedProfile != null) {
+			
 			Date date = new Date(Calendar.getInstance().getTime().getTime());
 			List<Boolean> listResult = new ArrayList<>();
 			listEvaluation = new ArrayList<>();
@@ -442,34 +440,44 @@ public class EvaluationBeanList {
 		
 
 			boolean success = false;
-			int acceptanceValue = 0;
+			
 			try {
 				
-				for (ProfileMetric metric : listProfileMetric) {
-					int metricId = metric.getMetricID();
+				List<MeasurableObject> listMO = new ArrayList<>();
+				
+				if(selectedTreeNode != null && selectedTreeNode.getEntityType().equals("Nodo")){
 					
-					if(metric.getMetricManual()) {
-						success = resultMap.get(metric.getMetricID());
-					} else {
-						acceptanceValue = metric.getUnitID()==2? metric.getPercentageAcceptanceValue(): metric.getIntegerAcceptanceValue();
-						success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getMeasurableObjectServicesType(), acceptanceValue, selectedMeasurableObject.getMeasurableObjectName());
+					for (MeasurableObject obj : listObjects) {
+						if(obj.getEntityType().equals("Servicio")){
+							listMO.add(obj);
+						}
+						
 					}
-					listResult.add(success);
-					System.out.println("MetricId: " + metricId + " Success: " + success + " ServiceType: " + selectedMeasurableObject.getMeasurableObjectServicesType() + " MO:" + selectedMeasurableObject.getMeasurableObjectURL() + " Name:" + selectedMeasurableObject.getMeasurableObjectName());
 					
-					Evaluation e = new Evaluation();
+				} else {
+					listMO.add(selectedMeasurableObject);
+				}
+				
+				
+				for (MeasurableObject moItem : listMO) {
 					
-					e.setMetricID(metricId);
-					e.setSuccess(success);
-					e.setIsEvaluationCompleted(true);
-					e.setEvaluationCount(1);
-					e.setEvaluationApprovedValue(success?1:0);
-					e.setStartDate(date);
-					e.setEndDate(date);
-					e.setMetricName(metric.getMetricName());
-					e.setQualityModelName(metric.getQualityModelName());
-					e.setProfileName(selectedProfile.getName());
-					listEvaluation.add(e);
+					for (ProfileMetric metric : listProfileMetric) {
+						success = evaluationMetric(metric, moItem);
+						listResult.add(success);
+						
+						Evaluation e = new Evaluation();
+						e.setMetricID(metric.getMetricID());
+						e.setSuccess(success);
+						e.setIsEvaluationCompleted(true);
+						e.setEvaluationCount(1);
+						e.setEvaluationApprovedValue(success?1:0);
+						e.setStartDate(date);
+						e.setEndDate(date);
+						e.setMetricName(metric.getMetricName());
+						e.setQualityModelName(metric.getQualityModelName());
+						e.setProfileName(selectedProfile.getName());
+						listEvaluation.add(e);
+					}
 				}
 				
 				
@@ -487,7 +495,7 @@ public class EvaluationBeanList {
 				
 				es.setUserID(userId);
 				es.setProfileID(selectedProfile.getProfileId());
-				es.setMeasurableObjectID(selectedMeasurableObject.getMeasurableObjectID());
+				es.setMeasurableObjectID(selectedMeasurableObject!=null?selectedMeasurableObject.getMeasurableObjectID():selectedTreeNode.getMeasurableObjectID());
 				es.setSuccess(evaluationSummaryResultTotal);
 				es.setSuccessPercentage(profileResultTotal);
 				
@@ -518,9 +526,25 @@ public class EvaluationBeanList {
 
 		} else {
 			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage(null, new FacesMessage("Error al realizar la evaluación"));
+			context.addMessage(null, new FacesMessage("Falto seleccionar un perfil o un objeto a evaluar"));
 		}
 
+	}
+	
+	public boolean evaluationMetric(ProfileMetric metric, MeasurableObject selectedMeasurableObject){
+		Boolean success = false;
+		int metricId = metric.getMetricID();
+		int acceptanceValue = 0;
+		
+		if(metric.getMetricManual()) {
+			success = resultMap.get(metric.getMetricID());
+		} else {
+			acceptanceValue = metric.getUnitID()==2? metric.getPercentageAcceptanceValue(): metric.getIntegerAcceptanceValue();
+			success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getMeasurableObjectServicesType(), acceptanceValue, selectedMeasurableObject.getMeasurableObjectName());
+		}
+		
+		System.out.println("MetricId: " + metricId + " Success: " + success + " ServiceType: " + selectedMeasurableObject.getMeasurableObjectServicesType() + " MO:" + selectedMeasurableObject.getMeasurableObjectURL() + " Name:" + selectedMeasurableObject.getMeasurableObjectName());
+		return success;
 	}
 	
 	public int resultEvaluationProfile(List<Boolean> listResult) {
