@@ -512,7 +512,8 @@ INSERT INTO Node (InstitutionID, Name, Description) VALUES
 INSERT INTO Profile (Name, Granurality, IsWeightedFlag) VALUES
 ('Perfil Servicio Básico', 'Servicio', FALSE),
 ('Perfil Servicio Avanzado', 'Servicio', FALSE),
-('Perfil Capa Basico', 'Capa', FALSE);
+('Perfil Capa Basico', 'Capa', FALSE),
+('Perfil Nodo Basico', 'Nodo', FALSE);
 
 INSERT INTO MetricRange (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue) VALUES
 (1, 1, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL), -- perfil servicio basico
@@ -524,7 +525,12 @@ INSERT INTO MetricRange (MetricID, ProfileID, BooleanFlag, BooleanAcceptanceValu
 (11, 2, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL),
 (15, 2, FALSE, NULL, TRUE, 50, FALSE, NULL, FALSE, NULL),
 (4, 3, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL), -- perfil capa basico
-(13, 3, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL);
+(13, 3, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
+(1, 4, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL), -- perfil nodo basico
+(2, 4, TRUE, TRUE, FALSE, NULL, FALSE, NULL, FALSE, NULL),
+(3, 4, FALSE, NULL, TRUE, 20, FALSE, NULL, FALSE, NULL),
+(10, 4, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL),
+(11, 4, FALSE, NULL, FALSE, NULL, TRUE, 1, FALSE, NULL);
 
 INSERT INTO Layer (NodeID, Name, Url, Description) VALUES
 --UNASEV
