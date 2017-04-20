@@ -32,7 +32,8 @@ import net.opengis.wfs.v_1_1_0.WFSCapabilitiesType;
 public final class App {
 
 	//static String URL = "http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/wms?service=WMS&version=1.3.0&request=GetCapabilities";
-	static String URL = "http://geoservicios.mtop.gub.uy/geoserver/mb_pap/wms?service=WMS&version=1.3.0&request=GetCapabilities";
+	static String URL = "http://gissrv.unasev.gub.uy/arcgis/services/UNASEV/srvUNASEVWFS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities";
+	//static String URL = "http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities";
 	
 	static int TIMEOUT_SERVICE = 18000;
 	
@@ -44,29 +45,29 @@ public final class App {
         
         ejecuteMetric(1, URL, serviceType, 0, "");
         
-        ejecuteMetric(2, URL, serviceType, 0, "");
-        
-        ejecuteMetric(3, URL, serviceType, 0, "");
-        
-        ejecuteMetric(4, URL, serviceType, 0, "");
-        
-        ejecuteMetric(5, URL, serviceType, 0, "");
-        
-        ejecuteMetric(6, URL, serviceType, 0, "");
-        
-        ejecuteMetric(7, URL, serviceType, 0, "");
-        
-        ejecuteMetric(8, URL, serviceType, 0, "");
-        
-        ejecuteMetric(9, URL, serviceType, 0, "");
-        
-        ejecuteMetric(10, URL, serviceType, 1, "");
-        
-        ejecuteMetric(11, URL, serviceType, 1, "");
-        
-        ejecuteMetric(12, URL, serviceType, 0, "");
-        
-        ejecuteMetric(13, URL, serviceType, 0, "Puerto_Aguas_Prof_Pyramid");
+//        ejecuteMetric(2, URL, serviceType, 0, "");
+//        
+//        ejecuteMetric(3, URL, serviceType, 0, "");
+//        
+//        ejecuteMetric(4, URL, serviceType, 0, "");
+//        
+//        ejecuteMetric(5, URL, serviceType, 0, "");
+//        
+//        ejecuteMetric(6, URL, serviceType, 0, "");
+//        
+//        ejecuteMetric(7, URL, serviceType, 0, "");
+//        
+//        ejecuteMetric(8, URL, serviceType, 0, "");
+//        
+//        ejecuteMetric(9, URL, serviceType, 0, "");
+//        
+//        ejecuteMetric(10, URL, serviceType, 1, "");
+//        
+//        ejecuteMetric(11, URL, serviceType, 1, "");
+//        
+//        ejecuteMetric(12, URL, serviceType, 0, "");
+//        
+//        ejecuteMetric(13, URL, serviceType, 0, "Puerto_Aguas_Prof_Pyramid");
         
     }
     
@@ -164,7 +165,7 @@ public final class App {
    			// Use the created JAXB context to construct an unmarshaller
    			return context.createUnmarshaller();
    			
-   		} catch (JAXBException e) {
+   		} catch (Exception e) {
   			e.printStackTrace();
   			return null;
   		}
@@ -181,6 +182,9 @@ public final class App {
    			return context.createUnmarshaller();
    			
    		} catch (JAXBException e) {
+  			e.printStackTrace();
+  			return null;
+   		} catch (Exception e) {
   			e.printStackTrace();
   			return null;
   		}
@@ -212,7 +216,7 @@ public final class App {
    			// Use the created JAXB context to construct an unmarshaller
    			return context.createUnmarshaller();
    			
-   		} catch (JAXBException e) {
+   		} catch (Exception e) {
   			e.printStackTrace();
   			return null;
   		}
@@ -242,7 +246,7 @@ public final class App {
        			WMSCapabilities wmsCapabilities = wmsCapabilitiesElement.getValue();
        			Capability c = wmsCapabilities.getCapability();
        			
-       			if(c.isSetException()){
+       			if(c!=null && c.isSetException()){
        				List<String> list = c.getException().getFormat();
        				for (int i = 0; i < list.size(); i++) {
        					
@@ -266,8 +270,8 @@ public final class App {
        			return false;
        		}*/
    			
-   		} catch (JAXBException e) {
-   			e.printStackTrace();
+   		} catch (Exception ex) {
+   			ex.printStackTrace();
    		}
        	return res;
     }
@@ -304,9 +308,9 @@ public final class App {
        			}
        		}
    			
-   		} catch (JAXBException e) {
-   			e.printStackTrace();
-   		}
+   		} catch (Exception e) {
+  			e.printStackTrace();
+  		}
        	return res;
     }
     
@@ -343,9 +347,9 @@ public final class App {
        			}
        		}
    			
-   		} catch (JAXBException e) {
-   			e.printStackTrace();
-   		}
+   		} catch (Exception e) {
+  			e.printStackTrace();
+  		}
        	return res;
     }
     
@@ -376,9 +380,9 @@ public final class App {
        			}
        		}
    			
-   		} catch (JAXBException e) {
-   			e.printStackTrace();
-   		}
+   		} catch (Exception e) {
+  			e.printStackTrace();
+  		}
        	return res;
     }
     
@@ -413,9 +417,9 @@ public final class App {
 				
        		}
    			
-   		} catch (JAXBException e) {
-   			e.printStackTrace();
-   		}
+   		} catch (Exception e) {
+  			e.printStackTrace();
+  		}
        	return res;
     }
     
@@ -451,9 +455,9 @@ public final class App {
 				
        		}
    			
-   		} catch (JAXBException e) {
-   			e.printStackTrace();
-   		}
+   		} catch (Exception e) {
+  			e.printStackTrace();
+  		}
        	return res;
     }
     
@@ -536,9 +540,9 @@ public final class App {
 				
        		}
    			
-   		} catch (JAXBException e) {
-   			e.printStackTrace();
-   		}
+   		} catch (Exception e) {
+  			e.printStackTrace();
+  		}
        	return res;
     }
    	
