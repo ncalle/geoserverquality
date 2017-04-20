@@ -55,7 +55,7 @@
 	
 		<div class="container">
 
-			<h:form id="profiles" method="post" rendered="#{!profileBeanList.isShowMore()}">
+			<h:form id="profiles" method="post" rendered="#{!profileBeanList.isShowMore() and !profileBeanList.isShowMoreWeighing()}">
 				<p:growl id="msgs" />
 				<h3 class="form-signin-heading">Perfiles de evaluación</h3>
 				<hr></hr>
@@ -132,7 +132,7 @@
 		</div>
 			
 		<div class="container">
-			<h:form id="profileMetrics" method="post" rendered="#{!profileBeanList.isShowMore()}">
+			<h:form id="profileMetrics" method="post" rendered="#{!profileBeanList.isShowMore() and !profileBeanList.isShowMoreWeighing()}">
 			<p:growl id="msgs" />
 				<hr></hr>			
 				<h4 class="form-signin-heading">Lista de Métricas disponibles para el Perfil seleccionado.</h4>
@@ -332,10 +332,11 @@
 					</div>
 				</div>
 				
-				
+				<hr></hr>
+										
 				<div class="panel panel-default">
 					<div class="panel-body">
-					
+						
 						<p:commandButton class="btn btn-default" icon="ui-icon-plus"
 							value="Asociar" id="showMore"
 							actionListener="#{profileBeanList.showMore}" 
@@ -345,20 +346,24 @@
 							value="Remover" id="removeProfileMetricIcon"
 							actionListener="#{profileBeanList.removeProfileMetric}" 
 							update="profileMetrics :profileMetrics:msgs" />
+							
+						<p:commandButton class="btn btn-default" icon="ui-icon-pencil"
+							value="Editar ponderaciones" id="showMoreWeighing"
+							actionListener="#{profileBeanList.showMoreWeighing}" 
+							update="@all" />
 					</div>
 				</div>
 			</h:form>
 		</div>		
 		
-		
-		
-		
-		
 		<!-- Second Page -->
 		<div class="container">
-			<h:form id="profileMetric" class="form-signin" method="post" rendered="#{profileBeanList.isShowMore()}">
+			<h:form id="profileMetric" class="form-signin" method="post" rendered="#{profileBeanList.isShowMore() and !profileBeanList.isShowMoreWeighing()}">
 				<p:growl id="msgs" />
 				<h2 class="form-signin-heading">Asociar Métrica a Perfil</h2>
+				
+				<hr></hr>
+				
 				<h3 class="form-signin-heading">
 					<h:outputLabel id="userIDOutputLabel" value="Lista de Métricas a asociar para el Perfil seleccionado:" />
 				</h3>
@@ -384,6 +389,62 @@
 						<p:commandButton class="btn btn-default" icon="ui-icon-circle-arrow-w"
 							value="Volver" id="back"
 							actionListener="#{profileBeanList.showLess}" 
+							update="@all"/>
+					</div>
+				</div>
+			</h:form>
+			
+		</div>
+
+		<!-- Third Page -->
+		<div class="container">
+			<h:form id="weighing" class="form-signin" method="post" rendered="#{profileBeanList.isShowMoreWeighing() and !profileBeanList.isShowMore()}">
+				<p:growl id="msgs" showDetail="true"/>
+				<h2 class="form-signin-heading">Edición de ponderaciones</h2>
+				
+				<hr></hr>
+				 
+			    <p:treeTable value="#{profileBeanList.weighingRoot}" editable="true" var="pw" style="margin-bottom:20px">
+			        <f:facet name="header">
+			            Árbol de ponderaciones
+			        </f:facet>
+			 
+			        <p:ajax event="rowEdit" listener="#{profileBeanList.onWeighingRowEdit}" update=":weighing:msgs" />
+			        <p:ajax event="rowEditCancel" listener="#{profileBeanList.onWeighingRowCancel}" update=":weighing:msgs" />
+			 
+			        <p:column headerText="Nombre"> 
+			        	<h:outputText value="#{pw.name}" />
+			        </p:column>
+			        
+			        <p:column headerText="Peso relativo">
+			            <p:cellEditor>
+			                <f:facet name="output"><h:outputText value="#{pw.weight}" /></f:facet>
+			                <f:facet name="input"><p:inputText value="#{pw.weight}" style="width:100%"/></f:facet>
+			            </p:cellEditor>
+			        </p:column>
+			        
+			        <p:column headerText="Tipo">
+			            <h:outputText value="#{pw.type}" />
+			        </p:column>
+			        
+			        <p:column style="width:50px">
+			            <p:rowEditor />
+			        </p:column>
+			        
+			    </p:treeTable>
+
+
+				<div class="panel panel-default">
+					<div class="panel-body">
+					
+						<p:commandButton class="btn btn-default" icon="ui-icon-disk"
+							value="Guardar" id="saveWeighing"
+							actionListener="#{profileBeanList.saveWeighing}"
+							update="profileMetric :profileMetric:msgs"/>
+						
+						<p:commandButton class="btn btn-default" icon="ui-icon-circle-arrow-w"
+							value="Volver" id="back"
+							actionListener="#{profileBeanList.showLessWeighing}" 
 							update="@all"/>
 					</div>
 				</div>

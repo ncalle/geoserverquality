@@ -13,6 +13,8 @@ import javax.faces.context.FacesContext;
 import org.omnifaces.util.Faces;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 
 import entity.Metric;
 import entity.Profile;
@@ -41,11 +43,15 @@ public class ProfileBeanList {
 	private ProfileMetric selectedPercentageProfileMetric;
 	private ProfileMetric selectedIntegerProfileMetric;
 	private ProfileMetric selectedEnumeratedProfileMetric;
+	
 	private boolean showMore;
+	private boolean showMoreWeighing;
 	
 	private List<Metric> listProfileMetrics;
 	private Metric profileMetric;
 	private Integer profileID;
+	
+    private TreeNode weighingRoot;
 	
 	@EJB
     private ProfileBeanRemote pDao = new ProfileBean();
@@ -159,7 +165,6 @@ public class ProfileBeanList {
 		filterMetricsByGranularity();
 	}
 	
-	
 	public void showLess() {
 		this.showMore = false;
 	}
@@ -168,33 +173,53 @@ public class ProfileBeanList {
 		return showMore;
 	}
 	
+	public void setShowMoreWeighing(boolean showMoreWeighing) {
+		this.showMoreWeighing = showMoreWeighing;
+	}
+	
+	public void showMoreWeighing() {
+		this.showMoreWeighing = true;
+		weighingRoot = createQualityWeights();
+	}
+	
+	public void showLessWeighing() {
+		this.showMoreWeighing = false;
+	}
+	
+	public boolean isShowMoreWeighing() {
+		return showMoreWeighing;
+	}
+	
 	public List<Metric> getListProfileMetrics() {
 		return listProfileMetrics;
 	}
-
 
 	public void setListProfileMetrics(List<Metric> listProfileMetrics) {
 		this.listProfileMetrics = listProfileMetrics;
 	}
 
-
 	public Metric getProfileMetric() {
 		return profileMetric;
 	}
-
 
 	public void setProfileMetric(Metric profileMetric) {
 		this.profileMetric = profileMetric;
 	}
 
-
 	public Integer getProfileID() {
 		return profileID;
 	}
 
-
 	public void setProfileID(Integer profileID) {
 		this.profileID = profileID;
+	}
+
+	public TreeNode getWeighingRoot() {
+		return weighingRoot;
+	}
+
+	public void setWeighingRoot(TreeNode weighingRoot) {
+		this.weighingRoot = weighingRoot;
 	}
 		
 	public void save() {
@@ -379,5 +404,41 @@ public class ProfileBeanList {
         
 		FacesMessage msg = new FacesMessage("Metrica removida correctamente.");       
         FacesContext.getCurrentInstance().addMessage(null, msg);
-    }	
+    }
+	
+    public void onWeighingRowEdit(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Ponderación editada", ((TreeNode) event.getObject()).toString());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+     
+    public void onWeighingRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edición cancelada", ((TreeNode) event.getObject()).toString());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+	
+	//TODO: obtener datos de la base. De momento a modo de prueba estan hardcoded
+    public TreeNode createQualityWeights() {
+        TreeNode root = new DefaultTreeNode(new QualityWeight("Calidad del servicio", "1", "Modelo"), null);
+         
+        TreeNode dimension1 = new DefaultTreeNode(new QualityWeight("Seguridad", "1/3", "Dimension"), root);
+        TreeNode dimension2 = new DefaultTreeNode(new QualityWeight("Confiabilidad", "1/3", "Dimension"), root);
+        TreeNode dimension3 = new DefaultTreeNode(new QualityWeight("Interoperabilidad", "1/3", "Dimension"), root);
+         
+        TreeNode factor11 = new DefaultTreeNode(new QualityWeight("Protección", "1", "Factor"), dimension1);
+        TreeNode factor12 = new DefaultTreeNode(new QualityWeight("Disponibilidad", "1", "Factor"), dimension2);
+        TreeNode factor13 = new DefaultTreeNode(new QualityWeight("Soporte de estándares", "1", "Factor"), dimension3);
+        
+        TreeNode metric111 = new DefaultTreeNode(new QualityWeight("Información en excepciones", "1", "Métrica"), factor11);
+        TreeNode metric112 = new DefaultTreeNode(new QualityWeight("Disponibilidad diaria del servicio", "1", "Métrica"), factor12);
+        TreeNode metric113 = new DefaultTreeNode(new QualityWeight("Excepciones en formato OGC", "0", "Métrica"), factor13);
+        TreeNode metric213 = new DefaultTreeNode(new QualityWeight("Capas del servicio con CRS adecuado (IDEuy)", "1", "Métrica"), factor13);
+
+        TreeNode range1111 = new DefaultTreeNode(new QualityWeight("true", "1", "Rango"), metric111);
+        TreeNode range1112 = new DefaultTreeNode(new QualityWeight("mayor a 30%", "1", "Rango"), metric112);
+        TreeNode range1113 = new DefaultTreeNode(new QualityWeight("true", "0", "Rango"), metric113);
+        TreeNode range1213 = new DefaultTreeNode(new QualityWeight("mayor a 75%", "1", "Rango"), metric213);
+                 
+        return root;
+    }
+
 }
