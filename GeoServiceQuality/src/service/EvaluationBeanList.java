@@ -516,7 +516,7 @@ public class EvaluationBeanList {
 				
 				resultMap =  new HashMap<Integer, Boolean>();
 				
-			} catch (DAOException ex) {
+			} catch (Exception ex) {
 
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("Error al realizar la evaluación"));
