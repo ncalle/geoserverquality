@@ -81,11 +81,11 @@ CREATE TABLE Layer
     LayerID SERIAL NOT NULL,
     NodeID INT NOT NULL,
     Name VARCHAR(70) NOT NULL,
-    Url VARCHAR(1024) NOT NULL,
+    Url VARCHAR(1024) NULL,
     Description VARCHAR(100) NULL,
 
     PRIMARY KEY (LayerID),
-    UNIQUE (Url),
+--    UNIQUE (Name),
     FOREIGN KEY (NodeID) REFERENCES Node(NodeID)
 );
 
@@ -227,6 +227,7 @@ CREATE TABLE Metric
     UnitID INT NOT NULL,
     Granurality VARCHAR(11) NOT NULL, -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio', 'Método'
     Description VARCHAR(100) NULL,
+	IsManual BOOLEAN NULL, -- 'true' si es de evaluacion manual
 
     PRIMARY KEY (MetricID),
     UNIQUE (Name),
@@ -288,14 +289,16 @@ CREATE TABLE Weighing
 (
     WeighingID SERIAL NOT NULL,
     ProfileID INT NOT NULL,
-    ElementID INT NOT NULL, -- DimensionID, FactorID, MetricaID, RangoID
-    ElementType CHAR(1) NOT NULL, -- 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
-    Value INT NOT NULL,
+    ElementID INT NOT NULL, -- QualityModelID, DimensionID, FactorID, MetricID, MetricRangeID
+    ElementType CHAR(1) NOT NULL, -- 'Q' = QualityModel, 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
+    NumeratorValue INT NOT NULL,
+	DenominatorValue INT NULL,
 
     PRIMARY KEY (WeighingID),
     UNIQUE (ProfileID, ElementID, ElementType),    
     FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID),
-    CONSTRAINT CK_ElementType_values CHECK (ElementType IN ('D', 'F', 'M', 'R'))
+    CONSTRAINT CK_ElementType_values CHECK (ElementType IN ('Q', 'D', 'F', 'M', 'R')),
+	CONSTRAINT CK_Denominator_values CHECK (DenominatorValue != 0)
 );
 
 -- Contiene un resumen por perfil de cada evaluacion realizada
@@ -307,7 +310,7 @@ CREATE TABLE EvaluationSummary
     ProfileID INT NOT NULL,
     MeasurableObjectID INT NOT NULL,
     SuccessFlag BOOLEAN NULL, -- indica si el resultado de las evaluaciones fueron exitosas
-    SuccessPercentage INT, -- indica que porcentaje de las evaluaciones fueron exitosas 
+    SuccessPercentage INT, -- indica que porcentaje de las evaluaciones fueron exitosas	
 
     PRIMARY KEY (EvaluationSummaryID),
     FOREIGN KEY (UserID) REFERENCES SystemUser(UserID),
@@ -326,6 +329,8 @@ CREATE TABLE Evaluation
     EndDate DATE NULL,
     IsEvaluationCompletedFlag BOOLEAN NOT NULL,
     SuccessFlag BOOLEAN NULL, -- indica si el resultado de la evaluacion fue exitosa
+	EvaluationCount INT,      -- indica la cantidaad de evaluaciones realizadas hasta el momento
+	EvaluationApprovedValues INT,
 
     PRIMARY KEY (EvaluationID),
     FOREIGN KEY (EvaluationSummaryID) REFERENCES EvaluationSummary(EvaluationSummaryID),

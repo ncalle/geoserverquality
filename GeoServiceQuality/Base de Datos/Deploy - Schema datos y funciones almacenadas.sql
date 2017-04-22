@@ -306,14 +306,16 @@ CREATE TABLE Weighing
 (
     WeighingID SERIAL NOT NULL,
     ProfileID INT NOT NULL,
-    ElementID INT NOT NULL, -- DimensionID, FactorID, MetricaID, RangoID
-    ElementType CHAR(1) NOT NULL, -- 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
-    Value INT NOT NULL,
+    ElementID INT NOT NULL, -- QualityModelID, DimensionID, FactorID, MetricID, MetricRangeID
+    ElementType CHAR(1) NOT NULL, -- 'Q' = QualityModel, 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
+    NumeratorValue INT NOT NULL,
+	DenominatorValue INT NULL,
 
     PRIMARY KEY (WeighingID),
     UNIQUE (ProfileID, ElementID, ElementType),    
     FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID),
-    CONSTRAINT CK_ElementType_values CHECK (ElementType IN ('D', 'F', 'M', 'R'))
+    CONSTRAINT CK_ElementType_values CHECK (ElementType IN ('Q', 'D', 'F', 'M', 'R')),
+	CONSTRAINT CK_Denominator_values CHECK (DenominatorValue != 0)
 );
 
 -- Contiene un resumen por perfil de cada evaluacion realizada
@@ -1690,6 +1692,130 @@ BEGIN
    WHERE m.MetricID IN (SELECT mb.MetricID FROM MetricKeys mb)
       AND m.UnitID = 5; --Entero
 
+   -- Carga de valores de peso en 0 por defecto al dar de alta un perfil ponderado  
+   IF (pIsWeightedFlag = TRUE)
+   THEN
+      -- Carga de pesos para los rangos de metricas
+      INSERT INTO Weighing
+      (
+         ProfileID
+         , ElementID -- DimensionID, FactorID, MetricID, MetricRangeID
+         , ElementType -- 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
+         , NumeratorValue
+         , DenominatorValue
+      )
+      SELECT
+         LastProfileID
+         , mr.MetricRangeID
+         , 'R'
+         , 0
+         , NULL
+      FROM MetricKeys mk
+      INNER JOIN MetricRange mr ON mr.MetricID = mk.MetricID
+      WHERE mr.ProfileID = LastProfileID
+      GROUP BY
+         LastProfileID
+         , mr.MetricRangeID;
+     
+      -- Carga de pesos para las metricas
+      INSERT INTO Weighing
+      (
+         ProfileID
+         , ElementID -- DimensionID, FactorID, MetricID, MetricRangeID
+         , ElementType -- 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
+         , NumeratorValue
+         , DenominatorValue
+      )
+      SELECT
+         LastProfileID
+         , m.MetricID
+         , 'M'
+         , 0
+         , NULL
+      FROM MetricKeys mk
+      INNER JOIN MetricRange mr ON mr.MetricID = mk.MetricID
+      INNER JOIN Metric m ON m.MetricID = mr.MetricID
+      WHERE mr.ProfileID = LastProfileID
+      GROUP BY
+         LastProfileID
+         , m.MetricID;
+
+      -- Carga de pesos para los factores
+      INSERT INTO Weighing
+      (
+         ProfileID
+         , ElementID -- DimensionID, FactorID, MetricID, MetricRangeID
+         , ElementType -- 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
+         , NumeratorValue
+         , DenominatorValue
+      )
+      SELECT
+         LastProfileID
+         , f.FactorID
+         , 'F'
+         , 0
+         , NULL
+      FROM MetricKeys mk
+      INNER JOIN MetricRange mr ON mr.MetricID = mk.MetricID
+      INNER JOIN Metric m ON m.MetricID = mr.MetricID
+      INNER JOIN Factor f ON f.FactorID = m.FactorID
+      WHERE mr.ProfileID = LastProfileID
+      GROUP BY
+         LastProfileID
+        , f.FactorID;
+       
+      -- Carga de pesos para las dimensiones
+      INSERT INTO Weighing
+      (
+         ProfileID
+         , ElementID -- DimensionID, FactorID, MetricID, MetricRangeID
+         , ElementType -- 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
+         , NumeratorValue
+         , DenominatorValue
+      )
+      SELECT
+         LastProfileID
+         , d.DimensionID
+         , 'D'
+         , 0
+         , NULL
+      FROM MetricKeys mk
+      INNER JOIN MetricRange mr ON mr.MetricID = mk.MetricID
+      INNER JOIN Metric m ON m.MetricID = mr.MetricID
+      INNER JOIN Factor f ON f.FactorID = m.FactorID
+      INNER JOIN Dimension d ON d.DimensionID = f.DimensionID
+      WHERE mr.ProfileID = LastProfileID
+      GROUP BY
+         LastProfileID
+         , d.DimensionID;       
+		 
+      -- Carga de pesos para las dimensiones
+      INSERT INTO Weighing
+      (
+         ProfileID
+         , ElementID -- QualityModelID, DimensionID, FactorID, MetricID, MetricRangeID
+         , ElementType -- 'Q' = QualityModel, 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
+         , NumeratorValue
+         , DenominatorValue
+      )
+      SELECT
+         LastProfileID
+         , q.QualityModelID
+         , 'Q'
+         , 0
+         , NULL
+      FROM MetricKeys mk
+      INNER JOIN MetricRange mr ON mr.MetricID = mk.MetricID
+      INNER JOIN Metric m ON m.MetricID = mr.MetricID
+      INNER JOIN Factor f ON f.FactorID = m.FactorID
+      INNER JOIN Dimension d ON d.DimensionID = f.DimensionID
+	  INNER JOIN QualityModel q ON q.QualityModelID = d.QualityModelID
+      WHERE mr.ProfileID = LastProfileID
+      GROUP BY
+         LastProfileID
+         , q.QualityModelID;
+   END IF;
+   
 END;
 $$ LANGUAGE plpgsql;
 /* ****************************************************************************************************** */
