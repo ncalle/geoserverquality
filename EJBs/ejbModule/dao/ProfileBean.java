@@ -21,7 +21,7 @@ public class ProfileBean implements ProfileBeanRemote {
     private static final String SQL_LIST_ORDER_BY_ID =
     		"SELECT ProfileID, ProfileName, ProfileGranurality, ProfileIsWeightedFlag FROM profile_get ()";
 	private static final String SQL_INSERT =
-            "SELECT * FROM profile_insert (?, ?, ?)";
+            "SELECT * FROM profile_insert (?, ?, ?, ?)";
 	private static final String SQL_DELETE =
         	"SELECT * FROM profile_delete (?)";
 	private static final String SQL_UPDATE =
@@ -97,7 +97,8 @@ public class ProfileBean implements ProfileBeanRemote {
 
             statement.setString(1, profile.getName());
 			statement.setString(2, profile.getGranurality());
-			statement.setString(3, metricIDs); 
+			statement.setBoolean(3, profile.getIsWeightedFlag());
+			statement.setString(4, metricIDs);
 			
             statement.executeQuery();
             

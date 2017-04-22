@@ -30,6 +30,7 @@ public class ProfileBeanAdd {
     private String granularity;
 	private List<Metric> listMetrics;
     private DualListModel<Metric> dualListMetrics;
+    private Boolean weight;
     
 	@EJB
     private ProfileBeanRemote pDao = new ProfileBean();
@@ -72,7 +73,14 @@ public class ProfileBeanAdd {
     public List<Metric> getListMetrics() {
 		return listMetrics;
 	}
+    
+	public Boolean getWeight() {
+		return weight;
+	}
 
+	public void setWeight(Boolean weight) {
+		this.weight = weight;
+	}
 
 	public void save() {
     	FacesMessage msg;
@@ -86,7 +94,7 @@ public class ProfileBeanAdd {
     	Profile profile = new Profile();
     	profile.setName(name);
     	profile.setGranurality(granularity);
-    	profile.setIsWeightedFlag(false);
+    	profile.setIsWeightedFlag(weight);
     	    	
     	try{
             pDao.create(profile, dualListMetrics.getTarget());

@@ -82,6 +82,11 @@
 					</h:selectOneMenu>
 					<br></br>
 					<br></br>
+					
+					<p:selectBooleanCheckbox value="#{profileBeanAdd.weight}" />
+					<label for="inputType"> Ponderado </label>
+					<br></br>
+					<br></br>
 										
 					<label for="inputType">Métricas </label>
 				    <p:pickList id="pickList" value="#{profileBeanAdd.dualListMetrics}" var="dualMetrics" itemLabel="#{dualMetrics.name}" itemValue="#{dualMetrics}" >

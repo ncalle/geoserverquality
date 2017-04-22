@@ -1,8 +1,9 @@
-﻿--DROP FUNCTION profile_insert (character varying, character varying, text);
+﻿--DROP FUNCTION profile_insert (character varying, character varying, boolean, text);
 CREATE OR REPLACE FUNCTION profile_insert
 (
    pName VARCHAR(40)
    , pGranurality VARCHAR(11)
+   , pIsWeightedFlag BOOLEAN
    , pMetricKeys TEXT -- Lista de enteros separada por coma, que representa los IDs de las metricas
 )
 RETURNS VOID AS $$
@@ -19,9 +20,9 @@ DECLARE LastProfileID INT;
 BEGIN
     
    -- parametros requeridos
-   IF (pName IS NULL OR pGranurality IS NULL)
+   IF (pName IS NULL OR pGranurality IS NULL OR pIsWeightedFlag IS NULL)
    THEN
-      RAISE EXCEPTION 'Error - Los parametros nombre de perfil y granuralidad son requeridos.';
+      RAISE EXCEPTION 'Error - Los parametros nombre de perfil, granularidad y ponderación son requeridos.';
    END IF;
     
    -- validacion
@@ -44,7 +45,7 @@ BEGIN
    INSERT INTO Profile
    (Name, Granurality, IsWeightedFlag)
    VALUES
-   (pName, pGranurality, FALSE)
+   (pName, pGranurality, pIsWeightedFlag)
       RETURNING ProfileID INTO LastProfileID;
     
     -- Insert de Rangos asociados a las Metricas y Perfil
