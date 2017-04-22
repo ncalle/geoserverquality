@@ -110,7 +110,17 @@
 					</p:column>
 
 					<p:column headerText="Ponderado" sortBy="#{pitem.isWeightedFlag}">
-						<h:outputText value="#{pitem.isWeightedFlag}" />
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{pitem.isWeightedFlag}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:selectOneMenu value="#{pitem.isWeightedFlag}" style="width:100%">
+									<f:selectItem itemValue="true" itemLabel="true"/>
+									<f:selectItem itemValue="false" itemLabel="false"/>
+								</h:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
 					</p:column>
 					
 					<p:column headerText="Acciones">

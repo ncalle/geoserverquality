@@ -4,6 +4,7 @@ CREATE OR REPLACE FUNCTION profile_update
    pProfileID INT
    , pName VARCHAR(40)
    , pGranurality VARCHAR(11) -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio',
+   , pIsWeightedFlag BOOLEAN
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
@@ -32,6 +33,7 @@ BEGIN
    UPDATE Profile
    SET Name = pName
       , Granurality = pGranurality
+	  , IsWeightedFlag = pIsWeightedFlag
    WHERE ProfileID = pProfileID;
     
 END;

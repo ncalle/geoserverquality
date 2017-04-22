@@ -25,7 +25,7 @@ public class ProfileBean implements ProfileBeanRemote {
 	private static final String SQL_DELETE =
         	"SELECT * FROM profile_delete (?)";
 	private static final String SQL_UPDATE =
-        	"SELECT * FROM profile_update (?, ?, ?)";
+        	"SELECT * FROM profile_update (?, ?, ?, ?)";
 
     private DAOFactory daoFactory;
 	
@@ -144,6 +144,7 @@ public class ProfileBean implements ProfileBeanRemote {
             statement.setInt(1, profile.getProfileId());
             statement.setString(2, profile.getName());
             statement.setString(3, profile.getGranurality());
+            statement.setBoolean(4, profile.getIsWeightedFlag());
         
             statement.executeQuery();
             
