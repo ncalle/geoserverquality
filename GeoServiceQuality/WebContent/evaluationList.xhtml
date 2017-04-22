@@ -258,7 +258,12 @@
 						value="#{evaluationBeanList.listEvaluation}" var="eitem"
 						tableStyle="table-layout: auto;"
 						widgetVar="ev" rows="10"
+						paginator="true"
 						emptyMessage="No existen resultados.">
+						
+						<p:column headerText="Desripción del Servicio" sortBy="#{eitem.metricName}">
+							<h:outputText value="#{eitem.measurableObjectName}" />
+						</p:column>
 	
 						<p:column headerText="Metrica" sortBy="#{eitem.metricName}">
 							<h:outputText value="#{eitem.metricName}" />
