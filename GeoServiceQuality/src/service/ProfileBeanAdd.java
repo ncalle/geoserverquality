@@ -102,6 +102,7 @@ public class ProfileBeanAdd {
     		msg = new FacesMessage("El Perfil fue creado correctamente.");
             FacesContext.getCurrentInstance().addMessage(null, msg);    		
     	} catch(DAOException e) {
+    		e.printStackTrace();
     		msg = new FacesMessage("Error al crear el Perfil.");
             FacesContext.getCurrentInstance().addMessage(null, msg);       		
     	}

@@ -261,6 +261,10 @@
 						paginator="true"
 						emptyMessage="No existen resultados.">
 						
+						<p:column headerText="Ide/Institución/Nodo" sortBy="#{eitem.entityType}">
+							<h:outputText value="#{eitem.entityType}" />
+						</p:column>
+						
 						<p:column headerText="Desripción del Servicio" sortBy="#{eitem.metricName}">
 							<h:outputText value="#{eitem.measurableObjectName}" />
 						</p:column>
@@ -277,13 +281,13 @@
 							<h:outputText value="#{eitem.profileName}" />
 						</p:column>
 						
-						<p:column headerText="Fecha comienzo" sortBy="#{eitem.startDate}">
+						<p:column headerText="Fecha" sortBy="#{eitem.startDate}">
 							<h:outputText value="#{eitem.startDate}" />
 						</p:column>
 						
-						<p:column headerText="Fecha fin" sortBy="#{eitem.endDate}">
+<!-- 						<p:column headerText="Fecha fin" sortBy="#{eitem.endDate}">
 							<h:outputText value="#{eitem.endDate}" />
-						</p:column>
+						</p:column> -->
 	
 						<p:column headerText="Completa" sortBy="#{eitem.isEvaluationCompleted}">
 							<h:outputText value="#{eitem.isEvaluationCompleted}" />

@@ -445,7 +445,7 @@ public class EvaluationBeanList {
 				
 				List<MeasurableObject> listMO = new ArrayList<>();
 				
-				if(profileGranularity.equals("High") && selectedTreeNode != null && selectedTreeNode.getEntityType().equals("Nodo")){
+				if(profileGranularity.equals("High") && selectedTreeNode != null){
 					
 					for (MeasurableObject obj : listObjects) {
 						if(obj.getEntityType().equals("Servicio")){
@@ -480,6 +480,7 @@ public class EvaluationBeanList {
 						e.setQualityModelName(metric.getQualityModelName());
 						e.setProfileName(selectedProfile.getName());
 						e.setMeasurableObjectName(moItem.getMeasurableObjectDescription());
+						e.setEntityType(selectedTreeNode.getMeasurableObjectName());
 						
 						listEvaluation.add(e);
 					}
