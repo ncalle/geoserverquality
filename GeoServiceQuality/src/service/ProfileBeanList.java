@@ -19,6 +19,7 @@ import org.primefaces.model.TreeNode;
 import entity.Metric;
 import entity.Profile;
 import entity.ProfileMetric;
+import entity.QualityWeightTreeStructure;
 import dao.DAOException;
 import dao.MetricBean;
 import dao.MetricBeanRemote;
@@ -26,6 +27,8 @@ import dao.ProfileBean;
 import dao.ProfileBeanRemote;
 import dao.ProfileMetricBean;
 import dao.ProfileMetricBeanRemote;
+import dao.QualityWeightTreeStructureBean;
+import dao.QualityWeightTreeStructureBeanRemote;
 
 
 @ManagedBean(name="profileBeanList")
@@ -52,11 +55,13 @@ public class ProfileBeanList {
 	private Integer profileID;
 	
     private TreeNode weighingRoot;
-	
+    private List<QualityWeightTreeStructure> listQualityWeight;
+    
 	@EJB
     private ProfileBeanRemote pDao = new ProfileBean();
 	private ProfileMetricBeanRemote pmDao = new ProfileMetricBean();
 	private MetricBeanRemote mDao = new MetricBean();
+	private QualityWeightTreeStructureBeanRemote qwDao = new QualityWeightTreeStructureBean();
 	
 	
 	@PostConstruct
@@ -220,6 +225,14 @@ public class ProfileBeanList {
 
 	public void setWeighingRoot(TreeNode weighingRoot) {
 		this.weighingRoot = weighingRoot;
+	}
+	
+	public List<QualityWeightTreeStructure> getListQualityWeight() {
+		return listQualityWeight;
+	}
+	
+	public void setListQualityWeight(List<QualityWeightTreeStructure> listQualityWeight) {
+		this.listQualityWeight = listQualityWeight;
 	}
 		
 	public void save() {
@@ -418,26 +431,97 @@ public class ProfileBeanList {
 	
 	//TODO: obtener datos de la base. De momento a modo de prueba estan hardcoded
     public TreeNode createQualityWeights() {
-        TreeNode root = new DefaultTreeNode(new QualityWeight("Calidad del servicio", "1", "Modelo"), null);
-         
-        TreeNode dimension1 = new DefaultTreeNode(new QualityWeight("Seguridad", "1/3", "Dimension"), root);
-        TreeNode dimension2 = new DefaultTreeNode(new QualityWeight("Confiabilidad", "1/3", "Dimension"), root);
-        TreeNode dimension3 = new DefaultTreeNode(new QualityWeight("Interoperabilidad", "1/3", "Dimension"), root);
-         
-        TreeNode factor11 = new DefaultTreeNode(new QualityWeight("Protección", "1", "Factor"), dimension1);
-        TreeNode factor12 = new DefaultTreeNode(new QualityWeight("Disponibilidad", "1", "Factor"), dimension2);
-        TreeNode factor13 = new DefaultTreeNode(new QualityWeight("Soporte de estándares", "1", "Factor"), dimension3);
+        List <Integer> listQModels = new ArrayList<>();
+        List <Integer> listDimensions = new ArrayList<>();
+        List <Integer> listFactors = new ArrayList<>();
+        List <Integer> listMetrics = new ArrayList<>();
+        List <Integer> listRanges = new ArrayList<>();
         
-        TreeNode metric111 = new DefaultTreeNode(new QualityWeight("Información en excepciones", "1", "Métrica"), factor11);
-        TreeNode metric112 = new DefaultTreeNode(new QualityWeight("Disponibilidad diaria del servicio", "1", "Métrica"), factor12);
-        TreeNode metric113 = new DefaultTreeNode(new QualityWeight("Excepciones en formato OGC", "0", "Métrica"), factor13);
-        TreeNode metric213 = new DefaultTreeNode(new QualityWeight("Capas del servicio con CRS adecuado (IDEuy)", "1", "Métrica"), factor13);
+        listQualityWeight = qwDao.list(selectedProfile.getProfileId());
+        
+        System.out.println("TREE_QW: " + listQualityWeight);
+        
+    	TreeNode root = new DefaultTreeNode(new QualityWeight("Modelos", "1", "Modelos de calidad"), null);
+        
+        if (listQualityWeight != null){        	
+			for (QualityWeightTreeStructure qw : listQualityWeight) {
+				if (qw.getElementType().equals("Q") && !listQModels.contains(qw.getElementID())){
+					
+					listQModels.add(qw.getElementID());
+					TreeNode qualityModel;
+					
+					if (qw.getDenominatorValue() != null && qw.getDenominatorValue() != 0){
+						qualityModel = new DefaultTreeNode(new QualityWeight(qw.getElementName(), qw.getNumeratorValue().toString() + "/" + qw.getDenominatorValue().toString(), "Modelo"), root);	
+					}
+					else{
+						qualityModel = new DefaultTreeNode(new QualityWeight(qw.getElementName(), qw.getNumeratorValue().toString(), "Modelo"), root);
+					}
+					
+					for (QualityWeightTreeStructure d : listQualityWeight) {
+						if (d.getElementType().equals("D") && !listDimensions.contains(d.getElementID()) && qw.getElementID() == d.getFatherElementyID()){
+							
+							listDimensions.add(d.getElementID());
+							TreeNode dimension;
+							
+							if (d.getDenominatorValue() != null  && d.getDenominatorValue() != 0){
+								dimension = new DefaultTreeNode(new QualityWeight(d.getElementName(), d.getNumeratorValue().toString() + "/" + d.getDenominatorValue().toString(), "Dimension"), qualityModel);	
+							}
+							else{
+								dimension = new DefaultTreeNode(new QualityWeight(d.getElementName(), d.getNumeratorValue().toString(), "Dimension"), qualityModel);
+							}
+							
+								
+							for (QualityWeightTreeStructure f : listQualityWeight) {
+								if (f.getElementType().equals("F") && !listFactors.contains(f.getElementID()) && d.getElementID() == f.getFatherElementyID()){
+									
+									listFactors.add(f.getElementID());
+									TreeNode factor;
+									
+									if (f.getDenominatorValue() != null  && f.getDenominatorValue() != 0){
+										factor = new DefaultTreeNode(new QualityWeight(f.getElementName(), f.getNumeratorValue().toString() + "/" + f.getDenominatorValue().toString(), "Factor"), dimension);	
+									}
+									else{
+										factor = new DefaultTreeNode(new QualityWeight(f.getElementName(), f.getNumeratorValue().toString(), "Factor"), dimension);
+									}									
+									
+									for (QualityWeightTreeStructure m : listQualityWeight) {
+										if (m.getElementType().equals("M") && !listMetrics.contains(m.getElementID()) && f.getElementID() == m.getFatherElementyID()){
+											
+											listMetrics.add(m.getElementID());
+											TreeNode metric;
+											
+											if (m.getDenominatorValue() != null  && m.getDenominatorValue() != 0){
+												metric = new DefaultTreeNode(new QualityWeight(m.getElementName(), m.getNumeratorValue().toString() + "/" + m.getDenominatorValue().toString(), "Metrica"), factor);	
+											}
+											else{
+												metric = new DefaultTreeNode(new QualityWeight(m.getElementName(), m.getNumeratorValue().toString(), "Metrica"), factor);
+											}
+											
+											for (QualityWeightTreeStructure mr : listQualityWeight) {
+												if (mr.getElementType().equals("R") && !listRanges.contains(mr.getElementID()) && m.getElementID() == mr.getFatherElementyID()){
+													
+													listRanges.add(mr.getElementID());
+													TreeNode metricRange;
+													
+													if (mr.getDenominatorValue() != null  && mr.getDenominatorValue() != 0){
+														metricRange = new DefaultTreeNode(new QualityWeight("rango", mr.getNumeratorValue().toString() + "/" + mr.getDenominatorValue().toString(), "Rango"), metric);	
+													}
+													else{
+														metricRange = new DefaultTreeNode(new QualityWeight("rango", mr.getNumeratorValue().toString(), "Rango"), metric);
+													}
+													
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}						
+				}
+			}
+        }
 
-        TreeNode range1111 = new DefaultTreeNode(new QualityWeight("true", "1", "Rango"), metric111);
-        TreeNode range1112 = new DefaultTreeNode(new QualityWeight("mayor a 30%", "1", "Rango"), metric112);
-        TreeNode range1113 = new DefaultTreeNode(new QualityWeight("true", "0", "Rango"), metric113);
-        TreeNode range1213 = new DefaultTreeNode(new QualityWeight("mayor a 75%", "1", "Rango"), metric213);
-                 
         return root;
     }
 

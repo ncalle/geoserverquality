@@ -128,3 +128,5 @@ SELECT * FROM services_and_layers_get (null, 'ide.uy', 'Ide'); --ok
 SELECT * FROM services_and_layers_get (1, 'ide.uy', 'Ide'); --ok
 SELECT * FROM services_and_layers_get (10, 'ide.uy', 'Ide'); --ok
 --------------------------------------------------------------------
+SELECT * FROM quality_weight_tree_sctucture(5); --ok
+SELECT * FROM quality_weight_tree_sctucture(55); --err ok
