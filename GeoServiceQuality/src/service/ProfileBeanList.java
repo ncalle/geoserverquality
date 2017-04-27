@@ -49,12 +49,13 @@ public class ProfileBeanList {
 	
 	private boolean showMore;
 	private boolean showMoreWeighing;
-	
+
 	private List<Metric> listProfileMetrics;
 	private Metric profileMetric;
 	private Integer profileID;
 	
     private TreeNode weighingRoot;
+    private TreeNode weightValues;
     private List<QualityWeightTreeStructure> listQualityWeight;
     
 	@EJB
@@ -185,6 +186,7 @@ public class ProfileBeanList {
 	public void showMoreWeighing() {
 		this.showMoreWeighing = true;
 		weighingRoot = createQualityWeights();
+		weightValues = createWeightValues();
 	}
 	
 	public void showLessWeighing() {
@@ -225,6 +227,14 @@ public class ProfileBeanList {
 
 	public void setWeighingRoot(TreeNode weighingRoot) {
 		this.weighingRoot = weighingRoot;
+	}
+	
+	public TreeNode getWeightValues() {
+		return weightValues;
+	}
+
+	public void setWeightValues(TreeNode weightValues) {
+		this.weightValues = weightValues;
 	}
 	
 	public List<QualityWeightTreeStructure> getListQualityWeight() {
@@ -419,9 +429,23 @@ public class ProfileBeanList {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 	
-    public void onWeighingRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Ponderación editada", ((TreeNode) event.getObject()).toString());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+    public void onWeighingRowEdit(String weight, Integer weighingID) {   	
+        Integer nominator;
+        Integer denominator;
+
+        if (weight.equals("0") || weight.equals("1")){
+        	nominator = Integer.parseInt(weight);
+        	denominator = null;
+        }
+        else{
+        	nominator = Integer.parseInt(weight.substring(0, 1));
+        	denominator = Integer.parseInt(weight.replace("1/", ""));
+        }
+        
+    	qwDao.update(nominator, denominator, weighingID);
+    	
+        FacesMessage msg = new FacesMessage("Ponderación editada correctamente");
+        //FacesContext.getCurrentInstance().addMessage(null, msg);
     }
      
     public void onWeighingRowCancel(RowEditEvent event) {
@@ -429,7 +453,6 @@ public class ProfileBeanList {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 	
-	//TODO: obtener datos de la base. De momento a modo de prueba estan hardcoded
     public TreeNode createQualityWeights() {
         List <Integer> listQModels = new ArrayList<>();
         List <Integer> listDimensions = new ArrayList<>();
@@ -439,9 +462,7 @@ public class ProfileBeanList {
         
         listQualityWeight = qwDao.list(selectedProfile.getProfileId());
         
-        System.out.println("TREE_QW: " + listQualityWeight);
-        
-    	TreeNode root = new DefaultTreeNode(new QualityWeight("Modelos", "1", "Modelos de calidad"), null);
+    	TreeNode root = new DefaultTreeNode(new QualityWeight(0, "Modelos", "1", "Modelos de calidad"), null);
         
         if (listQualityWeight != null){        	
 			for (QualityWeightTreeStructure qw : listQualityWeight) {
@@ -451,10 +472,10 @@ public class ProfileBeanList {
 					TreeNode qualityModel;
 					
 					if (qw.getDenominatorValue() != null && qw.getDenominatorValue() != 0){
-						qualityModel = new DefaultTreeNode(new QualityWeight(qw.getElementName(), qw.getNumeratorValue().toString() + "/" + qw.getDenominatorValue().toString(), "Modelo"), root);	
+						qualityModel = new DefaultTreeNode(new QualityWeight(qw.getWeighingID(), qw.getElementName(), qw.getNumeratorValue().toString() + "/" + qw.getDenominatorValue().toString(), "Modelo"), root);	
 					}
 					else{
-						qualityModel = new DefaultTreeNode(new QualityWeight(qw.getElementName(), qw.getNumeratorValue().toString(), "Modelo"), root);
+						qualityModel = new DefaultTreeNode(new QualityWeight(qw.getWeighingID(), qw.getElementName(), qw.getNumeratorValue().toString(), "Modelo"), root);
 					}
 					
 					for (QualityWeightTreeStructure d : listQualityWeight) {
@@ -464,10 +485,10 @@ public class ProfileBeanList {
 							TreeNode dimension;
 							
 							if (d.getDenominatorValue() != null  && d.getDenominatorValue() != 0){
-								dimension = new DefaultTreeNode(new QualityWeight(d.getElementName(), d.getNumeratorValue().toString() + "/" + d.getDenominatorValue().toString(), "Dimension"), qualityModel);	
+								dimension = new DefaultTreeNode(new QualityWeight(d.getWeighingID(), d.getElementName(), d.getNumeratorValue().toString() + "/" + d.getDenominatorValue().toString(), "Dimension"), qualityModel);	
 							}
 							else{
-								dimension = new DefaultTreeNode(new QualityWeight(d.getElementName(), d.getNumeratorValue().toString(), "Dimension"), qualityModel);
+								dimension = new DefaultTreeNode(new QualityWeight(d.getWeighingID(), d.getElementName(), d.getNumeratorValue().toString(), "Dimension"), qualityModel);
 							}
 							
 								
@@ -478,10 +499,10 @@ public class ProfileBeanList {
 									TreeNode factor;
 									
 									if (f.getDenominatorValue() != null  && f.getDenominatorValue() != 0){
-										factor = new DefaultTreeNode(new QualityWeight(f.getElementName(), f.getNumeratorValue().toString() + "/" + f.getDenominatorValue().toString(), "Factor"), dimension);	
+										factor = new DefaultTreeNode(new QualityWeight(f.getWeighingID(), f.getElementName(), f.getNumeratorValue().toString() + "/" + f.getDenominatorValue().toString(), "Factor"), dimension);	
 									}
 									else{
-										factor = new DefaultTreeNode(new QualityWeight(f.getElementName(), f.getNumeratorValue().toString(), "Factor"), dimension);
+										factor = new DefaultTreeNode(new QualityWeight(f.getWeighingID(), f.getElementName(), f.getNumeratorValue().toString(), "Factor"), dimension);
 									}									
 									
 									for (QualityWeightTreeStructure m : listQualityWeight) {
@@ -491,10 +512,10 @@ public class ProfileBeanList {
 											TreeNode metric;
 											
 											if (m.getDenominatorValue() != null  && m.getDenominatorValue() != 0){
-												metric = new DefaultTreeNode(new QualityWeight(m.getElementName(), m.getNumeratorValue().toString() + "/" + m.getDenominatorValue().toString(), "Metrica"), factor);	
+												metric = new DefaultTreeNode(new QualityWeight(m.getWeighingID(), m.getElementName(), m.getNumeratorValue().toString() + "/" + m.getDenominatorValue().toString(), "Metrica"), factor);	
 											}
 											else{
-												metric = new DefaultTreeNode(new QualityWeight(m.getElementName(), m.getNumeratorValue().toString(), "Metrica"), factor);
+												metric = new DefaultTreeNode(new QualityWeight(m.getWeighingID(), m.getElementName(), m.getNumeratorValue().toString(), "Metrica"), factor);
 											}
 											
 											for (QualityWeightTreeStructure mr : listQualityWeight) {
@@ -504,10 +525,10 @@ public class ProfileBeanList {
 													TreeNode metricRange;
 													
 													if (mr.getDenominatorValue() != null  && mr.getDenominatorValue() != 0){
-														metricRange = new DefaultTreeNode(new QualityWeight("rango", mr.getNumeratorValue().toString() + "/" + mr.getDenominatorValue().toString(), "Rango"), metric);	
+														metricRange = new DefaultTreeNode(new QualityWeight(mr.getWeighingID(), "rango", mr.getNumeratorValue().toString() + "/" + mr.getDenominatorValue().toString(), "Rango"), metric);	
 													}
 													else{
-														metricRange = new DefaultTreeNode(new QualityWeight("rango", mr.getNumeratorValue().toString(), "Rango"), metric);
+														metricRange = new DefaultTreeNode(new QualityWeight(mr.getWeighingID(), "rango", mr.getNumeratorValue().toString(), "Rango"), metric);
 													}
 													
 												}
@@ -524,5 +545,19 @@ public class ProfileBeanList {
 
         return root;
     }
-
+    
+    public TreeNode createWeightValues() {
+    	TreeNode weightValues = new DefaultTreeNode(new WeightValue("Ponderaciones", "1", "Ponderaciones validas"), null);
+    	TreeNode value0 = new DefaultTreeNode(new WeightValue("0", "Indiferente", "0"), weightValues);
+    	TreeNode value1 = new DefaultTreeNode(new WeightValue("1", "Igualmente preferido", "1"), weightValues);
+    	TreeNode value2 = new DefaultTreeNode(new WeightValue("2", "De igualmente a moderadamente", "1/2"), weightValues);
+    	TreeNode value3 = new DefaultTreeNode(new WeightValue("3", "Moderadamente preferido", "1/3"), weightValues);
+    	TreeNode value4 = new DefaultTreeNode(new WeightValue("4", "De moderadamente a fuertemente", "1/4"), weightValues);
+    	TreeNode value5 = new DefaultTreeNode(new WeightValue("5", "Fuertemente preferido", "1/5"), weightValues);
+    	TreeNode value6 = new DefaultTreeNode(new WeightValue("6", "De fuertemente a muy fuerte", "1/6"), weightValues);
+    	TreeNode value7 = new DefaultTreeNode(new WeightValue("7", "Muy fuertemente preferido", "1/7"), weightValues);
+    	TreeNode value8 = new DefaultTreeNode(new WeightValue("8", "De muy fuerte a extremadamente", "1/8"), weightValues);
+    	TreeNode value9 = new DefaultTreeNode(new WeightValue("9", "Muy recomendado", "1/9"), weightValues);
+    	return weightValues;
+    }
 }

@@ -21,7 +21,8 @@ public class QualityWeightTreeStructureBean implements QualityWeightTreeStructur
 
     private static final String SQL_QUALITY_WEIGHT_TREE_STRUCTURE_LIST =
     		"SELECT WeighingID, ProfileID, ElementID, ElementName, ElementType, NumeratorValue, DenominatorValue, FatherElementyID FROM quality_weight_tree_sctucture(?)";
-    
+	private static final String SQL_UPDATE =
+        	"SELECT * FROM quality_weight_update (?, ?, ?)";
     private DAOFactory daoFactory;
 
     QualityWeightTreeStructureBean(DAOFactory daoFactory) {
@@ -66,6 +67,34 @@ public class QualityWeightTreeStructureBean implements QualityWeightTreeStructur
         }
 
         return qualityWeightTreeStructures;
+    }
+    
+    @Override
+    public void update(Integer nominator, Integer denominator, Integer weighingID) throws DAOException {
+
+    	Connection connection = null;
+		PreparedStatement statement = null;
+		
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE);
+            
+            statement.setInt(1, nominator);
+            if (denominator == null){
+            	statement.setObject(2, null);
+            }
+            else{
+            	statement.setInt(2, denominator);
+            }
+            statement.setInt(3, weighingID);        
+        
+            statement.executeQuery();
+            
+            connection.close();
+            
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
     }
         
     private static QualityWeightTreeStructure map(ResultSet resultSet) throws SQLException {

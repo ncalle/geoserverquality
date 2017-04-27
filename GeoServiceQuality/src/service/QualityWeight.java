@@ -4,16 +4,26 @@ import java.io.Serializable;
 
 public class QualityWeight implements Serializable, Comparable<QualityWeight> {
 	 
+	private Integer weighingID;
 	private String name;  
 	private String weight;     
 	private String type;
 	     
-    public QualityWeight(String name, String weight, String type) {
-        this.name = name;
+    public QualityWeight(Integer weighingID, String name, String weight, String type) {
+        this.weighingID = weighingID;
+    	this.name = name;
         this.weight = weight;
         this.type = type;
     }
  
+	public Integer getWeighingID() {
+		return weighingID;
+	}
+
+	public void setWeighingID(Integer weighingID) {
+		this.weighingID = weighingID;
+	}
+	
     public String getName() {
         return name;
     }
@@ -43,6 +53,7 @@ public class QualityWeight implements Serializable, Comparable<QualityWeight> {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((weighingID == null) ? 0 : weighingID.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((weight == null) ? 0 : weight.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
@@ -58,6 +69,11 @@ public class QualityWeight implements Serializable, Comparable<QualityWeight> {
         if (getClass() != obj.getClass())
             return false;
         QualityWeight other = (QualityWeight) obj;
+        if (weighingID == null) {
+            if (other.weighingID != null)
+                return false;
+        } else if (!weighingID.equals(other.weighingID))
+            return false;
         if (name == null) {
             if (other.name != null)
                 return false;
