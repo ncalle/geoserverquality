@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -196,6 +197,7 @@ public class EvaluationBeanList {
 		List<MeasurableObject> list = new ArrayList<>();
 		
 		listProfileMetric = pmDao.profileMetricList(selectedProfile, null);
+		listObjects = new ArrayList();
 		
 		if (listObjects != null){
 			for(MeasurableObject mo : listObjects){
@@ -212,9 +214,13 @@ public class EvaluationBeanList {
 		else{
 			profileGranularity = "High";
 		}
-		System.out.println("profileGranularity: " + profileGranularity);
+		
+		//limpio la tabla de objetos de granularidad alta
+		selectedTreeNode = null;
+		
 	}
 	
+
 	public void setProfileResult(String profileResult) {
 		this.profileResult = profileResult;
 	}
@@ -360,38 +366,47 @@ public class EvaluationBeanList {
         		switch (numberOfUnderscore) {
     			case 0:
     				listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Ide");
-
-    				Iterator<MeasurableObject> ideItr = listIdeMO.iterator();
-    				while(ideItr.hasNext()) {
-    					element = ideItr.next();
-    					if (element.getMeasurableObjectName().equals(selectedNode.getData())){
-    						selectedTreeNode = element;						
-    					}
+    				
+    				if(selectedProfile.getGranurality().equals("Ide") || profileGranularity.equals("Low")){
+    					Iterator<MeasurableObject> ideItr = listIdeMO.iterator();
+        				while(ideItr.hasNext()) {
+        					element = ideItr.next();
+        					if (element.getMeasurableObjectName().equals(selectedNode.getData())){
+        						selectedTreeNode = element;						
+        					}
+        				}
     				}
+    				
     				break;
     			case 1:
     				listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Institución");
     				
-    				Iterator<MeasurableObject> instItr = listInstitutionMO.iterator();
+    				if(selectedProfile.getGranurality().equals("Institución") || profileGranularity.equals("Low")){
+    					Iterator<MeasurableObject> instItr = listInstitutionMO.iterator();
 
-    				while(instItr.hasNext()) {
-    					element = instItr.next();
-    					if (element.getMeasurableObjectName().equals(selectedNode.getData())){
-    						selectedTreeNode = element;						
-    					}
+        				while(instItr.hasNext()) {
+        					element = instItr.next();
+        					if (element.getMeasurableObjectName().equals(selectedNode.getData())){
+        						selectedTreeNode = element;						
+        					}
+        				}
     				}
+    				
     				break;
     			case 2:			
     				listObjects = moDao.servicesAndLayerGet(null, selectedNode.getData().toString(), "Nodo");
     				
-    				Iterator<MeasurableObject> nodeItr = listNodeMO.iterator();
+    				if(selectedProfile.getGranurality().equals("Nodo") || profileGranularity.equals("Low")){
+    					Iterator<MeasurableObject> nodeItr = listNodeMO.iterator();
 
-    				while(nodeItr.hasNext()) {
-    					element = nodeItr.next();
-    					if (element.getMeasurableObjectName().equals(selectedNode.getData())){
-    						selectedTreeNode = element;						
-    					}
+        				while(nodeItr.hasNext()) {
+        					element = nodeItr.next();
+        					if (element.getMeasurableObjectName().equals(selectedNode.getData())){
+        						selectedTreeNode = element;						
+        					}
+        				}
     				}
+    				
     				break;
     			default:
     				break;
