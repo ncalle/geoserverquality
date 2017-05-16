@@ -546,9 +546,9 @@ public class ProfileBeanList {
         return root;
     }
     
+    
     public TreeNode createWeightValues() {
     	TreeNode weightValues = new DefaultTreeNode(new WeightValue("Ponderaciones", "1", "Ponderaciones validas"), null);
-    	TreeNode value0 = new DefaultTreeNode(new WeightValue("0", "Indiferente", "0"), weightValues);
     	TreeNode value1 = new DefaultTreeNode(new WeightValue("1", "Igualmente preferido", "1"), weightValues);
     	TreeNode value2 = new DefaultTreeNode(new WeightValue("2", "De igualmente a moderadamente", "1/2"), weightValues);
     	TreeNode value3 = new DefaultTreeNode(new WeightValue("3", "Moderadamente preferido", "1/3"), weightValues);

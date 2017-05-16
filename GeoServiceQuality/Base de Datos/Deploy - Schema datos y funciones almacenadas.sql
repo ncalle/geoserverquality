@@ -1708,7 +1708,7 @@ BEGIN
          LastProfileID
          , mr.MetricRangeID
          , 'R'
-         , 0
+         , 1
          , NULL
       FROM MetricKeys mk
       INNER JOIN MetricRange mr ON mr.MetricID = mk.MetricID
@@ -1730,7 +1730,7 @@ BEGIN
          LastProfileID
          , m.MetricID
          , 'M'
-         , 0
+         , 1
          , NULL
       FROM MetricKeys mk
       INNER JOIN MetricRange mr ON mr.MetricID = mk.MetricID
@@ -1753,7 +1753,7 @@ BEGIN
          LastProfileID
          , f.FactorID
          , 'F'
-         , 0
+         , 1
          , NULL
       FROM MetricKeys mk
       INNER JOIN MetricRange mr ON mr.MetricID = mk.MetricID
@@ -1777,7 +1777,7 @@ BEGIN
          LastProfileID
          , d.DimensionID
          , 'D'
-         , 0
+         , 1
          , NULL
       FROM MetricKeys mk
       INNER JOIN MetricRange mr ON mr.MetricID = mk.MetricID
@@ -1802,7 +1802,7 @@ BEGIN
          LastProfileID
          , q.QualityModelID
          , 'Q'
-         , 0
+         , 1
          , NULL
       FROM MetricKeys mk
       INNER JOIN MetricRange mr ON mr.MetricID = mk.MetricID

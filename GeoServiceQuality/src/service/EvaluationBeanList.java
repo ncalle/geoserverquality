@@ -30,6 +30,7 @@ import entity.IdeTreeStructure;
 import entity.MeasurableObject;
 import entity.Profile;
 import entity.ProfileMetric;
+import entity.QualityWeightTreeStructure;
 import dao.DAOException;
 import dao.EvaluationBean;
 import dao.EvaluationBeanRemote;
@@ -43,6 +44,8 @@ import dao.ProfileBean;
 import dao.ProfileBeanRemote;
 import dao.ProfileMetricBean;
 import dao.ProfileMetricBeanRemote;
+import dao.QualityWeightTreeStructureBean;
+import dao.QualityWeightTreeStructureBeanRemote;
 
 
 @ManagedBean(name = "evaluationBeanList")
@@ -79,6 +82,8 @@ public class EvaluationBeanList {
 	private ProfileBeanRemote profileDao = new ProfileBean();
 	private ProfileMetricBeanRemote pmDao = new ProfileMetricBean();
 	private IdeTreeStructureBeanRemote ideTreeDao = new IdeTreeStructureBean();
+	private List<QualityWeightTreeStructure> listQualityWeight;
+	private QualityWeightTreeStructureBeanRemote qwDao = new QualityWeightTreeStructureBean();
 	
 	@PostConstruct
 	private void init() {
@@ -217,6 +222,11 @@ public class EvaluationBeanList {
 		
 		//limpio la tabla de objetos de granularidad alta
 		selectedTreeNode = null;
+		
+		//se calcula hash con peso total de cada rama del arbol de ponderaciones
+		if(selectedProfile.getIsWeightedFlag()){
+			calculateWeight();
+		}
 		
 	}
 	
@@ -577,4 +587,69 @@ public class EvaluationBeanList {
 		}
 		return (count*100)/listResult.size();
 	}
+	
+	 public void calculateWeight() {
+	    	
+    	double weightTree, weightTreeD, weightTreeF, weightTreeM, weightTreeR;
+    	
+        Map<Integer, Double> hashMetricWeight = new HashMap<Integer, Double>();
+        
+        listQualityWeight = qwDao.list(selectedProfile.getProfileId());
+        
+        if (listQualityWeight != null){        	
+			for (QualityWeightTreeStructure qw : listQualityWeight) {
+				if (qw.getElementType().equals("Q")){
+					
+					for (QualityWeightTreeStructure d : listQualityWeight) {
+						if (d.getElementType().equals("D") && qw.getElementID() == d.getFatherElementyID()){
+							
+							if (d.getDenominatorValue() != null  && d.getDenominatorValue() != 0){
+								weightTreeD = (double)d.getNumeratorValue()/(double)d.getDenominatorValue();
+							} else{
+								weightTreeD = d.getNumeratorValue();
+							}
+							
+							for (QualityWeightTreeStructure f : listQualityWeight) {
+								if (f.getElementType().equals("F") && d.getElementID() == f.getFatherElementyID()){
+									
+									if (f.getDenominatorValue() != null  && f.getDenominatorValue() != 0){
+										weightTreeF = (double)f.getNumeratorValue()/(double)f.getDenominatorValue();
+									} else{
+										weightTreeF = f.getNumeratorValue();
+									}									
+									
+									for (QualityWeightTreeStructure m : listQualityWeight) {
+										if (m.getElementType().equals("M") && f.getElementID() == m.getFatherElementyID()){
+											
+											if (m.getDenominatorValue() != null  && m.getDenominatorValue() != 0){
+												weightTreeM = (double)m.getNumeratorValue()/(double)m.getDenominatorValue();
+											} else{
+												weightTreeM = m.getNumeratorValue();
+											}
+											
+											for (QualityWeightTreeStructure mr : listQualityWeight) {
+												if (mr.getElementType().equals("R") && m.getElementID() == mr.getFatherElementyID()){
+													
+													if (mr.getDenominatorValue() != null && mr.getDenominatorValue() != 0){
+														weightTreeR = (double)mr.getNumeratorValue()/(double)mr.getDenominatorValue();
+													} else{
+														weightTreeR = mr.getNumeratorValue();
+													}
+													
+													weightTree = weightTreeR * weightTreeM * weightTreeF * weightTreeD;
+													hashMetricWeight.put(m.getElementID(), weightTree);
+													
+													System.out.println("hashMetricWeight::: " + hashMetricWeight.toString());
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}						
+				}
+			}
+        }
+    }
 }
