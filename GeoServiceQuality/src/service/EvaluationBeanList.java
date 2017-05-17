@@ -59,7 +59,7 @@ public class EvaluationBeanList {
 	private MeasurableObject selectedMeasurableObject;
 	private List<ProfileMetric> listProfileMetric;
 	private int userId, manualMetricID;
-	private String profileResult;
+	private String profileResult, profileQualityResult;
 	private boolean showResult, showConfirm;
 	Map<Integer, Boolean> resultMap = new HashMap<>();
 	
@@ -70,6 +70,7 @@ public class EvaluationBeanList {
 	private TreeNode selectedNode;
 	private MeasurableObject selectedTreeNode;
 	private String profileGranularity;
+	private Map<Integer, Double> hashMetricWeight;
 	
 	private List <MeasurableObject> listIdeMO;
 	private List <MeasurableObject> listInstitutionMO;
@@ -237,6 +238,14 @@ public class EvaluationBeanList {
 	
 	public String getProfileResult() {
 		return profileResult;
+	}
+	
+	public void setProfileQualityResult(String profileQualityResult) {
+		this.profileQualityResult = profileQualityResult;
+	}
+	
+	public String getProfileQualityResult() {
+		return profileQualityResult;
 	}
 	
 	public void setShowResult(boolean showResult) {
@@ -506,6 +515,7 @@ public class EvaluationBeanList {
 						e.setProfileName(selectedProfile.getName());
 						e.setMeasurableObjectName(moItem.getMeasurableObjectDescription());
 						e.setEntityType(selectedTreeNode.getMeasurableObjectName());
+						e.setQualityIndex(getQualityIndex(metric.getMetricID()));
 						
 						listEvaluation.add(e);
 					}
@@ -514,6 +524,10 @@ public class EvaluationBeanList {
 				
 				int profileResultTotal = resultEvaluationProfile(listResult);
 				profileResult = profileResultTotal + " % de aprobación";
+				
+				if(selectedProfile.getIsWeightedFlag()){
+					profileQualityResult = "Indice de calidad total: " + String.valueOf(getQualityIndexTotal());
+				}
 
 				boolean evaluationSummaryResultTotal;
 				if (profileResultTotal >= 50){
@@ -588,11 +602,34 @@ public class EvaluationBeanList {
 		return (count*100)/listResult.size();
 	}
 	
+	public double getQualityIndexTotal(){
+		double res = 0;
+	
+		Iterator it = hashMetricWeight.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        res = res + (double)pair.getValue();
+	        it.remove(); 
+	    }
+		
+		return res;
+	}
+	
+	public double getQualityIndex(int metricId){
+		double res = 0;
+		
+		if(selectedProfile.getIsWeightedFlag()){
+			res = hashMetricWeight.get(metricId);
+		}
+		
+		return res;
+	}
+	
 	 public void calculateWeight() {
 	    	
     	double weightTree, weightTreeD, weightTreeF, weightTreeM, weightTreeR;
     	
-        Map<Integer, Double> hashMetricWeight = new HashMap<Integer, Double>();
+        hashMetricWeight = new HashMap<Integer, Double>();
         
         listQualityWeight = qwDao.list(selectedProfile.getProfileId());
         

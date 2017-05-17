@@ -27,6 +27,7 @@ public class Evaluation implements Serializable {
     private Boolean Success;
     private Integer EvaluationCount;
     private Integer EvaluationApprovedValue;
+    private Double QualityIndex;
 
     
     public Integer getEvaluationApprovedValue() {
@@ -212,6 +213,14 @@ public class Evaluation implements Serializable {
 	
 	public Boolean getSuccess() {
 		return Success;
+	}
+	
+	public Double getQualityIndex() {
+		return QualityIndex;
+	}
+	
+	public void setQualityIndex(Double qualityIndex) {
+		QualityIndex = qualityIndex;
 	}
 
 	@Override
