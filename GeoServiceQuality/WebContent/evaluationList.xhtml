@@ -251,6 +251,9 @@
 					<p:growl id="msgs" />
 					<h3 class="form-signin-heading">Resultado de la evaluación general del perfil:</h3>
 					<h:outputText class="result" value="#{evaluationBeanList.profileResult}" />
+					<br></br>
+					<h:outputText class="result" value="#{evaluationBeanList.profileQualityResult}"  
+					rendered="#{evaluationBeanList.selectedProfile.isWeightedFlag}"/>
 					
 					<hr></hr>
 					<h3 class="form-signin-heading">Detalle de la evaluación realizada:</h3>
@@ -281,13 +284,14 @@
 							<h:outputText value="#{eitem.profileName}" />
 						</p:column>
 						
+						<p:column headerText="Indice de calidad" sortBy="#{eitem.qualityIndex}" 
+							rendered="#{evaluationBeanList.selectedProfile.isWeightedFlag}">
+							<h:outputText value="#{eitem.qualityIndex}" />
+						</p:column>
+						
 						<p:column headerText="Fecha" sortBy="#{eitem.startDate}">
 							<h:outputText value="#{eitem.startDate}" />
 						</p:column>
-						
-<!-- 						<p:column headerText="Fecha fin" sortBy="#{eitem.endDate}">
-							<h:outputText value="#{eitem.endDate}" />
-						</p:column> -->
 	
 						<p:column headerText="Completa" sortBy="#{eitem.isEvaluationCompleted}">
 							<h:outputText value="#{eitem.isEvaluationCompleted}" />
@@ -296,6 +300,8 @@
 						<p:column headerText="Resultado" sortBy="#{eitem.success}">
 							<h:outputText value="#{eitem.success}" />
 						</p:column>
+						
+						
 					</p:dataTable>
 					
 					<hr></hr>
