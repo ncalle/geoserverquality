@@ -1,0 +1,77 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
+import entity.QualityModelTreeStructure;
+
+/**
+ * Session Bean implementation class UserBean
+ */
+@Stateless
+@LocalBean
+public class QualityModelTreeStructureBean implements QualityModelTreeStructureBeanRemote {
+
+    private static final String SQL_QUALITY_MODEL_LIST =
+    		"SELECT ElementID, ElementName, ElementType, FatherElementyID, AggregationFlag, Granularity, Unit FROM quality_models_get()";
+
+    private DAOFactory daoFactory;
+
+    QualityModelTreeStructureBean(DAOFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
+    
+    public QualityModelTreeStructureBean() {
+		// Obtener DAOFactory
+    	daoFactory = DAOFactory.getInstance("geoservicequality.jdbc");
+    }    
+    
+    @Override
+    public List<QualityModelTreeStructure> list() throws DAOException {
+        List<QualityModelTreeStructure> qualityModels = new ArrayList<>();
+
+        Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_QUALITY_MODEL_LIST);
+            
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+            	qualityModels.add(map(resultSet));
+            }
+            
+            connection.close();
+            
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+
+        return qualityModels;
+    }
+        
+    private static QualityModelTreeStructure map(ResultSet resultSet) throws SQLException {
+    	QualityModelTreeStructure qualityModel = new QualityModelTreeStructure();
+    	
+    	qualityModel.setElementID(resultSet.getInt("ElementID"));
+    	qualityModel.setElementName(resultSet.getString("ElementName"));
+    	qualityModel.setElementType(resultSet.getString("ElementType"));
+    	qualityModel.setFatherElementyID(resultSet.getInt("FatherElementyID"));    	
+    	qualityModel.setAggregationFlag(resultSet.getBoolean("AggregationFlag"));
+    	qualityModel.setGranularity(resultSet.getString("Granularity"));    	
+    	qualityModel.setUnit(resultSet.getString("Unit"));  	
+    	
+        return qualityModel;
+    }
+
+}

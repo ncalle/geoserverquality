@@ -2,20 +2,13 @@
 CREATE OR REPLACE FUNCTION quality_models_get()
 RETURNS TABLE 
    (
-      QualityModelID INT
-      , QualityModelName VARCHAR(40)
-      , DimensionID INT
-      , DimensionName VARCHAR(40)
-      , FactorID INT
-      , FactorName VARCHAR(40)
-      , MetricID INT
-      , MetricName VARCHAR(100)
-      , MetricAgrgegationFlag BOOLEAN
-      , MetricGranurality VARCHAR(11)
-      , MetricDescription VARCHAR(100)
-      , UnitID INT
-      , UnitName VARCHAR(40)
-      , UnitDescription VARCHAR(100)
+      ElementID INT --QualityModelID, DimensionID, FactorID, MetricID
+      , ElementName VARCHAR(100)
+      , ElementType CHAR(1) --'Q' = QualityModel, 'D' = Dimension, 'F' = Factor, 'M' = Metrica
+      , FatherElementyID INT
+      , AggregationFlag BOOLEAN
+      , Granularity VARCHAR(11)
+      , Unit VARCHAR(40)
  ) AS $$
 /************************************************************************************************************
 ** Name: quality_models_get
@@ -26,47 +19,54 @@ RETURNS TABLE
 **
 *************************************************************************************************************/
 BEGIN
-
-   -- Lista de modelos de calidad
+   
    RETURN QUERY
-   SELECT qm.QualityModelID
-      , qm.Name
-      , d.DimensionID
-      , d.Name
-      , f.FactorID
-      , f.Name
-      , m.MetricID
-      , m.Name
-      , m.AgrgegationFlag
-      , m.Granurality
-      , m.Description
-      , u.UnitID
-      , u.Name
-      , u.Description
+   SELECT
+      qm.QualityModelID AS ElementID
+      , qm.Name AS ElementName
+      , 'Q' :: CHAR(1) AS ElementType
+      , NULL :: INT
+      , NULL :: BOOLEAN
+      , NULL :: VARCHAR(11)
+      , NULL :: VARCHAR(40)
    FROM QualityModel qm
-   INNER JOIN Dimension d ON d.QualityModelID = qm.QualityModelID
-   INNER JOIN Factor f ON f.DimensionID = d.DimensionID
-   INNER JOIN Metric m ON m.FactorID = f.FactorID
-   INNER JOIN Unit u ON u.UnitID = m.UnitID 
-   GROUP BY qm.QualityModelID
-      , qm.Name
-      , d.DimensionID
-      , d.Name
-      , f.FactorID
-      , f.Name
-      , m.MetricID
-      , m.Name
+
+   UNION
+   
+   SELECT
+      d.DimensionID AS ElementID
+      , d.Name AS ElementName
+      , 'D' :: CHAR(1) AS ElementType
+      , d.QualityModelID AS FatherElementyID
+      , NULL :: BOOLEAN
+      , NULL :: VARCHAR(11)
+      , NULL :: VARCHAR(40)
+   FROM Dimension d
+
+   UNION
+   
+   SELECT
+      f.FactorID AS ElementID
+      , f.Name AS ElementName
+      , 'F' :: CHAR(1) AS ElementType
+      , f.DimensionID AS FatherElementyID
+      , NULL :: BOOLEAN
+      , NULL :: VARCHAR(11)
+      , NULL :: VARCHAR(40)
+   FROM Factor f
+
+   UNION
+   
+   SELECT
+      m.MetricID AS ElementID
+      , m.Name AS ElementName
+      , 'M' :: CHAR(1) AS ElementType
+      , m.FactorID AS FatherElementyID
       , m.AgrgegationFlag
       , m.Granurality
-      , m.Description
-      , u.UnitID
-      , u.Name
-      , u.Description
-   ORDER BY QualityModelID
-      , d.DimensionID
-      , f.FactorID
-      , m.MetricID
-      , u.UnitID;
+      , u.Name AS Unit
+   FROM Metric m
+   INNER JOIN Unit u ON u.UnitID = m.UnitID;
         
 END;
 $$ LANGUAGE plpgsql;

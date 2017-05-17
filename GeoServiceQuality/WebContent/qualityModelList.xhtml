@@ -51,42 +51,32 @@
 
 		<div class="container">
 
-			<h:form id="users" method="post"><p:growl id="msgs" />
+			<h:form id="quality" method="post"><p:growl id="msgs" />
 				<h2 class="form-signin-heading">Modelos de Calidad</h2>
 				<hr></hr>
-				<p:dataTable id="qualityModel" 
-					value="#{qualityModelBeanList.listQualityModels}" 
-					var="qmitem" 
-					tableStyle="table-layout: auto;" 
-					widgetVar="qm"
-					emptyMessage="No existen datos de modelos.">
+				
+				<p:treeTable value="#{qualityModelBeanList.qualityModelTree}" editable="true" var="qmt" style="margin-bottom:20px">
+			        <f:facet name="header">
+			            Árbol de modelos de calidad
+			        </f:facet>
 
-					<p:column headerText="Modelo de Calidad" sortBy="#{qmitem.qualityModelName}">
-						<h:outputText value="#{qmitem.qualityModelName}" />
+			        <p:column headerText="Nombre">
+			        	<h:outputText value="#{qmt.name}" />
+			        </p:column>
+
+					<p:column headerText="Granularidad">
+						<h:outputText value="#{qmt.granularity}" />
 					</p:column>
-					<p:column headerText="Dimensión" sortBy="#{qmitem.dimensionName}">
-						<h:outputText value="#{qmitem.dimensionName}" />
+
+					<p:column headerText="Unidad">
+						<h:outputText value="#{qmt.unit}" />
 					</p:column>
-					<p:column headerText="Factor" sortBy="#{qmitem.factorName}">
-						<h:outputText value="#{qmitem.factorName}" />
-					</p:column>
-					<p:column headerText="Métrica" sortBy="#{qmitem.metricName}">
-						<h:outputText value="#{qmitem.metricName}" />
-					</p:column>
-					<p:column headerText="Agregación" sortBy="#{qmitem.metricAgrgegationFlag}">
-						<h:outputText value="#{qmitem.metricAgrgegationFlag}" />
-					</p:column>
-					<p:column headerText="Granularidad" sortBy="#{qmitem.metricGranurality}">
-						<h:outputText value="#{qmitem.metricGranurality}" />
-					</p:column>
-					<!--  <p:column headerText="Descripción" sortBy="#{qmitem.metricDescription}">
-						<h:outputText value="#{qmitem.metricDescription}" />
-					</p:column>-->
-					<p:column headerText="Unidad" sortBy="#{qmitem.unitName}">
-						<h:outputText value="#{qmitem.unitName}" />
-					</p:column>
-					
-				</p:dataTable>
+			        
+			        <p:column style="width:50px">
+			            <p:rowEditor />
+			        </p:column>
+			        
+			    </p:treeTable>
 
 			</h:form>
 		</div>

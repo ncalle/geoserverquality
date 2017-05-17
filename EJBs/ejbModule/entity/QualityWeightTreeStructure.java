@@ -14,7 +14,7 @@ public class QualityWeightTreeStructure implements Serializable {
     private Integer ProfileID;
     private Integer ElementID; //QualityModelID, DimensionID, FactorID, MetricID, MetricRangeID
     private String ElementName;
-    private String ElementType; //'Q' = QualityModel, 'D' = Dimension, 'F' = Factor, 'M' = etrica, 'R' = Rango
+    private String ElementType; //'Q' = QualityModel, 'D' = Dimension, 'F' = Factor, 'M' = Metrica, 'R' = Rango
     private Integer NumeratorValue;
     private Integer DenominatorValue;
     private Integer FatherElementyID;
