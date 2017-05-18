@@ -252,6 +252,13 @@ public class EvaluationBeanList {
 		this.showResult = showResult;
 	}
 	
+	public void setBackState(boolean showResult) {
+		setShowResult(showResult);
+		if(selectedProfile.getIsWeightedFlag()){
+			calculateWeight();
+		}
+	}
+	
 	public boolean isShowResult() {
 		return showResult;
 	}
@@ -515,8 +522,16 @@ public class EvaluationBeanList {
 						e.setProfileName(selectedProfile.getName());
 						e.setMeasurableObjectName(moItem.getMeasurableObjectDescription());
 						e.setEntityType(selectedTreeNode.getMeasurableObjectName());
-						e.setQualityIndex(getQualityIndex(metric.getMetricID()));
 						
+						if(selectedProfile.getIsWeightedFlag()){
+							if(success){
+								e.setQualityIndex(getQualityIndex(metric.getMetricID()));
+							} else {
+								e.setQualityIndex(0.0);
+								hashMetricWeight.put(metric.getMetricID(), 0.0);
+							}
+						}
+					
 						listEvaluation.add(e);
 					}
 				}
@@ -618,7 +633,7 @@ public class EvaluationBeanList {
 	public double getQualityIndex(int metricId){
 		double res = 0;
 		
-		if(selectedProfile.getIsWeightedFlag()){
+		if(selectedProfile.getIsWeightedFlag() && hashMetricWeight.get(metricId)!=null){
 			res = hashMetricWeight.get(metricId);
 		}
 		
