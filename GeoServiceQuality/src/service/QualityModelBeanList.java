@@ -5,9 +5,12 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -53,6 +56,19 @@ public class QualityModelBeanList {
 		this.qualityModelTree = qualityModelTree;
 	}
 	
+    public void onQualityModelTreeRowEdit(Integer elementID, String elementType, String name) {   	
+    	qmDao.update(elementID, elementType, name);
+    	
+        FacesMessage msg = new FacesMessage("Ponderación editada correctamente");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+     
+    public void onQualityModelTreeRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edición cancelada", ((TreeNode) event.getObject()).toString());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+	
+	
 	public TreeNode createQualityModelTree() {
 	        List <Integer> listQModels = new ArrayList<>();
 	        List <Integer> listDimensions = new ArrayList<>();
@@ -70,7 +86,7 @@ public class QualityModelBeanList {
 						listQModels.add(qm.getElementID());
 						TreeNode qualityModel;
 						
-						qualityModel = new DefaultTreeNode(new QualityModelElement(qm.getElementID(), qm.getElementName(), qm.getAggregationFlag(), qm.getGranularity(), qm.getUnit(), "Modelo"), root);
+						qualityModel = new DefaultTreeNode(new QualityModelElement(qm.getElementID(), qm.getElementName(), qm.getAggregationFlag(), qm.getGranularity(), qm.getUnit(), "Q"), root);
 						
 						for (QualityModelTreeStructure d : listQualityModels) {
 							if (d.getElementType().equals("D") && !listDimensions.contains(d.getElementID()) && qm.getElementID() == d.getFatherElementyID()){
@@ -78,7 +94,7 @@ public class QualityModelBeanList {
 								listDimensions.add(d.getElementID());
 								TreeNode dimension;
 
-								dimension = new DefaultTreeNode(new QualityModelElement(d.getElementID(), d.getElementName(), d.getAggregationFlag(), d.getGranularity(), d.getUnit(), "Dimension"), qualityModel);
+								dimension = new DefaultTreeNode(new QualityModelElement(d.getElementID(), d.getElementName(), d.getAggregationFlag(), d.getGranularity(), d.getUnit(), "D"), qualityModel);
 								
 									
 								for (QualityModelTreeStructure f : listQualityModels) {
@@ -87,7 +103,7 @@ public class QualityModelBeanList {
 										listFactors.add(f.getElementID());
 										TreeNode factor;
 										
-										factor = new DefaultTreeNode(new QualityModelElement(f.getElementID(), f.getElementName(), f.getAggregationFlag(), f.getGranularity(), f.getUnit(), "Factor"), dimension);									
+										factor = new DefaultTreeNode(new QualityModelElement(f.getElementID(), f.getElementName(), f.getAggregationFlag(), f.getGranularity(), f.getUnit(), "F"), dimension);									
 										
 										for (QualityModelTreeStructure m : listQualityModels) {
 											if (m.getElementType().equals("M") && !listMetrics.contains(m.getElementID()) && f.getElementID() == m.getFatherElementyID()){
@@ -95,7 +111,7 @@ public class QualityModelBeanList {
 												listMetrics.add(m.getElementID());
 												TreeNode metric;
 												
-												metric = new DefaultTreeNode(new QualityModelElement(m.getElementID(), m.getElementName(), m.getAggregationFlag(), m.getGranularity(), m.getUnit(), "Metrica"), factor);
+												metric = new DefaultTreeNode(new QualityModelElement(m.getElementID(), m.getElementName(), m.getAggregationFlag(), m.getGranularity(), m.getUnit(), "M"), factor);
 											}
 										}
 									}

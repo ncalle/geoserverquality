@@ -60,9 +60,20 @@
 			            Árbol de modelos de calidad
 			        </f:facet>
 
-			        <p:column headerText="Nombre">
-			        	<h:outputText value="#{qmt.name}" />
-			        </p:column>
+			        <p:ajax event="rowEdit" listener="#{qualityModelBeanList.onQualityModelTreeRowEdit(qmt.elementID, qmt.type, qmt.name)}" update=":quality:msgs" />
+			        <p:ajax event="rowEditCancel" listener="#{qualityModelBeanList.onQualityModelTreeRowCancel}" update=":quality:msgs" />
+			        
+					<p:column headerText="Nombre">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{qmt.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="qmtName" value="#{qmt.name}"
+									style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
 
 					<p:column headerText="Granularidad">
 						<h:outputText value="#{qmt.granularity}" />

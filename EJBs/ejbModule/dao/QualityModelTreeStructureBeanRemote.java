@@ -9,5 +9,7 @@ import entity.QualityModelTreeStructure;
 public interface QualityModelTreeStructureBeanRemote {
 
     public List<QualityModelTreeStructure> list() throws DAOException;
+    
+    public void update(Integer elementID, String elementType, String name) throws DAOException;
 
 }

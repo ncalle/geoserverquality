@@ -21,7 +21,9 @@ public class QualityModelTreeStructureBean implements QualityModelTreeStructureB
 
     private static final String SQL_QUALITY_MODEL_LIST =
     		"SELECT ElementID, ElementName, ElementType, FatherElementyID, AggregationFlag, Granularity, Unit FROM quality_models_get()";
-
+	private static final String SQL_UPDATE =
+        	"SELECT * FROM quality_model_update (?, ?, ?)";
+	
     private DAOFactory daoFactory;
 
     QualityModelTreeStructureBean(DAOFactory daoFactory) {
@@ -58,6 +60,27 @@ public class QualityModelTreeStructureBean implements QualityModelTreeStructureB
         }
 
         return qualityModels;
+    }
+    
+    public void update(Integer elementID, String elementType, String name) throws DAOException {
+    	Connection connection = null;
+		PreparedStatement statement = null;
+		
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE);
+            
+            statement.setInt(1, elementID);
+            statement.setString(2, elementType);
+            statement.setString(3, name);        
+        
+            statement.executeQuery();
+            
+            connection.close();
+            
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
     }
         
     private static QualityModelTreeStructure map(ResultSet resultSet) throws SQLException {
