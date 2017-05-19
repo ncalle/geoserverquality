@@ -335,6 +335,23 @@ CREATE TABLE EvaluationSummary
     FOREIGN KEY (MeasurableObjectID) REFERENCES MeasurableObject(MeasurableObjectID)
 );
 
+-- Contiene un resumen por perfil de cada evaluacion realizada
+DROP TABLE IF EXISTS EvaluationPeriodic CASCADE;
+CREATE TABLE EvaluationPeriodic
+(
+    EvaluationSummaryID INT NOT NULL,
+    MeasurableObjectUrl VARCHAR(1024) NOT NULL,
+    EvaluatedCount INT,
+	Periodic INT,
+	SuccessCount INT,
+    SuccessPercentage INT
+
+    --FOREIGN KEY (EvaluationSummaryID),
+    --FOREIGN KEY (MeasurableObjectUrl)
+    --FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID),
+    --FOREIGN KEY (MeasurableObjectID) REFERENCES MeasurableObject(MeasurableObjectID)
+);
+
 -- Contiene el resultado de cada evaluacion en particular
 DROP TABLE IF EXISTS Evaluation CASCADE;
 CREATE TABLE Evaluation
@@ -1188,6 +1205,109 @@ BEGIN
       , es.SuccessFlag
       , es.SuccessPercentage;
 
+END;
+$$ LANGUAGE plpgsql;
+/* ****************************************************************************************************** */
+/* ****************************************************************************************************** */
+
+CREATE OR REPLACE FUNCTION evaluation_periodic_insert
+(
+   pEvaluationSummaryID INT
+   , pMeasurableObjectUrl VARCHAR(1024)
+   , pEvaluatedCount INT
+   , pPeriodic INT
+   , pSuccessCount INT
+   , pSuccessPercentage INT
+)
+RETURNS TABLE 
+(
+    EvaluationSummaryID INT
+   , MeasurableObjectUrl VARCHAR(1024)
+   , EvaluatedCount INT
+   , Periodic INT
+   , SuccessCount INT
+   , SuccessPercentage INT
+) AS $$
+/************************************************************************************************************
+** Name: evaluation_periodic_insert
+**
+** Desc: Ingreso de evaluacion periodica
+**
+*************************************************************************************************************/
+DECLARE v_EvaluationSummaryID INT;
+
+BEGIN    
+
+   INSERT INTO EvaluationPeriodic AS es
+   (EvaluationSummaryID, MeasurableObjectUrl, EvaluatedCount, Periodic, SuccessCount, SuccessPercentage)
+   VALUES
+   (pEvaluationSummaryID, pMeasurableObjectUrl, pEvaluatedCount, pPeriodic, pSuccessCount, pSuccessPercentage)
+      RETURNING es.EvaluationSummaryID INTO v_EvaluationSummaryID;
+
+   RETURN QUERY 
+      SELECT es.EvaluationSummaryID
+      , es.MeasurableObjectUrl	  
+      , es.EvaluatedCount
+      , es.Periodic
+      , es.SuccessCount
+	  , es.SuccessPercentage
+   FROM EvaluationPeriodic es
+   GROUP BY es.EvaluationSummaryID, es.MeasurableObjectUrl, es.EvaluatedCount, es.Periodic, es.SuccessCount, es.SuccessPercentage;
+
+END;
+$$ LANGUAGE plpgsql;
+/* ****************************************************************************************************** */
+/* ****************************************************************************************************** */
+--DROP FUNCTION evaluation_periodic_get(integer);
+CREATE OR REPLACE FUNCTION evaluation_periodic_get
+(
+   pUserID INT --no requerido
+)
+RETURNS TABLE 
+(
+   EvaluationSummaryID INT
+   , MeasurableObjectUrl VARCHAR(1024)
+   , EvaluatedCount INT
+   , Periodic INT
+   , SuccessCount INT
+   , SuccessPercentage INT
+) AS $$
+/************************************************************************************************************
+** Name: evaluation_periodic_get
+**
+** Desc: Las evaluaciones periodicas de disponibilidad 
+**
+*************************************************************************************************************/
+DECLARE v_canUserMeasureAble BOOLEAN;
+
+BEGIN
+
+   -- validacion de usuario
+   IF (pUserID IS NOT NULL)
+      AND NOT EXISTS (SELECT 1 FROM SystemUser su WHERE su.UserID = pUserID)
+   THEN
+      RAISE EXCEPTION 'Error - El Usuario no existe.';
+   END IF;
+   
+   IF (pUserID IS NOT NULL)
+   THEN
+      SELECT TRUE INTO v_canUserMeasureAble;
+   ELSE
+      SELECT FALSE INTO v_canUserMeasureAble;
+   END IF;
+	
+   RETURN QUERY
+   SELECT es.EvaluationSummaryID
+      , es.MeasurableObjectURL
+      , es.EvaluatedCount
+      , es.Periodic
+      , es.SuccessCount
+      , es.SuccessPercentage
+   FROM EvaluationPeriodic es
+   GROUP BY es.EvaluationSummaryID
+      , es.MeasurableObjectUrl
+   ORDER BY es.EvaluationSummaryID;
+         
 END;
 $$ LANGUAGE plpgsql;
 /* ****************************************************************************************************** */
