@@ -1304,9 +1304,7 @@ BEGIN
       , es.SuccessCount
       , es.SuccessPercentage
    FROM EvaluationPeriodic es
-   GROUP BY es.EvaluationSummaryID
-      , es.MeasurableObjectUrl
-   ORDER BY es.EvaluationSummaryID;
+   GROUP BY es.EvaluationSummaryID, es.MeasurableObjectUrl, es.EvaluatedCount, es.Periodic, es.SuccessCount, es.SuccessPercentage;
          
 END;
 $$ LANGUAGE plpgsql;
@@ -2469,6 +2467,36 @@ BEGIN
       WHERE IdeID = v_EntityID;   
    END IF;
    
+    
+END;
+$$ LANGUAGE plpgsql;
+/* ****************************************************************************************************** */
+/* ****************************************************************************************************** */
+
+CREATE OR REPLACE FUNCTION evaluation_periodic_update
+(
+ pEvaluationSummaryID INT
+   , pMeasurableObjectUrl VARCHAR(1024)
+   , pEvaluatedCount INT
+   , pPeriodic INT
+   , pSuccessCount INT
+   , pSuccessPercentage INT
+)
+RETURNS VOID AS $$
+/************************************************************************************************************
+** Name: evaluation_periodic_update()
+*************************************************************************************************************/
+
+BEGIN
+
+   UPDATE EvaluationPeriodic
+   SET EvaluationSummaryID = pEvaluationSummaryID
+      , MeasurableObjectUrl = pMeasurableObjectUrl
+      , EvaluatedCount = pEvaluatedCount
+      , Periodic = pPeriodic
+      , SuccessCount = pSuccessCount
+      , SuccessPercentage = pSuccessPercentage
+   WHERE EvaluationSummaryID = pEvaluationSummaryID;
     
 END;
 $$ LANGUAGE plpgsql;

@@ -20,7 +20,8 @@ public class EvaluationPeriodicBean implements EvaluationPeriodicBeanRemote {
     		"SELECT EvaluationSummaryID, MeasurableObjectURL, EvaluatedCount, Periodic, SuccessCount, SuccessPercentage FROM evaluation_periodic_get (?)";
     private static final String SQL_INSERT =
             "SELECT EvaluationSummaryID, MeasurableObjectURL, EvaluatedCount, Periodic, SuccessCount, SuccessPercentage FROM evaluation_periodic_insert (?, ?, ?, ?, ?, ?)";
-
+    private static final String SQL_UPDATE =
+        	"SELECT * FROM evaluation_periodic_update (?, ?, ?, ?, ?, ?)";
 
     private DAOFactory daoFactory;
 	
@@ -93,7 +94,7 @@ public class EvaluationPeriodicBean implements EvaluationPeriodicBeanRemote {
 			statement.setInt(3, evaluationPeriodic.getEvaluatedCount());
 			statement.setInt(4, evaluationPeriodic.getPeriodic());
 			statement.setInt(5, evaluationPeriodic.getSuccessCount());
-			statement.setInt(5, evaluationPeriodic.getSuccessPercentage());
+			statement.setInt(6, evaluationPeriodic.getSuccessPercentage());
 			
             resultSet = statement.executeQuery();
 
@@ -108,6 +109,32 @@ public class EvaluationPeriodicBean implements EvaluationPeriodicBeanRemote {
         }
         
         return ev;
+	}
+
+	@Override
+	public void update(EvaluationPeriodic evaluationPeriodic) throws DAOException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE);
+
+            statement.setInt(1, evaluationPeriodic.getEvaluationSummaryID());
+			statement.setString(2, evaluationPeriodic.getMeasurableObjectUrl());
+			statement.setInt(3, evaluationPeriodic.getEvaluatedCount());
+			statement.setInt(4, evaluationPeriodic.getPeriodic());
+			statement.setInt(5, evaluationPeriodic.getSuccessCount());
+			statement.setInt(6, evaluationPeriodic.getSuccessPercentage());
+        
+            statement.executeQuery();
+            
+            connection.close();
+            
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+		
 	}
 
 }

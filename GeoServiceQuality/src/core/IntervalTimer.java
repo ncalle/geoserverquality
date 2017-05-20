@@ -18,12 +18,10 @@ import javax.ejb.TimerConfig;
 
 import dao.EvaluationBean;
 import dao.EvaluationBeanRemote;
-import dao.MeasurableObjectBean;
-import dao.MeasurableObjectBeanRemote;
-import dao.ReportBean;
-import dao.ReportBeanRemote;
-import entity.Evaluation;
-import entity.MeasurableObject;
+import dao.EvaluationPeriodicBean;
+import dao.EvaluationPeriodicBeanRemote;
+
+import entity.EvaluationPeriodic;
 
 
 @Singleton
@@ -36,10 +34,11 @@ public class IntervalTimer {
 	
 	 @EJB
 	 private EvaluationBeanRemote evaluationDao = new EvaluationBean();
-	 private MeasurableObjectBeanRemote moDao = new MeasurableObjectBean();
-	 
-	private List<MeasurableObject> listMeasurableObjects;
+	 private EvaluationPeriodicBeanRemote evaluationPeriodicDao = new EvaluationPeriodicBean();
 
+	 private List<EvaluationPeriodic> listPeriodicObjects;
+
+	 
     @PostConstruct
     public void applicationStartup() {
     	
@@ -54,31 +53,52 @@ public class IntervalTimer {
         timerConfig.setInfo("Timer");
         
         System.out.println("scheduleTimer : " + System.currentTimeMillis());
-        
-        //boolean ok = checkService(URL1, TIMEOUT_SERVICE);
-        //System.out.println("checkService.. " + ok + URL1);
-        
-      /*  listMeasurableObjects = moDao.list();
-        List<Evaluation> list =  evaluationDao.list();
-        String url;
-        
-        for(Evaluation e:list){
-        	if (e.getMetricID() == 0 && !e.getIsEvaluationCompleted()){
-        		int idMO = e.getMeasurableObjectID();
-        		 for(MeasurableObject m:listMeasurableObjects){
-        			 if(m.getMeasurableObjectID()==idMO){
-        				 url = m.getMeasurableObjectURL();
-        			 }
-        		 }
-        				
+     
+        listPeriodicObjects = evaluationPeriodicDao.list();
+        for(EvaluationPeriodic e:listPeriodicObjects){
+        	boolean success = metricServiceAvailable(e.getMeasurableObjectUrl(), TIMEOUT_SERVICE);
+        	System.out.println("checkService.. " + success + URL1);
+        	
+        	int count = e.getEvaluatedCount();
+        	int countSuccess= e.getSuccessCount();
+        	
+        	count++;
+        	if(success){
+        		countSuccess++;
         	}
-        }*/
+        	
+        	e.setEvaluatedCount(count);
+        	e.setSuccessCount(countSuccess);
+        	e.setSuccessPercentage(countSuccess/count * 100);
+        	
+        	System.out.println(e.toString());
+        	
+        	evaluationPeriodicDao.update(e);
+        }
+        
     }
     
     @Timeout
     @AccessTimeout(value = 20, unit = TimeUnit.MINUTES)
     public void process(Timer timer) {
     	System.out.println("process timer..");
+    }
+    
+    
+    public boolean metricServiceAvailable(String url, int timeout) {
+        url = url.replaceFirst("^https", "http"); 
+
+        try {
+        	URL u = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) u.openConnection();
+            connection.setConnectTimeout(timeout);
+            connection.setReadTimeout(timeout);
+            connection.setRequestMethod("HEAD");
+            int responseCode = connection.getResponseCode();
+            return (200 <= responseCode && responseCode <= 399);
+        } catch (IOException exception) {
+            return false;
+        }
     }
     
 }

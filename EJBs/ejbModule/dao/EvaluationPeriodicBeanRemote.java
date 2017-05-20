@@ -5,6 +5,7 @@ import javax.ejb.Remote;
 
 import entity.EvaluationPeriodic;
 
+
 @Remote
 public interface EvaluationPeriodicBeanRemote {
 
@@ -12,4 +13,6 @@ public interface EvaluationPeriodicBeanRemote {
     
     public EvaluationPeriodic create(EvaluationPeriodic evaluationPeriodic) throws IllegalArgumentException, DAOException;
 
+    public void update(EvaluationPeriodic evaluationPeriodic) throws DAOException;
+    
 }
