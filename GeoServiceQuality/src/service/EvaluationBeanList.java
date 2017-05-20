@@ -25,6 +25,7 @@ import org.primefaces.model.TreeNode;
 
 import EvaluationCore.App;
 import entity.Evaluation;
+import entity.EvaluationPeriodic;
 import entity.EvaluationSummary;
 import entity.IdeTreeStructure;
 import entity.MeasurableObject;
@@ -34,6 +35,8 @@ import entity.QualityWeightTreeStructure;
 import dao.DAOException;
 import dao.EvaluationBean;
 import dao.EvaluationBeanRemote;
+import dao.EvaluationPeriodicBean;
+import dao.EvaluationPeriodicBeanRemote;
 import dao.EvaluationSummaryBean;
 import dao.EvaluationSummaryBeanRemote;
 import dao.IdeTreeStructureBean;
@@ -85,6 +88,7 @@ public class EvaluationBeanList {
 	private IdeTreeStructureBeanRemote ideTreeDao = new IdeTreeStructureBean();
 	private List<QualityWeightTreeStructure> listQualityWeight;
 	private QualityWeightTreeStructureBeanRemote qwDao = new QualityWeightTreeStructureBean();
+	private EvaluationPeriodicBeanRemote evaluationPeriodicDao = new EvaluationPeriodicBean();
 	
 	@PostConstruct
 	private void init() {
@@ -561,6 +565,9 @@ public class EvaluationBeanList {
 				
 				EvaluationSummary evaluationSummaryResult = evaluationSummaryDao.create(es);
 				
+				//evaluacion disponibilidad periodica
+				settingPeriodicEval(evaluationSummaryResult.getEvaluationSummaryID(), selectedMeasurableObject.getMeasurableObjectURL(), success);
+				
 				//cargar cada una de las evaluaciones, asociadas al ID del resumen de evaluacion
 				Iterator<Evaluation> evaluation_iterator = listEvaluation.iterator();
 				Evaluation e;
@@ -589,6 +596,22 @@ public class EvaluationBeanList {
 			context.addMessage(null, new FacesMessage("Falto seleccionar un perfil o un objeto a evaluar"));
 		}
 
+	}
+	
+	private void settingPeriodicEval(Integer id, String url, boolean success){
+		System.out.println("EvId: " + id + " Url: " + url + " Success: " + success);
+		
+		EvaluationPeriodic periodic = new EvaluationPeriodic();
+		periodic.setEvaluationSummaryID(id);
+		periodic.setMeasurableObjectUrl(url);
+		periodic.setSuccessCount(success?1:0);
+		periodic.setEvaluatedCount(1);
+		periodic.setPeriodic(24);
+		periodic.setSuccessPercentage(success?100:0);
+		
+		System.out.println(periodic.toString());
+		
+		evaluationPeriodicDao.create(periodic);
 	}
 	
 	public boolean evaluationMetric(ProfileMetric metric, MeasurableObject selectedMeasurableObject){
