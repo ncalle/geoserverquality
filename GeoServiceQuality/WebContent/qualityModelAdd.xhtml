@@ -63,17 +63,17 @@
 					<br></br>
 					<h:selectOneMenu value="#{qualityModelBeanAdd.entityType}">
 						<f:selectItem itemValue="Selecione un tipo de entidad" itemLabel="Selecione un tipo de entidad" />
-						<f:selectItem itemValue="Modelo" itemLabel="Modelo" />
-						<f:selectItem itemValue="Dimensión" itemLabel="Dimensión" />
+						<f:selectItem itemValue="Model" itemLabel="Modelo" />
+						<f:selectItem itemValue="Dimension" itemLabel="Dimensión" />
 						<f:selectItem itemValue="Factor" itemLabel="Factor" />
-						<f:selectItem itemValue="Métrica" itemLabel="Métrica" />
+						<f:selectItem itemValue="Metric" itemLabel="Métrica" />
 						<f:ajax render="@form" />
 					</h:selectOneMenu>
 					
 					<br></br>
 					<br></br>
 					
-					<h:panelGroup id="model" rendered="#{qualityModelBeanAdd.entityType == 'Modelo'}" >
+					<h:panelGroup id="model" rendered="#{qualityModelBeanAdd.entityType == 'Model'}" >
 						<label for="inputModelName" class="sr-only">Nombre</label>
 						<h:inputText id="ideM"
 							value="#{qualityModelBeanAdd.modelName}" 
@@ -82,7 +82,7 @@
 							required="required" />
 					</h:panelGroup>	
 					
-					<h:panelGroup id="dim" rendered="#{qualityModelBeanAdd.entityType == 'Dimensión'}">
+					<h:panelGroup id="dim" rendered="#{qualityModelBeanAdd.entityType == 'Dimension'}">
 						
 						<label for="inputDim">Modelo al cual pertenece la dimensión</label>			    		
 				    	<h:selectOneMenu
@@ -131,7 +131,7 @@
 							required="required" />
 					</h:panelGroup>	
 					
-					<h:panelGroup id="layer" rendered="#{qualityModelBeanAdd.entityType == 'Métrica'}">
+					<h:panelGroup id="layer" rendered="#{qualityModelBeanAdd.entityType == 'Metric'}">
 
 						<label for="inputMetric">Factor al cual pertenece la métrica</label>
 						<br></br>
@@ -148,12 +148,57 @@
 						<br></br>
 						<br></br>
 						
+						<p:selectBooleanCheckbox value="#{qualityModelBeanAdd.metricIsAggregation}" />
+						<label for="inputType">Agregación</label>
+						<br></br>
+						<br></br>
+												
+						<p:selectBooleanCheckbox value="#{qualityModelBeanAdd.metricIsManual}" />
+						<label for="inputType">Manual</label>
+						<br></br>
+						<br></br>
+						
+						<label for="inputEntityType">Unidad</label>
+						<br></br>
+						<h:selectOneMenu value="#{qualityModelBeanAdd.metricUnitID}">
+							<f:selectItem itemValue="Selecione una unidad de medida" itemLabel="Selecione una unidad de medida" />
+							<f:selectItem itemValue="1" itemLabel="Boleano" />
+							<f:selectItem itemValue="2" itemLabel="Porcentaje" />
+							<f:selectItem itemValue="3" itemLabel="Milisegundos" />
+							<f:selectItem itemValue="4" itemLabel="Basico-Intermedio-Completo" />
+							<f:selectItem itemValue="5" itemLabel="Entero" />
+						</h:selectOneMenu>
+						<br></br>
+						<br></br>
+						
+						<label for="inputType">Granularidad</label>
+						<br></br>
+						<h:selectOneMenu value="#{qualityModelBeanAdd.metricGranularity}">
+							<f:selectItem itemValue="Ide" itemLabel="Ide"/>
+							<f:selectItem itemValue="Institución" itemLabel="Institución"/>
+							<f:selectItem itemValue="Nodo" itemLabel="Nodo"/>
+							<f:selectItem itemValue="Capa" itemLabel="Capa"/>
+							<f:selectItem itemValue="Servicio" itemLabel="Servicio"/>
+							<f:selectItem itemValue="Método" itemLabel="Método"/>
+						</h:selectOneMenu>
+						<br></br>
+						<br></br>
+						
 						<label for="inputMetricName" class="sr-only">Nombre</label>
 						<h:inputText id="metricN"
 							value="#{qualityModelBeanAdd.metricName}" 
 							class="form-control"
 							a:placeholder="Nombre" 
 							required="required" />
+						<br></br>
+						<br></br>
+						
+						<label for="inputMetricDescription" class="sr-only">Descripción</label>
+						<h:inputText id="metricD"
+							value="#{qualityModelBeanAdd.metricDescription}" 
+							class="form-control"
+							a:placeholder="Descripción" 
+							required="required" />					
 					</h:panelGroup>												
 				</p:panel>	
 

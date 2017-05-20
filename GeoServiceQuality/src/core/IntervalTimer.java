@@ -28,8 +28,6 @@ import entity.EvaluationPeriodic;
 @Startup
 public class IntervalTimer {
 	
-	static String URL1 = "http://geoservicios.mtop.gub.uy/geoserver/mb_pap/wms?service=WMS&version=1.3.0&request=GetCapabilities";
-	static String URL2 = "http://geoservicios.sgm.gub.uy/DPYO_UYMA.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities";
 	static int TIMEOUT_SERVICE = 18000;
 	
 	 @EJB
@@ -52,24 +50,23 @@ public class IntervalTimer {
     	TimerConfig timerConfig = new TimerConfig();
         timerConfig.setInfo("Timer");
         
-        System.out.println("scheduleTimer : " + System.currentTimeMillis());
-     
         listPeriodicObjects = evaluationPeriodicDao.list();
         for(EvaluationPeriodic e:listPeriodicObjects){
         	boolean success = metricServiceAvailable(e.getMeasurableObjectUrl(), TIMEOUT_SERVICE);
-        	System.out.println("checkService.. " + success + URL1);
+        	System.out.println("checkService.. " + success);
         	
         	int count = e.getEvaluatedCount();
         	int countSuccess= e.getSuccessCount();
         	
         	count++;
         	if(success){
-        		countSuccess++;
+        		countSuccess = countSuccess + 1;
         	}
         	
         	e.setEvaluatedCount(count);
         	e.setSuccessCount(countSuccess);
-        	e.setSuccessPercentage(countSuccess/count * 100);
+        	float f = ((float) countSuccess/count) * 100;
+        	e.setSuccessPercentage((int)f);
         	
         	System.out.println(e.toString());
         	
@@ -93,8 +90,11 @@ public class IntervalTimer {
             HttpURLConnection connection = (HttpURLConnection) u.openConnection();
             connection.setConnectTimeout(timeout);
             connection.setReadTimeout(timeout);
-            connection.setRequestMethod("HEAD");
+            connection.setRequestMethod("GET"); //HEAD no soportado en algun caso
+            connection.setRequestProperty("Accept", "application/xml");
+            connection.setRequestProperty("Content-Type", "application/xml; charset=\"utf-8\"");
             int responseCode = connection.getResponseCode();
+            System.out.println("responseCode " +responseCode);
             return (200 <= responseCode && responseCode <= 399);
         } catch (IOException exception) {
             return false;
