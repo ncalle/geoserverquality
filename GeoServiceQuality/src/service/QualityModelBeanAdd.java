@@ -32,7 +32,13 @@ public class QualityModelBeanAdd {
     private QualityModelTreeStructure factorDimension;
     private String factorName;
     private QualityModelTreeStructure metricFactor;
+
+    private Boolean metricIsAggregation;
+    private Boolean metricIsManual;
+    private Integer metricUnitID;
+    private String metricGranularity;
     private String metricName;
+    private String metricDescription;
     
 	@EJB
 	private QualityModelTreeStructureBeanRemote qmDao = new QualityModelTreeStructureBean();
@@ -150,6 +156,46 @@ public class QualityModelBeanAdd {
 
 	public void setMetricName(String metricName) {
 		this.metricName = metricName;
+	}	
+	
+	public Boolean getMetricIsAggregation() {
+		return metricIsAggregation;
+	}
+
+	public void setMetricIsAggregation(Boolean metricIsAggregation) {
+		this.metricIsAggregation = metricIsAggregation;
+	}
+
+	public Boolean getMetricIsManual() {
+		return metricIsManual;
+	}
+
+	public void setMetricIsManual(Boolean metricIsManual) {
+		this.metricIsManual = metricIsManual;
+	}
+
+	public Integer getMetricUnitID() {
+		return metricUnitID;
+	}
+
+	public void setMetricUnitID(Integer metricUnitID) {
+		this.metricUnitID = metricUnitID;
+	}
+
+	public String getMetricGranularity() {
+		return metricGranularity;
+	}
+
+	public void setMetricGranularity(String metricGranularity) {
+		this.metricGranularity = metricGranularity;
+	}
+
+	public String getMetricDescription() {
+		return metricDescription;
+	}
+
+	public void setMetricDescription(String metricDescription) {
+		this.metricDescription = metricDescription;
 	}
 
 	public void createQualityModelLists(){
@@ -181,4 +227,61 @@ public class QualityModelBeanAdd {
 			}
         }
     }
+    
+    public void save() {
+    	
+    	QualityModelTreeStructure element = new QualityModelTreeStructure();
+    	
+    	switch(entityType){
+	    	case "Model":
+	    		element.setElementName(modelName);
+	    		element.setElementType("Q");
+	    		element.setFatherElementyID(null);
+	    		element.setAggregationFlag(null);
+	    		element.setGranularity(null);
+	    		element.setUnit(null);
+	        	break;
+	    	case "Dimension":
+	    		element.setElementName(dimensionName);
+	    		element.setElementType("D");
+	    		element.setFatherElementyID(dimensionModel.getElementID());
+	    		element.setAggregationFlag(null);
+	    		element.setGranularity(null);
+	    		element.setUnit(null);
+	        	break;
+	    	case "Factor":
+	    		element.setElementName(factorName);
+	    		element.setElementType("F");
+	    		element.setFatherElementyID(factorDimension.getElementID());
+	    		element.setAggregationFlag(null);
+	    		element.setGranularity(null);
+	    		element.setUnit(null);
+	        	break;	
+	    	case "Metric":
+	    		element.setElementName(metricName);
+	    		element.setElementType("M");
+	    		element.setFatherElementyID(metricFactor.getElementID());
+	    		element.setAggregationFlag(metricIsAggregation);
+	    		element.setGranularity(metricGranularity);
+	    		element.setUnit(null);
+	        	break;
+			default:
+				break;	
+    	}
+    	    	    	
+    	try{
+    		qmDao.create(element, metricUnitID, metricIsManual, metricDescription);
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+        	context.addMessage(null, new FacesMessage("La entidad del modelo de calidad fue guardada correctamente."));
+        		
+    	} catch(DAOException e) {
+    		
+    		FacesContext context = FacesContext.getCurrentInstance();
+    		context.addMessage(null, new FacesMessage("Error al guardar la entidad."));
+    		
+    		e.printStackTrace();
+    	}
+
+	}
 }

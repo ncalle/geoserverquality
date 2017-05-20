@@ -23,6 +23,8 @@ public class QualityModelTreeStructureBean implements QualityModelTreeStructureB
     		"SELECT ElementID, ElementName, ElementType, FatherElementyID, AggregationFlag, Granularity, Unit FROM quality_models_get()";
 	private static final String SQL_UPDATE =
         	"SELECT * FROM quality_model_update (?, ?, ?)";
+	private static final String SQL_INSERT =
+            "SELECT * FROM quality_model_insert (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	
     private DAOFactory daoFactory;
 
@@ -81,6 +83,71 @@ public class QualityModelTreeStructureBean implements QualityModelTreeStructureB
         } catch (SQLException e) {
             throw new DAOException(e);
         }
+    }
+    
+    public void create(QualityModelTreeStructure element, Integer metricUnitID, Boolean metricIsManual, String metricDescription) throws IllegalArgumentException, DAOException{
+        Connection connection = null;
+		PreparedStatement statement = null;
+		
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_INSERT);
+            
+            statement.setString(1, element.getElementType());
+            
+            if (element.getFatherElementyID() == null){
+            	statement.setObject(2, null);
+            }
+            else{
+            	statement.setInt(2, element.getFatherElementyID());	
+            }
+            
+            if (element.getElementName() == null){
+            	statement.setObject(3, null);
+            }
+            else{
+            	statement.setString(3, element.getElementName());	
+            }
+            
+            if (element.getAggregationFlag() == null){
+            	statement.setObject(4, null);
+            }
+            else{
+            	statement.setBoolean(4, element.getAggregationFlag());	
+            }
+            
+            if (element.getGranularity() == null){
+            	statement.setObject(5, null);
+            }
+            else{
+            	statement.setString(5, element.getGranularity());
+            }
+            
+            if (element.getUnit() == null){
+            	statement.setObject(6, null);
+            }
+            else{
+            	statement.setString(6, element.getUnit());
+            }
+            
+            if (element.getElementType().equals("M")){
+            	statement.setInt(7, metricUnitID);
+            	statement.setBoolean(8, metricIsManual);
+            	statement.setString(9, metricDescription);
+            }
+            else{
+            	statement.setObject(7, null);
+            	statement.setObject(8, null);
+            	statement.setObject(9, null);
+            }
+            
+            statement.executeQuery();
+            
+            connection.close();
+            
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }        
     }
         
     private static QualityModelTreeStructure map(ResultSet resultSet) throws SQLException {
