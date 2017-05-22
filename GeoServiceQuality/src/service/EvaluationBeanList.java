@@ -516,7 +516,7 @@ public class EvaluationBeanList {
 						Evaluation e = new Evaluation();
 						e.setMetricID(metric.getMetricID());
 						e.setSuccess(success);
-						e.setIsEvaluationCompleted(true);
+						e.setIsEvaluationCompleted(isComplete(metric.getMetricID()));
 						e.setEvaluationCount(1);
 						e.setEvaluationApprovedValue(success?1:0);
 						e.setStartDate(date);
@@ -596,6 +596,14 @@ public class EvaluationBeanList {
 			context.addMessage(null, new FacesMessage("Falto seleccionar un perfil o un objeto a evaluar"));
 		}
 
+	}
+	
+	private boolean isComplete(int id){
+		if(id==15){  // metrica de disponibilidad diaria
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	private void settingPeriodicEval(Integer id, String url, boolean success){

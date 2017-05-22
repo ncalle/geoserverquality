@@ -144,11 +144,13 @@ public final class App {
         url = url.replaceFirst("^https", "http"); 
 
         try {
-        	URL u = new URL(url);
+         	URL u = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) u.openConnection();
             connection.setConnectTimeout(timeout);
             connection.setReadTimeout(timeout);
-            connection.setRequestMethod("HEAD");
+            connection.setRequestMethod("GET"); //HEAD no soportado en algun caso
+            connection.setRequestProperty("Accept", "application/xml");
+            connection.setRequestProperty("Content-Type", "application/xml; charset=\"utf-8\"");
             int responseCode = connection.getResponseCode();
             return (200 <= responseCode && responseCode <= 399);
         } catch (IOException exception) {
