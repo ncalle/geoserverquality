@@ -49,7 +49,6 @@ public class QualityModelBeanAdd {
     private QualityModelTreeStructure metricFactor;
 
     private Boolean metricIsAggregation;
-    private Boolean metricIsManual;
     private Integer metricUnitID;
     private String metricGranularity;
     private String metricName;
@@ -181,14 +180,6 @@ public class QualityModelBeanAdd {
 		this.metricIsAggregation = metricIsAggregation;
 	}
 
-	public Boolean getMetricIsManual() {
-		return metricIsManual;
-	}
-
-	public void setMetricIsManual(Boolean metricIsManual) {
-		this.metricIsManual = metricIsManual;
-	}
-
 	public Integer getMetricUnitID() {
 		return metricUnitID;
 	}
@@ -283,7 +274,9 @@ public class QualityModelBeanAdd {
 			default:
 				break;	
     	}
-    	    	    	
+    	 
+    	Boolean metricIsManual = false; //by default
+    	
     	try{
     		qmDao.create(element, metricUnitID, metricIsManual, metricDescription);
             
@@ -317,16 +310,15 @@ public class QualityModelBeanAdd {
 	        in.close();
 	        out.flush();
 	        out.close();
-	        System.out.println("Archivo subido!");
-	        
-	       
+	        System.out.println("Archivo subido!"); 
 
+	        //Loading de clases
 	        URL url = file.toURI().toURL();  
 	        URL[] urls = new URL[]{url};
 
 	        ClassLoader cl = new URLClassLoader(urls);
 	        try {
-				Class cls = cl.loadClass("service.QualityModelBeanAdd");
+				Class cls = cl.loadClass("EvaluationCore.App");
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
