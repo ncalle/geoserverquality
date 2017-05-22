@@ -94,7 +94,7 @@ public class IntervalTimer {
             connection.setRequestProperty("Accept", "application/xml");
             connection.setRequestProperty("Content-Type", "application/xml; charset=\"utf-8\"");
             int responseCode = connection.getResponseCode();
-            System.out.println("responseCode " +responseCode);
+            //System.out.println("responseCode " +responseCode);
             return (200 <= responseCode && responseCode <= 399);
         } catch (IOException exception) {
             return false;

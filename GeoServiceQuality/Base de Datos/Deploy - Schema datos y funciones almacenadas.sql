@@ -368,13 +368,7 @@ CREATE TABLE Evaluation
 
     PRIMARY KEY (EvaluationID),
     FOREIGN KEY (EvaluationSummaryID) REFERENCES EvaluationSummary(EvaluationSummaryID),
-    FOREIGN KEY (MetricID) REFERENCES Metric(MetricID),
-    CONSTRAINT CK_IsEvaluationCompletedFlag CHECK
-        (
-	    CASE WHEN IsEvaluationCompletedFlag = TRUE AND SuccessFlag IS NOT NULL THEN 1 ELSE 0 END
-	    + CASE WHEN IsEvaluationCompletedFlag = FALSE AND SuccessFlag IS NULL THEN 1 ELSE 0 END
-            = 1
-        )
+    FOREIGN KEY (MetricID) REFERENCES Metric(MetricID)
 );
 
 -- Contiene el resultado parcial de las evaluaciones que aun no han finalizado
