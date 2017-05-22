@@ -61,7 +61,7 @@
 				
 					<label for="inputEntityType">Tipo de entidad</label>
 					<br></br>
-					<h:selectOneMenu value="#{qualityModelBeanAdd.entityType}">
+					<h:selectOneMenu value="#{qualityModelBeanAdd.entityType}" style="width:100%" >
 						<f:selectItem itemValue="Selecione un tipo de entidad" itemLabel="Selecione un tipo de entidad" />
 						<f:selectItem itemValue="Model" itemLabel="Modelo" />
 						<f:selectItem itemValue="Dimension" itemLabel="Dimensión" />
@@ -85,14 +85,10 @@
 					<h:panelGroup id="dim" rendered="#{qualityModelBeanAdd.entityType == 'Dimension'}">
 						
 						<label for="inputDim">Modelo al cual pertenece la dimensión</label>			    		
-				    	<h:selectOneMenu
-							value="#{qualityModelBeanAdd.dimensionModel}"
+				    	<h:selectOneMenu value="#{qualityModelBeanAdd.dimensionModel}"
 							converter="omnifaces.SelectItemsConverter" style="width:100%">
-							<f:selectItem itemLabel="Seleccione un modelo"
-								noSelectionOption="false" />
-							<f:selectItems
-								value="#{qualityModelBeanAdd.listModel}"
-								var="lm" itemLabel="#{lm.elementName}" />
+							<f:selectItem itemLabel="Seleccione un modelo" noSelectionOption="false" />
+							<f:selectItems value="#{qualityModelBeanAdd.listModel}" var="lm" itemLabel="#{lm.elementName}" />
 						</h:selectOneMenu>
 						
 						<br></br>
@@ -110,14 +106,10 @@
 
 						<label for="inputFactor">Dimensión a la cual pertenece el factor</label>
 						<br></br>
-				    	<h:selectOneMenu
-							value="#{qualityModelBeanAdd.factorDimension}"
+				    	<h:selectOneMenu value="#{qualityModelBeanAdd.factorDimension}"
 							converter="omnifaces.SelectItemsConverter" style="width:100%">
-							<f:selectItem itemLabel="Seleccione una dimensión"
-								noSelectionOption="false" />
-							<f:selectItems
-								value="#{qualityModelBeanAdd.listDimension}"
-								var="ldim" itemLabel="#{ldim.elementName}" />
+							<f:selectItem itemLabel="Seleccione una dimensión" noSelectionOption="false" />
+							<f:selectItems value="#{qualityModelBeanAdd.listDimension}" var="ldim" itemLabel="#{ldim.elementName}" />
 						</h:selectOneMenu>
 						
 						<br></br>
@@ -135,33 +127,17 @@
 
 						<label for="inputMetric">Factor al cual pertenece la métrica</label>
 						<br></br>
-				    	<h:selectOneMenu
-							value="#{qualityModelBeanAdd.metricFactor}"
-							converter="omnifaces.SelectItemsConverter" style="width:100%">
-							<f:selectItem itemLabel="Seleccione un factor"
-								noSelectionOption="false" />
-							<f:selectItems
-								value="#{qualityModelBeanAdd.listFactor}"
-								var="lf" itemLabel="#{lf.elementName}" />
+				    	<h:selectOneMenu value="#{qualityModelBeanAdd.metricFactor}"
+							converter="omnifaces.SelectItemsConverter" style="width:100%" >
+							<f:selectItems value="#{qualityModelBeanAdd.listFactor}" var="lf" itemLabel="#{lf.elementName}" />
 						</h:selectOneMenu>
 						
 						<br></br>
 						<br></br>
 						
-						<p:selectBooleanCheckbox value="#{qualityModelBeanAdd.metricIsAggregation}" />
-						<label for="inputType">Agregación</label>
-						<br></br>
-						<br></br>
-												
-						<p:selectBooleanCheckbox value="#{qualityModelBeanAdd.metricIsManual}" />
-						<label for="inputType">Manual</label>
-						<br></br>
-						<br></br>
-						
 						<label for="inputEntityType">Unidad</label>
 						<br></br>
-						<h:selectOneMenu value="#{qualityModelBeanAdd.metricUnitID}">
-							<f:selectItem itemValue="Selecione una unidad de medida" itemLabel="Selecione una unidad de medida" />
+						<h:selectOneMenu value="#{qualityModelBeanAdd.metricUnitID}" style="width:100%">
 							<f:selectItem itemValue="1" itemLabel="Boleano" />
 							<f:selectItem itemValue="2" itemLabel="Porcentaje" />
 							<f:selectItem itemValue="3" itemLabel="Milisegundos" />
@@ -173,7 +149,7 @@
 						
 						<label for="inputType">Granularidad</label>
 						<br></br>
-						<h:selectOneMenu value="#{qualityModelBeanAdd.metricGranularity}">
+						<h:selectOneMenu value="#{qualityModelBeanAdd.metricGranularity}" style="width:100%" >
 							<f:selectItem itemValue="Ide" itemLabel="Ide"/>
 							<f:selectItem itemValue="Institución" itemLabel="Institución"/>
 							<f:selectItem itemValue="Nodo" itemLabel="Nodo"/>
@@ -181,6 +157,16 @@
 							<f:selectItem itemValue="Servicio" itemLabel="Servicio"/>
 							<f:selectItem itemValue="Método" itemLabel="Método"/>
 						</h:selectOneMenu>
+						<br></br>
+						<br></br>
+						
+						<p:selectBooleanCheckbox value="#{qualityModelBeanAdd.metricIsAggregation}" />
+						<label for="inputType">Agregación</label>
+						<br></br>
+						<br></br>
+												
+						<p:selectBooleanCheckbox value="#{qualityModelBeanAdd.metricIsManual}" />
+						<label for="inputType">Manual</label>
 						<br></br>
 						<br></br>
 						
@@ -198,7 +184,17 @@
 							value="#{qualityModelBeanAdd.metricDescription}" 
 							class="form-control"
 							a:placeholder="Descripción" 
-							required="required" />					
+							required="required"/>
+						<br></br>
+						<br></br>
+													
+					    <p:fileUpload fileUploadListener="#{qualityModelBeanAdd.handleFileUpload}" mode="advanced" dragDropSupport="false"
+					           update="messages" allowTypes="/(\.|\/)(jar)$/"
+					           label="Método"
+					           uploadLabel="Subir"
+					           cancelLabel="Cancelar"
+					           invalidFileMessage="Solo se permiten archivos de tipo Jar" />
+					    <p:growl id="messages" showDetail="true" />											
 					</h:panelGroup>												
 				</p:panel>	
 

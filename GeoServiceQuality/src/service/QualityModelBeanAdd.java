@@ -1,7 +1,19 @@
 package service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -9,6 +21,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 import dao.DAOException;
 import dao.QualityModelTreeStructureBean;
@@ -284,4 +299,57 @@ public class QualityModelBeanAdd {
     	}
 
 	}
+    
+    public void handleFileUpload(FileUploadEvent event) {
+        try {	
+	        InputStream in = (event.getFile()).getInputstream();
+	        String fileName = "Copy_" + event.getFile().getFileName();
+	
+	        // inputStream a FileOutputStream
+	        File file = new File("C:/GeoServiceQualityJARs/" + fileName);
+	        OutputStream out = new FileOutputStream(file);
+	        int read = 0;
+	        byte[] bytes = new byte[1024];
+	
+	        while ((read = in.read(bytes)) != -1) {
+	            out.write(bytes, 0, read);
+	        }
+	        in.close();
+	        out.flush();
+	        out.close();
+	        System.out.println("Archivo subido!");
+	        
+	       
+
+	        URL url = file.toURI().toURL();  
+	        URL[] urls = new URL[]{url};
+
+	        ClassLoader cl = new URLClassLoader(urls);
+	        try {
+				Class cls = cl.loadClass("service.QualityModelBeanAdd");
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+	        
+	        /* otra forma
+	        URLClassLoader child = new URLClassLoader (file.toURL(), this.getClass().getClassLoader());
+	        Class classToLoad = Class.forName ("service.QualityModelBeanAdd", true, child);
+	        Method method = classToLoad.getDeclaredMethod ("myMethod");
+	        Object instance = classToLoad.newInstance ();
+	        Object result = method.invoke (instance);*/
+	        
+	        
+	        
+	    } catch (IOException e) {
+	        System.out.println(e.getMessage());
+	    }
+    	
+    	
+
+    	
+        FacesMessage message = new FacesMessage("Éxito", event.getFile().getFileName() + " método agregado.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 }
