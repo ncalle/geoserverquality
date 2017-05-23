@@ -438,27 +438,27 @@ INSERT INTO QualityModel (Name) VALUES
 INSERT INTO Dimension (QualityModelID, Name) VALUES
 (1, 'Seguridad'),
 (1, 'Confiabilidad'),
-(1, 'Rendimiento'),
 (1, 'Interoperabilidad'),
 (1, 'Publicación de Datos'),
 (1, 'Metadatos'),
 (1, 'Usabilidad');
+--(1, 'Rendimiento')
 
 INSERT INTO Factor (DimensionID, Name) VALUES
-(1, 'Ingegridad'),
 (1, 'Protección'),
 (2, 'Disponibilidad'),
-(2, 'Robustez'),
-(3, 'Tiempo de respuesta'),
-(3, 'Capacidad'),
-(4, 'Soporte de estándares'),
-(4, 'Sistema de referencias'),
-(5, 'Representación Gráfica'),
-(5, 'Formatos soportados'),
-(6, 'Publicación Catálogo'),
-(6, 'Metadatos Capa'),
-(6, 'Metadatos Servicio'),
-(7, 'Facilidad de aprendizaje');
+(3, 'Soporte de estándares'),
+(3, 'Sistema de referencias'),
+(4, 'Formatos soportados'),
+(5, 'Metadatos Servicio'),
+(6, 'Facilidad de aprendizaje');
+--(5, 'Publicación Catálogo'),
+--(5, 'Metadatos Capa'),
+--(4, 'Representación Gráfica'),
+--(2, 'Robustez'),
+--(1, 'Ingegridad'),
+--(7, 'Tiempo de respuesta'),
+--(7, 'Capacidad')
 
 INSERT INTO Unit (Name, Description) VALUES 
 ('Boleano',''),
@@ -468,21 +468,21 @@ INSERT INTO Unit (Name, Description) VALUES
 ('Entero','');
 
 INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality, IsManual) VALUES
-(2, 'Información en excepciones', FALSE, 1, 'Servicio', FALSE),
-(7, 'Excepciones en formato OGC', FALSE, 1, 'Servicio', FALSE),
-(8, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 2, 'Servicio', FALSE),
-(8, 'Capa con CRS Adecuado (IDEuy)', FALSE, 1, 'Capa', FALSE),
-(10, 'Formato PNG', FALSE, 1, 'Método', FALSE),
-(10, 'Formato KML', FALSE, 1, 'Método', FALSE),
-(10, 'Formato text/html metodo getFeatureInfo', FALSE, 1, 'Método', FALSE),
-(10, 'Formato Excepcion application/vnd.ogc.se_inimage', FALSE, 1, 'Método', FALSE),
-(10, 'Formato Excepcion application/vnd.ogc.se_blank', FALSE, 1, 'Método', FALSE),
-(10, 'Cantidad de formatos soportados', FALSE, 5, 'Servicio', FALSE),
-(10, 'Cantidad de formatos de excepciones soportadas', FALSE, 5, 'Servicio', FALSE),
-(13, 'Leyenda de la Capa', FALSE, 1, 'Servicio', FALSE),
-(13, 'Específica Rango Util', FALSE, 1, 'Capa', FALSE),
-(14, 'Errores descriptivos', FALSE, 1, 'Servicio', TRUE),
-(3, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio', FALSE);
+(1, 'Información en excepciones', FALSE, 1, 'Servicio', FALSE),
+(2, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio', FALSE),
+(3, 'Excepciones en formato OGC', FALSE, 1, 'Servicio', FALSE),
+(4, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 2, 'Servicio', FALSE),
+(4, 'Capa con CRS Adecuado (IDEuy)', FALSE, 1, 'Capa', FALSE),
+(5, 'Formato PNG', FALSE, 1, 'Método', FALSE),
+(5, 'Formato KML', FALSE, 1, 'Método', FALSE),
+(5, 'Formato text/html metodo getFeatureInfo', FALSE, 1, 'Método', FALSE),
+(5, 'Formato Excepcion application/vnd.ogc.se_inimage', FALSE, 1, 'Método', FALSE),
+(5, 'Formato Excepcion application/vnd.ogc.se_blank', FALSE, 1, 'Método', FALSE),
+(5, 'Cantidad de formatos soportados', FALSE, 5, 'Servicio', FALSE),
+(5, 'Cantidad de formatos de excepciones soportadas', FALSE, 5, 'Servicio', FALSE),
+(6, 'Leyenda de la Capa', FALSE, 1, 'Servicio', FALSE),
+(6, 'Específica Rango Util', FALSE, 1, 'Capa', FALSE),
+(7, 'Errores descriptivos', FALSE, 1, 'Servicio', TRUE);
 --(4, 'Tolerancia a parametros nulos', FALSE, 1, 'Método'),
 --(4, 'Tolerancia a parametros largos', FALSE, 1, 'Método'),
 --(5, 'Promedio tiempo de respuesta diario', FALSE, 3, 'Método'),
