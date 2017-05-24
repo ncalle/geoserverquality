@@ -80,20 +80,20 @@
 			            <p:rowToggler />
 			        </p:column>
 			        
-					<p:column headerText="Descripción" >
-				  		<h:outputText value="#{bsitem.measurableObjectDescription}" />
-					</p:column>
+ 					<p:column headerText="Descripción" >
+				  		<h:outputText value="Descripción" />
+					</p:column> 
 					
 					<p:column headerText="Tipo" >
-				  		<h:outputText value="#{bsitem.measurableObjectServicesType}" />
+				  		<h:outputText value="Servicio" />
 					</p:column>
 					
 					<p:column headerText="Disponibilidad">
-						<p:progressBar value="#{bsitem.measurableObjectSuccessPercentage}" labelTemplate="#{bsitem.measurableObjectSuccessPercentage}%" displayOnly="true"/>
+						<p:progressBar value="#{bsitem.successPercentage}" labelTemplate="#{bsitem.successPercentage}%" displayOnly="true"/>
 					</p:column>
 								 
 			        <p:rowExpansion>
-			        	<a href="#{bsitem.measurableObjectURL}">Link al Servicio</a> 
+			        	<a href="#{bsitem.measurableObjectUrl}">Link al Servicio</a> 
 			        </p:rowExpansion>
 					
 				</p:dataTable>
@@ -115,19 +115,19 @@
 			        </p:column>
 				        					
 					<p:column headerText="Descripción" >
-				  		<h:outputText value="#{wsitem.measurableObjectDescription}" />
-					</p:column>
-	
+				  		<h:outputText value="Descripción" />
+					</p:column> 
+					
 					<p:column headerText="Tipo" >
-				  		<h:outputText value="#{wsitem.measurableObjectServicesType}" />
+				  		<h:outputText value="Servicio" />
 					</p:column>
 					
 					<p:column headerText="Disponibilidad">
-						<p:progressBar value="#{wsitem.measurableObjectSuccessPercentage}" labelTemplate="#{wsitem.measurableObjectSuccessPercentage}%" displayOnly="true"/>
+						<p:progressBar value="#{wsitem.successPercentage}" labelTemplate="#{wsitem.successPercentage}%" displayOnly="true"/>
 					</p:column>
 					
 					<p:rowExpansion>
-			        	<a href="#{wsitem.measurableObjectURL}">Link al Servicio</a> 
+			        	<a href="#{wsitem.measurableObjectUrl}">Link al Servicio</a> 
 			        </p:rowExpansion>
 			        
 				</p:dataTable>

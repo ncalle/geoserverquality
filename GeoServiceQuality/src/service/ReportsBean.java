@@ -1,5 +1,8 @@
 package service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,8 +21,11 @@ import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 
 import dao.DAOException;
+import dao.EvaluationPeriodicBean;
+import dao.EvaluationPeriodicBeanRemote;
 import dao.ReportBean;
 import dao.ReportBeanRemote;
+import entity.EvaluationPeriodic;
 import entity.Report;
  
 @ManagedBean(name = "reportsBean")
@@ -40,26 +46,33 @@ public class ReportsBean {
     private List<Report> listEvaluationsPerMetric;
     private List<Report> listGeographicServicesPerInstitution;
     
-    private List<Report> listBestServices;
-    private List<Report> listWorstServices;
+    private List<EvaluationPeriodic> listBestServices;
+    private List<EvaluationPeriodic> listWorstServices;
     
     
 	private LineChartModel mediaResponseTime;
+	private List<EvaluationPeriodic> listPeriodicObjects;
  
     @EJB
 	private ReportBeanRemote rDao = new ReportBean();
+    private EvaluationPeriodicBeanRemote evaluationPeriodicDao = new EvaluationPeriodicBean();
     
     @PostConstruct
     public void init() {
     	try {
+    		
+    		listPeriodicObjects = evaluationPeriodicDao.list();
+
+    		Collections.sort(listPeriodicObjects, new orderMaxtoMin());
+    		
 			setListEvaluationSuccessVsFailed(rDao.evaluationSuccessVsFailed());
 			setListSuccessEvaluationPerProfile(rDao.successEvaluationPerProfile());
 			setListSuccessEvaluationPerInstitution(rDao.successEvaluationPerInstitution());
 			setListSuccessEvaluationPerNode(rDao.successEvaluationPerNode());
 			setListEvaluationsPerMetric(rDao.evaluationsPerMetric());
 			setListGeographicServicesPerInstitution(rDao.geographicServicesPerInstitution());
-			setListBestServices(rDao.topBestWorstMeasurableObjectGet(5,true,false));
-			setListWorstServices(rDao.topBestWorstMeasurableObjectGet(5,false,true));
+			setListBestServices(getBestServices());
+			setListWorstServices(getWorstServices());
 			
             createModels();
             
@@ -67,6 +80,38 @@ public class ReportsBean {
     		e.printStackTrace();
     	}      
     }
+    
+    public class orderMaxtoMin implements Comparator<EvaluationPeriodic> {
+        public int compare(EvaluationPeriodic a, EvaluationPeriodic b) {
+            if (a.getSuccessPercentage() > b.getSuccessPercentage())
+                return -1; 
+            if (a.getSuccessPercentage() == b.getSuccessPercentage())
+                return 0;
+            return 1;
+        }
+    }
+  
+    
+    
+    public List<EvaluationPeriodic> getBestServices() {
+    	List<EvaluationPeriodic> list = new ArrayList<>();
+    	
+    	for (int i = 0; i < 5; i++) {
+            list.add(listPeriodicObjects.get(i));
+		}
+    	
+    	return list;
+	}
+    
+    public List<EvaluationPeriodic> getWorstServices() {
+    	List<EvaluationPeriodic> list = new ArrayList<>();
+    	
+    	for (int i = listPeriodicObjects.size()-1; i >= listPeriodicObjects.size()-5; i--) {
+            list.add(listPeriodicObjects.get(i));
+		}
+    	
+    	return list;
+	}
     
 	public List<Report> getListEvaluationSuccessVsFailed() {
 		return listEvaluationSuccessVsFailed;
@@ -155,19 +200,19 @@ public class ReportsBean {
 		this.listGeographicServicesPerInstitution = listGeographicServicesPerInstitution;
 	}
 	
-	public List<Report> getListBestServices() {
+	public List<EvaluationPeriodic> getListBestServices() {
 		return listBestServices;
 	}
 
-	public void setListBestServices(List<Report> listBestServices) {
+	public void setListBestServices(List<EvaluationPeriodic> listBestServices) {
 		this.listBestServices = listBestServices;
 	}
 
-	public List<Report> getListWorstServices() {
+	public List<EvaluationPeriodic> getListWorstServices() {
 		return listWorstServices;
 	}
 
-	public void setListWorstServices(List<Report> listWorstServices) {
+	public void setListWorstServices(List<EvaluationPeriodic> listWorstServices) {
 		this.listWorstServices = listWorstServices;
 	}
 	
