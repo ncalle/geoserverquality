@@ -12,6 +12,6 @@ public interface QualityModelTreeStructureBeanRemote {
     
     public void update(Integer elementID, String elementType, String name) throws DAOException;
     
-    public void create(QualityModelTreeStructure element, Integer metricUnitID, Boolean metricIsManual, String metricDescription) throws IllegalArgumentException, DAOException;
+    public void create(QualityModelTreeStructure element, Integer metricUnitID, Boolean metricIsManual, String metricDescription, Boolean isUserMetric, String metricFileName) throws IllegalArgumentException, DAOException;
 
 }

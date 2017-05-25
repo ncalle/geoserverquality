@@ -17,6 +17,8 @@ public class QualityModelTreeStructure implements Serializable {
     private Boolean AggregationFlag;     
 	private String Granularity;
 	private String Unit;
+	private Boolean IsUserMetric;
+	private String MetricFileName;
 
 	public Integer getElementID() {
 		return ElementID;
@@ -74,6 +76,22 @@ public class QualityModelTreeStructure implements Serializable {
 		Unit = unit;
 	}
 
+	public Boolean getIsUserMetric() {
+		return IsUserMetric;
+	}
+
+	public void setIsUserMetric(Boolean isUserMetric) {
+		IsUserMetric = isUserMetric;
+	}
+
+	public String getMetricFileName() {
+		return MetricFileName;
+	}
+
+	public void setMetricFileName(String metricFileName) {
+		MetricFileName = metricFileName;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}    
@@ -101,7 +119,7 @@ public class QualityModelTreeStructure implements Serializable {
     
     @Override
     public String toString() {
-        return String.format("QualityModel[%d, %s, %s, %d, %s, %s, %s]",
-        		ElementID, ElementName, ElementType, FatherElementyID, AggregationFlag, Granularity, Unit);
+        return String.format("QualityModel[%d, %s, %s, %d, %s, %s, %s, %s, %s]",
+        		ElementID, ElementName, ElementType, FatherElementyID, AggregationFlag, Granularity, Unit, IsUserMetric, MetricFileName);
     }
 }

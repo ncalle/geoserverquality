@@ -20,11 +20,11 @@ import entity.QualityModelTreeStructure;
 public class QualityModelTreeStructureBean implements QualityModelTreeStructureBeanRemote {
 
     private static final String SQL_QUALITY_MODEL_LIST =
-    		"SELECT ElementID, ElementName, ElementType, FatherElementyID, AggregationFlag, Granularity, Unit FROM quality_models_get()";
+    		"SELECT ElementID, ElementName, ElementType, FatherElementyID, AggregationFlag, Granularity, Unit, IsUserMetric, MetricFileName FROM quality_models_get()";
 	private static final String SQL_UPDATE =
         	"SELECT * FROM quality_model_update (?, ?, ?)";
 	private static final String SQL_INSERT =
-            "SELECT * FROM quality_model_insert (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "SELECT * FROM quality_model_insert (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	
     private DAOFactory daoFactory;
 
@@ -85,7 +85,7 @@ public class QualityModelTreeStructureBean implements QualityModelTreeStructureB
         }
     }
     
-    public void create(QualityModelTreeStructure element, Integer metricUnitID, Boolean metricIsManual, String metricDescription) throws IllegalArgumentException, DAOException{
+    public void create(QualityModelTreeStructure element, Integer metricUnitID, Boolean metricIsManual, String metricDescription, Boolean isUserMetric, String metricFileName) throws IllegalArgumentException, DAOException{
         Connection connection = null;
 		PreparedStatement statement = null;
 		
@@ -134,11 +134,15 @@ public class QualityModelTreeStructureBean implements QualityModelTreeStructureB
             	statement.setInt(7, metricUnitID);
             	statement.setBoolean(8, metricIsManual);
             	statement.setString(9, metricDescription);
+            	statement.setBoolean(10, isUserMetric);
+            	statement.setString(11, metricFileName);
             }
             else{
             	statement.setObject(7, null);
             	statement.setObject(8, null);
             	statement.setObject(9, null);
+            	statement.setObject(10, null);
+            	statement.setObject(11, null);
             }
             
             statement.executeQuery();
@@ -159,7 +163,9 @@ public class QualityModelTreeStructureBean implements QualityModelTreeStructureB
     	qualityModel.setFatherElementyID(resultSet.getInt("FatherElementyID"));    	
     	qualityModel.setAggregationFlag(resultSet.getBoolean("AggregationFlag"));
     	qualityModel.setGranularity(resultSet.getString("Granularity"));    	
-    	qualityModel.setUnit(resultSet.getString("Unit"));  	
+    	qualityModel.setUnit(resultSet.getString("Unit"));
+    	qualityModel.setIsUserMetric(resultSet.getBoolean("IsUserMetric"));
+    	qualityModel.setMetricFileName(resultSet.getString("MetricFileName"));
     	
         return qualityModel;
     }

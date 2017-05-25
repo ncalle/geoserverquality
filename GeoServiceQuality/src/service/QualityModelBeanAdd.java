@@ -53,6 +53,7 @@ public class QualityModelBeanAdd {
     private String metricGranularity;
     private String metricName;
     private String metricDescription;
+    private String metricFileName;
     
 	@EJB
 	private QualityModelTreeStructureBeanRemote qmDao = new QualityModelTreeStructureBean();
@@ -203,6 +204,14 @@ public class QualityModelBeanAdd {
 	public void setMetricDescription(String metricDescription) {
 		this.metricDescription = metricDescription;
 	}
+	
+	public String getMetricFileName() {
+		return metricFileName;
+	}
+
+	public void setMetricFileName(String metricFileName) {
+		this.metricFileName = metricFileName;
+	}	
 
 	public void createQualityModelLists(){
 	    listModel = new ArrayList<>();
@@ -238,6 +247,9 @@ public class QualityModelBeanAdd {
     	
     	QualityModelTreeStructure element = new QualityModelTreeStructure();
     	
+    	Boolean metricIsManual = false; //by default
+    	Boolean IsUserMetric = false;
+
     	switch(entityType){
 	    	case "Model":
 	    		element.setElementName(modelName);
@@ -270,15 +282,14 @@ public class QualityModelBeanAdd {
 	    		element.setAggregationFlag(metricIsAggregation);
 	    		element.setGranularity(metricGranularity);
 	    		element.setUnit(null);
+	    		IsUserMetric = true;
 	        	break;
 			default:
 				break;	
     	}
-    	 
-    	Boolean metricIsManual = false; //by default
     	
     	try{
-    		qmDao.create(element, metricUnitID, metricIsManual, metricDescription);
+    		qmDao.create(element, metricUnitID, metricIsManual, metricDescription, IsUserMetric, metricFileName);
             
             FacesContext context = FacesContext.getCurrentInstance();
         	context.addMessage(null, new FacesMessage("La entidad del modelo de calidad fue guardada correctamente."));
@@ -296,10 +307,10 @@ public class QualityModelBeanAdd {
     public void handleFileUpload(FileUploadEvent event) {
         try {	
 	        InputStream in = (event.getFile()).getInputstream();
-	        String fileName = "Copy_" + event.getFile().getFileName();
+	        metricFileName = event.getFile().getFileName();
 	
 	        // inputStream a FileOutputStream
-	        File file = new File("C:/GeoServiceQualityJARs/" + fileName);
+	        File file = new File("C:/GeoServiceQualityJARs/" + metricFileName);
 	        OutputStream out = new FileOutputStream(file);
 	        int read = 0;
 	        byte[] bytes = new byte[1024];
@@ -318,28 +329,25 @@ public class QualityModelBeanAdd {
 
 	        ClassLoader cl = new URLClassLoader(urls);
 	        try {
-				Class cls = cl.loadClass("EvaluationCore.App");
+				Class<?> cls = cl.loadClass("UserMetricPackage.UserMetricClass");
+				
+				if (cls != null){
+					Method met = cls.getMethod( "userMetricMethod", String.class, String.class, String.class); //String url, String serviceType, String format
+					System.out.println("Metodo: " + met);
+				}
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-	        
-	        
-	        /* otra forma
-	        URLClassLoader child = new URLClassLoader (file.toURL(), this.getClass().getClassLoader());
-	        Class classToLoad = Class.forName ("service.QualityModelBeanAdd", true, child);
-	        Method method = classToLoad.getDeclaredMethod ("myMethod");
-	        Object instance = classToLoad.newInstance ();
-	        Object result = method.invoke (instance);*/
-	        
-	        
-	        
 	    } catch (IOException e) {
 	        System.out.println(e.getMessage());
 	    }
-    	
-    	
-
     	
         FacesMessage message = new FacesMessage("Éxito", event.getFile().getFileName() + " método agregado.");
         FacesContext.getCurrentInstance().addMessage(null, message);

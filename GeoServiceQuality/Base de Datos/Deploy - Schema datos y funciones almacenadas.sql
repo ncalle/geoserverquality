@@ -245,9 +245,12 @@ CREATE TABLE Metric
     Granurality VARCHAR(11) NOT NULL, -- 'Ide', 'Institución', 'Nodo', 'Capa', 'Servicio', 'Método'
     Description VARCHAR(100) NULL,
 	IsManual BOOLEAN NULL, -- 'true' si es de evaluacion manual
+	IsUserMetric BOOLEAN NULL, --'true' si la metrica fue dada de alta por un usuario
+	MetricFileName VARCHAR(100) NULL,
 
     PRIMARY KEY (MetricID),
     UNIQUE (Name),
+	UNIQUE (MetricFileName),
     FOREIGN KEY (FactorID) REFERENCES Factor(FactorID),
     FOREIGN KEY (UnitID) REFERENCES Unit(UnitID),
     CONSTRAINT CK_Granularity_values CHECK (Granurality IN ('Ide', 'Institución', 'Nodo', 'Capa', 'Servicio', 'Método')) -- en castellano, debido a que dicho dato se mostrará al usuario
@@ -470,29 +473,29 @@ INSERT INTO Unit (Name, Description) VALUES
 ('Entero','');
 
 -- No cambiar orden de las metricas, ya que estan mapeadas segun el id
-INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality, IsManual) VALUES
-(1, 'Información en excepciones', FALSE, 1, 'Servicio', FALSE),
-(3, 'Excepciones en formato OGC', FALSE, 1, 'Servicio', FALSE),
-(4, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 2, 'Servicio', FALSE),
-(4, 'Capa con CRS Adecuado (IDEuy)', FALSE, 1, 'Capa', FALSE),
-(5, 'Formato PNG', FALSE, 1, 'Método', FALSE),
-(5, 'Formato KML', FALSE, 1, 'Método', FALSE),
-(5, 'Formato text/html metodo getFeatureInfo', FALSE, 1, 'Método', FALSE),
-(5, 'Formato Excepcion application/vnd.ogc.se_inimage', FALSE, 1, 'Método', FALSE),
-(5, 'Formato Excepcion application/vnd.ogc.se_blank', FALSE, 1, 'Método', FALSE),
-(5, 'Cantidad de formatos soportados', FALSE, 5, 'Servicio', FALSE),
-(5, 'Cantidad de formatos de excepciones soportadas', FALSE, 5, 'Servicio', FALSE),
-(6, 'Leyenda de la Capa', FALSE, 1, 'Servicio', FALSE),
-(6, 'Específica Rango Util', FALSE, 1, 'Capa', FALSE),
-(7, 'Errores descriptivos', FALSE, 1, 'Servicio', TRUE),
-(2, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio', FALSE);
---(4, 'Tolerancia a parametros nulos', FALSE, 1, 'Método'),
---(4, 'Tolerancia a parametros largos', FALSE, 1, 'Método'),
---(5, 'Promedio tiempo de respuesta diario', FALSE, 3, 'Método'),
---(7, 'Adopcion del estandar OGC', FALSE, 4, 'Servicio'),
---(1, 'Integridad de datos', FALSE, 1, 'Nodo'),
---(11, 'Contiene servicio CSW', FALSE, 1, 'Institución'),
---(12, 'Fecha del dato', FALSE, 2, 'Institución'),
+INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality, IsManual, IsUserMetric, MetricFileName) VALUES
+(1, 'Información en excepciones', FALSE, 1, 'Servicio', FALSE, FALSE, NULL),
+(3, 'Excepciones en formato OGC', FALSE, 1, 'Servicio', FALSE, FALSE, NULL),
+(4, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 2, 'Servicio', FALSE, FALSE, NULL),
+(4, 'Capa con CRS Adecuado (IDEuy)', FALSE, 1, 'Capa', FALSE, FALSE, NULL),
+(5, 'Formato PNG', FALSE, 1, 'Método', FALSE, FALSE, NULL),
+(5, 'Formato KML', FALSE, 1, 'Método', FALSE, FALSE, NULL),
+(5, 'Formato text/html metodo getFeatureInfo', FALSE, 1, 'Método', FALSE, FALSE, NULL),
+(5, 'Formato Excepcion application/vnd.ogc.se_inimage', FALSE, 1, 'Método', FALSE, FALSE, NULL),
+(5, 'Formato Excepcion application/vnd.ogc.se_blank', FALSE, 1, 'Método', FALSE, FALSE, NULL),
+(5, 'Cantidad de formatos soportados', FALSE, 5, 'Servicio', FALSE, FALSE, NULL),
+(5, 'Cantidad de formatos de excepciones soportadas', FALSE, 5, 'Servicio', FALSE, FALSE, NULL),
+(6, 'Leyenda de la Capa', FALSE, 1, 'Servicio', FALSE, FALSE, NULL),
+(6, 'Específica Rango Util', FALSE, 1, 'Capa', FALSE, FALSE, NULL),
+(7, 'Errores descriptivos', FALSE, 1, 'Servicio', TRUE, FALSE, NULL),
+(2, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio', FALSE, FALSE, NULL);
+--(4, 'Tolerancia a parametros nulos', FALSE, 1, 'Método', FALSE, NULL),
+--(4, 'Tolerancia a parametros largos', FALSE, 1, 'Método', FALSE, NULL),
+--(5, 'Promedio tiempo de respuesta diario', FALSE, 3, 'Método', FALSE, NULL),
+--(7, 'Adopcion del estandar OGC', FALSE, 4, 'Servicio', FALSE, NULL),
+--(1, 'Integridad de datos', FALSE, 1, 'Nodo', FALSE, NULL),
+--(11, 'Contiene servicio CSW', FALSE, 1, 'Institución', FALSE, NULL),
+--(12, 'Fecha del dato', FALSE, 2, 'Institución', FALSE, NULL),
 
 INSERT INTO Ide (Name, Description) VALUES
 ('ide.uy','Infraestructura de Datos Espaciales del Uruguay');
@@ -3260,7 +3263,7 @@ END;
 $$ LANGUAGE plpgsql;
 /* ****************************************************************************************************** */
 /* ****************************************************************************************************** */
---DROP FUNCTION quality_models_get()
+--DROP FUNCTION quality_models_get();
 CREATE OR REPLACE FUNCTION quality_models_get()
 RETURNS TABLE 
    (
@@ -3271,6 +3274,8 @@ RETURNS TABLE
       , AggregationFlag BOOLEAN
       , Granularity VARCHAR(11)
       , Unit VARCHAR(40)
+      , IsUserMetric BOOLEAN
+      , MetricFileName VARCHAR(100)
  ) AS $$
 /************************************************************************************************************
 ** Name: quality_models_get
@@ -3291,6 +3296,8 @@ BEGIN
       , NULL :: BOOLEAN
       , NULL :: VARCHAR(11)
       , NULL :: VARCHAR(40)
+      , NULL :: BOOLEAN
+      , NULL :: VARCHAR(100)
    FROM QualityModel qm
 
    UNION
@@ -3303,6 +3310,8 @@ BEGIN
       , NULL :: BOOLEAN
       , NULL :: VARCHAR(11)
       , NULL :: VARCHAR(40)
+      , NULL :: BOOLEAN
+      , NULL :: VARCHAR(100)	  
    FROM Dimension d
 
    UNION
@@ -3315,6 +3324,8 @@ BEGIN
       , NULL :: BOOLEAN
       , NULL :: VARCHAR(11)
       , NULL :: VARCHAR(40)
+      , NULL :: BOOLEAN
+      , NULL :: VARCHAR(100)	  
    FROM Factor f
 
    UNION
@@ -3327,6 +3338,8 @@ BEGIN
       , m.AgrgegationFlag
       , m.Granurality
       , u.Name AS Unit
+      , m.IsUserMetric
+      , m.MetricFileName	  
    FROM Metric m
    INNER JOIN Unit u ON u.UnitID = m.UnitID;
         
@@ -4346,7 +4359,7 @@ END;
 $$ LANGUAGE plpgsql;
 /* ****************************************************************************************************** */
 /* ****************************************************************************************************** */ 
---DROP FUNCTION quality_model_insert(character,integer,character varying, boolean, character varying, character varying, integer, boolean, character varaying);
+--DROP FUNCTION quality_model_insert(character,integer,character varying, boolean, character varying, character varying, integer, boolean, character varaying, boolean, character varying);
 CREATE OR REPLACE FUNCTION quality_model_insert
 (
    pElementType CHAR(1) -- 'Q' = QualityModel, 'D' = Dimension, 'F' = Factor, 'M' = Metrica
@@ -4358,6 +4371,8 @@ CREATE OR REPLACE FUNCTION quality_model_insert
    , pMetricUnitID INT
    , pMetricIsManual BOOLEAN
    , pMetricDescription VARCHAR(100)
+   , pIsUserMetric BOOLEAN
+   , pMetricFileName VARCHAR(100)
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
@@ -4418,9 +4433,9 @@ BEGIN
    IF pElementType = 'M'
    THEN
       INSERT INTO Metric
-      (Name, FactorID, AgrgegationFlag, Granurality, UnitID, IsManual, Description)
+      (Name, FactorID, AgrgegationFlag, Granurality, UnitID, IsManual, Description, IsUserMetric, MetricFileName)
       VALUES
-      (pElementName, pFatherElementyID, pAggregationFlag, pGranularity, pMetricUnitID, pMetricIsManual, pMetricDescription);
+      (pElementName, pFatherElementyID, pAggregationFlag, pGranularity, pMetricUnitID, pMetricIsManual, pMetricDescription, pIsUserMetric, pMetricFileName);
    END IF;
          
 END;
