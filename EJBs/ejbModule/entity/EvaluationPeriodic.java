@@ -13,7 +13,25 @@ public class EvaluationPeriodic implements Serializable {
     private Integer SuccessCount;
     private Integer EvaluatedCount;
     private Integer Periodic;
+    private String MeasurableObjectDesc;
+    private Integer UserID;
     
+    
+    public Integer getUserID() {
+		return UserID;
+	}
+    
+    public void setUserID(Integer userID) {
+		UserID = userID;
+	}
+    
+    public String getMeasurableObjectDesc() {
+		return MeasurableObjectDesc;
+	}
+    
+    public void setMeasurableObjectDesc(String measurableObjectDesc) {
+		MeasurableObjectDesc = measurableObjectDesc;
+	}
    
 	public String getMeasurableObjectUrl() {
 		return MeasurableObjectUrl;

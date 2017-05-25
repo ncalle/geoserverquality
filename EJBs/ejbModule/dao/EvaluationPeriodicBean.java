@@ -17,11 +17,11 @@ import entity.EvaluationPeriodic;
 public class EvaluationPeriodicBean implements EvaluationPeriodicBeanRemote {
 
     private static final String SQL_LIST_ORDER_BY_ID =
-    		"SELECT EvaluationSummaryID, MeasurableObjectURL, EvaluatedCount, Periodic, SuccessCount, SuccessPercentage FROM evaluation_periodic_get (?)";
+    		"SELECT EvaluationSummaryID, MeasurableObjectURL, EvaluatedCount, Periodic, SuccessCount, SuccessPercentage, MeasurableObjectDesc, UserID FROM evaluation_periodic_get (?)";
     private static final String SQL_INSERT =
-            "SELECT EvaluationSummaryID, MeasurableObjectURL, EvaluatedCount, Periodic, SuccessCount, SuccessPercentage FROM evaluation_periodic_insert (?, ?, ?, ?, ?, ?)";
+            "SELECT EvaluationSummaryID, MeasurableObjectURL, EvaluatedCount, Periodic, SuccessCount, SuccessPercentage, MeasurableObjectDesc, UserID FROM evaluation_periodic_insert (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE =
-        	"SELECT * FROM evaluation_periodic_update (?, ?, ?, ?, ?, ?)";
+        	"SELECT * FROM evaluation_periodic_update (?, ?, ?, ?, ?, ?, ?, ?)";
 
     private DAOFactory daoFactory;
 	
@@ -71,7 +71,9 @@ public class EvaluationPeriodicBean implements EvaluationPeriodicBeanRemote {
 		object.setPeriodic(resultSet.getInt("Periodic"));
 		object.setSuccessCount(resultSet.getInt("SuccessCount"));
 		object.setSuccessPercentage(resultSet.getInt("SuccessPercentage"));
-
+		object.setMeasurableObjectDesc(resultSet.getString("MeasurableObjectDesc"));
+		object.setUserID(resultSet.getInt("UserID"));
+		
        return object;
    }
 
@@ -95,6 +97,8 @@ public class EvaluationPeriodicBean implements EvaluationPeriodicBeanRemote {
 			statement.setInt(4, evaluationPeriodic.getPeriodic());
 			statement.setInt(5, evaluationPeriodic.getSuccessCount());
 			statement.setInt(6, evaluationPeriodic.getSuccessPercentage());
+			statement.setString(7, evaluationPeriodic.getMeasurableObjectDesc());
+			statement.setInt(8, evaluationPeriodic.getUserID());
 			
             resultSet = statement.executeQuery();
 
@@ -126,6 +130,8 @@ public class EvaluationPeriodicBean implements EvaluationPeriodicBeanRemote {
 			statement.setInt(4, evaluationPeriodic.getPeriodic());
 			statement.setInt(5, evaluationPeriodic.getSuccessCount());
 			statement.setInt(6, evaluationPeriodic.getSuccessPercentage());
+			statement.setString(7, evaluationPeriodic.getMeasurableObjectDesc());
+			statement.setInt(8, evaluationPeriodic.getUserID());
         
             statement.executeQuery();
             

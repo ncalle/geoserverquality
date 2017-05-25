@@ -566,7 +566,7 @@ public class EvaluationBeanList {
 				EvaluationSummary evaluationSummaryResult = evaluationSummaryDao.create(es);
 				
 				//evaluacion disponibilidad periodica
-				settingPeriodicEval(evaluationSummaryResult.getEvaluationSummaryID(), selectedMeasurableObject.getMeasurableObjectURL(), success);
+				settingPeriodicEval(evaluationSummaryResult.getEvaluationSummaryID(), selectedMeasurableObject.getMeasurableObjectURL(), success, selectedMeasurableObject.getMeasurableObjectDescription());
 				
 				//cargar cada una de las evaluaciones, asociadas al ID del resumen de evaluacion
 				Iterator<Evaluation> evaluation_iterator = listEvaluation.iterator();
@@ -606,8 +606,8 @@ public class EvaluationBeanList {
 		}
 	}
 	
-	private void settingPeriodicEval(Integer id, String url, boolean success){
-		System.out.println("EvId: " + id + " Url: " + url + " Success: " + success);
+	private void settingPeriodicEval(Integer id, String url, boolean success, String description){
+		System.out.println("EvId: " + id + " Url: " + url + " Success: " + success + " Descr:" + description);
 		
 		EvaluationPeriodic periodic = new EvaluationPeriodic();
 		periodic.setEvaluationSummaryID(id);
@@ -616,6 +616,8 @@ public class EvaluationBeanList {
 		periodic.setEvaluatedCount(1);
 		periodic.setPeriodic(24);
 		periodic.setSuccessPercentage(success?100:0);
+		periodic.setMeasurableObjectDesc(description);
+		periodic.setUserID(userId);
 		
 		System.out.println(periodic.toString());
 		

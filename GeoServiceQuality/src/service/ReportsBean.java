@@ -96,7 +96,13 @@ public class ReportsBean {
     public List<EvaluationPeriodic> getBestServices() {
     	List<EvaluationPeriodic> list = new ArrayList<>();
     	
-    	for (int i = 0; i < 5; i++) {
+    	int tope = listPeriodicObjects.size();
+    	
+    	if(listPeriodicObjects.size()>5) {
+    		tope = 5;
+    	}
+    	
+		for (int i = 0; i < tope; i++) {
             list.add(listPeriodicObjects.get(i));
 		}
     	
@@ -106,7 +112,13 @@ public class ReportsBean {
     public List<EvaluationPeriodic> getWorstServices() {
     	List<EvaluationPeriodic> list = new ArrayList<>();
     	
-    	for (int i = listPeriodicObjects.size()-1; i >= listPeriodicObjects.size()-5; i--) {
+    	int tope = listPeriodicObjects.size();
+    	
+    	if(listPeriodicObjects.size()>5) {
+    		tope = 5;
+    	}
+    	
+    	for (int i = listPeriodicObjects.size()-1; i >= listPeriodicObjects.size()-tope; i--) {
             list.add(listPeriodicObjects.get(i));
 		}
     	

@@ -344,7 +344,9 @@ CREATE TABLE EvaluationPeriodic
     EvaluatedCount INT,
 	Periodic INT,
 	SuccessCount INT,
-    SuccessPercentage INT
+    SuccessPercentage INT,
+	MeasurableObjectDesc VARCHAR(1024) NOT NULL,
+	UserID INT
 
     --FOREIGN KEY (EvaluationSummaryID),
     --FOREIGN KEY (MeasurableObjectUrl)
@@ -467,9 +469,9 @@ INSERT INTO Unit (Name, Description) VALUES
 ('Basico-Intermedio-Completo',''),
 ('Entero','');
 
+-- No cambiar orden de las metricas, ya que estan mapeadas segun el id
 INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality, IsManual) VALUES
 (1, 'Información en excepciones', FALSE, 1, 'Servicio', FALSE),
-(2, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio', FALSE),
 (3, 'Excepciones en formato OGC', FALSE, 1, 'Servicio', FALSE),
 (4, 'Capas del servicio con CRS adecuado (IDEuy)', FALSE, 2, 'Servicio', FALSE),
 (4, 'Capa con CRS Adecuado (IDEuy)', FALSE, 1, 'Capa', FALSE),
@@ -482,7 +484,8 @@ INSERT INTO Metric (FactorID, Name, AgrgegationFlag, UnitID, Granurality, IsManu
 (5, 'Cantidad de formatos de excepciones soportadas', FALSE, 5, 'Servicio', FALSE),
 (6, 'Leyenda de la Capa', FALSE, 1, 'Servicio', FALSE),
 (6, 'Específica Rango Util', FALSE, 1, 'Capa', FALSE),
-(7, 'Errores descriptivos', FALSE, 1, 'Servicio', TRUE);
+(7, 'Errores descriptivos', FALSE, 1, 'Servicio', TRUE),
+(2, 'Disponibilidad diaria del servicio', FALSE, 2, 'Servicio', FALSE);
 --(4, 'Tolerancia a parametros nulos', FALSE, 1, 'Método'),
 --(4, 'Tolerancia a parametros largos', FALSE, 1, 'Método'),
 --(5, 'Promedio tiempo de respuesta diario', FALSE, 3, 'Método'),
@@ -1212,6 +1215,8 @@ CREATE OR REPLACE FUNCTION evaluation_periodic_insert
    , pPeriodic INT
    , pSuccessCount INT
    , pSuccessPercentage INT
+   , pMeasurableObjectDesc VARCHAR(1024)
+   , pUserID INT
 )
 RETURNS TABLE 
 (
@@ -1221,6 +1226,8 @@ RETURNS TABLE
    , Periodic INT
    , SuccessCount INT
    , SuccessPercentage INT
+   , MeasurableObjectDesc VARCHAR(1024)
+   , UserID INT
 ) AS $$
 /************************************************************************************************************
 ** Name: evaluation_periodic_insert
@@ -1233,9 +1240,9 @@ DECLARE v_EvaluationSummaryID INT;
 BEGIN    
 
    INSERT INTO EvaluationPeriodic AS es
-   (EvaluationSummaryID, MeasurableObjectUrl, EvaluatedCount, Periodic, SuccessCount, SuccessPercentage)
+   (EvaluationSummaryID, MeasurableObjectUrl, EvaluatedCount, Periodic, SuccessCount, SuccessPercentage, MeasurableObjectDesc, UserID)
    VALUES
-   (pEvaluationSummaryID, pMeasurableObjectUrl, pEvaluatedCount, pPeriodic, pSuccessCount, pSuccessPercentage)
+   (pEvaluationSummaryID, pMeasurableObjectUrl, pEvaluatedCount, pPeriodic, pSuccessCount, pSuccessPercentage, pMeasurableObjectDesc, pUserID)
       RETURNING es.EvaluationSummaryID INTO v_EvaluationSummaryID;
 
    RETURN QUERY 
@@ -1245,8 +1252,10 @@ BEGIN
       , es.Periodic
       , es.SuccessCount
 	  , es.SuccessPercentage
+	  , es.MeasurableObjectDesc
+	  , es.UserID
    FROM EvaluationPeriodic es
-   GROUP BY es.EvaluationSummaryID, es.MeasurableObjectUrl, es.EvaluatedCount, es.Periodic, es.SuccessCount, es.SuccessPercentage;
+   GROUP BY es.EvaluationSummaryID, es.MeasurableObjectUrl, es.EvaluatedCount, es.Periodic, es.SuccessCount, es.SuccessPercentage, es.MeasurableObjectDesc, es.UserID;
 
 END;
 $$ LANGUAGE plpgsql;
@@ -1265,6 +1274,8 @@ RETURNS TABLE
    , Periodic INT
    , SuccessCount INT
    , SuccessPercentage INT
+   , MeasurableObjectDesc VARCHAR(1024)
+   , UserID INT
 ) AS $$
 /************************************************************************************************************
 ** Name: evaluation_periodic_get
@@ -1297,8 +1308,10 @@ BEGIN
       , es.Periodic
       , es.SuccessCount
       , es.SuccessPercentage
+	  , es.MeasurableObjectDesc
+	  , es.UserID
    FROM EvaluationPeriodic es
-   GROUP BY es.EvaluationSummaryID, es.MeasurableObjectUrl, es.EvaluatedCount, es.Periodic, es.SuccessCount, es.SuccessPercentage;
+   GROUP BY es.EvaluationSummaryID, es.MeasurableObjectUrl, es.EvaluatedCount, es.Periodic, es.SuccessCount, es.SuccessPercentage, es.MeasurableObjectDesc,  es.UserID;
          
 END;
 $$ LANGUAGE plpgsql;
@@ -2475,6 +2488,8 @@ CREATE OR REPLACE FUNCTION evaluation_periodic_update
    , pPeriodic INT
    , pSuccessCount INT
    , pSuccessPercentage INT
+   , pMeasurableObjectDesc VARCHAR(1024)
+   , pUserID INT
 )
 RETURNS VOID AS $$
 /************************************************************************************************************
@@ -2490,6 +2505,8 @@ BEGIN
       , Periodic = pPeriodic
       , SuccessCount = pSuccessCount
       , SuccessPercentage = pSuccessPercentage
+	  , MeasurableObjectDesc = pMeasurableObjectDesc
+	  , UserID = pUserID
    WHERE EvaluationSummaryID = pEvaluationSummaryID;
     
 END;
