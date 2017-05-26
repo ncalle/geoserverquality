@@ -220,6 +220,8 @@ public class QualityModelBeanAdd {
         List <Integer> listDimensionIDs = new ArrayList<>();
         listFactor = new ArrayList<>();
         List <Integer> listFactorIDs = new ArrayList<>();
+        listMetric = new ArrayList<>();
+        List <Integer> listMetricIDs = new ArrayList<>();
         
         if (listQualityModels != null){
         	System.out.println("TREE: " + listQualityModels);
@@ -238,6 +240,11 @@ public class QualityModelBeanAdd {
 				if ((!listFactorIDs.contains(qualityModelsElement.getElementID()) && qualityModelsElement.getElementType().equals("F"))){
 					listFactor.add(qualityModelsElement);
 					listFactorIDs.add(qualityModelsElement.getElementID());
+				}
+				
+				if ((!listMetricIDs.contains(qualityModelsElement.getElementID()) && qualityModelsElement.getElementType().equals("M"))){
+					listMetric.add(qualityModelsElement);
+					listMetricIDs.add(qualityModelsElement.getElementID());
 				}
 			}
         }
@@ -308,48 +315,61 @@ public class QualityModelBeanAdd {
         try {	
 	        InputStream in = (event.getFile()).getInputstream();
 	        metricFileName = event.getFile().getFileName();
-	
-	        // inputStream a FileOutputStream
-	        File file = new File("C:/GeoServiceQualityJARs/" + metricFileName);
-	        OutputStream out = new FileOutputStream(file);
-	        int read = 0;
-	        byte[] bytes = new byte[1024];
-	
-	        while ((read = in.read(bytes)) != -1) {
-	            out.write(bytes, 0, read);
-	        }
-	        in.close();
-	        out.flush();
-	        out.close();
-	        System.out.println("Archivo subido!"); 
-
-	        //Loading de clases
-	        URL url = file.toURI().toURL();  
-	        URL[] urls = new URL[]{url};
-
-	        ClassLoader cl = new URLClassLoader(urls);
-	        try {
-				Class<?> cls = cl.loadClass("UserMetricPackage.UserMetricClass");
-				
-				if (cls != null){
-					Method met = cls.getMethod( "userMetricMethod", String.class, String.class, String.class); //String url, String serviceType, String format
-					System.out.println("Metodo: " + met);
+	        
+	        Boolean fileNameInUse = false;	        
+			for (QualityModelTreeStructure element : listMetric) {
+				if (element.getMetricFileName() != null && element.getMetricFileName().equals(metricFileName)){
+					fileNameInUse = true;
 				}
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			}
+			
+			if (fileNameInUse == true){
+		        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", metricFileName + " ya está asociado a una métrica existente");
+		        FacesContext.getCurrentInstance().addMessage(null, message);
+			}
+			else{
+		        // inputStream a FileOutputStream
+		        File file = new File("C:/GeoServiceQualityJARs/" + metricFileName);
+		        OutputStream out = new FileOutputStream(file);
+		        int read = 0;
+		        byte[] bytes = new byte[1024];
+		
+		        while ((read = in.read(bytes)) != -1) {
+		            out.write(bytes, 0, read);
+		        }
+		        in.close();
+		        out.flush();
+		        out.close();
+		        System.out.println("Archivo subido!"); 
+
+		        //Loading de clases
+		        URL url = file.toURI().toURL();  
+		        URL[] urls = new URL[]{url};
+
+		        ClassLoader cl = new URLClassLoader(urls);
+		        try {
+					Class<?> cls = cl.loadClass("UserMetricPackage.UserMetricClass");
+					
+					if (cls != null){
+						Method met = cls.getMethod( "userMetricMethod", String.class, String.class, String.class); //String url, String serviceType, String format
+						System.out.println("Metodo: " + met);
+					}
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        
+		        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Método subido correctamente.");
+		        FacesContext.getCurrentInstance().addMessage(null, message);
 			}
 	    } catch (IOException e) {
 	        System.out.println(e.getMessage());
 	    }
-    	
-        FacesMessage message = new FacesMessage("Éxito", event.getFile().getFileName() + " método agregado.");
-        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }
