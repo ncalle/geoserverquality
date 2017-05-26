@@ -63,7 +63,7 @@ public class EvaluationBeanList {
 	private List<ProfileMetric> listProfileMetric;
 	private int userId, manualMetricID;
 	private String profileResult, profileQualityResult;
-	private boolean showResult, showConfirm;
+	private boolean showResult, showConfirm, isAvailableOn;
 	Map<Integer, Boolean> resultMap = new HashMap<>();
 	
 	private List<IdeTreeStructure> listIdeStructure;
@@ -459,6 +459,7 @@ public class EvaluationBeanList {
 		
 		if ((selectedMeasurableObject != null || selectedTreeNode != null) && selectedProfile != null) {
 			
+			isAvailableOn = false;
 			Date date = new Date(Calendar.getInstance().getTime().getTime());
 			List<Boolean> listResult = new ArrayList<>();
 			listEvaluation = new ArrayList<>();
@@ -495,8 +496,7 @@ public class EvaluationBeanList {
 					for (MeasurableObject obj : listObjects) {
 						if(obj.getEntityType().equals("Servicio")){
 							listMO.add(obj);
-						}
-						
+						} 						
 					}
 					
 				} else {
@@ -535,11 +535,10 @@ public class EvaluationBeanList {
 								hashMetricWeight.put(metric.getMetricID(), 0.0);
 							}
 						}
-					
+						
 						listEvaluation.add(e);
 					}
 				}
-				
 				
 				int profileResultTotal = resultEvaluationProfile(listResult);
 				profileResult = profileResultTotal + " % de aprobación";
@@ -566,7 +565,9 @@ public class EvaluationBeanList {
 				EvaluationSummary evaluationSummaryResult = evaluationSummaryDao.create(es);
 				
 				//evaluacion disponibilidad periodica
-				settingPeriodicEval(evaluationSummaryResult.getEvaluationSummaryID(), selectedMeasurableObject.getMeasurableObjectURL(), success, selectedMeasurableObject.getMeasurableObjectDescription());
+				if(selectedProfile.getGranurality().equals("Servicio") && isAvailableOn){
+					settingPeriodicEval(evaluationSummaryResult.getEvaluationSummaryID(), selectedMeasurableObject.getMeasurableObjectURL(), success, selectedMeasurableObject.getMeasurableObjectDescription());
+				}
 				
 				//cargar cada una de las evaluaciones, asociadas al ID del resumen de evaluacion
 				Iterator<Evaluation> evaluation_iterator = listEvaluation.iterator();
@@ -600,6 +601,7 @@ public class EvaluationBeanList {
 	
 	private boolean isComplete(int id){
 		if(id==15){  // metrica de disponibilidad diaria
+			isAvailableOn = true;
 			return false;
 		} else {
 			return true;
@@ -609,19 +611,31 @@ public class EvaluationBeanList {
 	private void settingPeriodicEval(Integer id, String url, boolean success, String description){
 		System.out.println("EvId: " + id + " Url: " + url + " Success: " + success + " Descr:" + description);
 		
-		EvaluationPeriodic periodic = new EvaluationPeriodic();
-		periodic.setEvaluationSummaryID(id);
-		periodic.setMeasurableObjectUrl(url);
-		periodic.setSuccessCount(success?1:0);
-		periodic.setEvaluatedCount(1);
-		periodic.setPeriodic(24);
-		periodic.setSuccessPercentage(success?100:0);
-		periodic.setMeasurableObjectDesc(description);
-		periodic.setUserID(userId);
+		boolean repeated = false; 
+		List<EvaluationPeriodic> allItems = evaluationPeriodicDao.list();
+		for (int i = 0; i < allItems.size(); i++) {
+			if(allItems.get(i).getMeasurableObjectUrl().equalsIgnoreCase(url)){
+				repeated = true;
+				break;
+			}
+		}
 		
-		System.out.println(periodic.toString());
+		if(!repeated){
+			EvaluationPeriodic periodic = new EvaluationPeriodic();
+			periodic.setEvaluationSummaryID(id);
+			periodic.setMeasurableObjectUrl(url);
+			periodic.setSuccessCount(success?1:0);
+			periodic.setEvaluatedCount(1);
+			periodic.setPeriodic(24);
+			periodic.setSuccessPercentage(success?100:0);
+			periodic.setMeasurableObjectDesc(description);
+			periodic.setUserID(userId);
+			
+			System.out.println(periodic.toString());
+			
+			evaluationPeriodicDao.create(periodic);
+		}
 		
-		evaluationPeriodicDao.create(periodic);
 	}
 	
 	public boolean evaluationMetric(ProfileMetric metric, MeasurableObject selectedMeasurableObject){
