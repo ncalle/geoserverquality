@@ -22,6 +22,8 @@ public class EvaluationPeriodicBean implements EvaluationPeriodicBeanRemote {
             "SELECT EvaluationSummaryID, MeasurableObjectURL, EvaluatedCount, Periodic, SuccessCount, SuccessPercentage, MeasurableObjectDesc, UserID FROM evaluation_periodic_insert (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE =
         	"SELECT * FROM evaluation_periodic_update (?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String SQL_DELETE =
+        	"SELECT * FROM evaluation_periodic_delete (?)";
 
     private DAOFactory daoFactory;
 	
@@ -68,7 +70,7 @@ public class EvaluationPeriodicBean implements EvaluationPeriodicBeanRemote {
 		object.setEvaluationSummaryID(resultSet.getInt("EvaluationSummaryID"));
 	    object.setMeasurableObjectUrl(resultSet.getString("MeasurableObjectUrl"));
 	    object.setEvaluatedCount(resultSet.getInt("EvaluatedCount"));
-		object.setPeriodic(resultSet.getInt("Periodic"));
+		object.setPeriodic(resultSet.getDate("Periodic"));
 		object.setSuccessCount(resultSet.getInt("SuccessCount"));
 		object.setSuccessPercentage(resultSet.getInt("SuccessPercentage"));
 		object.setMeasurableObjectDesc(resultSet.getString("MeasurableObjectDesc"));
@@ -94,7 +96,7 @@ public class EvaluationPeriodicBean implements EvaluationPeriodicBeanRemote {
             statement.setInt(1, evaluationPeriodic.getEvaluationSummaryID());
 			statement.setString(2, evaluationPeriodic.getMeasurableObjectUrl());
 			statement.setInt(3, evaluationPeriodic.getEvaluatedCount());
-			statement.setInt(4, evaluationPeriodic.getPeriodic());
+			statement.setDate(4, evaluationPeriodic.getPeriodic());
 			statement.setInt(5, evaluationPeriodic.getSuccessCount());
 			statement.setInt(6, evaluationPeriodic.getSuccessPercentage());
 			statement.setString(7, evaluationPeriodic.getMeasurableObjectDesc());
@@ -127,7 +129,7 @@ public class EvaluationPeriodicBean implements EvaluationPeriodicBeanRemote {
             statement.setInt(1, evaluationPeriodic.getEvaluationSummaryID());
 			statement.setString(2, evaluationPeriodic.getMeasurableObjectUrl());
 			statement.setInt(3, evaluationPeriodic.getEvaluatedCount());
-			statement.setInt(4, evaluationPeriodic.getPeriodic());
+			statement.setDate(4, evaluationPeriodic.getPeriodic());
 			statement.setInt(5, evaluationPeriodic.getSuccessCount());
 			statement.setInt(6, evaluationPeriodic.getSuccessPercentage());
 			statement.setString(7, evaluationPeriodic.getMeasurableObjectDesc());
@@ -142,5 +144,26 @@ public class EvaluationPeriodicBean implements EvaluationPeriodicBeanRemote {
         }
 		
 	}
+	
+    @Override
+    public void delete(EvaluationPeriodic evaluationPeriodic) throws DAOException {
+
+    	Connection connection = null;
+		PreparedStatement statement = null;
+        
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(SQL_DELETE);
+
+            statement.setInt(1, evaluationPeriodic.getEvaluationSummaryID());
+        
+            statement.executeQuery();
+            
+            connection.close();
+            
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
 
 }
