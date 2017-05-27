@@ -3,6 +3,8 @@ package core;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -45,35 +47,51 @@ public class IntervalTimer {
     	
     }
     
-    @Schedule(minute="*/15", hour="*", persistent = true)
+    //@Schedule(minute="*/15", hour="*", persistent = true) cada 15 min
+    @Schedule(hour="*/24", persistent = true) // cada 24 hrs
     public void scheduleTimer() {
     	TimerConfig timerConfig = new TimerConfig();
         timerConfig.setInfo("Timer");
         
         listPeriodicObjects = evaluationPeriodicDao.list();
         for(EvaluationPeriodic e:listPeriodicObjects){
-        	boolean success = metricServiceAvailable(e.getMeasurableObjectUrl(), TIMEOUT_SERVICE);
-        	System.out.println("checkService.. " + success);
         	
-        	int count = e.getEvaluatedCount();
-        	int countSuccess= e.getSuccessCount();
+        	//Se evaluan los servicios de hasta 3 meses antes
+        	Date d = e.getPeriodic();
+        	Calendar calendar = Calendar.getInstance();
+        	calendar.add( Calendar.MONTH ,  -3 );
+        	boolean olderDate = d.compareTo( calendar.getTime() ) < 0;
+        	//System.out.println("getPeriodic().. " + e.getPeriodic() + " olderDate:: " + olderDate);
         	
-        	count++;
-        	if(success){
-        		countSuccess = countSuccess + 1;
+        	if(!olderDate){
+        		boolean success = metricServiceAvailable(e.getMeasurableObjectUrl(), TIMEOUT_SERVICE);
+            	System.out.println("checkService.. " + success);
+            	
+            	int count = e.getEvaluatedCount();
+            	int countSuccess= e.getSuccessCount();
+            	
+            	count++;
+            	if(success){
+            		countSuccess = countSuccess + 1;
+            	}
+            	
+            	e.setEvaluatedCount(count);
+            	e.setSuccessCount(countSuccess);
+            	float f = ((float) countSuccess/count) * 100;
+            	e.setSuccessPercentage((int)f);
+            	
+            	System.out.println(e.toString());
+            	
+            	evaluationPeriodicDao.update(e);
+            	
+        	} else {
+        		evaluationPeriodicDao.delete(e);
         	}
         	
-        	e.setEvaluatedCount(count);
-        	e.setSuccessCount(countSuccess);
-        	float f = ((float) countSuccess/count) * 100;
-        	e.setSuccessPercentage((int)f);
-        	
-        	System.out.println(e.toString());
-        	
-        	evaluationPeriodicDao.update(e);
         }
         
     }
+    
     
     @Timeout
     @AccessTimeout(value = 20, unit = TimeUnit.MINUTES)
