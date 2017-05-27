@@ -61,7 +61,7 @@ public class IntervalTimer {
         	Calendar calendar = Calendar.getInstance();
         	calendar.add( Calendar.MONTH ,  -3 );
         	boolean olderDate = d.compareTo( calendar.getTime() ) < 0;
-        	//System.out.println("getPeriodic().. " + e.getPeriodic() + " olderDate:: " + olderDate);
+        	///System.out.println("getPeriodic().. " + e.getPeriodic() + " olderDate:: " + olderDate);
         	
         	if(!olderDate){
         		boolean success = metricServiceAvailable(e.getMeasurableObjectUrl(), TIMEOUT_SERVICE);
