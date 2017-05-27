@@ -224,8 +224,6 @@ public class QualityModelBeanAdd {
         List <Integer> listMetricIDs = new ArrayList<>();
         
         if (listQualityModels != null){
-        	System.out.println("TREE: " + listQualityModels);
-        				
 			for (QualityModelTreeStructure qualityModelsElement : listQualityModels) {
 				if ((!listModelIDs.contains(qualityModelsElement.getElementID()) && qualityModelsElement.getElementType().equals("Q"))){
 					listModel.add(qualityModelsElement);
@@ -296,15 +294,23 @@ public class QualityModelBeanAdd {
     	}
     	
     	try{
-    		qmDao.create(element, metricUnitID, metricIsManual, metricDescription, IsUserMetric, metricFileName);
-            
-            FacesContext context = FacesContext.getCurrentInstance();
-        	context.addMessage(null, new FacesMessage("La entidad del modelo de calidad fue guardada correctamente."));
+    		if (entityType.equals("Metric") && metricFileName == null){
+        		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe asociar un método a la métrica");
+    	        FacesContext.getCurrentInstance().addMessage(null, message);
+    		}
+    		else{
+        		qmDao.create(element, metricUnitID, metricIsManual, metricDescription, IsUserMetric, metricFileName);
+                
+        		listQualityModels = qmDao.list();
+        		createQualityModelLists();
         		
+                FacesContext context = FacesContext.getCurrentInstance();
+            	context.addMessage(null, new FacesMessage("La entidad del modelo de calidad fue guardada correctamente."));
+    		}        		
     	} catch(DAOException e) {
     		
-    		FacesContext context = FacesContext.getCurrentInstance();
-    		context.addMessage(null, new FacesMessage("Error al guardar la entidad."));
+    		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Error al guardar la entidad");
+	        FacesContext.getCurrentInstance().addMessage(null, message);
     		
     		e.printStackTrace();
     	}
@@ -316,16 +322,20 @@ public class QualityModelBeanAdd {
 	        InputStream in = (event.getFile()).getInputstream();
 	        metricFileName = event.getFile().getFileName();
 	        
-	        Boolean fileNameInUse = false;	        
+	        Boolean fileNameInUse = false;
+	        String metricName = "";
 			for (QualityModelTreeStructure element : listMetric) {
 				if (element.getMetricFileName() != null && element.getMetricFileName().equals(metricFileName)){
 					fileNameInUse = true;
+					metricName = element.getElementName();
 				}
 			}
 			
 			if (fileNameInUse == true){
-		        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", metricFileName + " ya está asociado a una métrica existente");
+		        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", metricFileName + " ya se encuentra asociado a la métrica " + metricName);
 		        FacesContext.getCurrentInstance().addMessage(null, message);
+		        metricFileName = null;
+		        fileNameInUse = false;
 			}
 			else{
 		        // inputStream a FileOutputStream
