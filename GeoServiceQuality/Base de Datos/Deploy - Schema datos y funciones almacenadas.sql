@@ -345,7 +345,7 @@ CREATE TABLE EvaluationPeriodic
     EvaluationSummaryID INT NOT NULL,
     MeasurableObjectUrl VARCHAR(1024) NOT NULL,
     EvaluatedCount INT,
-	Periodic INT,
+	Periodic DATE,
 	SuccessCount INT,
     SuccessPercentage INT,
 	MeasurableObjectDesc VARCHAR(1024) NOT NULL,
@@ -1215,7 +1215,7 @@ CREATE OR REPLACE FUNCTION evaluation_periodic_insert
    pEvaluationSummaryID INT
    , pMeasurableObjectUrl VARCHAR(1024)
    , pEvaluatedCount INT
-   , pPeriodic INT
+   , pPeriodic DATE
    , pSuccessCount INT
    , pSuccessPercentage INT
    , pMeasurableObjectDesc VARCHAR(1024)
@@ -1226,7 +1226,7 @@ RETURNS TABLE
     EvaluationSummaryID INT
    , MeasurableObjectUrl VARCHAR(1024)
    , EvaluatedCount INT
-   , Periodic INT
+   , Periodic DATE
    , SuccessCount INT
    , SuccessPercentage INT
    , MeasurableObjectDesc VARCHAR(1024)
@@ -1274,7 +1274,7 @@ RETURNS TABLE
    EvaluationSummaryID INT
    , MeasurableObjectUrl VARCHAR(1024)
    , EvaluatedCount INT
-   , Periodic INT
+   , Periodic DATE
    , SuccessCount INT
    , SuccessPercentage INT
    , MeasurableObjectDesc VARCHAR(1024)
@@ -1316,6 +1316,21 @@ BEGIN
    FROM EvaluationPeriodic es
    GROUP BY es.EvaluationSummaryID, es.MeasurableObjectUrl, es.EvaluatedCount, es.Periodic, es.SuccessCount, es.SuccessPercentage, es.MeasurableObjectDesc,  es.UserID;
          
+END;
+$$ LANGUAGE plpgsql;
+/* ****************************************************************************************************** */
+/* ****************************************************************************************************** */
+CREATE OR REPLACE FUNCTION evaluation_periodic_delete
+(
+   pEvaluationSummaryID INT
+)
+RETURNS VOID AS $$
+
+BEGIN
+   
+   DELETE FROM EvaluationPeriodic
+   WHERE EvaluationSummaryID = pEvaluationSummaryID;
+    
 END;
 $$ LANGUAGE plpgsql;
 /* ****************************************************************************************************** */
@@ -2488,7 +2503,7 @@ CREATE OR REPLACE FUNCTION evaluation_periodic_update
  pEvaluationSummaryID INT
    , pMeasurableObjectUrl VARCHAR(1024)
    , pEvaluatedCount INT
-   , pPeriodic INT
+   , pPeriodic DATE
    , pSuccessCount INT
    , pSuccessPercentage INT
    , pMeasurableObjectDesc VARCHAR(1024)

@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 
 public class EvaluationPeriodic implements Serializable {
@@ -12,7 +13,7 @@ public class EvaluationPeriodic implements Serializable {
     private Integer SuccessPercentage;
     private Integer SuccessCount;
     private Integer EvaluatedCount;
-    private Integer Periodic;
+    private Date Periodic;
     private String MeasurableObjectDesc;
     private Integer UserID;
     
@@ -63,12 +64,12 @@ public class EvaluationPeriodic implements Serializable {
 	}
 
 
-	public Integer getPeriodic() {
+	public Date getPeriodic() {
 		return Periodic;
 	}
 
 
-	public void setPeriodic(Integer periodic) {
+	public void setPeriodic(Date periodic) {
 		Periodic = periodic;
 	}
 
@@ -118,7 +119,7 @@ public class EvaluationPeriodic implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("EvaluationPeriodic[EvaluationSummaryID=%d,  MeasurableObjectUrl=%s, EvaluatedCount=%d, SuccessCount=%d, SuccessPercentage=%d, Periodic=%d]",
-        		getEvaluationSummaryID(), getMeasurableObjectUrl(), getEvaluatedCount(), getSuccessCount(), getSuccessPercentage(), getPeriodic());
+        return String.format("EvaluationPeriodic[EvaluationSummaryID=%d,  MeasurableObjectUrl=%s, EvaluatedCount=%d, SuccessCount=%d, SuccessPercentage=%d, Periodic=%s]",
+        		getEvaluationSummaryID(), getMeasurableObjectUrl(), getEvaluatedCount(), getSuccessCount(), getSuccessPercentage(), getPeriodic().toString());
     }
 }

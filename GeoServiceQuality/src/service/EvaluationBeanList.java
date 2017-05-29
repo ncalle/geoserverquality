@@ -621,12 +621,13 @@ public class EvaluationBeanList {
 		}
 		
 		if(!repeated){
+			Date date = new Date(Calendar.getInstance().getTime().getTime());
 			EvaluationPeriodic periodic = new EvaluationPeriodic();
 			periodic.setEvaluationSummaryID(id);
 			periodic.setMeasurableObjectUrl(url);
 			periodic.setSuccessCount(success?1:0);
 			periodic.setEvaluatedCount(1);
-			periodic.setPeriodic(24);
+			periodic.setPeriodic(date);
 			periodic.setSuccessPercentage(success?100:0);
 			periodic.setMeasurableObjectDesc(description);
 			periodic.setUserID(userId);

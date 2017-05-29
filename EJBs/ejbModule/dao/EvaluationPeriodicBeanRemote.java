@@ -15,4 +15,6 @@ public interface EvaluationPeriodicBeanRemote {
 
     public void update(EvaluationPeriodic evaluationPeriodic) throws DAOException;
     
+    public void delete(EvaluationPeriodic evaluationPeriodic) throws DAOException;
+    
 }
