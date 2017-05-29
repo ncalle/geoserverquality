@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -317,7 +318,7 @@ public class QualityModelBeanAdd {
 
 	}
     
-    public void handleFileUpload(FileUploadEvent event) {
+    public void handleFileUpload(FileUploadEvent event) throws NoSuchMethodException, SecurityException, ClassNotFoundException {
         try {	
 	        InputStream in = (event.getFile()).getInputstream();
 	        metricFileName = event.getFile().getFileName();
@@ -338,7 +339,7 @@ public class QualityModelBeanAdd {
 		        fileNameInUse = false;
 			}
 			else{
-		        // inputStream a FileOutputStream
+				//se copia el archivo a una carpeta local
 		        File file = new File("C:/GeoServiceQualityJARs/" + metricFileName);
 		        OutputStream out = new FileOutputStream(file);
 		        int read = 0;
@@ -350,33 +351,57 @@ public class QualityModelBeanAdd {
 		        in.close();
 		        out.flush();
 		        out.close();
-		        System.out.println("Archivo subido!"); 
+		        System.out.println("Archivo subido!");
 
-		        //Loading de clases
-		        URL url = file.toURI().toURL();  
-		        URL[] urls = new URL[]{url};
-
-		        ClassLoader cl = new URLClassLoader(urls);
-		        try {
-					Class<?> cls = cl.loadClass("UserMetricPackage.UserMetricClass");
-					
-					if (cls != null){
-						Method met = cls.getMethod( "userMetricMethod", String.class, String.class, String.class); //String url, String serviceType, String format
-						System.out.println("Metodo: " + met);
-					}
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		        //Busqueda de clase y firma necesaria para los jars
+            	Boolean isValidJarFile = false;
+            	
+		        JarFile jarFile = new JarFile(file);
+		        Enumeration allEntries = jarFile.entries();
 		        
-		        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Método subido correctamente.");
-		        FacesContext.getCurrentInstance().addMessage(null, message);
+		        while (allEntries.hasMoreElements()) {
+	                JarEntry entry = (JarEntry) allEntries.nextElement();
+	                String className = entry.getName();
+	                
+	                if (className.toLowerCase().endsWith(".class")){                	
+	                	className = className.replaceAll("/", ".").substring(0, className.lastIndexOf("."));
+	                	
+	                	System.out.println("Clase encontrada: " + className);
+	                	
+	    		        //Loading de clase para buscar la firma de los metodos que contiene
+	                	URL url = file.toURI().toURL();
+	    		        URL[] urls = new URL[]{url};
+
+	    		        ClassLoader cl = new URLClassLoader(urls);
+	    		        Class<?> cls = cl.loadClass(className);
+	                	
+	                    Method[] methods = cls.getDeclaredMethods();
+	                    for (Method m : methods) {
+	                    	System.out.println("Metodo encontrado: " + m.getName());
+	                    	
+	                        if (m.getName().equals("userMetricMethod") && m.getParameterCount() == 3){
+	                        	System.out.println("OK: userMetricMethod contiene tres parametros");
+	                        	
+	                        	Parameter[] p = m.getParameters();
+	                        	if (p[0].getType().toString().equals("class java.lang.String") && p[1].getType().toString().equals("class java.lang.String") && p[2].getType().toString().equals("class java.lang.String")){
+	                        		isValidJarFile = true;
+	                        		System.out.println("isValidJarFile EN TRUE");
+	                                break;
+	                            }
+	                        }
+	                    }	
+	                }
+		        }
+		        
+		        if (isValidJarFile == true){
+			        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Método subido correctamente.");
+			        FacesContext.getCurrentInstance().addMessage(null, message);
+		        }
+		        else{
+			        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", metricFileName + " no está formado de manera correcta");
+			        FacesContext.getCurrentInstance().addMessage(null, message);
+			        metricFileName = null;
+		        }
 			}
 	    } catch (IOException e) {
 	        System.out.println(e.getMessage());
