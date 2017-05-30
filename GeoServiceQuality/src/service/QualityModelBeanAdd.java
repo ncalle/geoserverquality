@@ -379,13 +379,12 @@ public class QualityModelBeanAdd {
 	                    for (Method m : methods) {
 	                    	System.out.println("Metodo encontrado: " + m.getName());
 	                    	
-	                        if (m.getName().equals("userMetricMethod") && m.getParameterCount() == 3){
-	                        	System.out.println("OK: userMetricMethod contiene tres parametros");
+	                        if (m.getName().equals("userMetricMethod") && m.getParameterCount() == 3 && m.getReturnType().toString().equals("boolean")){
 	                        	
 	                        	Parameter[] p = m.getParameters();
 	                        	if (p[0].getType().toString().equals("class java.lang.String") && p[1].getType().toString().equals("class java.lang.String") && p[2].getType().toString().equals("class java.lang.String")){
 	                        		isValidJarFile = true;
-	                        		System.out.println("isValidJarFile EN TRUE");
+	                        		System.out.println("OK: userMetricMethod contiene tres parametros de tipo string y retorna un booleano");
 	                                break;
 	                            }
 	                        }
