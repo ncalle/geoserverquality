@@ -598,7 +598,7 @@ INSERT INTO Layer (NodeID, Name, Url, Description) VALUES
 --ide.uy/Presidencia de la República/Unidad de Seguridad Vial
    --http://aplicaciones.unasev.gub.uy/mapas/Descarga/Descarga
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
-(3,'http://gissrv.unasev.gub.uy/arcgis/services/UNASEV/srvUNASEVWFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Siniestros Fatales'),
+(3,'http://gissrv.unasev.gub.uy/arcgis/services/UNASEV/srvUNASEVWFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Siniestros Fatales'),
 (3,'http://gissrv.unasev.gub.uy/arcgis/services/UNASEV/srvUNASEVWFS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Siniestros Fatales');
 
 --ide.uy/Ministerio de Defensa Nacional/Servicio Geográfico Militar
@@ -649,25 +649,25 @@ INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description
 --ide.uy/Ministerio de Economía y Finanzas/Dirección Nacional de Catastro
 	--http://catastro.mef.gub.uy/12360/10/areas/geocatastro.html#wfs
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Artigas_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Artigas'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Lavalleja_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Lavalleja'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Canelones_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Canelones'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Colonia_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Colonia'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Flores_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Flores'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Montevideo_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Montevideo'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Maldonado_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Maldonado'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Rocha_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Rocha'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Soriano_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Soriano'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Florida_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Florida'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/TreintayTres_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Treinta y Tres'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Durazno_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Durazno'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/CerroLargo_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'CerroLargo'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Tacuarembo_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Tacuarembo'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/RioNegro_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Rio Negro'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Rivera_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Rivera'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Paysandu_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Paysandu'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Salto_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Salto'),
-(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/SanJose_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'SanJose');
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Artigas_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Artigas'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Lavalleja_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Lavalleja'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Canelones_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Canelones'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Colonia_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Colonia'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Flores_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Flores'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Montevideo_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Montevideo'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Maldonado_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Maldonado'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Rocha_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Rocha'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Soriano_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Soriano'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Florida_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Florida'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/TreintayTres_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Treinta y Tres'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Durazno_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Durazno'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/CerroLargo_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'CerroLargo'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Tacuarembo_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Tacuarembo'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/RioNegro_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Rio Negro'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Rivera_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Rivera'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Paysandu_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Paysandu'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/Salto_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Salto'),
+(6,'http://gis.catastro.gub.uy/arcgis/services/WFS/SanJose_WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'SanJose');
 
 --ide.uy/Ministerio de Ganadería, Agricultura y Pesca/Dirección Nacional de Recursos Renovables
     --http://www.cebra.com.uy/renare/visualizadores-graficos-y-consulta-de-mapas
@@ -681,19 +681,12 @@ INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
 (9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/CatastroMineroGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Catastro Minero'),
 (9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/CatastroMineroGeoS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Catastro Minero'),
---(9,'http://visualizadorgeominero.dinamige.gub.uy/shapefiles/CanteraObraPublica_Dinamige.zip','', 'Catastro Minero'),
---(9,'http://visualizadorgeominero.dinamige.gub.uy/shapefiles/ReservaMinera_Dinamige.zip','', 'Catastro Minero'),
---(9,'http://visualizadorgeominero.dinamige.gub.uy/shapefiles/Servidumbres_Dinamige.zip','', 'Catastro Minero'),
---(9,'http://visualizadorgeominero.dinamige.gub.uy/shapefiles/ZonasExclusion_Dinamige.zip','', 'Catastro Minero'),
---(9,'http://visualizadorgeominero.dinamige.gub.uy/shapefiles/PedimentosOtorgados_Dinamige.zip','', 'Catastro Minero'),
---(9,'http://visualizadorgeominero.dinamige.gub.uy/shapefiles/PedimentosTramite_Dinamige.zip','', 'Catastro Minero'),
 (9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/HidrogeologiaGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Hidrogeología'),
---(9,'http://visualizadorgeominero.dinamige.gub.uy/shapefiles/Pozos_Dinamige.zip','', 'Hidrogeología'),
 (9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/MapaBaseUnidadesGeologicasGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Mapa Geológico'),
-(9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/GeolUnidadesGeologicas500000WFS/MapServer/WFSServer','WFS', 'Mapa Geológico'),
+(9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/GeolUnidadesGeologicas500000WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Mapa Geológico'),
 (9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/LaboratorioGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Laboratorio'),
 (9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/GeologiaGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Distritos Mineros'),
-(9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/GeologiaGeoS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'Distritos Mineros');
+(9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/GeologiaGeoS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Distritos Mineros');
 --(9,'http://visualizadorgeominero.dinamige.gub.uy/shapefiles/GeoMinera_Dinamige.zip','', 'Canteras');
 
 --ide.uy/Ministerio de Transporte y Obras Públicas/Dirección Nacional de Topografía
@@ -741,15 +734,15 @@ INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description
    --http://sit.mvotma.gub.uy/serviciosOGC.htm
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
 (12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/instrumentosOT/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'NORMATIVA DE ORDENAMIENTO TERRITORIAL'),
-(12,'http://sit.mvotma.gub.uy/arcgis/services/SIT/instrumentosOT/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'NORMATIVA DE ORDENAMIENTO TERRITORIAL'),
+(12,'http://sit.mvotma.gub.uy/arcgis/services/SIT/instrumentosOT/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'NORMATIVA DE ORDENAMIENTO TERRITORIAL'),
 (12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/instrumentos_elaboracion/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'INSTRUMENTOS DE O.T EN ELABORACIÓN'),
-(12,'http://sit.mvotma.gub.uy/arcgis/services/SIT/instrumentos_elaboracion/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'INSTRUMENTOS DE O.T EN ELABORACIÓN'),
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/chs/MapServer/WMSServer?','WMS', 'CONJUNTOS HABITACIONALES DE PROMOCIÓN PÚBLICA'),
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/chs/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'CONJUNTOS HABITACIONALES DE PROMOCIÓN PÚBLICA'),
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/asentamientos/MapServer/WMSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WMS', 'ASENTAMIENTOS'),
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/asentamientos/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'ASENTAMIENTOS'),
+(12,'http://sit.mvotma.gub.uy/arcgis/services/SIT/instrumentos_elaboracion/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'INSTRUMENTOS DE O.T EN ELABORACIÓN'),
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/chs/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'CONJUNTOS HABITACIONALES DE PROMOCIÓN PÚBLICA'),
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/chs/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'CONJUNTOS HABITACIONALES DE PROMOCIÓN PÚBLICA'),
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/asentamientos/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'ASENTAMIENTOS'),
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/asentamientos/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'ASENTAMIENTOS'),
 (12,'http://sit.mvotma.gub.uy/ArcGIS/services/OGC/OGC_cobertura/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'COBERTURA DEL SUELO'),
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/OGC/OGC_cobertura/MapServer/WFSServer?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities','WFS', 'COBERTURA DEL SUELO');
+(12,'http://sit.mvotma.gub.uy/ArcGIS/services/OGC/OGC_cobertura/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'COBERTURA DEL SUELO');
 
 --ide.uy/Intendencia de Montevideo/Servicio de Geomática
    --http://sig.montevideo.gub.uy/content/geoservicios-web
