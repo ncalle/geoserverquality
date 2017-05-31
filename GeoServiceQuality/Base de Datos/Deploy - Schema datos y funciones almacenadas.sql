@@ -505,7 +505,6 @@ INSERT INTO Institution (IdeID, Name, Description) VALUES
 (1, 'Ministerio de Defensa Nacional', 'Ministerio de Defensa Nacional'),
 (1, 'MIDES', 'Ministerio de Desarrollo Social'),
 (1, 'Ministerio de Economía y Finanzas', 'Ministerio de Economía y Finanzas'),
-(1, 'MEC', 'Ministerio de Educación y Cultura'),
 (1, 'Ministerio de Ganadería, Agricultura y Pesca', 'Ministerio de Ganadería, Agricultura y Pesca'),
 (1, 'MIEM', 'Ministerio de Industria, Energía y Minería'),
 (1, 'MTOP', 'Ministerio de Transporte y Obras Públicas'),
@@ -519,13 +518,12 @@ INSERT INTO Node (InstitutionID, Name, Description) VALUES
 (2, 'Servicio Geográfico Militar', 'Servicio Geográfico Militar'),
 (3, 'MIDES', 'Ministerio de Desarrollo Social'),
 (4, 'DNC', 'Dirección Nacional de Catastro'),
-(5, 'MEC', 'Ministerio de Educación y Cultura'),
-(6, 'RENARE', 'Dirección Nacional de Recursos Renovables'),
-(7, 'Dirección Nacional de Minería y Geología', 'Dirección Nacional de Minería y Geología'),
-(8, 'Dirección Nacional de Topografía', 'Direción Nacional de Topografía'),
-(9, 'DINAMA', 'Dirección Nacional de Medio Ambiente'),
-(9, 'DINOT', 'Dirección Nacional de Ordenamiento Territorial'),
-(10, 'Servicio de Geomática', 'Servicio de Geomática'); 
+(5, 'RENARE', 'Dirección Nacional de Recursos Renovables'),
+(6, 'Dirección Nacional de Minería y Geología', 'Dirección Nacional de Minería y Geología'),
+(7, 'Dirección Nacional de Topografía', 'Direción Nacional de Topografía'),
+(8, 'DINAMA', 'Dirección Nacional de Medio Ambiente'),
+(8, 'DINOT', 'Dirección Nacional de Ordenamiento Territorial'),
+(9, 'Servicio de Geomática', 'Servicio de Geomática'); 
 
 
 INSERT INTO Profile (Name, Granurality, IsWeightedFlag) VALUES
@@ -589,11 +587,11 @@ INSERT INTO Layer (NodeID, Name, Url, Description) VALUES
 (4, 'CAMINOS_AP030-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
 (4, 'CURVA_NIVEL_CA010-PCN10', 'http://geoservicios.sgm.gub.uy/UYAR.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
 --RENARE;
-(8, '0', 'http://web.renare.gub.uy/arcgis/services/SUELOS/MOSAICO_FOTOPLANOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
-(8, '0', 'http://web.renare.gub.uy/arcgis/services/TEMATICOS/IntConeat/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
-(8, '0', 'http://web.renare.gub.uy/arcgis/services/SUELOS/SUELOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', 'Departamentos'),
-(8, '1', 'http://web.renare.gub.uy/arcgis/services/SUELOS/SUELOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', 'Relieve'),
-(8, '2', 'http://web.renare.gub.uy/arcgis/services/SUELOS/SUELOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', 'Carta de Suelos 1 millon');
+(7, '0', 'http://web.renare.gub.uy/arcgis/services/SUELOS/MOSAICO_FOTOPLANOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(7, '0', 'http://web.renare.gub.uy/arcgis/services/TEMATICOS/IntConeat/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', ''),
+(7, '0', 'http://web.renare.gub.uy/arcgis/services/SUELOS/SUELOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', 'Departamentos'),
+(7, '1', 'http://web.renare.gub.uy/arcgis/services/SUELOS/SUELOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', 'Relieve'),
+(7, '2', 'http://web.renare.gub.uy/arcgis/services/SUELOS/SUELOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities', 'Carta de Suelos 1 millon');
 
 --ide.uy/Presidencia de la República/Unidad de Seguridad Vial
    --http://aplicaciones.unasev.gub.uy/mapas/Descarga/Descarga
@@ -672,82 +670,81 @@ INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description
 --ide.uy/Ministerio de Ganadería, Agricultura y Pesca/Dirección Nacional de Recursos Renovables
     --http://www.cebra.com.uy/renare/visualizadores-graficos-y-consulta-de-mapas
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
-(8,'http://web.renare.gub.uy/arcgis/services/SUELOS/MOSAICO_FOTOPLANOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'FOTOPLANOS'),
-(8,'http://web.renare.gub.uy/arcgis/services/TEMATICOS/IntConeat/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Mapas interpretativos a partir de la Cartografia CONEAT'),
-(8,'http://web.renare.gub.uy/arcgis/services/SUELOS/SUELOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Cartas de Suelos');
+(7,'http://web.renare.gub.uy/arcgis/services/SUELOS/MOSAICO_FOTOPLANOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'FOTOPLANOS'),
+(7,'http://web.renare.gub.uy/arcgis/services/TEMATICOS/IntConeat/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Mapas interpretativos a partir de la Cartografia CONEAT'),
+(7,'http://web.renare.gub.uy/arcgis/services/SUELOS/SUELOS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Cartas de Suelos');
 
 --ide.uy/Ministerio de Industria, Energía y Minería/Dirección Nacional de Minería y Geología
    --http://www.miem.gub.uy/web/mineria-y-geologia/sistema-de-informacion-geografica/-/asset_publisher/Kh0fSy8zj77G/content/sistema-de-informacion-geografica?redirect=http%3A//www.miem.gub.uy/web/mineria-y-geologia/sistema-de-informacion-geografica%3Fp_p_id%3D101_INSTANCE_Kh0fSy8zj77G%26p_p_lif
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
-(9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/CatastroMineroGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Catastro Minero'),
-(9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/CatastroMineroGeoS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Catastro Minero'),
-(9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/HidrogeologiaGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Hidrogeología'),
-(9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/MapaBaseUnidadesGeologicasGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Mapa Geológico'),
-(9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/GeolUnidadesGeologicas500000WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Mapa Geológico'),
-(9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/LaboratorioGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Laboratorio'),
-(9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/GeologiaGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Distritos Mineros'),
-(9,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/GeologiaGeoS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Distritos Mineros');
---(9,'http://visualizadorgeominero.dinamige.gub.uy/shapefiles/GeoMinera_Dinamige.zip','', 'Canteras');
+(8,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/CatastroMineroGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Catastro Minero'),
+(8,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/CatastroMineroGeoS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Catastro Minero'),
+(8,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/HidrogeologiaGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Hidrogeología'),
+(8,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/MapaBaseUnidadesGeologicasGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Mapa Geológico'),
+(8,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/GeolUnidadesGeologicas500000WFS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Mapa Geológico'),
+(8,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/LaboratorioGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Laboratorio'),
+(8,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/GeologiaGeoS/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'Distritos Mineros'),
+(8,'http://visualizadorgeominero.dinamige.gub.uy:8080/arcgis/services/Dinamige_GeoS/GeologiaGeoS/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'Distritos Mineros');
 
 --ide.uy/Ministerio de Transporte y Obras Públicas/Dirección Nacional de Topografía
    --http://geoportal.mtop.gub.uy/geoserv.html
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Información Logística'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Información Logística'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_terrestre/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Terrestre'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_terrestre/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Terrestre'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_fluvial/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Fluvial'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_fluvial/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Fluvial'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_ferroviario/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Ferroviario'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_ferroviario/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Ferroviario'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_aereo/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Aéreo'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_aereo/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Aéreo'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_otros/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Otras Infraestructuras'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_otros/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Otras Infraestructuras'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/relevamiento_transito/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Relevamiento Estadístico de Tránsito'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/relevamiento_transito/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Relevamiento Estadístico de Tránsito'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_soc_comunitaria/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA SOCIAL - Infraestructura Comunitaria'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/inf_soc_comunitaria/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA SOCIAL - Infraestructura Comunitaria'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/acc_intern_cosiplan/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'ACCIÓN INTERNACIONAL - Cartografía COSIPLAN'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/acc_intern_cosiplan/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'ACCIÓN INTERNACIONAL - Cartografía COSIPLAN'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/rec_hidrograficos/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'RECURSOS HIDROGRÁFICOS'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/rec_hidrograficos/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'RECURSOS HIDROGRÁFICOS'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/planos_publicar/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'CONSULTA DE PLANOS DE MENSURA - Planos de mensura'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/planos_publicar/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'CONSULTA DE PLANOS DE MENSURA - Planos de mensura'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/mb_hervidero/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'VUELOS FOTOGRAMÉTRICOS - Parque Arroyo Hervidero'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/mb_hervidero/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'VUELOS FOTOGRAMÉTRICOS - Parque Arroyo Hervidero'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/mb_sayago/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'VUELOS FOTOGRAMÉTRICOS - Regasificadora Puntas de Sayago'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/mb_sayago/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'VUELOS FOTOGRAMÉTRICOS - Regasificadora Puntas de Sayago'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/mb_pap/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'VUELOS FOTOGRAMÉTRICOS - Puerto de Aguas Profundas'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/mb_pap/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'VUELOS FOTOGRAMÉTRICOS - Puerto de Aguas Profundas'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/mb_piria/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'VUELOS FOTOGRAMÉTRICOS - Piriápolis'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/mb_piria/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'VUELOS FOTOGRAMÉTRICOS - Piriápolis'),
-(10,'http://geoservicios.mtop.gub.uy/geoserver/rutas_SD/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'SEGMENTACIÓN DINÁMICA - Rutas nacionales ');
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Información Logística'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_logistica/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Información Logística'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_terrestre/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Terrestre'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_terrestre/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Terrestre'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_fluvial/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Fluvial'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_fluvial/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Fluvial'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_ferroviario/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Ferroviario'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_ferroviario/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Ferroviario'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_aereo/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Aéreo'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_aereo/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Transporte Aéreo'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_otros/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Otras Infraestructuras'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_tte_ttelog_otros/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Otras Infraestructuras'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/relevamiento_transito/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Relevamiento Estadístico de Tránsito'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/relevamiento_transito/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA, TRANSPORTE Y LOGÍSTICA - Relevamiento Estadístico de Tránsito'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_soc_comunitaria/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'INFRAESTRUCTURA SOCIAL - Infraestructura Comunitaria'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/inf_soc_comunitaria/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'INFRAESTRUCTURA SOCIAL - Infraestructura Comunitaria'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/acc_intern_cosiplan/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'ACCIÓN INTERNACIONAL - Cartografía COSIPLAN'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/acc_intern_cosiplan/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'ACCIÓN INTERNACIONAL - Cartografía COSIPLAN'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/rec_hidrograficos/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'RECURSOS HIDROGRÁFICOS'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/rec_hidrograficos/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'RECURSOS HIDROGRÁFICOS'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/planos_publicar/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'CONSULTA DE PLANOS DE MENSURA - Planos de mensura'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/planos_publicar/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'CONSULTA DE PLANOS DE MENSURA - Planos de mensura'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/mb_hervidero/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'VUELOS FOTOGRAMÉTRICOS - Parque Arroyo Hervidero'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/mb_hervidero/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'VUELOS FOTOGRAMÉTRICOS - Parque Arroyo Hervidero'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/mb_sayago/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'VUELOS FOTOGRAMÉTRICOS - Regasificadora Puntas de Sayago'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/mb_sayago/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'VUELOS FOTOGRAMÉTRICOS - Regasificadora Puntas de Sayago'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/mb_pap/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'VUELOS FOTOGRAMÉTRICOS - Puerto de Aguas Profundas'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/mb_pap/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'VUELOS FOTOGRAMÉTRICOS - Puerto de Aguas Profundas'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/mb_piria/wms?service=WMS&version=1.3.0&request=GetCapabilities','WMS', 'VUELOS FOTOGRAMÉTRICOS - Piriápolis'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/mb_piria/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'VUELOS FOTOGRAMÉTRICOS - Piriápolis'),
+(9,'http://geoservicios.mtop.gub.uy/geoserver/rutas_SD/ows?service=WFS&version=1.3.0&request=GetCapabilities','WFS', 'SEGMENTACIÓN DINÁMICA - Rutas nacionales ');
 
 --ide.uy/Ministerio de Vivienda, Ordenamiento Territorial y Medio Ambiente/Dirección Nacional de Medio Ambiente
-   --https://www.dinama.gub.uy/geoservicios/
+--https://www.dinama.gub.uy/geoservicios/
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
-(11,'https://www.dinama.gub.uy/geoserver/u19600217/wms?service=WMS&version=1.3.0&REQUEST=GetCapabilities','WMS', 'Informacion sobre DINAMA');
+(10,'https://www.dinama.gub.uy/geoserver/u19600217/wms?service=WMS&version=1.3.0&REQUEST=GetCapabilities','WMS', 'Informacion sobre DINAMA');
 
 
 --ide.uy/Ministerio de Vivienda, Ordenamiento Territorial y Medio Ambiente/Dirección Nacional de Ordenamiento Territorial
    --http://sit.mvotma.gub.uy/serviciosOGC.htm
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/instrumentosOT/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'NORMATIVA DE ORDENAMIENTO TERRITORIAL'),
-(12,'http://sit.mvotma.gub.uy/arcgis/services/SIT/instrumentosOT/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'NORMATIVA DE ORDENAMIENTO TERRITORIAL'),
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/instrumentos_elaboracion/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'INSTRUMENTOS DE O.T EN ELABORACIÓN'),
-(12,'http://sit.mvotma.gub.uy/arcgis/services/SIT/instrumentos_elaboracion/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'INSTRUMENTOS DE O.T EN ELABORACIÓN'),
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/chs/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'CONJUNTOS HABITACIONALES DE PROMOCIÓN PÚBLICA'),
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/chs/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'CONJUNTOS HABITACIONALES DE PROMOCIÓN PÚBLICA'),
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/asentamientos/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'ASENTAMIENTOS'),
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/asentamientos/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'ASENTAMIENTOS'),
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/OGC/OGC_cobertura/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'COBERTURA DEL SUELO'),
-(12,'http://sit.mvotma.gub.uy/ArcGIS/services/OGC/OGC_cobertura/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'COBERTURA DEL SUELO');
+(11,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/instrumentosOT/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'NORMATIVA DE ORDENAMIENTO TERRITORIAL'),
+(11,'http://sit.mvotma.gub.uy/arcgis/services/SIT/instrumentosOT/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'NORMATIVA DE ORDENAMIENTO TERRITORIAL'),
+(11,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/instrumentos_elaboracion/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'INSTRUMENTOS DE O.T EN ELABORACIÓN'),
+(11,'http://sit.mvotma.gub.uy/arcgis/services/SIT/instrumentos_elaboracion/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'INSTRUMENTOS DE O.T EN ELABORACIÓN'),
+(11,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/chs/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'CONJUNTOS HABITACIONALES DE PROMOCIÓN PÚBLICA'),
+(11,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/chs/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'CONJUNTOS HABITACIONALES DE PROMOCIÓN PÚBLICA'),
+(11,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/asentamientos/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'ASENTAMIENTOS'),
+(11,'http://sit.mvotma.gub.uy/ArcGIS/services/SIT/asentamientos/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'ASENTAMIENTOS'),
+(11,'http://sit.mvotma.gub.uy/ArcGIS/services/OGC/OGC_cobertura/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities','WMS', 'COBERTURA DEL SUELO'),
+(11,'http://sit.mvotma.gub.uy/ArcGIS/services/OGC/OGC_cobertura/MapServer/WFSServer?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetCapabilities','WFS', 'COBERTURA DEL SUELO');
 
 --ide.uy/Intendencia de Montevideo/Servicio de Geomática
-   --http://sig.montevideo.gub.uy/content/geoservicios-web
+--http://sig.montevideo.gub.uy/content/geoservicios-web
 INSERT INTO GeographicServices (NodeID, Url, GeographicServicesType, Description) VALUES
-(13,'http://geoweb.montevideo.gub.uy/geonetwork/srv/es/csw','CSW', 'ACCESO A SERVICIOS CSW');
+(12,'http://geoweb.montevideo.gub.uy/geonetwork/srv/es/csw','CSW', 'ACCESO A SERVICIOS CSW');
 
 
 INSERT INTO SystemUser (Email, Password, UserGroupID, FirstName, LastName, PhoneNumber, InstitutionID) VALUES 
