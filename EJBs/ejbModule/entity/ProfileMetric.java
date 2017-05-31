@@ -22,7 +22,9 @@ public class ProfileMetric implements Serializable {
     private String MetricGranurality;
     private String MetricDescription;
     private Boolean MetricManual;
-    private Integer UnitID;
+    private Boolean IsUserMetric;
+    private String MetricFileName;
+	private Integer UnitID;
     private String UnitName;
     private String UnitDescription;
 
@@ -229,6 +231,22 @@ public class ProfileMetric implements Serializable {
 		MetricManual = metricManual;
 	}
 	
+	public Boolean getIsUserMetric() {
+		return IsUserMetric;
+	}
+
+	public void setIsUserMetric(Boolean isUserMetric) {
+		IsUserMetric = isUserMetric;
+	}
+	
+    public String getMetricFileName() {
+		return MetricFileName;
+	}
+
+	public void setMetricFileName(String metricFileName) {
+		MetricFileName = metricFileName;
+	}
+	
 	@Override
     public boolean equals(Object other) {
         return (other instanceof ProfileMetric) && (QualityModelID != null) && (DimensionID != null) && (FactorID != null) && (MetricID != null) && (MetricRangeID != null)
@@ -258,8 +276,8 @@ public class ProfileMetric implements Serializable {
     
     @Override
     public String toString() {
-        return String.format("ProfileMetric[%d, %s, %d, %s, %d, %s, %d, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s, %s, %d, %s, %d, %s, %s, %s]",
-        		QualityModelID, QualityModelName, DimensionID, DimensionName, FactorID, FactorName, MetricID, MetricName, MetricAgrgegationFlag, MetricGranurality, MetricDescription, UnitID, UnitName, UnitDescription, 
+        return String.format("ProfileMetric[%d, %s, %d, %s, %d, %s, %d, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %d, %s, %d, %s, %s, %s]",
+        		QualityModelID, QualityModelName, DimensionID, DimensionName, FactorID, FactorName, MetricID, MetricName, MetricAgrgegationFlag, MetricGranurality, MetricDescription, IsUserMetric, MetricFileName, UnitID, UnitName, UnitDescription, 
         		MetricRangeID, BooleanFlag, BooleanAcceptanceValue, PercentageFlag, PercentageAcceptanceValue, IntegerFlag, IntegerAcceptanceValue, EnumerateFlag, EnumerateAcceptanceValue, MetricManual);
     }
 }

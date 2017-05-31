@@ -1,12 +1,22 @@
 package service;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -639,14 +649,33 @@ public class EvaluationBeanList {
 		
 	}
 	
-	public boolean evaluationMetric(ProfileMetric metric, MeasurableObject selectedMeasurableObject){
+	public boolean evaluationMetric(ProfileMetric metric, MeasurableObject selectedMeasurableObject) throws ClassNotFoundException, MalformedURLException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		Boolean success = false;
 		int metricId = metric.getMetricID();
 		int acceptanceValue = 0;
 		
 		if(metric.getMetricManual()) {
 			success = resultMap.get(metric.getMetricID());
-		} else {
+		} 
+		else if (metric.getIsUserMetric()){			
+	        File file  = new File("C:/GeoServiceQualityJARs/" + metric.getMetricFileName());
+	        URL url = file.toURI().toURL();  
+	        URL[] urls = new URL[]{url};
+	        ClassLoader cl = new URLClassLoader(urls);
+
+	        Class<?> cls = cl.loadClass("UserMetricPackage.UserMetricClass");
+	        Class<?>[] argClasses = { String.class, String.class };
+	        
+	        Method method = cls.getDeclaredMethod("userMetricMethod", argClasses);
+	        
+	        Object instance = cls.newInstance();
+	        Object result = method.invoke(instance, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getMeasurableObjectServicesType());
+	        
+	        System.out.println("Resultado de invocacion de metrica de usuario: " + result.toString());
+	        
+	        success = (Boolean) result; 
+		}
+		else {
 			acceptanceValue = metric.getUnitID()==2? metric.getPercentageAcceptanceValue(): metric.getIntegerAcceptanceValue();
 			success = App.ejecuteMetric(metricId, selectedMeasurableObject.getMeasurableObjectURL(), selectedMeasurableObject.getMeasurableObjectServicesType(), acceptanceValue, selectedMeasurableObject.getMeasurableObjectName());
 		}

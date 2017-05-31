@@ -368,27 +368,29 @@ public class QualityModelBeanAdd {
 	                	
 	                	System.out.println("Clase encontrada: " + className);
 	                	
-	    		        //Loading de clase para buscar la firma de los metodos que contiene
-	                	URL url = file.toURI().toURL();
-	    		        URL[] urls = new URL[]{url};
+	                	if (className.equals("UserMetricPackage.UserMetricClass")){
+		    		        //Loading de clase para buscar la firma de los metodos que contiene
+		                	URL url = file.toURI().toURL();
+		    		        URL[] urls = new URL[]{url};
 
-	    		        ClassLoader cl = new URLClassLoader(urls);
-	    		        Class<?> cls = cl.loadClass(className);
-	                	
-	                    Method[] methods = cls.getDeclaredMethods();
-	                    for (Method m : methods) {
-	                    	System.out.println("Metodo encontrado: " + m.getName());
-	                    	
-	                        if (m.getName().equals("userMetricMethod") && m.getParameterCount() == 3 && m.getReturnType().toString().equals("boolean")){
-	                        	
-	                        	Parameter[] p = m.getParameters();
-	                        	if (p[0].getType().toString().equals("class java.lang.String") && p[1].getType().toString().equals("class java.lang.String") && p[2].getType().toString().equals("class java.lang.String")){
-	                        		isValidJarFile = true;
-	                        		System.out.println("OK: userMetricMethod contiene tres parametros de tipo string y retorna un booleano");
-	                                break;
-	                            }
-	                        }
-	                    }	
+		    		        ClassLoader cl = new URLClassLoader(urls);
+		    		        Class<?> cls = cl.loadClass(className);
+		                	
+		                    Method[] methods = cls.getDeclaredMethods();
+		                    for (Method m : methods) {
+		                    	System.out.println("Metodo encontrado: " + m.getName());
+		                    	
+		                        if (m.getName().equals("userMetricMethod") && m.getParameterCount() == 2 && m.getReturnType().toString().equals("boolean")){
+		                        	
+		                        	Parameter[] p = m.getParameters();
+		                        	if (p[0].getType().toString().equals("class java.lang.String") && p[1].getType().toString().equals("class java.lang.String")){
+		                        		isValidJarFile = true;
+		                        		System.out.println("OK: userMetricMethod contiene dos parametros de tipo string y retorna un booleano");
+		                                break;
+		                            }
+		                        }
+		                    }		                		
+	                	}
 	                }
 		        }
 		        

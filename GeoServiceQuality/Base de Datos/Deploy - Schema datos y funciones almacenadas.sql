@@ -1983,6 +1983,8 @@ RETURNS TABLE
       , MetricGranurality VARCHAR(11)
       , MetricDescription VARCHAR(100)
 	  , MetricManual BOOLEAN
+	  , IsUserMetric BOOLEAN
+	  , MetricFileName VARCHAR(100)
       , UnitID INT
       , UnitName VARCHAR(40)
       , UnitDescription VARCHAR(100)
@@ -2049,6 +2051,8 @@ BEGIN
       , m.Granurality
       , m.Description
 	  , m.IsManual
+	  , m.IsUserMetric
+	  , m.MetricFileName
       , u.UnitID
       , u.Name
       , u.Description
@@ -2082,6 +2086,8 @@ BEGIN
       , m.Granurality
       , m.Description
 	  , m.IsManual
+	  , m.IsUserMetric
+	  , m.MetricFileName
       , u.UnitID
       , u.Name
       , u.Description
