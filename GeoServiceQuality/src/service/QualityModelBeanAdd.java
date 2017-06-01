@@ -300,6 +300,7 @@ public class QualityModelBeanAdd {
     	        FacesContext.getCurrentInstance().addMessage(null, message);
     		}
     		else{
+    			metricUnitID = 1; //De momento solo ser permiten metricas de usuario de unidad booleana
         		qmDao.create(element, metricUnitID, metricIsManual, metricDescription, IsUserMetric, metricFileName);
                 
         		listQualityModels = qmDao.list();
